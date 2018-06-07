@@ -3,7 +3,7 @@ import sys
 
 # -- Project information -----------------------------------------------------
 
-project = u'Business Account API'
+project = u'Letstalk Business Account'
 copyright = u'2018, Letstalk'
 author = u'Letstalk'
 version = u'1'
