@@ -5,6 +5,7 @@ This document covered APIs, webhook events and supported message types of Letsta
 
 * **Level 1**: Letstalk service will do the RSA for end-to-end encryption, the AES key will be stored in the Letstalk service, provides easy integration with basic security.
 
+
 * **Level 2**: Customers' bots take the responsibility to do end-to-end encryption by RSA, the Letstalk service will not be aware of any AES keys, this level provides advanced security.
 
 Customers’ bots should use AES to encrypt all the message content in both levels.
