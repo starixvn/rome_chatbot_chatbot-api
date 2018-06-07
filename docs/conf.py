@@ -56,7 +56,7 @@ latex_documents = [
     (master_doc, 'LetstalkBusinessAccount.tex', u'Letstalk Business Account Documentation',
      u'Letstalk', 'manual'),
 ]
-
+latex_show_urls = 'footnote'
 
 # -- Options for manual page output ------------------------------------------
 
