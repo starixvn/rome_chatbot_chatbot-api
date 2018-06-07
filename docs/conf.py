@@ -10,8 +10,8 @@ master_doc = 'index'
 project = u'Letstalk Business Account'
 copyright = u'2018, Letstalk'
 author = u'Letstalk'
-version = u'1'
-release = u'1'
+version = '1.1'
+release = '1.1'
 
 exclude_patterns = []
 pygments_style = 'sphinx'
