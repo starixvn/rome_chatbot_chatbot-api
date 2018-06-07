@@ -73,7 +73,7 @@ texinfo_documents = [
      author, 'BusinessAccountAPI', 'One line description of project.',
      'Miscellaneous'),
 ]
-
+texinfo_show_urls = 'footnote'
 
 # -- Options for Epub output -------------------------------------------------
 
