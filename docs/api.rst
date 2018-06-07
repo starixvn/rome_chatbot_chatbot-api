@@ -4,9 +4,12 @@ API
 change_display_name
 -------------------
 
-* To change the display name of business accounts.
-* Name: **bot/change_display_name/{{user_name}}**
-* Method: PUT
+To change the display name of business accounts.
+
+Name: **bot/change_display_name/{{user_name}}**
+
+Method: ``PUT``
+
 * Header::
 
 	{
@@ -27,7 +30,7 @@ change_display_name
 		"message": String
 	}
 	
-* Status:
+Status:
 
 +------------+-----------------------------------------------------------------+
 | Code       | Description                                                     |
