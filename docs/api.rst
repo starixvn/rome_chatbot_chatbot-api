@@ -16,7 +16,7 @@ Method: ``PUT``
 		Content-Type : application/json
 		Authorization : Bearer base64(api key)
 	}
-	
+
 *  Input: JSON object::
 
 	{
