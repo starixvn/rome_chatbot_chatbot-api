@@ -25,7 +25,7 @@ pygments_style = 'sphinx'
 
 html_theme = 'default'
 html_static_path = ['_static']
-htmlhelp_basename = 'BusinessAccountAPIdoc'
+htmlhelp_basename = 'LetstalkBusinessAccountdoc'
 
 def setup(app):
     app.add_stylesheet("theme_overrides.css")
@@ -53,7 +53,7 @@ latex_elements = {
 }
 
 latex_documents = [
-    (master_doc, 'BusinessAccountAPI.tex', u'Business Account API Documentation',
+    (master_doc, 'LetstalkBusinessAccount.tex', u'Letstalk Business Account Documentation',
      u'Letstalk', 'manual'),
 ]
 
@@ -61,7 +61,7 @@ latex_documents = [
 # -- Options for manual page output ------------------------------------------
 
 man_pages = [
-    (master_doc, 'businessaccountapi', u'Business Account API Documentation',
+    (master_doc, 'letstalkbusinessaccount', u'Letstalk Business Account Documentation',
      [author], 1)
 ]
 
@@ -69,8 +69,8 @@ man_pages = [
 # -- Options for Texinfo output ----------------------------------------------
 
 texinfo_documents = [
-    (master_doc, 'BusinessAccountAPI', u'Business Account API Documentation',
-     author, 'BusinessAccountAPI', 'One line description of project.',
+    (master_doc, 'LetstalkBusinessAccount', u'Letstalk Business Account Documentation',
+     author, 'LetstalkBusinessAccount', 'One line description of project.',
      'Miscellaneous'),
 ]
 texinfo_show_urls = 'footnote'
@@ -82,3 +82,4 @@ epub_author = author
 epub_publisher = author
 epub_copyright = copyright
 epub_exclude_files = ['search.html']
+epub_show_urls = 'footnote'
