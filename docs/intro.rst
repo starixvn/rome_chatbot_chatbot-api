@@ -10,5 +10,7 @@ This document covered APIs, webhook events and supported message types of Letsta
 Customers’ bots should use AES to encrypt all the message content in both levels.
 
 We will provide sandbox environment for integration test.
+
 The necessary parameters for applying for an account include ``Account Name``, ``Password``, ``Display Name``, ``Security level``. 
+
 We will give you ``api_key``, ``hash_key`` and ``hash_id``.
