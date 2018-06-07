@@ -162,8 +162,8 @@ push
 *  Input: JSON object::
 
 	{
-		“receiver”: Array [receiver A, receiver B…] MAX:50
-		“payload”: String
+		"receiver": Array [receiver A, receiver B…] MAX:50
+		"payload": String
 	}
 	
 *  Output: JSON object::
