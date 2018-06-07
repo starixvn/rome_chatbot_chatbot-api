@@ -8,6 +8,7 @@ change_display_name
 * Name: **bot/change_display_name/{{user_name}}**
 * Method: PUT
 * Header::
+
 	{
 		Content-Type : application/json
 		Authorization : Bearer base64(api key)
