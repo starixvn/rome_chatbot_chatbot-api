@@ -1,6 +1,7 @@
 ﻿namespace Alpha.Messenger.Client.Models
 {
     using System.Collections.Generic;
+    using Newtonsoft.Json;
 
     public class Result
     {
@@ -27,5 +28,14 @@
     internal class ContactListResult : Result
     {
         public List<Contact> Contacts { get; set; }
+    }
+
+    /// <summary>
+    /// TODO: workaround to deserialize response
+    /// </summary>
+    internal class PublicKeyResult : Result
+    {
+        [JsonProperty(PropertyName = "public_key")]
+        public string PublicKey { get; set; }
     }
 }

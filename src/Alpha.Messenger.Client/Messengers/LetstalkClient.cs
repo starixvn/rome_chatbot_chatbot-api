@@ -98,5 +98,31 @@
             // Need confirm with onelab team
             throw new System.NotImplementedException();
         }
+
+        public string GetContactPublicKey(string botName, string userId)
+        {
+            var result = restClientHelper.ExecuteGet<PublicKeyResult>($"bot/get_contact_public_key/{botName}?contact={userId}");
+
+            return result.PublicKey;
+        }
+
+        public Result SetContactKey(string botName, string userId, string hashId, string hashKey)
+            => restClientHelper.ExecutePost<Result>(
+                $"bot/set_key_to_contact/{botName}",
+                new
+                {
+                    contact = userId,
+                    encryption_key = hashKey,
+                    hash_id = hashId
+                });
+
+        public Result SetHashKey(string botName, string hashId, string hashKey)
+            => restClientHelper.ExecutePost<Result>(
+                $"bot/set_hash_key/{botName}",
+                new
+                {
+                    hash_key = hashKey,
+                    hash_id = hashId
+                });
     }
 }

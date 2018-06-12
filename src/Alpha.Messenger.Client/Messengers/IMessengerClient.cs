@@ -26,5 +26,11 @@
         Result SetWebhook(string botName, string url);
 
         Result SetWelcomeMessage(string botName, string message);
+
+        string GetContactPublicKey(string botName, string userId);
+
+        Result SetContactKey(string botName, string userId, string hashId, string hashKey);
+
+        Result SetHashKey(string botName, string hashId, string hashKey);
     }
 }

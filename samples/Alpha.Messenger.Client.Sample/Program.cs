@@ -32,6 +32,12 @@
             SetWebhook(letstalkClient);
 
             SetWelcomeMessage(letstalkClient);
+
+            GetContactPublicKey(letstalkClient);
+
+            SetContactKey(letstalkClient);
+
+            SetHashKey(letstalkClient);
         }
 
         private static void Push(LetstalkClient letstalkClient)
@@ -127,6 +133,27 @@
             var result = letstalkClient.RemoveContactFromTag("botName", "userid", "tag");
 
             Console.WriteLine($"Request: RemoveContactFromTag, response: {JsonConvert.SerializeObject(result)}");
+        }
+
+        private static void SetContactKey(LetstalkClient letstalkClient)
+        {
+            var result = letstalkClient.SetContactKey("botName", "userid", "hash_id", "hash_key");
+
+            Console.WriteLine($"Request: SetContactKey, response: {JsonConvert.SerializeObject(result)}");
+        }
+
+        private static void GetContactPublicKey(LetstalkClient letstalkClient)
+        {
+            var result = letstalkClient.GetContactPublicKey("botName", "userid");
+
+            Console.WriteLine($"Request: GetContactPublicKey, response: {JsonConvert.SerializeObject(result)}");
+        }
+
+        private static void SetHashKey(LetstalkClient letstalkClient)
+        {
+            var result = letstalkClient.SetHashKey("botName", "hash_id", "hash_key");
+
+            Console.WriteLine($"Request: SetHashKey, response: {JsonConvert.SerializeObject(result)}");
         }
     }
 }
