@@ -1,1 +1,1 @@
-README.md
+Letstalk API: https://docs.nexdev.net/docs/business-account-api/en/latest/
