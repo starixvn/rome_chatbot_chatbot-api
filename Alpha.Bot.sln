@@ -15,7 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alpha.Messenger.Client.Samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alpha.Messenger.Client.Tests", "tests\Alpha.Messenger.Client.Tests\Alpha.Messenger.Client.Tests.csproj", "{6F914FAE-138C-42AD-9825-7996CEE4900C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alpha.Bot.WebApi", "src\Alpha.Bot.WebApi\Alpha.Bot.WebApi.csproj", "{6B6EB5EA-1A97-49B5-9CA7-4C7AD9B07474}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alpha.Bot.WebApi", "src\Alpha.Bot.WebApi\Alpha.Bot.WebApi.csproj", "{6B6EB5EA-1A97-49B5-9CA7-4C7AD9B07474}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MockService", "MockService", "{4B3EC10C-11E0-4709-8388-A4D88A823D03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetstalkMockAPI", "src\MockService\LetstalkMockAPI\LetstalkMockAPI.csproj", "{4EAABC7B-0E74-45F7-863A-FA778658EB9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,10 @@ Global
 		{6B6EB5EA-1A97-49B5-9CA7-4C7AD9B07474}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B6EB5EA-1A97-49B5-9CA7-4C7AD9B07474}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B6EB5EA-1A97-49B5-9CA7-4C7AD9B07474}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EAABC7B-0E74-45F7-863A-FA778658EB9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EAABC7B-0E74-45F7-863A-FA778658EB9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EAABC7B-0E74-45F7-863A-FA778658EB9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EAABC7B-0E74-45F7-863A-FA778658EB9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +56,8 @@ Global
 		{FB4F702B-E64F-4367-AFB8-D5AA37FC795A} = {07B5ABEC-6FB1-4DA6-848D-66C8738D0728}
 		{6F914FAE-138C-42AD-9825-7996CEE4900C} = {1453C8FB-EE1C-4353-9394-C4DE05F25190}
 		{6B6EB5EA-1A97-49B5-9CA7-4C7AD9B07474} = {8B168B46-BDAA-4A89-AAA5-923E980DF7D7}
+		{4B3EC10C-11E0-4709-8388-A4D88A823D03} = {8B168B46-BDAA-4A89-AAA5-923E980DF7D7}
+		{4EAABC7B-0E74-45F7-863A-FA778658EB9D} = {4B3EC10C-11E0-4709-8388-A4D88A823D03}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {713C7940-2634-4C55-A6AF-9A4779CBFCEF}
