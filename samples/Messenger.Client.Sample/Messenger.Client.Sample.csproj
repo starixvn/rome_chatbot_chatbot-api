@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Alpha.Messenger.Client\Alpha.Messenger.Client.csproj" />
+    <ProjectReference Include="..\..\src\Messenger.Client\Messenger.Client.csproj" />
   </ItemGroup>
 
 </Project>

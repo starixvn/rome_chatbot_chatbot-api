@@ -1,4 +1,4 @@
-﻿namespace Alpha.Messenger.Client.Models
+﻿namespace Messenger.Client.Models
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;

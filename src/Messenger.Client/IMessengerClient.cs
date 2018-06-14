@@ -1,9 +1,9 @@
-﻿namespace Alpha.Messenger.Client.Messengers
+﻿namespace Messenger.Client
 {
     using System.Collections.Generic;
-    using Alpha.Messenger.Client.Models;
+    using Messenger.Client.Models;
 
-    public interface IMessengerClient
+    public partial interface IMessengerClient
     {
         Result Push(string botName, IEnumerable<string> receivers, Payload payload);
 

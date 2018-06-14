@@ -1,4 +1,4 @@
-﻿namespace Alpha.Messenger.Client.Models
+﻿namespace Messenger.Client.Models
 {
     using Newtonsoft.Json;
 
@@ -16,13 +16,13 @@
 
         public string Receiver { get; set; }
 
-        public int Time { get; set; }
+        public long Time { get; set; }
 
         [JsonProperty(PropertyName = "send_time")]
-        public int SendTime { get; set; }
+        public long SendTime { get; set; }
 
         [JsonProperty(PropertyName = "due_date")]
-        public int DueDate { get; set; }
+        public long DueDate { get; set; }
 
         public int From { get; set; }
 
