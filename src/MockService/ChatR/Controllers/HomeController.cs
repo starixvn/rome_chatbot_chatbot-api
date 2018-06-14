@@ -1,6 +1,6 @@
-﻿using ChatR.Models;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
+using ChatR.Models;
 
 namespace ChatR.Controllers
 {

@@ -4,13 +4,13 @@ using LetstalkMockAPI.Configurations;
 using LetstalkMockAPI.Models;
 using LetstalkMockAPI.ViewModels;
 using LetstalkMockAPI.Web;
-using Microsoft.AspNet.SignalR.Client.Hubs;
+using Microsoft.AspNet.SignalR.Client;
 
 namespace LetstalkMockAPI.Controllers
 {
     public class BotController : ApiController
     {
-        IHubProxy chatRHubProxy;
+        private IHubProxy chatRHubProxy;
 
         public BotController()
         {
@@ -42,7 +42,7 @@ namespace LetstalkMockAPI.Controllers
         [HttpPost]
         public IHttpActionResult Push(string user_name, [FromBody]PushMessageViewModel body)
         {
-            chatRHubProxy.Invoke<ChatMessage>("Send", new ChatMessage { Username = user_name, Content = "Text" });
+            chatRHubProxy.Invoke<ChatMessage>("Send", body);
 
             return SuccessJsonResult();
         }
@@ -52,7 +52,7 @@ namespace LetstalkMockAPI.Controllers
         /// </summary>
         /// <remarks>
         /// Sample request:
-        /// 
+        ///
         ///     {
         ///         "tag": "tag",
         ///         "payload": {

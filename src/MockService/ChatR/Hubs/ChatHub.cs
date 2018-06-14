@@ -1,5 +1,6 @@
 ﻿using ChatR.Models;
 using ChatR.Utils;
+using ChatR.ViewModels;
 using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace ChatR.Hubs
             return base.OnDisconnected(stopCalled);
         }
 
-        #endregion
+        #endregion IDisconnect and IConnected event handlers implementation
 
         #region Chat event handlers
 
@@ -48,17 +49,20 @@ namespace ChatR.Hubs
         /// Fired when a client pushes a message to the server.
         /// </summary>
         /// <param name="message"></param>
-        public void Send(ChatMessage message)
+        public void Send(PushMessageViewModel message)
         {
-            if (!string.IsNullOrEmpty(message.Content))
+            if (message.Payload != null)
             {
+                var payload = message.Payload;
+                var chatMessage = new ChatMessage { Username = payload.UserId, Content = payload.HashContent };
+
                 // Sanitize input
-                message.Content = HttpUtility.HtmlEncode(message.Content);
+                chatMessage.Content = HttpUtility.HtmlEncode(chatMessage.Content);
                 // Process URLs: Extract any URL and process rich content (e.g. Youtube links)
                 HashSet<string> extractedURLs;
-                message.Content = TextParser.TransformAndExtractUrls(message.Content, out extractedURLs);
-                message.Timestamp = DateTime.Now;
-                Clients.All.onMessageReceived(message);
+                chatMessage.Content = TextParser.TransformAndExtractUrls(chatMessage.Content, out extractedURLs);
+                chatMessage.Timestamp = DateTime.Now;
+                Clients.All.onMessageReceived(chatMessage);
             }
         }
 
@@ -69,7 +73,7 @@ namespace ChatR.Hubs
         {
             ChatUser user = new ChatUser()
             {
-                //Id = Context.ConnectionId,                
+                //Id = Context.ConnectionId,
                 Id = Guid.NewGuid().ToString(),
                 Username = Clients.Caller.username
             };
@@ -87,6 +91,6 @@ namespace ChatR.Hubs
             return _repository.Users.ToList<ChatUser>();
         }
 
-        #endregion
+        #endregion Chat event handlers
     }
 }
