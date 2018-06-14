@@ -1,0 +1,40 @@
+﻿using ChatR.Models;
+using System.Linq;
+using System.Web.Mvc;
+
+namespace ChatR.Controllers
+{
+    public class HomeController : Controller
+    {
+        private InMemoryRepository _repository;
+
+        public HomeController()
+        {
+            _repository = InMemoryRepository.GetInstance();
+        }
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Index(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                ModelState.AddModelError("username", "Username is required");
+                return View();
+            }
+            else
+            {
+                if (_repository.Users.Where(u => u.Username.Equals(username)).ToList().Count > 0)
+                {
+                    username = _repository.GetRandomizedUsername(username);
+                }
+
+                return View("Chat", "_Layout", username);
+            }
+        }
+    }
+}
