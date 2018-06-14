@@ -54,7 +54,7 @@ namespace LetstalkMockAPI.Controllers
         /// Sample request:
         /// 
         ///     {
-        ///         "tag": "tag"
+        ///         "tag": "tag",
         ///         "payload": {
         ///             "id": 350,
         ///             "hash_content_key": "f922b4b70151303c1f85bd4e7712c0a033fa8ba7",
