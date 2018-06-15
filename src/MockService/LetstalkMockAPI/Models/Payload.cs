@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace LetstalkMockAPI.Models
+﻿namespace LetstalkMockAPI.Models
 {
+    using Newtonsoft.Json;
+
     public class Payload
     {
         public int Type { get; set; }

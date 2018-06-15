@@ -1,10 +1,10 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-namespace ChatR.Utils
+﻿namespace ChatR.Utils
 {
+    using System;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
     public class YoutubeRichContentParser
     {
         // Regex taken from this SO answer: http://stackoverflow.com/a/5831191

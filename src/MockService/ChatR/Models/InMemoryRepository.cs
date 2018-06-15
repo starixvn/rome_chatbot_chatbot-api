@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace ChatR.Models
+﻿namespace ChatR.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class InMemoryRepository
     {
         private static ICollection<ChatUser> _connectedUsers;
@@ -28,7 +28,7 @@ namespace ChatR.Models
             _mappings = new Dictionary<string, string>();
         }
 
-        #endregion
+        #endregion Private methods
 
         #region Repository methods
 
@@ -79,6 +79,6 @@ namespace ChatR.Models
             return userId;
         }
 
-        #endregion
+        #endregion Repository methods
     }
 }

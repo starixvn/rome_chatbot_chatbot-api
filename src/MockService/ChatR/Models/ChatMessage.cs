@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace ChatR.Models
+﻿namespace ChatR.Models
 {
+    using System;
+
     public class ChatMessage
     {
         public string Username { get; set; }

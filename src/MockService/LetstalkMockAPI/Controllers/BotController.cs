@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Web.Http;
-using LetstalkMockAPI.Configurations;
-using LetstalkMockAPI.Models;
-using LetstalkMockAPI.ViewModels;
-using LetstalkMockAPI.Web;
-using Microsoft.AspNet.SignalR.Client;
-
-namespace LetstalkMockAPI.Controllers
+﻿namespace LetstalkMockAPI.Controllers
 {
+    using System.Collections.Generic;
+    using System.Web.Http;
+    using LetstalkMockAPI.Configurations;
+    using LetstalkMockAPI.Models;
+    using LetstalkMockAPI.ViewModels;
+    using LetstalkMockAPI.Web;
+    using Microsoft.AspNet.SignalR.Client;
+
     public class BotController : ApiController
     {
         private IHubProxy chatRHubProxy;
@@ -42,7 +42,7 @@ namespace LetstalkMockAPI.Controllers
         [HttpPost]
         public IHttpActionResult Push(string user_name, [FromBody]PushMessageViewModel body)
         {
-            chatRHubProxy.Invoke<ChatMessage>("Send", body);
+            chatRHubProxy.Invoke<ChatMessage>("Receive", body);
 
             return SuccessJsonResult();
         }

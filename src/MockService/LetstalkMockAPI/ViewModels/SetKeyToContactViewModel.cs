@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace LetstalkMockAPI.ViewModels
+﻿namespace LetstalkMockAPI.ViewModels
 {
+    using Newtonsoft.Json;
+
     public class SetKeyToContactViewModel
     {
         public string Contact { get; set; }

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace LetstalkMockAPI.Models
+﻿namespace LetstalkMockAPI.Models
 {
+    using System.Collections.Generic;
+
     public class GetContactsResult : Result
     {
         public string Tag { get; set; }

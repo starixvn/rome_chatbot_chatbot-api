@@ -1,7 +1,7 @@
-﻿using System.Web.Http;
-
-namespace LetstalkMockAPI
+﻿namespace LetstalkMockAPI
 {
+    using System.Web.Http;
+
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)

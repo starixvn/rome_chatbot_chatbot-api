@@ -107,7 +107,6 @@ label {
         margin-bottom: 5px;
     }
 
-
 .user-box {
     width: 90%;
     background-color: #ffc578;
@@ -192,7 +191,7 @@ label {
     text-align: center;
     font-weight: lighter;
     padding: 5px;
-    width: 80px;
+    width: 90px;
     background-color: #F2F2F2;
     color: Gray;
 }

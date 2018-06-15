@@ -1,9 +1,9 @@
-﻿using Microsoft.Owin;
-using Owin;
+﻿[assembly: Microsoft.Owin.OwinStartup(typeof(ChatR.Startup))]
 
-[assembly: OwinStartup(typeof(ChatR.Startup))]
 namespace ChatR
 {
+    using Owin;
+
     public class Startup
     {
         public void Configuration(IAppBuilder app)

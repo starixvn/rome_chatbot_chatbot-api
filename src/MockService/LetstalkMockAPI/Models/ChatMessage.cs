@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace LetstalkMockAPI.Models
+﻿namespace LetstalkMockAPI.Models
 {
+    using System;
+
     public class ChatMessage
     {
         public string Username { get; set; }

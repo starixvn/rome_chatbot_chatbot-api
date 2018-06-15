@@ -1,15 +1,15 @@
-﻿using Microsoft.Security.Application;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Web;
-
-namespace ChatR.Utils
+﻿namespace ChatR.Utils
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using Microsoft.Security.Application;
+
     public class TextParser
     {
-        static Regex urlPattern = new Regex(@"(?:(?:https?|ftp)://|www\.)[^\s]+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static Regex urlPattern = new Regex(@"(?:(?:https?|ftp)://|www\.)[^\s]+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static string TransformAndExtractUrls(string message, out HashSet<string> extractedUrls)
         {

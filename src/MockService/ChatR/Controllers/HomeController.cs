@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using ChatR.Models;
-
-namespace ChatR.Controllers
+﻿namespace ChatR.Controllers
 {
+    using System.Linq;
+    using System.Web.Mvc;
+    using ChatR.Models;
+
     public class HomeController : Controller
     {
         private InMemoryRepository _repository;

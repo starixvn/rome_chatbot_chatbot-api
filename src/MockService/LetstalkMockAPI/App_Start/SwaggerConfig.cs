@@ -1,12 +1,10 @@
-﻿using System.Web.Http;
-using LetstalkMockAPI;
-using Swashbuckle.Application;
-using WebActivatorEx;
-
-[assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
+﻿[assembly: System.Web.PreApplicationStartMethod(typeof(LetstalkMockAPI.SwaggerConfig), "Register")]
 
 namespace LetstalkMockAPI
 {
+    using System.Web.Http;
+    using Swashbuckle.Application;
+
     public class SwaggerConfig
     {
         public static void Register()

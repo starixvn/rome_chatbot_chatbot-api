@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace ChatR.Models
+﻿namespace ChatR.Models
 {
+    using Newtonsoft.Json;
+
     public class Payload
     {
         public int Type { get; set; }
