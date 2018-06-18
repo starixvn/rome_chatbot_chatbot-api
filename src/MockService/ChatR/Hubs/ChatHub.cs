@@ -42,14 +42,9 @@
         {
             if (!string.IsNullOrEmpty(message.Content))
             {
-                message.Content = HttpUtility.HtmlEncode(message.Content);
-                HashSet<string> extractedURLs;
-                message.Content = TextParser.TransformAndExtractUrls(message.Content, out extractedURLs);
-                message.Timestamp = DateTime.Now;
+                ShowMessage(message);
 
-                Clients.All.onMessageReceived(message);
-
-                Push("apha.bot", new string[] { message.Username }, new Payload
+                Push(message.Username, new Payload
                 {
                     Id = 1,
                     From = 0,
@@ -59,19 +54,11 @@
             }
         }
 
-        public void Receive(PushMessageViewModel message)
+        public void Receive(ChatMessage message)
         {
-            if (message.Payload != null)
+            if (!string.IsNullOrEmpty(message.Content))
             {
-                var payload = message.Payload;
-                var chatMessage = new ChatMessage { Username = payload.UserId, Content = payload.HashContent };
-
-                chatMessage.Content = HttpUtility.HtmlEncode(chatMessage.Content);
-                HashSet<string> extractedURLs;
-                chatMessage.Content = TextParser.TransformAndExtractUrls(chatMessage.Content, out extractedURLs);
-                chatMessage.Timestamp = DateTime.Now;
-
-                Clients.All.onMessageReceived(chatMessage);
+                ShowMessage(message);
             }
         }
 
@@ -92,19 +79,34 @@
             return _repository.Users.ToList<ChatUser>();
         }
 
-        public Result Push(string botName, IEnumerable<string> receivers, Payload payload)
+        private void ShowMessage(ChatMessage message)
         {
-            ValidateInputParam(nameof(botName), botName);
-            ValidateInputParam(nameof(receivers), receivers);
+            message.Content = HttpUtility.HtmlEncode(message.Content);
+            HashSet<string> extractedURLs;
+            message.Content = TextParser.TransformAndExtractUrls(message.Content, out extractedURLs);
+            message.Timestamp = DateTime.Now;
+
+            Clients.All.onMessageReceived(message);
+        }
+
+        private Result Push(string user_id, Payload payload)
+        {
+            ValidateInputParam(nameof(user_id), user_id);
             ValidateInputParam(nameof(payload), payload);
 
             return _restClientHelper.Execute<Result>(
-                $"bot/push/{botName}",
+                $"webhooks/incoming",
                 RestSharp.Method.POST,
                 new
                 {
-                    receiver = receivers,
-                    payload
+                    type = "message",
+                    timestamp = 1527151205790,
+                    source = new Source
+                    {
+                        Type = "user",
+                        UserId = user_id
+                    },
+                    payload = payload
                 });
         }
 

@@ -26,15 +26,13 @@
                 ModelState.AddModelError("username", "Username is required");
                 return View();
             }
-            else
-            {
-                if (_repository.Users.Where(u => u.Username.Equals(username)).ToList().Count > 0)
-                {
-                    username = _repository.GetRandomizedUsername(username);
-                }
 
-                return View("Chat", "_Layout", username);
+            if (_repository.Users.Where(u => u.Username.Equals(username)).ToList().Count > 0)
+            {
+                username = _repository.GetRandomizedUsername(username);
             }
+
+            return View("Chat", "_Layout", username);
         }
     }
 }
