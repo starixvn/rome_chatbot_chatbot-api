@@ -1,0 +1,27 @@
+﻿namespace Messenger.WebHooks.WebHookReceivers.LetstalkEventHandlers
+{
+    using System.Threading.Tasks;
+    using Messenger.WebHooks.Models;
+    using Microsoft.AspNet.WebHooks;
+    using Newtonsoft.Json.Linq;
+
+    public abstract class BaseLetstalkEventHandler : WebHookQueueHandler
+    {
+        protected abstract string EventTypeName { get; }
+
+        protected abstract Task EnqueueAsync(WebHookQueueContext context, HookEvent hookEvent);
+
+        public override Task EnqueueAsync(WebHookQueueContext context)
+        {
+            var data = context.Data as JObject;
+            if (data != null && data["type"].Value<string>() == EventTypeName)
+            {
+                var hookEvent = data.ToObject<HookEvent>();
+
+                EnqueueAsync(context, hookEvent);
+            }
+
+            return Task.FromResult(true);
+        }
+    }
+}

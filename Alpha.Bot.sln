@@ -29,6 +29,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatR", "src\MockService\Ch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetstalkMockAPI", "src\MockService\LetstalkMockAPI\LetstalkMockAPI.csproj", "{4EAABC7B-0E74-45F7-863A-FA778658EB9D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "webhook", "webhook", "{434615BC-B57A-43E4-806D-C884F6A3F060}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebHooks", "src\messengers\Messenger.WebHooks\Messenger.WebHooks.csproj", "{788080A7-13D2-49A0-945F-37C801AE1D0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebHooks.Sample", "samples\messengers\Messenger.WebHooks.Sample\Messenger.WebHooks.Sample.csproj", "{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +65,14 @@ Global
 		{4EAABC7B-0E74-45F7-863A-FA778658EB9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EAABC7B-0E74-45F7-863A-FA778658EB9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EAABC7B-0E74-45F7-863A-FA778658EB9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{788080A7-13D2-49A0-945F-37C801AE1D0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{788080A7-13D2-49A0-945F-37C801AE1D0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{788080A7-13D2-49A0-945F-37C801AE1D0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{788080A7-13D2-49A0-945F-37C801AE1D0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +88,9 @@ Global
 		{1C37028E-A0A8-47CC-9080-233CD48D746B} = {8B168B46-BDAA-4A89-AAA5-923E980DF7D7}
 		{54C9F30B-3947-4282-B8C5-A9EDA042B204} = {1C37028E-A0A8-47CC-9080-233CD48D746B}
 		{4EAABC7B-0E74-45F7-863A-FA778658EB9D} = {1C37028E-A0A8-47CC-9080-233CD48D746B}
+		{434615BC-B57A-43E4-806D-C884F6A3F060} = {8B168B46-BDAA-4A89-AAA5-923E980DF7D7}
+		{788080A7-13D2-49A0-945F-37C801AE1D0D} = {730FB50D-4473-42DF-B577-37EC39EF730F}
+		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD} = {3A1B7B2D-1F55-4111-BE4D-C3E974C03136}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {713C7940-2634-4C55-A6AF-9A4779CBFCEF}
