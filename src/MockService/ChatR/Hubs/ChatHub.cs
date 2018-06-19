@@ -8,7 +8,6 @@
     using ChatR.Helpers;
     using ChatR.Models;
     using ChatR.Utils;
-    using ChatR.ViewModels;
     using Microsoft.AspNet.SignalR;
 
     public class ChatHub : Hub
@@ -44,13 +43,7 @@
             {
                 ShowMessage(message);
 
-                Push(message.Username, new Payload
-                {
-                    Id = 1,
-                    From = 0,
-                    UserId = "alpha.bot",
-                    HashContent = "content"
-                });
+                PushMessageEvent(message.Username, message.Content);
             }
         }
 
@@ -89,13 +82,13 @@
             Clients.All.onMessageReceived(message);
         }
 
-        private Result Push(string user_id, Payload payload)
+        private Result PushMessageEvent(string user_id, string encrryptedPayload)
         {
             ValidateInputParam(nameof(user_id), user_id);
-            ValidateInputParam(nameof(payload), payload);
+            ValidateInputParam(nameof(encrryptedPayload), encrryptedPayload);
 
             return _restClientHelper.Execute<Result>(
-                $"webhooks/incoming",
+                "/incoming/letstalk",
                 RestSharp.Method.POST,
                 new
                 {
@@ -106,7 +99,7 @@
                         Type = "user",
                         UserId = user_id
                     },
-                    payload = payload
+                    payload = encrryptedPayload
                 });
         }
 

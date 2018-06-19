@@ -8,7 +8,7 @@
     {
         internal static NameValueCollection Configs { get; set; } = ConfigurationManager.AppSettings;
 
-        public static string MessengerApiEndpoint => Configs["MessengerAPIClient:ApiEndpoint"]
-            ?? throw new InvalidOperationException("Missing config for MessengerAPIClient:ApiEndpoint");
+        public static string WebHooksUrl => Configs["WeHookUrl"]
+            ?? throw new InvalidOperationException("Missing config for WeHookUrl");
     }
 }

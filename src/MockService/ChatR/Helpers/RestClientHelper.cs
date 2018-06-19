@@ -15,7 +15,7 @@
 
         public RestClientHelper(IRestClient restClient = null)
         {
-            this.restClient = restClient ?? new RestClient(AppSettings.MessengerApiEndpoint);
+            this.restClient = restClient ?? new RestClient(AppSettings.WebHooksUrl);
         }
 
         public T Execute<T>(string resource, Method method, object body) where T : new()
