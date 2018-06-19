@@ -9,11 +9,6 @@
     {
         private const string eventTypeName = "add_contact";
 
-        public AddContactEventHandler()
-        {
-            Receiver = LetstalkWebHookReceiver.ReceiverName;
-        }
-
         protected override string EventTypeName => eventTypeName;
 
         protected override Task EnqueueAsync(WebHookQueueContext context, HookEvent hookEvent)

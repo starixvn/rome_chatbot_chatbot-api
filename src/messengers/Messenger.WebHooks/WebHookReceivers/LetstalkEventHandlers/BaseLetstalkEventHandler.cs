@@ -7,6 +7,11 @@
 
     public abstract class BaseLetstalkEventHandler : WebHookQueueHandler
     {
+        protected BaseLetstalkEventHandler()
+        {
+            Receiver = LetstalkWebHookReceiver.ReceiverName;
+        }
+
         protected abstract string EventTypeName { get; }
 
         protected abstract Task EnqueueAsync(WebHookQueueContext context, HookEvent hookEvent);

@@ -9,11 +9,6 @@
     {
         private const string eventTypeName = "ask_key";
 
-        public AskKeyEventHandler()
-        {
-            Receiver = LetstalkWebHookReceiver.ReceiverName;
-        }
-
         protected override string EventTypeName => eventTypeName;
 
         protected override Task EnqueueAsync(WebHookQueueContext context, HookEvent hookEvent)
