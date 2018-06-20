@@ -47,7 +47,7 @@
                 new ChatMessage
                 {
                     Username = user_name,
-                    Content = $"Sender: {body.Payload.UserId} - Command: {body.Payload.HashContent}"
+                    Content = body.Payload.HashContent
                 });
 
             return SuccessJsonResult();

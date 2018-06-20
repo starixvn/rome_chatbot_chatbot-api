@@ -42,8 +42,15 @@
             if (!string.IsNullOrEmpty(message.Content))
             {
                 ShowMessage(message);
-
-                PushMessageEvent(message.Username, message.Content);
+                if (message.Content.StartsWith("#"))
+                {
+                    var contents = message.Content.TrimStart('#').Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                    PushWebHooksEvent(contents[0], contents[1]);
+                }
+                else
+                {
+                    PushMessageEvent(message.Username, message.Content);
+                }
             }
         }
 
@@ -82,10 +89,10 @@
             Clients.All.onMessageReceived(message);
         }
 
-        private Result PushMessageEvent(string user_id, string encrryptedPayload)
+        private Result PushMessageEvent(string userName, string content)
         {
-            ValidateInputParam(nameof(user_id), user_id);
-            ValidateInputParam(nameof(encrryptedPayload), encrryptedPayload);
+            ValidateInputParam(nameof(userName), userName);
+            ValidateInputParam(nameof(content), content);
 
             return _restClientHelper.Execute<Result>(
                 "/incoming/letstalk",
@@ -97,9 +104,26 @@
                     source = new Source
                     {
                         Type = "user",
-                        UserId = user_id
+                        UserId = userName
                     },
-                    payload = encrryptedPayload
+                    payload = content
+                });
+        }
+
+        private Result PushWebHooksEvent(string eventName, string userName)
+        {
+            return _restClientHelper.Execute<Result>(
+                "/incoming/letstalk",
+                RestSharp.Method.POST,
+                new
+                {
+                    type = eventName,
+                    timestamp = 1527151205790,
+                    source = new Source
+                    {
+                        Type = "user",
+                        UserId = userName
+                    },
                 });
         }
 

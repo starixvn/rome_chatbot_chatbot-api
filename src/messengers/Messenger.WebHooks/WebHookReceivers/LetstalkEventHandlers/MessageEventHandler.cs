@@ -19,7 +19,9 @@
             this.messengerClient = messengerClient ?? new LetstalkClient();
         }
 
-        public MessageEventHandler() : this(null) { }
+        public MessageEventHandler() : this(null)
+        {
+        }
 
         protected override string EventTypeName => eventTypeName;
 
@@ -39,7 +41,7 @@
                                 Id = 1,
                                 From = 0,
                                 UserId = hookEvent.Source.UserId,
-                                HashContent = hookEvent.EncryptedPayload
+                                HashContent = $"Sender: {hookEvent.Source.UserId}, Hook Event Type: {eventTypeName}, Payload: {hookEvent.EncryptedPayload}"
                             });
 
             Fanex.Logging.LogService.Info($"Request: Push, response: {JsonConvert.SerializeObject(result)}");
