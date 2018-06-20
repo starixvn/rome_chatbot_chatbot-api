@@ -2,12 +2,23 @@
 {
     using System.Collections.Generic;
     using System.Web.Http;
+    using LetstalkMockAPI.Configurations;
     using LetstalkMockAPI.Models;
     using LetstalkMockAPI.ViewModels;
     using LetstalkMockAPI.Web;
+    using Microsoft.AspNet.SignalR.Client;
 
     public class BotController : ApiController
     {
+        private IHubProxy chatRHubProxy;
+
+        public BotController()
+        {
+            var hubConnection = new HubConnection(AppSettings.MessengerAppUrl);
+            chatRHubProxy = hubConnection.CreateHubProxy("ChatHub");
+            hubConnection.Start().Wait();
+        }
+
         [HttpPut]
         [Route("api/bot/change_display_name/{user_name}")]
         public IHttpActionResult ChangeDisplayName(string user_name, [FromBody]ChangeDisplayNameViewModel body)
@@ -30,7 +41,17 @@
 
         [HttpPost]
         public IHttpActionResult Push(string user_name, [FromBody]PushMessageViewModel body)
-            => SuccessJsonResult();
+        {
+            chatRHubProxy.Invoke<ChatMessage>(
+                "Receive",
+                new ChatMessage
+                {
+                    Username = user_name,
+                    Content = $"Sender: {body.Payload.UserId} - Command: {body.Payload.HashContent}"
+                });
+
+            return SuccessJsonResult();
+        }
 
         /// <summary>
         /// To send message to tagged contacts.

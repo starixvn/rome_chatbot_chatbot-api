@@ -242,6 +242,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Chat.cshtml" />
+    <Content Include="Web.local.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
