@@ -8,7 +8,7 @@
     {
         internal static NameValueCollection Configs { get; set; } = ConfigurationManager.AppSettings;
 
-        public static string WebHooksUrl => Configs["WeHookUrl"]
-            ?? throw new InvalidOperationException("Missing config for WeHookUrl");
+        public static string WebHooksUrl => Configs["WebHookUrl"]
+            ?? throw new InvalidOperationException("Missing config for WebHookUrl");
     }
 }

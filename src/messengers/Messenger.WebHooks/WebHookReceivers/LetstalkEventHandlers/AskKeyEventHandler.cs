@@ -18,6 +18,10 @@
             this.messengerClient = messengerClient ?? new LetstalkClient();
         }
 
+        public AskKeyEventHandler() : this(null)
+        {
+        }
+
         protected override string EventTypeName => eventTypeName;
 
         protected override Task EnqueueAsync(WebHookQueueContext context, HookEvent hookEvent)
