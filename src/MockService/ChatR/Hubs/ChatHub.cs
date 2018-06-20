@@ -42,10 +42,19 @@
             if (!string.IsNullOrEmpty(message.Content))
             {
                 ShowMessage(message);
+
                 if (message.Content.StartsWith("#"))
                 {
                     var contents = message.Content.TrimStart('#').Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                    PushWebHooksEvent(message.Username, contents[0]);
+
+                    if (contents[0].Equals("message"))
+                    {
+                        PushMessageEvent(message.Username, contents[1]);
+                    }
+                    else
+                    {
+                        PushWebHooksEvent(message.Username, contents[0]);
+                    }
                 }
                 else
                 {
