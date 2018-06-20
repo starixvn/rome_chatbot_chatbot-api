@@ -41,7 +41,7 @@
                                 Id = 1,
                                 From = 0,
                                 UserId = hookEvent.Source.UserId,
-                                HashContent = $"Sender: {hookEvent.Source.UserId}, Hook Event Type: {eventTypeName}, Payload: {hookEvent.EncryptedPayload}"
+                                HashContent = $"Receive Message From: {hookEvent.Source.UserId}, Hook Event Type: {eventTypeName}, Payload: {hookEvent.EncryptedPayload}"
                             });
 
             Fanex.Logging.LogService.Info($"Request: Push, response: {JsonConvert.SerializeObject(result)}");

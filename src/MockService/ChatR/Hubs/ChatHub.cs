@@ -45,7 +45,7 @@
                 if (message.Content.StartsWith("#"))
                 {
                     var contents = message.Content.TrimStart('#').Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                    PushWebHooksEvent(contents[0], contents[1]);
+                    PushWebHooksEvent(message.Username, contents[0]);
                 }
                 else
                 {
@@ -89,9 +89,9 @@
             Clients.All.onMessageReceived(message);
         }
 
-        private Result PushMessageEvent(string userName, string content)
+        private Result PushMessageEvent(string userId, string content)
         {
-            ValidateInputParam(nameof(userName), userName);
+            ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(content), content);
 
             return _restClientHelper.Execute<Result>(
@@ -104,13 +104,13 @@
                     source = new Source
                     {
                         Type = "user",
-                        UserId = userName
+                        UserId = userId
                     },
                     payload = content
                 });
         }
 
-        private Result PushWebHooksEvent(string eventName, string userName)
+        private Result PushWebHooksEvent(string userId, string eventName)
         {
             return _restClientHelper.Execute<Result>(
                 "/incoming/letstalk",
@@ -122,7 +122,7 @@
                     source = new Source
                     {
                         Type = "user",
-                        UserId = userName
+                        UserId = userId
                     },
                 });
         }
