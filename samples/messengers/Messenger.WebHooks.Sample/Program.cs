@@ -103,7 +103,7 @@
                 return;
             }
 
-            throw new InvalidOperationException(response.ErrorMessage);
+            Console.WriteLine($"Error: {JsonConvert.SerializeObject(response, Formatting.Indented)}");
         }
     }
 }

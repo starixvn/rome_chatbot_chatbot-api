@@ -10,9 +10,9 @@
     {
         private readonly IRestClientHelper restClientHelper;
 
-        public LetstalkClient(IRestClientHelper restClientHelper)
+        public LetstalkClient(IRestClientHelper restClientHelper = null)
         {
-            this.restClientHelper = restClientHelper;
+            this.restClientHelper = restClientHelper ?? new RestClientHelper();
         }
 
         public Result AddContactToTag(string botName, string userId, string tag)
