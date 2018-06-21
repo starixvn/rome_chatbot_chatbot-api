@@ -1,12 +1,15 @@
 ﻿namespace LetstalkMockAPI.Controllers
 {
     using System.Collections.Generic;
+    using System.Text;
+    using System.Web;
     using System.Web.Http;
     using LetstalkMockAPI.Configurations;
     using LetstalkMockAPI.Models;
     using LetstalkMockAPI.ViewModels;
     using LetstalkMockAPI.Web;
     using Microsoft.AspNet.SignalR.Client;
+    using Newtonsoft.Json;
 
     public class BotController : ApiController
     {
@@ -42,15 +45,35 @@
         [HttpPost]
         public IHttpActionResult Push(string user_name, [FromBody]PushMessageViewModel body)
         {
+            var request = HttpContext.Current.Request;
+            var content = new StringBuilder();
+            BuildContent(content, body);
+
             chatRHubProxy.Invoke<ChatMessage>(
                 "Receive",
                 new ChatMessage
                 {
                     Username = user_name,
-                    Content = body.Payload.HashContent
+                    Content = content.ToString()
                 });
 
             return SuccessJsonResult();
+        }
+
+        private void BuildContent(StringBuilder content, PushMessageViewModel body)
+        {
+            content.AppendLine($"<p>{body.Payload.HashContent}</p>");
+            content.AppendLine($"<p><b>Alpha Bot API --> Messenger Backend Mock Service:</b></p>");
+            content.AppendLine("<p><i>HEADERS</i></p>");
+            var headers = HttpContext.Current.Request.Headers;
+            content.AppendLine($"<p>&emsp;Content-Type: {headers["Content-Type"]}<br/>&emsp;Authorization: {headers["Authorization"]}</p>");
+            content.AppendLine("<p><i>BODY</i></p>");
+            var requestBody = JsonConvert.SerializeObject(body, Formatting.Indented)
+                .Replace("\r\n", "<br/>")
+                .Replace("    ", "&emsp;")
+                .Replace("  ", "&ensp;");
+
+            content.Append($"<p>{requestBody}</p>");
         }
 
         /// <summary>

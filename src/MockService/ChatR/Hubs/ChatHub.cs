@@ -90,7 +90,7 @@
 
         private void ShowMessage(ChatMessage message)
         {
-            message.Content = HttpUtility.HtmlEncode(message.Content);
+            //message.Content = HttpUtility.HtmlEncode(message.Content);
             HashSet<string> extractedURLs;
             message.Content = TextParser.TransformAndExtractUrls(message.Content, out extractedURLs);
             message.Timestamp = DateTime.Now;
