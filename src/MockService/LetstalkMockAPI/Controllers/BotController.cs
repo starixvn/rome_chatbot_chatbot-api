@@ -46,34 +46,36 @@
         public IHttpActionResult Push(string user_name, [FromBody]PushMessageViewModel body)
         {
             var request = HttpContext.Current.Request;
-            var content = new StringBuilder();
-            BuildContent(content, body);
 
             chatRHubProxy.Invoke<ChatMessage>(
                 "Receive",
                 new ChatMessage
                 {
                     Username = user_name,
-                    Content = content.ToString()
+                    Content = BuildContent(body)
                 });
 
             return SuccessJsonResult();
         }
 
-        private void BuildContent(StringBuilder content, PushMessageViewModel body)
+        private string BuildContent(PushMessageViewModel body)
         {
+            var content = new StringBuilder();
             content.AppendLine($"<p>{body.Payload.HashContent}</p>");
             content.AppendLine($"<p><b>Alpha Bot API --> Messenger Backend Mock Service:</b></p>");
+
             content.AppendLine("<p><i>HEADERS</i></p>");
             var headers = HttpContext.Current.Request.Headers;
             content.AppendLine($"<p>&emsp;Content-Type: {headers["Content-Type"]}<br/>&emsp;Authorization: {headers["Authorization"]}</p>");
+
             content.AppendLine("<p><i>BODY</i></p>");
             var requestBody = JsonConvert.SerializeObject(body, Formatting.Indented)
                 .Replace("\r\n", "<br/>")
                 .Replace("    ", "&emsp;")
                 .Replace("  ", "&ensp;");
-
             content.Append($"<p>{requestBody}</p>");
+
+            return content.ToString();
         }
 
         /// <summary>

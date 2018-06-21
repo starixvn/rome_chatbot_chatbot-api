@@ -2,8 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using System.Web;
     using Messenger.Client;
     using Messenger.Client.Models;
+    using Messenger.WebHooks.Helpers;
     using Messenger.WebHooks.Models;
     using Microsoft.AspNet.WebHooks;
     using Newtonsoft.Json;
@@ -27,7 +29,7 @@
         protected override Task EnqueueAsync(WebHookQueueContext context, HookEvent hookEvent)
         {
             // Log first, implement real business later
-            Fanex.Logging.LogService.Info(JsonConvert.SerializeObject(hookEvent, Formatting.Indented));
+            Fanex.Logging.LogService.Info(LogHelper.BuildRequestContent(HttpContext.Current.Request.Headers, hookEvent));
 
             var result = messengerClient.Push(
                             "botName",
