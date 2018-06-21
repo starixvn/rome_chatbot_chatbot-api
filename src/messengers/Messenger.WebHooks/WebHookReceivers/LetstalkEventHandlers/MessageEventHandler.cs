@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Web;
+    using Fanex.Bot.Client;
     using Messenger.Client;
     using Messenger.Client.Models;
     using Messenger.WebHooks.Helpers;
@@ -12,17 +13,20 @@
 
     public class MessageEventHandler : BaseLetstalkEventHandler
     {
-        private readonly IMessengerClient messengerClient;
+        //private readonly IMessengerClient messengerClient;
         private const string eventTypeName = "message";
 
-        public MessageEventHandler(IMessengerClient messengerClient)
-        {
-            // Should use DI here
-            this.messengerClient = messengerClient ?? new LetstalkClient();
-        }
+        private BotConnector botConnector;
 
-        public MessageEventHandler() : this(null)
+        //public MessageEventHandler(IMessengerClient messengerClient)
+        //{
+        //    // Should use DI here
+        //    this.messengerClient = messengerClient ?? new LetstalkClient();
+        //}
+
+        public MessageEventHandler()
         {
+            botConnector = new BotConnector(new Fanex.Bot.Client.Models.BotSettings());
         }
 
         protected override string EventTypeName => eventTypeName;
@@ -32,19 +36,7 @@
             // Log first, implement real business later
             Fanex.Logging.LogService.Info(LogHelper.BuildRequestContent(HttpContext.Current.Request.Headers, hookEvent));
 
-            var result = messengerClient.Push(
-                            "botName",
-                            new List<string>
-                            {
-                                hookEvent.Source.UserId
-                            },
-                            new Payload
-                            {
-                                Id = 1,
-                                From = 0,
-                                UserId = hookEvent.Source.UserId,
-                                HashContent = $"Receive Message From: {hookEvent.Source.UserId}, Hook Event Type: {eventTypeName}, Payload: {hookEvent.EncryptedPayload}"
-                            });
+            var result = botConnector.SendAsync(hookEvent.EncryptedPayload, hookEvent.Source.UserId);
 
             Fanex.Logging.LogService.Info($"Request: Push, response: {JsonConvert.SerializeObject(result)}");
 
