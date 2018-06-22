@@ -2,9 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Messenger.Client.Configurations;
     using RestSharp;
-    using RestSharp.Authenticators;
 
     public interface IRestClientHelper
     {
@@ -25,16 +23,10 @@
     {
         private readonly IRestClient restClient;
 
-        public RestClientHelper(IRestClient restClient = null)
+        public RestClientHelper(IRestClient restClient)
         {
-            this.restClient = restClient ?? CreateDefaultRestClient();
+            this.restClient = restClient;
         }
-
-        private static IRestClient CreateDefaultRestClient()
-            => new RestClient(AppSettings.MessengerApiEndpoint)
-            {
-                Authenticator = new JwtAuthenticator(AppSettings.MessengerApiKey)
-            };
 
         public T ExecuteGet<T>(string endPoint, object data = null)
             where T : new()

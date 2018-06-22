@@ -1,4 +1,4 @@
-﻿namespace Messenger.Client
+﻿namespace Messenger.Client.Letstalk
 {
     using System;
     using System.Collections.Generic;
@@ -10,9 +10,9 @@
     {
         private readonly IRestClientHelper restClientHelper;
 
-        public LetstalkClient(IRestClientHelper restClientHelper = null)
+        public LetstalkClient(IRestClientHelper restClientHelper)
         {
-            this.restClientHelper = restClientHelper ?? new RestClientHelper();
+            this.restClientHelper = restClientHelper;
         }
 
         public Result AddContactToTag(string botName, string userId, string tag)

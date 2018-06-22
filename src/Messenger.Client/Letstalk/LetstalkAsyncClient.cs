@@ -1,4 +1,4 @@
-﻿namespace Messenger.Client
+﻿namespace Messenger.Client.Letstalk
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

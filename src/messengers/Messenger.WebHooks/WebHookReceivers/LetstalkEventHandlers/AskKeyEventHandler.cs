@@ -5,6 +5,7 @@
     using System.Web;
     using Messenger.Client;
     using Messenger.Client.Models;
+    using Messenger.WebHooks.App_Start;
     using Messenger.WebHooks.Helpers;
     using Messenger.WebHooks.Models;
     using Microsoft.AspNet.WebHooks;
@@ -15,13 +16,9 @@
         private const string eventTypeName = "ask_key";
         private readonly IMessengerClient messengerClient;
 
-        public AskKeyEventHandler(IMessengerClient messengerClient)
+        public AskKeyEventHandler()
         {
-            this.messengerClient = messengerClient ?? new LetstalkClient();
-        }
-
-        public AskKeyEventHandler() : this(null)
-        {
+            this.messengerClient = DependencyResolver.GetInstance<IMessengerClient>();
         }
 
         protected override string EventTypeName => eventTypeName;

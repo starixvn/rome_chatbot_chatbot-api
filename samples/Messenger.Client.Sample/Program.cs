@@ -2,15 +2,24 @@
 {
     using System;
     using System.Collections.Generic;
+    using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
+    using Messenger.Client.Letstalk;
     using Messenger.Client.Models;
     using Newtonsoft.Json;
+    using RestSharp;
+    using RestSharp.Authenticators;
 
     public static class Program
     {
         private static void Main()
         {
-            var letstalkClient = new LetstalkClient(new RestClientHelper());
+            var restClient = new RestClient(AppSettings.MessengerApiEndpoint)
+            {
+                Authenticator = new JwtAuthenticator(AppSettings.MessengerApiKey)
+            };
+
+            var letstalkClient = new LetstalkClient(new RestClientHelper(restClient));
 
             Push(letstalkClient);
 

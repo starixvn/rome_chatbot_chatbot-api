@@ -5,6 +5,7 @@
     using System.Web;
     using Messenger.Client;
     using Messenger.Client.Models;
+    using Messenger.WebHooks.App_Start;
     using Messenger.WebHooks.Helpers;
     using Messenger.WebHooks.Models;
     using Microsoft.AspNet.WebHooks;
@@ -15,14 +16,9 @@
         private readonly IMessengerClient messengerClient;
         private const string eventTypeName = "message";
 
-        public MessageEventHandler(IMessengerClient messengerClient)
+        public MessageEventHandler()
         {
-            // Should use DI here
-            this.messengerClient = messengerClient ?? new LetstalkClient();
-        }
-
-        public MessageEventHandler() : this(null)
-        {
+            this.messengerClient = DependencyResolver.GetInstance<IMessengerClient>();
         }
 
         protected override string EventTypeName => eventTypeName;
