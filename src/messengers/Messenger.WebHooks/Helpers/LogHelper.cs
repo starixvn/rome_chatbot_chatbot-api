@@ -12,8 +12,8 @@
             var contentBuilder = new StringBuilder().AppendLine();
 
             contentBuilder.AppendLine("REQUEST HEADER");
-            contentBuilder.AppendLine($"\tContent-Type: {headers["Content-Type"]}");
-            contentBuilder.AppendLine($"\tAuthorization: {headers["Authorization"]}");
+            contentBuilder.AppendLine($" \tContent-Type: {headers["Content-Type"]}");
+            contentBuilder.AppendLine($" \tAuthorization: {headers["Authorization"]}");
 
             contentBuilder.AppendLine("REQUEST BODY");
             contentBuilder.Append(JsonConvert.SerializeObject(body, Formatting.Indented));
