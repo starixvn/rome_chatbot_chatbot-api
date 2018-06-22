@@ -45,7 +45,7 @@
 
         public Result Push(string botName, IEnumerable<string> receivers, Payload payload)
         {
-            var result = botConnector.SendAsync($"Receive Message From WebHooks, Message: {payload.HashContent}", payload.UserId).Result;
+            var result = botConnector.Send(payload.HashContent, payload.UserId);
 
             return new Result { Status = 1, Message = result };
         }
