@@ -22,7 +22,7 @@ Common properties
 	+--------------------+-----------+---------------------------------------------------------+
 	|``send_time``       |Number     |Time of the Message send in milliseconds.                |
 	+--------------------+-----------+---------------------------------------------------------+
-	|``due_date``        |Number     |Time of the Message due date in milliseconds.            |
+	|``duedate``         |Number     |Time of the Message due date in milliseconds.            |
 	+--------------------+-----------+---------------------------------------------------------+
 	|``from``            |Number     |From Device                                              |
 	|                    |           | - 0: Mobile, 1:Desktop                                  |
@@ -34,7 +34,7 @@ Common properties
 	|``hash_id``         |Number     |AES key id.                                              |
 	+--------------------+-----------+---------------------------------------------------------+
 	|``hash_type``       |Number     |Encryption mode                                          |
-	|                    |           | - 4: AES                                                |
+	|                    |           | - 5: AES                                                |
 	+--------------------+-----------+---------------------------------------------------------+
 
 hash_content properties

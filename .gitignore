@@ -324,3 +324,4 @@ ASALocalRun/
 *.v3.ncrunchproject
 .vs/
 
+/docs/_build

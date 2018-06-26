@@ -6,14 +6,14 @@ change_display_name
 
 To change the display name of business accounts.
 
-Name: **bot/change_display_name/{{user_name}}**
+Name: **bot/change_display_name/{{account_id}}**
 
 Method: ``PUT``
 
 * Header::
 
 	{
-		Content-Type : application/json
+		Content-Type : ​text/plan
 		Authorization : Bearer base64(api key)
 	}
 
@@ -26,43 +26,7 @@ Method: ``PUT``
 *  Output: JSON object::
 
 	{
-		"status": int
-		"message": String
-	}
-	
-Status:
-
-+------------+-----------------------------------------------------------------+
-| Code       | Description                                                     |
-+============+=================================================================+
-|0           | failure                                                         |
-+------------+-----------------------------------------------------------------+
-|1           | success                                                         |
-+------------+-----------------------------------------------------------------+
-
-upload_avatar_image
--------------------
-
-* To upload avatar/portrait images in 640x640.
-* Name: **​bot/upload_avatar_image/{{user_name}}**
-* Method: POST
-* Header::
-	
-	{
-		Content-Type : application/json
-		Authorization : Bearer base64(api key)
-	}
-	
-*  Input: JSON object::
-
-	{
-		"image": String
-	}
-	
-*  Output: JSON object::
-
-	{
-		"status": int
+		"status": int,
 		"message": String
 	}
 	
@@ -74,18 +38,86 @@ upload_avatar_image
 	|0           | failure                                                         |
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
+	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
+	+------------+-----------------------------------------------------------------+
+
+upload_avatar_image
+-------------------
+
+* To upload avatar/portrait images in 640x640, PNG format, below 256KB.
+* Name: **​bot/upload_avatar_image/{{account_id}}**
+* Method: POST
+* Header::
+	
+	{
+		Content-Type : ​text/plan
+		Authorization : Bearer base64(api key)
+	}
+	
+*  Input: JSON object::
+
+	{
+		"image": String // (base64 string)
+	}
+	
+*  Output: JSON object::
+
+	{
+		"status": int,
+		"message": String
+	}
+	
+* Status:
+
+	+------------+-----------------------------------------------------------------+
+	| Code       | Description                                                     |
+	+============+=================================================================+
+	|0           | failure                                                         |
+	+------------+-----------------------------------------------------------------+
+	|1           | success                                                         |
+	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
 	+------------+-----------------------------------------------------------------+
 
 set_welcome_msg
 ---------------
 
 * To setup welcome messages for new contact.
-* Name: **​ bot/set_welcome_msg/{{user_name}}**
+* Name: **​ bot/set_welcome_msg/{{account_id}}**
 * Method: POST
 * Header::
 	
 	{
-		Content-Type : application/json
+		Content-Type : ​text/plan
 		Authorization : Bearer base64(api key)
 	}
 	
@@ -98,7 +130,7 @@ set_welcome_msg
 *  Output: JSON object::
 
 	{
-		"status": int
+		"status": int,
 		"message": String
 	}
 	
@@ -110,18 +142,34 @@ set_welcome_msg
 	|0           | failure                                                         |
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
+	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
 	+------------+-----------------------------------------------------------------+
 
 set_auto_reply
 --------------
 
 * To set a message auto replied to contact’s messages.
-* Name: **​bot/set_auto_reply/{{user_name}}**
+* Name: **​bot/set_auto_reply/{{account_id}}**
 * Method: POST
 * Header::
 	
 	{
-		Content-Type : application/json
+		Content-Type : ​text/plan
 		Authorization : Bearer base64(api key)
 	}
 	
@@ -129,13 +177,13 @@ set_auto_reply
 
 	{
 		"message": String,
-		"enable": int(0:off 1:on)
+		"enable": int(0:off 1:on) // default is 0
 	}
 	
 *  Output: JSON object::
 
 	{
-		"status": int
+		"status": int,
 		"message": String
 	}
 	
@@ -147,32 +195,48 @@ set_auto_reply
 	|0           | failure                                                         |
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
+	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
 	+------------+-----------------------------------------------------------------+
 
 push
 ----
 
 * To send a message to contact.
-* Name: **bot/push/{{user_name}}**
+* Name: **bot/push/{{account_id}}**
 * Method: POST
 * Header::
 	
 	{
-		Content-Type : application/json
+		Content-Type : text/plan
 		Authorization : Bearer base64(api key)
 	}
 	
 *  Input: JSON object::
 
 	{
-		"receiver": Array [receiver A, receiver B...] MAX:50
+		"receiver": Array [receiver A, receiver B...], // MAX:50
 		"payload": String
 	}
 	
 *  Output: JSON object::
 
 	{
-		"status": int
+		"status": int,
 		"message": String
 	}
 	
@@ -184,32 +248,47 @@ push
 	|0           | failure                                                         |
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
+	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
 	+------------+-----------------------------------------------------------------+
 
 push_to_tag
 -----------
 
 * To send message to tagged contacts.
-* Name: **bot/push_to_tag/{{user_name}}**
+* Name: **bot/push_to_tag/{{account_id}}/tag/{{tag}}**
 * Method: POST
 * Header::
 	
 	{
-		Content-Type : application/json
+		Content-Type : text/plan
 		Authorization : Bearer base64(api key)
 	}
 	
 *  Input: JSON object::
 
 	{
-		"tag": String
 		"payload": String
 	}
 	
 *  Output: JSON object::
 
 	{
-		"status": int
+		"status": int,
 		"message": String
 	}
 	
@@ -222,17 +301,33 @@ push_to_tag
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
 	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
+	+------------+-----------------------------------------------------------------+
 
 modify_tag
 ----------
 
 * To add or delete tags, number of tags are limited to 20.
-* Name: **bot/modify_tag/{{user_name}}**
-* Method: POST/DELETE
+* Name: **bot/modify_tag/{{account_id}}**
+* Method: POST/DELETE (POST: add tag, DELETE: delete tag)
 * Header::
 	
 	{
-		Content-Type : application/json
+		Content-Type : ​text/plan
 		Authorization : Bearer base64(api key)
 	}
 	
@@ -245,7 +340,7 @@ modify_tag
 *  Output: JSON object::
 
 	{
-		"status": int
+		"status": int,
 		"message": String
 	}
 	
@@ -257,18 +352,34 @@ modify_tag
 	|0           | failure                                                         |
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
+	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
 	+------------+-----------------------------------------------------------------+
 
 list_tag
 --------
 
 * To list all tags
-* Name: **bot/list_tag/{{user_name}}**
+* Name: **bot/list_tag/{{account_id}}**
 * Method: GET
 * Header::
 	
 	{
-		Content-Type : application/json
+		Content-Type : ​text/plan
 		Authorization : Bearer base64(api key)
 	}
 	
@@ -277,9 +388,9 @@ list_tag
 *  Output: JSON object::
 
 	{
-		"status": int
-		"message": String
-		"tags": [String, ...]
+		"status": int,
+		"message": String,
+		"tags": [String]
 	}
 	
 * Status:
@@ -291,17 +402,33 @@ list_tag
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
 	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
+	+------------+-----------------------------------------------------------------+
 
 get_contacts
 ------------
 
 * To get contacts by tags, list all contacts when tag is not provided
-* Name: **​bot/get_contacts/{{user_name}}?tag=xxx**
+* Name: **​bot/get_contacts/{{account_id}}/tag/{{tag}}**
 * Method: GET
 * Header::
 	
 	{
-		Content-Type : application/json
+		Content-Type : ​text/plan
 		Authorization : Bearer base64(api key)
 	}
 	
@@ -310,13 +437,14 @@ get_contacts
 *  Output: JSON object::
 
 	{
-		"status": int
+		"status": int,
 		"message": String,
-		"tag":(String),
 		"contacts": [
-			{"user_id":String (Letstalk id),"avatar_url":String, "display_name":String},
-			{"user_id":String (Letstalk id),"avatar_url":String, "display_name":String},
-			...
+			{
+				"user_id": String, // (Letstalk id)
+				"avatar_url": String,
+				"display_name":String
+			}
 		]
 	}
 	
@@ -329,31 +457,47 @@ get_contacts
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
 	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
+	+------------+-----------------------------------------------------------------+
 
 modify_contact_tag
 ------------------
 
 * To tag or to remove the tag of some contact.
-* Name: **​​bot/modify_contact_tag/{{user_name}}**
+* Name: **​​bot/modify_contact_tag/{{account_id}}**
 * Method: POST/DELETE
 * Header::
 	
 	{
-		Content-Type : application/json
+		Content-Type : ​text/plan
 		Authorization : Bearer base64(api key)
 	}
 	
 *  Input: JSON object::
 	
 	{
-		"contact":String,
-		"tag":String
+		"users": Array [String, String, ...] (Letstalk id)
+		"tag": String
 	}
 	
 *  Output: JSON object::
 
 	{
-		"status": int
+		"status": int,
 		"message": String
 	}
 	
@@ -365,32 +509,48 @@ modify_contact_tag
 	|0           | failure                                                         |
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
+	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
 	+------------+-----------------------------------------------------------------+
 
 set_hash_key
 ------------
 
 * Upload new AES key, if encryption level 2 does not allow uploaded
-* Name: **​​bot/set_hash_key/{{user_name}}**
+* Name: **​​bot/set_hash_key/{{account_id}}**
 * Method: POST
 * Header::
 	
 	{
-		Content-Type : application/json
+		Content-Type : text/plan
 		Authorization : Bearer base64(api key)
 	}
 	
 *  Input: JSON object::
 	
 	{
-		"hash_key": String
+		"hash_key": String,
 		"hash_id":longlong
 	}
 	
 *  Output: JSON object::
 
 	{
-		"status": int
+		"status": int,
 		"message": String
 	}
 	
@@ -403,19 +563,36 @@ set_hash_key
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
 	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
+	+------------+-----------------------------------------------------------------+
 
-.. _get-contact-public-key:
+.. _get-user-public-key:
 	
-get_contact_public_key
+get_user_public_key
 ----------------------
 
-* Get contact RSA public key. (Level 2 only)
-* Name: **​bot/get_contact_public_key/{{user_name}}?contact=xxxx**
+* Get user RSA public key. (Level 2 only)
+* Name: **​bot/get_user_public_key/{{account_id}}/user/{{user_id}}**
+* ``account_id``: Number (business account id), ``user_id``: String (Letstalk id)
 * Method: GET
 * Header::
 	
 	{
-		Content-Type : application/json
+		Content-Type : text/plan
 		Authorization : Bearer base64(api key)
 	}
 	
@@ -424,8 +601,8 @@ get_contact_public_key
 *  Output: JSON object::
 
 	{
-		"status": int
-		"message": String
+		"status": int,
+		"message": String,
 		"public_key": String
 	}
 	
@@ -438,34 +615,50 @@ get_contact_public_key
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
 	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
+	+------------+-----------------------------------------------------------------+
 	
-.. _set-key-to-contact:
+.. _set-key-to-user:
 	
-set_key_to_contact
+set_key_to_user
 ------------------
 
-* Set encryption key to contact. (Level 2 only)
-* Name: **​bot/set_key_to_contact/{{user_name}}**
+* Set encryption key to user. (Level 2 only)
+* Name: **​bot/set_key_to_user/{{account_id}}/user/{{user_id}}**
+* ``account_id``: Number (business account id), ``user_id``: String (Letstalk id)
 * Method: POST
 * Header::
 
 	{
-		Content-Type: application/json
+		Content-Type: text/plan
 		Authorization: Beare base64(api key)
 	}
 	
 * Input: JSON object::
 
 	{
-		"contact": string,
-		"encryption_key" : String
-		"hash_id":long
+		"encryption_key": String,
+		"hash_id": long
 	}
 	
 * Output: JSON object::
 
 	{
-		"status": int
+		"status": int,
 		"message": string
 	}
 
@@ -478,17 +671,33 @@ set_key_to_contact
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
 	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
+	+------------+-----------------------------------------------------------------+
 	
 set_webhook
 -----------
 
 * Setup you webhook URL
-* Name: **bot/set_webhook/{{user_name}}**
-* Method: POST
+* Name: **bot/set_webhook/{{account_id}}**
+* Method: POST/PUT (First time set use POST, Modify or cancel use PUT to update)
 * Header::
 
 	{
-		Content-Type: application/json
+		Content-Type: text/plan
 		Authorization: Beare base64(api key)
 	}
 	
@@ -501,7 +710,7 @@ set_webhook
 * Output: JSON object::
 
 	{
-		"status": int
+		"status": int,
 		"message": string
 	}
 
@@ -514,30 +723,43 @@ set_webhook
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
 	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
+	+------------+-----------------------------------------------------------------+
 	
 get_profile
 -----------
 
-* Get contact profile information.
-* Name: **​bot/get_profile/{{user_name}}**
+* Get Letstalk user profile information.
+* Name: **​bot/get_profile/{{account_id}}/user/{{user_id}}**
+* ``account_id``: Number (business account id), ``user_id``: String (Letstalk id)
 * Method: GET
 * Header::
 
 	{
-		Content-Type: application/json
+		Content-Type: text/plan
 		Authorization: Beare base64(api key)
 	}
 	
-* Input: JSON object::
-
-	{
-		"contact": string
-	}
+* Input: none
 	
 * Output: JSON object::
 
 	{
-		"status": int
+		"status": int,
 		"message": string,
 		"avatar_url": string,
 		"display_name": string
@@ -551,4 +773,20 @@ get_profile
 	|0           | failure                                                         |
 	+------------+-----------------------------------------------------------------+
 	|1           | success                                                         |
+	+------------+-----------------------------------------------------------------+
+	|20          | Parameter error                                                 |
+	+------------+-----------------------------------------------------------------+
+	|30          | ``account_id`` not found                                        |
+	+------------+-----------------------------------------------------------------+
+	|31          | ``API_key`` not match                                           |
+	+------------+-----------------------------------------------------------------+
+	|32          | JWT Invalid Signature                                           |
+	+------------+-----------------------------------------------------------------+
+	|40          | Too many requests.                                              |
+	+------------+-----------------------------------------------------------------+
+	|2000~2999   | Internal Server error.                                          |
+	+------------+-----------------------------------------------------------------+
+	|3000~3999   | Message queue error.                                            |
+	+------------+-----------------------------------------------------------------+
+	|4000~4999   | Data error.                                                     |
 	+------------+-----------------------------------------------------------------+

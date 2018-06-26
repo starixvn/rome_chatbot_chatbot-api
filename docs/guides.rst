@@ -17,7 +17,7 @@ What you can do with Business Account API
 1. Set up a welcome message when user add account to contact.
 2. Set up an auto reply message. Can be used when your service is maintained.
 3. Set up an avatar image.
-4. Push message to contacts.
+4. Push message to users.
 5. Push various message types. (ex: text, image, imagemaps)
 
 How to send key to contact. When webhook receive Ask Key event.
@@ -34,9 +34,9 @@ How to send key to contact. When webhook receive Ask Key event.
 		}
 	}
 
-2. Use :ref:`get_contact_public_key​<get-contact-public-key>` API, Get contact RSA public key.
-3. Use contact RSA public key to encrypt business account ``hash_key`` with RSA 2048-bit encryption.
-4. Use :ref:`set_key_to_contact<set-key-to-contact>` ​API, Set ​encryption_key to contact.
+2. Use :ref:`get-user-public-key<get-user-public-key>` API, Get user RSA public key.
+3. Use user's RSA public key to encrypt business account ``hash_key`` with RSA 2048-bit encryption.
+4. Use :ref:`set_key_to_user<set-key-to-user>` ​API, Set ​encryption_key to user.
 
 How to decrypt ``hash_content``. From payload JSON String.
 ----------------------------------------------------------
