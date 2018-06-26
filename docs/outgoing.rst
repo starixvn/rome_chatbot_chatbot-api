@@ -22,7 +22,7 @@ Common properties
 	+--------------------+-----------+---------------------------------------------------------+
 	|``send_time``       |Number     |Time of the Message send in milliseconds.                |
 	+--------------------+-----------+---------------------------------------------------------+
-	|``due_date``        |Number     |Time of the Message due date in milliseconds.            |
+	|``duedate``         |Number     |Time of the Message due date in milliseconds.            |
 	+--------------------+-----------+---------------------------------------------------------+
 	|``from``            |Number     |From Device                                              |
 	|                    |           | - 2: Business Account                                   |
@@ -34,7 +34,7 @@ Common properties
 	|``hash_id``         |Number     |AES key id.                                              |
 	+--------------------+-----------+---------------------------------------------------------+
 	|``hash_type``       |Number     |Encryption mode                                          |
-	|                    |           | - 4: AES                                                |
+	|                    |           | - 5: AES                                                |
 	+--------------------+-----------+---------------------------------------------------------+
 	
 hash_content properties
@@ -53,13 +53,13 @@ hash_content properties
 	+----------------------+-----------+-------------------------------------------------------+
 	|Property              |Type       |Description                                            |
 	+======================+===========+=======================================================+
-	|``preview_image_url`` |String     |Image URL                                              |
+	|``original_image_url``|String     |Original image URL                                              |
 	|                      |           | - **HTTPS** (Required)                                |
 	|                      |           | - JPEG                                                |
 	|                      |           | - MAX: 1024 x 1024                                    |
 	|                      |           | - MAX: 1MB                                            |
 	+----------------------+-----------+-------------------------------------------------------+
-	|``original_image_url``|String     |Preview Image URL                                      |
+	|``preview_image_url`` |String     |Preview image URL                                      |
 	|                      |           | - **HTTPS** (Required)                                |
 	|                      |           | - JPEG                                                |
 	|                      |           | - MAX: 640 x 640                                      |
@@ -73,7 +73,7 @@ hash_content properties
 	+======================+=============+=====================================================+
 	|``base_url``          |String       |Image URL                                            |
 	|                      |             | - **HTTPS** (Required)                              |
-	|                      |             | - JPEG OR PNG                                       |
+	|                      |             | - JPEG or PNG                                       |
 	|                      |             | - Image width: 240px, 300px, 460px, 700px, 1040px   |
 	|                      |             | - MAX: 1MB                                          |
 	+----------------------+-------------+-----------------------------------------------------+

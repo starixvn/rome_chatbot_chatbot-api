@@ -9,8 +9,10 @@ Letstalk Business Account System
 .. toctree::
    :maxdepth: 2
    :caption: Table of Contents
+   :numbered:
 
    intro
+   jwt
    api
    webhook
    incoming
