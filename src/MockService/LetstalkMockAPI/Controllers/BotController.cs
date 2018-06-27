@@ -23,27 +23,27 @@
         }
 
         [HttpPut]
-        [Route("api/bot/change_display_name/{user_name}")]
-        public IHttpActionResult ChangeDisplayName(string user_name, [FromBody]ChangeDisplayNameViewModel body)
+        [Route("api/bot/change_display_name/{account_id}")]
+        public IHttpActionResult ChangeDisplayName(int account_id, [FromBody]ChangeDisplayNameViewModel body)
             => SuccessJsonResult();
 
         [HttpPost]
-        [Route("api/bot/upload_avatar_image/{user_name}")]
-        public IHttpActionResult UploadAvatarImage(string user_name, [FromBody]UploadAvatarImageViewModel body)
+        [Route("api/bot/upload_avatar_image/{account_id}")]
+        public IHttpActionResult UploadAvatarImage(int account_id, [FromBody]UploadAvatarImageViewModel body)
             => SuccessJsonResult();
 
         [HttpPost]
-        [Route("api/bot/set_welcome_msg/{user_name}")]
-        public IHttpActionResult SetWelcomeMsg(string user_name, [FromBody]SetWelcomeMsgViewModel body)
+        [Route("api/bot/set_welcome_msg/{account_id}")]
+        public IHttpActionResult SetWelcomeMsg(int account_id, [FromBody]SetWelcomeMsgViewModel body)
             => SuccessJsonResult();
 
         [HttpPost]
-        [Route("api/bot/set_auto_reply/{user_name}")]
-        public IHttpActionResult SetAutoReply(string user_name, [FromBody]SetAutoReplyViewModel body)
+        [Route("api/bot/set_auto_reply/{account_id}")]
+        public IHttpActionResult SetAutoReply(int account_id, [FromBody]SetAutoReplyViewModel body)
             => SuccessJsonResult();
 
         [HttpPost]
-        public IHttpActionResult Push(string user_name, [FromBody]PushMessageViewModel body)
+        public IHttpActionResult Push(int account_id, [FromBody]PushMessageViewModel body)
         {
             var request = HttpContext.Current.Request;
 
@@ -51,7 +51,8 @@
                 "Receive",
                 new ChatMessage
                 {
-                    Username = user_name,
+                    AccountId = account_id,
+                    Username = "Letstalk Bot",
                     Content = BuildContent(body)
                 });
 
@@ -102,22 +103,23 @@
         ///         }
         ///     }
         /// </remarks>
-        /// <param name="user_name"></param>
+        /// <param name="account_id"></param>
+        /// <param name="tag"></param>
         /// <param name="body"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/bot/push_to_tag/{user_name}")]
-        public IHttpActionResult PushToTag(string user_name, [FromBody]PushToTagViewModel body)
+        [Route("api/bot/push_to_tag/{account_id}/tag/{tag}")]
+        public IHttpActionResult PushToTag(int account_id, string tag, [FromBody]PushToTagViewModel body)
             => SuccessJsonResult();
 
         [HttpPost, HttpDelete]
-        [Route("api/bot/modify_tag/{user_name}")]
-        public IHttpActionResult ModifyTag(string user_name, [FromBody]ModifyTagViewModel body)
+        [Route("api/bot/modify_tag/{account_id}")]
+        public IHttpActionResult ModifyTag(int account_id, [FromBody]ModifyTagViewModel body)
             => SuccessJsonResult();
 
         [HttpGet]
-        [Route("api/bot/list_tag/{user_name}")]
-        public IHttpActionResult ListTag(string user_name)
+        [Route("api/bot/list_tag/{account_id}")]
+        public IHttpActionResult ListTag(int account_id)
             => new JsonResult(
                 new ListTagResult
                 {
@@ -128,8 +130,8 @@
                 Request);
 
         [HttpGet]
-        [Route("api/bot/get_contacts/{user_name}")]
-        public IHttpActionResult GetContacts(string user_name, string tag)
+        [Route("api/bot/get_contacts/{account_id}/tag/{tag}")]
+        public IHttpActionResult GetContacts(int account_id, string tag)
             => new JsonResult(
                 new GetContactsResult
                 {
@@ -145,33 +147,38 @@
                 Request);
 
         [HttpPost, HttpDelete]
-        [Route("api/bot/modify_contact_tag/{user_name}")]
-        public IHttpActionResult ModifyContactTag(string user_name, [FromBody]ModifyContactTagViewModel body)
+        [Route("api/bot/modify_contact_tag/{account_id}")]
+        public IHttpActionResult ModifyContactTag(int account_id, [FromBody]ModifyContactTagViewModel body)
             => SuccessJsonResult();
 
         [HttpPost]
-        [Route("api/bot/set_hash_key/{user_name}")]
-        public IHttpActionResult SetHashKey(string user_name, [FromBody]SetHashKeyViewModel body)
+        [Route("api/bot/set_hash_key/{account_id}")]
+        public IHttpActionResult SetHashKey(int account_id, [FromBody]SetHashKeyViewModel body)
             => SuccessJsonResult();
 
         [HttpGet]
-        [Route("api/bot/get_contact_public_key/{user_name}")]
-        public IHttpActionResult GetContactPublicKey(string user_name, string contact)
+        [Route("api/bot/get_user_public_key/{account_id}/user/{user_id}")]
+        public IHttpActionResult GetUserPublicKey(int account_id, string user_id)
             => new JsonResult(new PublicKeyResult { Status = 1, Message = "success", PublicKey = "public_key" }, Request);
 
         [HttpPost]
-        [Route("api/bot/set_key_to_contact/{user_name}")]
-        public IHttpActionResult SetKeyToContact(string user_name, [FromBody]SetKeyToContactViewModel body)
+        [Route("api/bot/set_key_to_user/{account_id}/user/{user_id}")]
+        public IHttpActionResult SetKeyToUser(int account_id, string user_id, [FromBody]SetKeyToContactViewModel body)
            => SuccessJsonResult();
 
         [HttpPost]
-        [Route("api/bot/set_webhook/{user_name}")]
-        public IHttpActionResult SetWebhook(string user_name, [FromBody]SetWebhookViewModel body)
+        [Route("api/bot/set_webhook/{account_id}")]
+        public IHttpActionResult SetWebhook(int account_id, [FromBody]SetWebhookViewModel body)
+           => SuccessJsonResult();
+
+        [HttpPut]
+        [Route("api/bot/set_webhook/{account_id}")]
+        public IHttpActionResult ModifyWebhook(int account_id, [FromBody]SetWebhookViewModel body)
            => SuccessJsonResult();
 
         [HttpGet]
-        [Route("api/bot/get_profile/{user_name}")]
-        public IHttpActionResult GetProfile(string user_name, [FromBody]GetProfileViewModel body)
+        [Route("api/bot/get_profile/{account_id}/user/{user_id}")]
+        public IHttpActionResult GetProfile(int account_id, [FromBody]GetProfileViewModel body)
            => new JsonResult(
                new GetProfileResult
                {

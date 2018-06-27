@@ -19,7 +19,7 @@
 
         public MessageEventHandler()
         {
-            this.messengerClient = DependencyResolver.GetInstance<IMessengerClient>();
+            messengerClient = DependencyResolver.GetInstance<IMessengerClient>();
         }
 
         protected override string EventTypeName => eventTypeName;
@@ -31,7 +31,7 @@
             Fanex.Logging.LogService.Info(requestContent);
 
             var result = messengerClient.Push(
-                            "botName",
+                            1,
                             new List<string>
                             {
                                 hookEvent.Source.UserId

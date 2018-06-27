@@ -1,6 +1,6 @@
 import os
 import sys
-
+import sphinx_rtd_theme
 extensions = []
 templates_path = ['_templates']
 
@@ -16,13 +16,22 @@ release = '1.3'
 exclude_patterns = []
 pygments_style = 'sphinx'
 
-html_theme = 'default'
+html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 def setup(app):
     app.add_stylesheet("theme_overrides.css")
 
 htmlhelp_basename = 'LetstalkBusinessAccountdoc'
+html_context = {
+    "display_gitlab": True, # Integrate Gitlab
+    "gitlab_host": "gitlab.nexcel.vn",
+    "gitlab_user": "rome/alpha", # Username
+    "gitlab_repo": "letstalk-bot", # Repo name
+    "gitlab_version": "master", # Version
+    "conf_py_path": "/docs/", # Path in the checkout to the docs root
+}
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').

@@ -5,32 +5,32 @@
 
     public partial interface IMessengerClient
     {
-        Result Push(string botName, IEnumerable<string> receivers, Payload payload);
+        Result Push(int botId, IEnumerable<string> receivers, Payload payload);
 
-        Result PushToTag(string botName, string tag, Payload payload);
+        Result PushToTag(int botId, string tag, Payload payload);
 
-        Result UpdateTag(string botName, string tag);
+        Result AddTag(int botId, string tag);
 
-        Result DeleteTag(string botName, string tag);
+        Result DeleteTag(int botId, string tag);
 
-        IEnumerable<string> GetTags(string botName);
+        IEnumerable<string> GetTags(int botId);
 
-        IEnumerable<Contact> GetContacts(string botName, string tag);
+        IEnumerable<Contact> GetContacts(int botId, string tag);
 
-        Contact GetContact(string botName, string userId);
+        Contact GetProfile(int botId, string userId);
 
-        Result AddContactToTag(string botName, string userId, string tag);
+        Result AddContactToTag(int botId, string[] users, string tag);
 
-        Result RemoveContactFromTag(string botName, string userId, string tag);
+        Result RemoveContactFromTag(int botId, string[] users, string tag);
 
-        Result SetWebhook(string botName, string url);
+        Result SetWebhook(int botId, string url);
 
-        Result SetWelcomeMessage(string botName, string message);
+        Result SetWelcomeMessage(int botId, string message);
 
-        string GetContactPublicKey(string botName, string userId);
+        string GetUserPublicKey(int botId, string userId);
 
-        Result SetContactKey(string botName, string userId, string hashId, string hashKey);
+        Result SetUserKey(int botId, string userId, string hashId, string hashKey);
 
-        Result SetHashKey(string botName, string hashId, string hashKey);
+        Result SetHashKey(int botId, string hashId, string hashKey);
     }
 }

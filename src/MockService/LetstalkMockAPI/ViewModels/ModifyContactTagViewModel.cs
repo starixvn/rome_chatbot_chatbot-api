@@ -2,7 +2,7 @@
 {
     public class ModifyContactTagViewModel
     {
-        public string Contact { get; set; }
+        public string[] Users { get; set; }
 
         public string Tag { get; set; }
     }
