@@ -29,7 +29,7 @@
             Fanex.Logging.LogService.Info(LogHelper.BuildRequestContent(HttpContext.Current.Request.Headers, hookEvent));
 
             var result = messengerClient.Push(
-                            "botName",
+                            1,
                             new List<string>
                             {
                                 hookEvent.Source.UserId

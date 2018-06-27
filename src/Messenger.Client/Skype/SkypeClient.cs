@@ -13,74 +13,74 @@
             this.botConnector = botConnector;
         }
 
-        public Result AddContactToTag(string botName, string userId, string tag)
+        public Result AddContactToTag(int botId, string[] users, string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public Result DeleteTag(string botName, string tag)
+        public Result AddTag(int botId, string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public Contact GetContact(string botName, string userId)
+        public Result DeleteTag(int botId, string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public string GetContactPublicKey(string botName, string userId)
+        public IEnumerable<Contact> GetContacts(int botId, string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<Contact> GetContacts(string botName, string tag)
+        public Contact GetProfile(int botId, string userId)
         {
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<string> GetTags(string botName)
+        public IEnumerable<string> GetTags(int botId)
         {
             throw new System.NotImplementedException();
         }
 
-        public Result Push(string botName, IEnumerable<string> receivers, Payload payload)
+        public string GetUserPublicKey(int botId, string userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Result Push(int botId, IEnumerable<string> receivers, Payload payload)
         {
             var result = botConnector.Send(payload.HashContent, payload.UserId);
 
             return new Result { Status = 1, Message = result };
         }
 
-        public Result PushToTag(string botName, string tag, Payload payload)
+        public Result PushToTag(int botId, string tag, Payload payload)
         {
             throw new System.NotImplementedException();
         }
 
-        public Result RemoveContactFromTag(string botName, string userId, string tag)
+        public Result RemoveContactFromTag(int botId, string[] users, string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public Result SetContactKey(string botName, string userId, string hashId, string hashKey)
+        public Result SetHashKey(int botId, string hashId, string hashKey)
         {
             throw new System.NotImplementedException();
         }
 
-        public Result SetHashKey(string botName, string hashId, string hashKey)
+        public Result SetUserKey(int botId, string userId, string hashId, string hashKey)
         {
             throw new System.NotImplementedException();
         }
 
-        public Result SetWebhook(string botName, string url)
+        public Result SetWebhook(int botId, string url)
         {
             throw new System.NotImplementedException();
         }
 
-        public Result SetWelcomeMessage(string botName, string message)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Result UpdateTag(string botName, string tag)
+        public Result SetWelcomeMessage(int botId, string message)
         {
             throw new System.NotImplementedException();
         }

@@ -13,7 +13,7 @@
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{action}/{user_name}"
+                routeTemplate: "api/{controller}/{action}/{account_id}"
             );
         }
     }

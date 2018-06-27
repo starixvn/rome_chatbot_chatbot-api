@@ -4,8 +4,6 @@
 
     public class SetKeyToContactViewModel
     {
-        public string Contact { get; set; }
-
         [JsonProperty(PropertyName = "encryption_key")]
         public string EncryptionKey { get; set; }
 

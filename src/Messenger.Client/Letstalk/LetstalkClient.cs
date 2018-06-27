@@ -15,85 +15,91 @@
             this.restClientHelper = restClientHelper;
         }
 
-        public Result AddContactToTag(string botName, string userId, string tag)
+        public Result AddContactToTag(int botId, string[] users, string tag)
         {
-            ValidateInputParam(nameof(botName), botName);
-            ValidateInputParam(nameof(userId), userId);
+            ValidateInputParam(nameof(botId), botId);
+            ValidateInputParam(nameof(users), users);
             ValidateInputParam(nameof(tag), tag);
 
             return restClientHelper.ExecutePost<Result>(
-                $"bot/modify_contact_tag/{botName}",
+                $"bot/modify_contact_tag/{botId}",
                 new
                 {
-                    contact = userId,
+                    users,
                     tag
                 });
         }
 
-        public Result RemoveContactFromTag(string botName, string userId, string tag)
+        public Result RemoveContactFromTag(int botId, string[] users, string tag)
         {
-            ValidateInputParam(nameof(botName), botName);
-            ValidateInputParam(nameof(userId), userId);
+            ValidateInputParam(nameof(botId), botId);
+            ValidateInputParam(nameof(users), users);
             ValidateInputParam(nameof(tag), tag);
 
             return restClientHelper.ExecuteDelete<Result>(
-                $"bot/modify_contact_tag/{botName}",
+                $"bot/modify_contact_tag/{botId}",
                 new
                 {
-                    contact = userId,
+                    contact = users,
                     tag
                 });
         }
 
-        public Result DeleteTag(string botName, string tag)
+        public Result DeleteTag(int botId, string tag)
         {
-            ValidateInputParam(nameof(botName), botName);
+            ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(tag), tag);
 
             return restClientHelper.ExecuteDelete<Result>(
-                $"bot/modify_tag/{botName}",
+                $"bot/modify_tag/{botId}",
                 new
                 {
                     tag
                 });
         }
 
-        public Contact GetContact(string botName, string userId)
+        public Contact GetProfile(int botId, string userId)
         {
-            ValidateInputParam(nameof(botName), botName);
+            ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(userId), userId);
 
-            // Need confirm
-            throw new System.NotImplementedException();
+            var result = restClientHelper.ExecuteGet<ProfileResult>($"bot/get_profile/{botId}/user/{userId}");
+
+            return new Contact
+            {
+                UserId = userId,
+                AvatarUrl = result.AvatarUrl,
+                DisplayName = result.DisplayName
+            };
         }
 
-        public IEnumerable<Contact> GetContacts(string botName, string tag)
+        public IEnumerable<Contact> GetContacts(int botId, string tag)
         {
-            ValidateInputParam(nameof(botName), botName);
+            ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(tag), tag);
 
-            var result = restClientHelper.ExecuteGet<ContactListResult>($"bot/get_contacts/{botName}?tag={tag}");
+            var result = restClientHelper.ExecuteGet<ContactListResult>($"bot/get_contacts/{botId}/tag/{tag}");
 
             return result.Contacts;
         }
 
-        public IEnumerable<string> GetTags(string botName)
+        public IEnumerable<string> GetTags(int botId)
         {
-            ValidateInputParam(nameof(botName), botName);
+            ValidateInputParam(nameof(botId), botId);
 
-            var result = restClientHelper.ExecuteGet<TagListResult>($"bot/list_tag/{botName}");
+            var result = restClientHelper.ExecuteGet<TagListResult>($"bot/list_tag/{botId}");
 
             return result.Tags;
         }
 
-        public Result Push(string botName, IEnumerable<string> receivers, Payload payload)
+        public Result Push(int botId, IEnumerable<string> receivers, Payload payload)
         {
-            ValidateInputParam(nameof(botName), botName);
+            ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(receivers), receivers);
             ValidateInputParam(nameof(payload), payload);
 
             return restClientHelper.ExecutePost<Result>(
-                $"bot/push/{botName}",
+                $"bot/push/{botId}",
                 new
                 {
                     receiver = receivers,
@@ -101,91 +107,93 @@
                 });
         }
 
-        public Result PushToTag(string botName, string tag, Payload payload)
+        public Result PushToTag(int botId, string tag, Payload payload)
         {
-            ValidateInputParam(nameof(botName), botName);
+            ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(tag), tag);
             ValidateInputParam(nameof(payload), payload);
 
             return restClientHelper.ExecutePost<Result>(
-                $"bot/push_to_tag/{botName}",
+                $"bot/push_to_tag/{botId}/tag/{tag}",
                 new
                 {
-                    payload,
-                    tag
+                    payload
                 });
         }
 
-        public Result SetWebhook(string botName, string url)
+        public Result SetWebhook(int botId, string url)
         {
-            ValidateInputParam(nameof(botName), botName);
+            ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(url), url);
 
             return restClientHelper.ExecutePost<Result>(
-                $"bot/set_webhook/{botName}",
+                $"bot/set_webhook/{botId}",
                 new
                 {
                     url
                 });
         }
 
-        public Result SetWelcomeMessage(string botName, string message)
+        public Result SetWelcomeMessage(int botId, string message)
         {
-            ValidateInputParam(nameof(botName), botName);
+            ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(message), message);
 
             return restClientHelper.ExecutePost<Result>(
-                  $"bot/set_welcome_msg/{botName}",
+                  $"bot/set_welcome_msg/{botId}",
                   new
                   {
                       message
                   });
         }
 
-        public Result UpdateTag(string botName, string tag)
+        public Result AddTag(int botId, string tag)
         {
-            ValidateInputParam(nameof(botName), botName);
+            ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(tag), tag);
 
-            // Need confirm with onelab team
-            throw new System.NotImplementedException();
+            return restClientHelper.ExecutePost<Result>(
+                $"bot/modify_tag/{botId}",
+                new
+                {
+                    tag
+                });
         }
 
-        public string GetContactPublicKey(string botName, string userId)
+        public string GetUserPublicKey(int botId, string userId)
         {
-            ValidateInputParam(nameof(botName), botName);
+            ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(userId), userId);
 
-            var result = restClientHelper.ExecuteGet<PublicKeyResult>($"bot/get_contact_public_key/{botName}?contact={userId}");
+            var result = restClientHelper.ExecuteGet<PublicKeyResult>($"bot/get_user_public_key/{botId}/user/{userId}");
 
             return result.PublicKey;
         }
 
-        public Result SetContactKey(string botName, string userId, string hashId, string hashKey)
+        public Result SetUserKey(int botId, string userId, string hashId, string hashKey)
         {
-            ValidateInputParam(nameof(botName), botName);
+            ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(hashId), hashId);
             ValidateInputParam(nameof(hashKey), hashKey);
 
             return restClientHelper.ExecutePost<Result>(
-                $"bot/set_key_to_contact/{botName}",
+                $"bot/set_key_to_user/{botId}/user/{userId}",
                 new
                 {
-                    contact = userId,
                     encryption_key = hashKey,
                     hash_id = hashId
                 });
         }
 
-        public Result SetHashKey(string botName, string hashId, string hashKey)
+        public Result SetHashKey(int botId, string hashId, string hashKey)
         {
-            ValidateInputParam(nameof(botName), botName);
+            ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(hashId), hashId);
             ValidateInputParam(nameof(hashKey), hashKey);
 
             return restClientHelper.ExecutePost<Result>(
-                $"bot/set_hash_key/{botName}",
+                $"bot/set_hash_key/{botId}",
                 new
                 {
                     hash_key = hashKey,

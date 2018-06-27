@@ -31,7 +31,7 @@
             Fanex.Logging.LogService.Info(requestContent);
 
             var result = messengerClient.Push(
-                            "botName",
+                            1,
                             new List<string>
                             {
                                 hookEvent.Source.UserId

@@ -18,6 +18,7 @@
             container.RegisterSingleton<IBotConnector, BotConnector>();
             container.RegisterSingleton<IRestClientHelper, RestClientHelper>();
             container.RegisterSingleton<IMessengerClient, SkypeClient>();
+
             container.Register<IRestClient>(() => new RestClient
             {
                 BaseUrl = new System.Uri(AppSettings.MessengerApiEndpoint),

@@ -38,4 +38,13 @@
         [JsonProperty(PropertyName = "public_key")]
         public string PublicKey { get; set; }
     }
+
+    internal class ProfileResult : Result
+    {
+        [JsonProperty(PropertyName = "avatar_url")]
+        public string AvatarUrl { get; set; }
+
+        [JsonProperty(PropertyName = "display_name")]
+        public string DisplayName { get; set; }
+    }
 }

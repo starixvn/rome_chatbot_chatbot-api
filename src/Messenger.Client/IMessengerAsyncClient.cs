@@ -6,32 +6,32 @@
 
     public partial interface IMessengerClient
     {
-        Task<Result> PushAsync(string botName, IEnumerable<string> receivers, Payload payload);
+        Task<Result> PushAsync(int botId, IEnumerable<string> receivers, Payload payload);
 
-        Task<Result> PushToTagAsync(string botName, string tag, Payload payload);
+        Task<Result> PushToTagAsync(int botId, string tag, Payload payload);
 
-        Task<Result> UpdateTagAsync(string botName, string tag);
+        Task<Result> AddTagAsync(int botId, string tag);
 
-        Task<Result> DeleteTagAsync(string botName, string tag);
+        Task<Result> DeleteTagAsync(int botId, string tag);
 
-        Task<IEnumerable<string>> GetTagsAsync(string botName);
+        Task<IEnumerable<string>> GetTagsAsync(int botId);
 
-        Task<IEnumerable<Contact>> GetContactsAsync(string botName, string tag);
+        Task<IEnumerable<Contact>> GetContactsAsync(int botId, string tag);
 
-        Task<Contact> GetContactAsync(string botName, string userId);
+        Task<Contact> GetProfileAsync(int botId, string userId);
 
-        Task<Result> AddContactToTagAsync(string botName, string userId, string tag);
+        Task<Result> AddContactToTagAsync(int botId, string[] users, string tag);
 
-        Task<Result> RemoveContactFromTagAsync(string botName, string userId, string tag);
+        Task<Result> RemoveContactFromTagAsync(int botId, string[] users, string tag);
 
-        Task<Result> SetWebhookAsync(string botName, string url);
+        Task<Result> SetWebhookAsync(int botId, string url);
 
-        Task<Result> SetWelcomeMessageAsync(string botName, string message);
+        Task<Result> SetWelcomeMessageAsync(int botId, string message);
 
-        Task<string> GetContactPublicKeyAsync(string botName, string userId);
+        Task<string> GetUserPublicKeyAsync(int botId, string userId);
 
-        Task<Result> SetContactKeyAsync(string botName, string userId, string hashId, string hashKey);
+        Task<Result> SetUserKeyAsync(int botId, string userId, string hashId, string hashKey);
 
-        Task<Result> SetHashKeyAsync(string botName, string hashId, string hashKey);
+        Task<Result> SetHashKeyAsync(int botId, string hashId, string hashKey);
     }
 }

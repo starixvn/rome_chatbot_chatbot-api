@@ -53,7 +53,7 @@ hash_content properties
 	+----------------------+-----------+-------------------------------------------------------+
 	|Property              |Type       |Description                                            |
 	+======================+===========+=======================================================+
-	|``original_image_url``|String     |Original image URL                                              |
+	|``original_image_url``|String     |Original image URL                                     |
 	|                      |           | - **HTTPS** (Required)                                |
 	|                      |           | - JPEG                                                |
 	|                      |           | - MAX: 1024 x 1024                                    |

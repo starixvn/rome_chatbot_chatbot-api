@@ -6,72 +6,72 @@
 
     public partial class SkypeClient
     {
-        public Task<Result> AddContactToTagAsync(string botName, string userId, string tag)
+        public Task<Result> AddContactToTagAsync(int botId, string[] users, string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> DeleteTagAsync(string botName, string tag)
+        public Task<Result> AddTagAsync(int botId, string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Contact> GetContactAsync(string botName, string userId)
+        public Task<Result> DeleteTagAsync(int botId, string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<string> GetContactPublicKeyAsync(string botName, string userId)
+        public Task<IEnumerable<Contact>> GetContactsAsync(int botId, string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<IEnumerable<Contact>> GetContactsAsync(string botName, string tag)
+        public Task<Contact> GetProfileAsync(int botId, string userId)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<IEnumerable<string>> GetTagsAsync(string botName)
+        public Task<IEnumerable<string>> GetTagsAsync(int botId)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> PushAsync(string botName, IEnumerable<string> receivers, Payload payload)
+        public Task<string> GetUserPublicKeyAsync(int botId, string userId)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> PushToTagAsync(string botName, string tag, Payload payload)
+        public Task<Result> PushAsync(int botId, IEnumerable<string> receivers, Payload payload)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> RemoveContactFromTagAsync(string botName, string userId, string tag)
+        public Task<Result> PushToTagAsync(int botId, string tag, Payload payload)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> SetContactKeyAsync(string botName, string userId, string hashId, string hashKey)
+        public Task<Result> RemoveContactFromTagAsync(int botId, string[] users, string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> SetHashKeyAsync(string botName, string hashId, string hashKey)
+        public Task<Result> SetHashKeyAsync(int botId, string hashId, string hashKey)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> SetWebhookAsync(string botName, string url)
+        public Task<Result> SetUserKeyAsync(int botId, string userId, string hashId, string hashKey)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> SetWelcomeMessageAsync(string botName, string message)
+        public Task<Result> SetWebhookAsync(int botId, string url)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> UpdateTagAsync(string botName, string tag)
+        public Task<Result> SetWelcomeMessageAsync(int botId, string message)
         {
             throw new System.NotImplementedException();
         }
