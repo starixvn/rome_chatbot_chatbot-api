@@ -18,7 +18,7 @@
 
         public DeleteContactEventHandler()
         {
-            this.messengerClient = DependencyResolver.GetInstance<IMessengerClient>();
+            messengerClient = DependencyResolver.GetInstance<IMessengerClient>();
         }
 
         protected override string EventTypeName => eventTypeName;

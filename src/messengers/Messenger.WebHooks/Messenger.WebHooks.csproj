@@ -156,6 +156,7 @@
     <Compile Include="WebHookReceivers\LetstalkEventHandlers\AskKeyEventHandler.cs" />
     <Compile Include="WebHookReceivers\LetstalkEventHandlers\BaseLetstalkEventHandler.cs" />
     <Compile Include="WebHookReceivers\LetstalkEventHandlers\DeleteContactEventHandler.cs" />
+    <Compile Include="WebHookReceivers\LetstalkEventHandlers\HealthCheckEventHandler.cs" />
     <Compile Include="WebHookReceivers\LetstalkEventHandlers\MessageEventHandler.cs" />
     <Compile Include="WebHookReceivers\LetstalkWebHookReceiver.cs" />
   </ItemGroup>

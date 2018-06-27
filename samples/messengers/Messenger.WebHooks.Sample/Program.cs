@@ -14,6 +14,7 @@
             PushAddContactEvent(restClient);
             PushDeleteContactEvent(restClient);
             PushAskKeyEvent(restClient);
+            PushHealthCheckEvent(restClient);
         }
 
         private static void PushMessageEvent(IRestClient restClient)
@@ -79,6 +80,17 @@
                         type = "user",
                         user_id = "jimmy.chen"
                     }
+                });
+
+        private static void PushHealthCheckEvent(IRestClient restClient)
+            => Execute(
+                restClient,
+                "/incoming/letstalk",
+                Method.POST,
+                new
+                {
+                    type = "health_check",
+                    timestamp = 1527151205790
                 });
 
         private static IRestClient CreateRestClient()
