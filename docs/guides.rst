@@ -52,5 +52,5 @@ How to encrypt ``hash_content`` **(Plain Text)**
 
 Test
 
-.. image:: _static/AddLetstalkAccountDiagram.JPG
+.. image:: _static/AddLetstalkAccountDiagram.jpg
 	:align: center
