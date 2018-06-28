@@ -1,12 +1,28 @@
-.. Agent Bot Services documentation master file, created by
-   sphinx-quickstart on Wed Jun  6 11:02:53 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Agent Bot Services 
-================================================
+.. include:: ../README.rst
 
 .. toctree::
+   :caption: Theme Documentation
    :maxdepth: 2
-   :caption: Table of Contents
-   :numbered:
+
+   installing
+   configuring
+   changelog
+   contributing
+
+
+.. toctree::
+    :maxdepth: 2
+    :numbered:
+    :caption: Demo Documents
+
+    demo/structure
+    demo/demo
+    demo/lists_tables
+    demo/api
+
+.. toctree::
+    :maxdepth: 3
+    :numbered:
+    :caption: This is an incredibly long caption for a long menu
+
+    demo/long
