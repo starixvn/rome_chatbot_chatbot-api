@@ -7,11 +7,11 @@ templates_path = ['_templates']
 source_suffix = '.rst'
 master_doc = 'index'
 
-project = u'Letstalk Business Account'
-copyright = u'2018, Letstalk'
-author = u'Letstalk'
-version = '1.3'
-release = '1.3'
+project = u'Agent Bot Service'
+copyright = u'2018, Starix Soft'
+author = u'Starix Soft'
+version = '1.0'
+release = '1.0'
 
 exclude_patterns = []
 pygments_style = 'sphinx'
@@ -52,19 +52,19 @@ latex_elements = {
 }
 
 latex_documents = [
-    (master_doc, 'LetstalkBusinessAccount.tex', u'Letstalk Business Account Documentation',
+    (master_doc, 'AgentBotServices.tex', u'Agent Bot Services Documentation',
      u'Letstalk', 'manual'),
 ]
 latex_show_urls = 'footnote'
 
 man_pages = [
-    (master_doc, 'letstalkbusinessaccount', u'Letstalk Business Account Documentation',
+    (master_doc, 'agentbotservices', u'Agent Bot Services Documentation',
      [author], 1)
 ]
 
 texinfo_documents = [
-    (master_doc, 'LetstalkBusinessAccount', u'Letstalk Business Account Documentation',
-     author, 'LetstalkBusinessAccount', 'One line description of project.',
+    (master_doc, 'AgentBotServices', u'Agent Bot Services Documentation',
+     author, 'AgentBotServices', 'One line description of project.',
      'Miscellaneous'),
 ]
 texinfo_show_urls = 'footnote'
