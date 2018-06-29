@@ -1,3 +1,3 @@
 *************
-Purpose Of The Document
+Document Purpose
 *************

@@ -6,17 +6,18 @@
 .. toctree::
    :caption: Introduction
    :maxdepth: 2
-
+    
    purpose
+   Document Purpose
    definition   
+   Term of definition
    
 
 .. toctree::
-   :caption: Design Overview
+   :caption: Design
    :maxdepth: 2
 
-   usecases
-   configuring
+   uc
+   conf
 
-   changelog
    
