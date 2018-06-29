@@ -7,7 +7,16 @@
    :caption: Introduction
    :maxdepth: 2
 
-   installing
+   purpose
+   definition
+   changelog
+   contributing
+
+.. toctree::
+   :caption: Design Overview
+   :maxdepth: 2
+
+   usecases
    configuring
    changelog
    contributing
