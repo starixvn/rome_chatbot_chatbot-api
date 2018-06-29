@@ -8,9 +8,8 @@
    :maxdepth: 2
 
    purpose
-   definition
-   changelog
-   contributing
+   definition   
+   
 
 .. toctree::
    :caption: Design Overview
@@ -18,5 +17,7 @@
 
    usecases
    configuring
-   changelog
-   contributing
+
+
+changelog
+   
