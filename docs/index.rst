@@ -18,6 +18,5 @@
    usecases
    configuring
 
-
-changelog
+   changelog
    
