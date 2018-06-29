@@ -95,7 +95,7 @@ html_theme_options = {
     'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': False,
-    'vcs_pageview_mode': '',
+    'vcs_pageview_mode': 'display_gitlab',
     # Toc options
     'collapse_navigation': True,
     'sticky_navigation': True,
@@ -151,7 +151,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'AgentBotServices.tex', 'Agent Bot Services Documentation',
-     'Anders Le', 'manual'),
+     'Starix Soft', 'manual'),
 ]
 
 
