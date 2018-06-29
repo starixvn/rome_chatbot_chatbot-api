@@ -107,7 +107,7 @@ html_context = {
     "display_gitlab": True, # Integrate Gitlab
     "gitlab_host": "gitlab.nexcel.vn",
     "gitlab_user": "rome/alpha", # Username
-    "gitlab_repo": "letstalk-api-docs", # Repo name
+    "gitlab_repo": "letstalk-bot", # Repo name
     "gitlab_version": "master", # Version
     "conf_py_path": "/docs/", # Path in the checkout to the docs root
 }
