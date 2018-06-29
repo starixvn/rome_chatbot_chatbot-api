@@ -103,6 +103,16 @@ html_theme_options = {
     #'titles_only': False
 }
 
+html_context = {
+    "display_gitlab": True, # Integrate Gitlab
+    "gitlab_host": "gitlab.nexcel.vn",
+    "gitlab_user": "rome/alpha", # Username
+    "gitlab_repo": "letstalk-api-docs", # Repo name
+    "gitlab_version": "master", # Version
+    "conf_py_path": "/docs/", # Path in the checkout to the docs root
+}
+
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
