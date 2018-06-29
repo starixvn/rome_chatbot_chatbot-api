@@ -20,8 +20,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Agent Bot Services'
-copyright = '2018, Anders Le'
-author = 'Anders Le'
+copyright = '2018, Starix Soft'
+author = 'Starix Soft'
 
 # The short X.Y version
 version = ''
@@ -99,7 +99,7 @@ html_theme_options = {
     'collapse_navigation': True,
     'sticky_navigation': True,
     'navigation_depth': 4,
-    'includehidden': True,
+    #'includehidden': True,
     'titles_only': False
 }
 
