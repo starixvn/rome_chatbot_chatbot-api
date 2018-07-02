@@ -18,15 +18,28 @@
    :maxdepth: 2
    
    overview/hld
-   overview/hld/uc
-   overview/hld/conf
+   overview/uc
+   overview/conf
 
 .. toctree::
-   :caption:System Design
+   :caption: Services Design
    :maxdepth: 2
+
+   design/components
+   design/standards
+   design/cofiguration
+   design/integration
+   design/deployment
+
+.. toctree::
+   :caption: Webhook
+   :maxdepth: 2
+
+   webhook/introduction
+   webhook/security
 
 .. toctree::
    :caption: Document History
    :maxdepth: 2
    
-   hostory/changelog
+   history/changelog
