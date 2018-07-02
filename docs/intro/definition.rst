@@ -1,0 +1,17 @@
+***************************************
+Glossary and Acronyms
+***************************************
+
+1.	This section should define all terms, acronyms and abbreviations used in this document. Particular care should be taken to define terms that are specific to the application. 
+
+2.	Terms covering the development of software using the Unified Modelling Language (UML) approach – which is recommended if an OOD view of the system is to be developed – should be included for completeness.  
+
+#.	The following is a list of definitions for this template based on the UML approach to system design:
+
++-------------------------+------------------------------------------------------------------------------+
+| Use-case Diagrams       |  llustrates the relationships between use cases                              | 
++-------------------------+------------------------------------------------------------------------------+
+| Sequence Diagram        |  Shows one or several sequences of messages sent among a set of objects      | 
++-------------------------+------------------------------------------------------------------------------+
+| Use-case Diagrams       |  llustrates the relationships between use cases                              | 
++-------------------------+------------------------------------------------------------------------------+

@@ -4,20 +4,29 @@
    contain the root `toctree` directive.
 
 .. toctree::
+   :glob:
    :caption: Introduction
    :maxdepth: 2
-    
-   purpose
-   Document Purpose
-   definition   
-   Term of definition
    
+   intro/purpose
+   intro/scope
+   intro/definition
+   intro/references        
 
 .. toctree::
-   :caption: Design
+   :caption: System Overview
+   :maxdepth: 2
+   
+   overview/hld
+   overview/hld/uc
+   overview/hld/conf
+
+.. toctree::
+   :caption:System Design
    :maxdepth: 2
 
-   uc
-   conf
-
+.. toctree::
+   :caption: Document History
+   :maxdepth: 2
    
+   hostory/changelog

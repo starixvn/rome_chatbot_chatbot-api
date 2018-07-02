@@ -34,3 +34,6 @@ goto end
 
 :end
 popd
+
+livehtml:
+    sphinx-autobuild -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
