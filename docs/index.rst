@@ -5,13 +5,14 @@
 
 .. toctree::
    :glob:
-   :caption: Introduction
+   :caption: General Information
    :maxdepth: 2
    
    intro/purpose
    intro/scope
    intro/definition
-   intro/references        
+   intro/references
+   intro/changelog
 
 .. toctree::
    :caption: System Overview
@@ -22,7 +23,7 @@
    overview/conf
 
 .. toctree::
-   :caption: Services Design
+   :caption: Agent Bot Services
    :maxdepth: 2
 
    design/components
@@ -37,9 +38,3 @@
 
    webhook/introduction
    webhook/security
-
-.. toctree::
-   :caption: Document History
-   :maxdepth: 2
-   
-   history/changelog
