@@ -19,18 +19,19 @@
    :maxdepth: 2
    
    overview/hld
-   overview/uc
+   overview/services-in-contexts
    overview/database-design
 
 .. toctree::
    :caption: Agent Bot Services
    :maxdepth: 2
-
-   design/components
-   design/standards
-   design/cofiguration
-   design/integration
-   design/deployment
+   
+   design/overview
+   design/agent-integration
+   design/letstalk-intagration
+   design/notification-services
+   design/auto-reply-msg
+   
 
 .. toctree::
    :caption: Webhook

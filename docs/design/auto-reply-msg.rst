@@ -1,3 +1,3 @@
 **************************
-Configuration
+Auto Reply Service
 **************************
