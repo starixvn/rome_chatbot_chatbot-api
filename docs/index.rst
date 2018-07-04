@@ -20,7 +20,7 @@
    
    overview/hld
    overview/uc
-   overview/conf
+   overview/database-design
 
 .. toctree::
    :caption: Agent Bot Services

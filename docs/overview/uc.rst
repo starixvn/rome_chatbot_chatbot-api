@@ -1,11 +1,11 @@
-*************
-Use cases
-*************
+********************
+Services in Context
+********************
 
 Agent Site Integration
-=============================
-.. image:: images/UC_AlphaSite.jpg
+**********************
+.. image:: assets/uc_alpha-site.jpg
 
 Letstalk Platform Integration
-=============================
-.. image:: images/UC_LetstalkApp.jpg
+*****************************
+.. image:: assets/uc_lta.jpg
