@@ -8,11 +8,11 @@
    :caption: General Information
    :maxdepth: 2
    
-   intro/purpose
-   intro/scope
-   intro/definition
-   intro/references
-   intro/changelog
+   general-info/purpose
+   general-info/scope
+   general-info/definition
+   general-info/references
+   general-info/changelog
 
 .. toctree::
    :caption: System Overview
