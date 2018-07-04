@@ -48,14 +48,14 @@ Praesent dignissim mi nec ornare elementum. Nunc eu augue vel sem dignissim curs
 Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
 Pellentesque dictum dui sem, non placerat tortor rhoncus in. Sed placerat nulla at rhoncus iaculis. 
 
-Check Verfification Code 
+Check Verfication Code 
 -------------------------
 Etiam turpis ante, luctus sed velit tristique, finibus volutpat dui. Nam sagittis vel ante nec malesuada.
 Praesent dignissim mi nec ornare elementum. Nunc eu augue vel sem dignissim cursus sed et nulla.
 Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
 Pellentesque dictum dui sem, non placerat tortor rhoncus in. Sed placerat nulla at rhoncus iaculis. 
 
-Get Verfification Code 
+Get Verfication Code 
 -------------------------
 Etiam turpis ante, luctus sed velit tristique, finibus volutpat dui. Nam sagittis vel ante nec malesuada.
 Praesent dignissim mi nec ornare elementum. Nunc eu augue vel sem dignissim cursus sed et nulla.
