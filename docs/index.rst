@@ -26,7 +26,7 @@
    :caption: Bot Services
    :maxdepth: 2
    
-   bot-services/overview   
+   bot-services/intro   
    bot-services/chatbot-setting
    bot-services/letstalk-intagration   
    bot-services/notification-services
@@ -36,7 +36,7 @@
    :caption: Agent Services
    :maxdepth: 2
    
-   agent-services/overview
+   agent-services/intro
    agent-services/report-services
    agent-services/message-services
    agent-services/annoucement-services   
