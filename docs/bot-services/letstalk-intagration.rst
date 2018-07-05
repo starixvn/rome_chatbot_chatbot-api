@@ -4,7 +4,7 @@ Letstalk Integration
 
 .. contents:: Table of Contents
 
-Send Notifications
+Notification Messages
 ========================
 Etiam turpis ante, luctus sed velit tristique, finibus volutpat dui. Nam sagittis vel ante nec malesuada.
 Praesent dignissim mi nec ornare elementum. Nunc eu augue vel sem dignissim cursus sed et nulla.
@@ -48,8 +48,8 @@ Praesent dignissim mi nec ornare elementum. Nunc eu augue vel sem dignissim curs
 Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
 Pellentesque dictum dui sem, non placerat tortor rhoncus in. Sed placerat nulla at rhoncus iaculis. 
 
-Converstation Requests Processing
-=================================
+Converstation Requests
+=======================
 Etiam turpis ante, luctus sed velit tristique, finibus volutpat dui. Nam sagittis vel ante nec malesuada.
 Praesent dignissim mi nec ornare elementum. Nunc eu augue vel sem dignissim cursus sed et nulla.
 Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.

@@ -23,15 +23,24 @@
    overview/database-design
 
 .. toctree::
-   :caption: Agent Bot Services
+   :caption: Bot Services
    :maxdepth: 2
    
-   design/overview
-   design/agent-integration
-   design/letstalk-intagration
-   design/notification-services
-   design/auto-reply-msg
+   bot-services/overview
+   bot-services/agent-integration
+   bot-services/letstalk-intagration
+   bot-services/notification-services
+   bot-services/auto-reply-msg
+
+.. toctree::
+   :caption: Agent Services
+   :maxdepth: 2
    
+   agent-services/overview
+   agent-services/agent-services
+   agent-services/letstalk-intagration
+   agent-services/notification-services
+   agent-services/auto-reply-msg      
 
 .. toctree::
    :caption: Webhook
