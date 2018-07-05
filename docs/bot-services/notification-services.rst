@@ -1,3 +1,3 @@
 **************************
-Notification Services
+Notification
 **************************

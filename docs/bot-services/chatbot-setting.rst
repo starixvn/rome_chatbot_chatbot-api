@@ -1,5 +1,5 @@
 **************************
-Chatbot Setting Services
+Chatbot Setting
 **************************
 
 .. contents:: Table of Contents
