@@ -3,16 +3,31 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
+    using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
     using Messenger.Client.Models;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
 
     public partial class LetstalkClient : IMessengerClient
     {
+        private const int AESEncryptionMode = 5;
+        private const int BusinessAccountType = 2;
+        private const int ChatKeyVersion = 3;
         private readonly IRestClientHelper restClientHelper;
+        private readonly ICryptographyHelper cryptographyHelper;
+        private readonly IMessengerSettings messengerSettings;
+        private readonly JsonSerializerSettings DefaultJsonSerializeSetting = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
-        public LetstalkClient(IRestClientHelper restClientHelper)
+        public LetstalkClient(
+            IRestClientHelper restClientHelper,
+            ICryptographyHelper cryptographyHelper,
+            IMessengerSettings messengerSettings = null)
         {
             this.restClientHelper = restClientHelper;
+            this.cryptographyHelper = cryptographyHelper;
+            this.messengerSettings = messengerSettings ?? AppSettings.Messenger;
         }
 
         public Result AddContactToTag(int botId, string[] users, string tag)
@@ -23,10 +38,10 @@
 
             return restClientHelper.ExecutePost<Result>(
                 $"bot/modify_contact_tag/{botId}",
-                new
+                new Dictionary<string, object>
                 {
-                    users,
-                    tag
+                    { nameof(users), users },
+                    { nameof(tag), tag }
                 });
         }
 
@@ -38,10 +53,10 @@
 
             return restClientHelper.ExecuteDelete<Result>(
                 $"bot/modify_contact_tag/{botId}",
-                new
+                new Dictionary<string, object>
                 {
-                    contact = users,
-                    tag
+                    { "contact", users },
+                    { nameof(tag), tag }
                 });
         }
 
@@ -52,9 +67,9 @@
 
             return restClientHelper.ExecuteDelete<Result>(
                 $"bot/modify_tag/{botId}",
-                new
+                new Dictionary<string, object>
                 {
-                    tag
+                    { nameof(tag), tag }
                 });
         }
 
@@ -92,18 +107,42 @@
             return result.Tags;
         }
 
+        public Result Push(int botId, IEnumerable<string> receivers, string message)
+        {
+            ValidateInputParam(nameof(botId), botId);
+            ValidateInputParam(nameof(receivers), receivers);
+            ValidateInputParam(nameof(message), message);
+
+            var payload = new Payload();
+            var formattedMessage = JsonConvert.SerializeObject(new { msg = message });
+
+            payload.HashContentKey = cryptographyHelper.Hash(formattedMessage);
+            payload.HashContent = cryptographyHelper.Encrypt(formattedMessage, messengerSettings.ChatKey, payload.HashContentKey);
+
+            return Push(botId, receivers, payload);
+        }
+
         public Result Push(int botId, IEnumerable<string> receivers, Payload payload)
         {
             ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(receivers), receivers);
             ValidateInputParam(nameof(payload), payload);
 
+            payload.UserId = messengerSettings.BotUserId;
+            payload.Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            payload.HashType = AESEncryptionMode;
+            payload.From = BusinessAccountType;
+            payload.Type = MessageType.Text;
+            payload.Id = 100;
+            payload.Receiver = receivers.ElementAt(0);
+            payload.HashId = ChatKeyVersion;
+
             return restClientHelper.ExecutePost<Result>(
                 $"bot/push/{botId}",
-                new
+                new Dictionary<string, object>
                 {
-                    receiver = receivers,
-                    payload
+                    { "receiver", receivers },
+                    { "payload", JsonConvert.SerializeObject(payload, DefaultJsonSerializeSetting) }
                 });
         }
 
@@ -115,9 +154,9 @@
 
             return restClientHelper.ExecutePost<Result>(
                 $"bot/push_to_tag/{botId}/tag/{tag}",
-                new
+                new Dictionary<string, object>
                 {
-                    payload
+                    { "payload", payload }
                 });
         }
 
@@ -128,9 +167,9 @@
 
             return restClientHelper.ExecutePost<Result>(
                 $"bot/set_webhook/{botId}",
-                new
+                new Dictionary<string, object>
                 {
-                    url
+                    { "url", url }
                 });
         }
 
@@ -141,10 +180,10 @@
 
             return restClientHelper.ExecutePost<Result>(
                   $"bot/set_welcome_msg/{botId}",
-                  new
-                  {
-                      message
-                  });
+                  new Dictionary<string, object>
+                {
+                    { "message", message }
+                });
         }
 
         public Result AddTag(int botId, string tag)
@@ -154,9 +193,9 @@
 
             return restClientHelper.ExecutePost<Result>(
                 $"bot/modify_tag/{botId}",
-                new
+                new Dictionary<string, object>
                 {
-                    tag
+                    { "tag", tag }
                 });
         }
 
@@ -179,10 +218,10 @@
 
             return restClientHelper.ExecutePost<Result>(
                 $"bot/set_key_to_user/{botId}/user/{userId}",
-                new
+                new Dictionary<string, object>
                 {
-                    encryption_key = hashKey,
-                    hash_id = hashId
+                    { "encryption_key", hashKey },
+                    { "hash_id", hashId }
                 });
         }
 
@@ -194,10 +233,10 @@
 
             return restClientHelper.ExecutePost<Result>(
                 $"bot/set_hash_key/{botId}",
-                new
+                new Dictionary<string, object>
                 {
-                    hash_key = hashKey,
-                    hash_id = hashId
+                    { "hash_key", hashKey },
+                    { "hash_id", hashId }
                 });
         }
 
@@ -221,6 +260,19 @@
             {
                 throw new ArgumentOutOfRangeException($"{paramName} does not contain any item");
             }
+        }
+
+        public Result ChangeDisplayName(int botId, string botName)
+        {
+            ValidateInputParam(nameof(botId), botId);
+            ValidateInputParam(nameof(botName), botName);
+
+            return restClientHelper.ExecutePut<Result>(
+                $"bot/change_display_name/{botId}",
+                new Dictionary<string, object>
+                {
+                    { "display_name", botName }
+                });
         }
     }
 }

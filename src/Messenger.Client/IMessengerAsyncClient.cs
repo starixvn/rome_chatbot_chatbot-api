@@ -33,5 +33,7 @@
         Task<Result> SetUserKeyAsync(int botId, string userId, string hashId, string hashKey);
 
         Task<Result> SetHashKeyAsync(int botId, string hashId, string hashKey);
+
+        Task<Result> ChangeDisplayNameAsync(int botId, string botName);
     }
 }

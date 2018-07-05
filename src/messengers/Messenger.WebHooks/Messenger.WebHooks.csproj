@@ -138,6 +138,7 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
+    <Content Include="WhoAmI.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\DependencyConfig.cs" />
@@ -148,9 +149,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\LogHelper.cs" />
     <Compile Include="Models\EventSource.cs" />
     <Compile Include="Models\HookEvent.cs" />
+    <Compile Include="Models\MessageContent.cs" />
+    <Compile Include="Models\Payload.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebHookReceivers\LetstalkEventHandlers\AddContactEventHandler.cs" />
     <Compile Include="WebHookReceivers\LetstalkEventHandlers\AskKeyEventHandler.cs" />

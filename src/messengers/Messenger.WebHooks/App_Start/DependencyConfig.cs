@@ -4,9 +4,7 @@
     using Messenger.Client;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
-    using Messenger.Client.Skype;
-    using RestSharp;
-    using RestSharp.Authenticators;
+    using Messenger.Client.Letstalk;
     using SimpleInjector;
 
     public static class DependencyConfig
@@ -17,13 +15,12 @@
 
             container.RegisterSingleton<IBotConnector, BotConnector>();
             container.RegisterSingleton<IRestClientHelper, RestClientHelper>();
-            container.RegisterSingleton<IMessengerClient, SkypeClient>();
+            container.RegisterSingleton<IMessengerClient, LetstalkClient>();
+            container.RegisterSingleton<IJwtHelper, JwtHelper>();
+            container.RegisterSingleton<ICryptographyHelper, CryptographyHelper>();
+            container.RegisterInstance(AppSettings.Messenger);
 
-            container.Register<IRestClient>(() => new RestClient
-            {
-                BaseUrl = new System.Uri(AppSettings.MessengerApiEndpoint),
-                Authenticator = new JwtAuthenticator(AppSettings.MessengerApiKey)
-            }, Lifestyle.Singleton);
+            container.Register(() => RestClientHelper.CreateDefaultClient(), Lifestyle.Singleton);
 
             container.Verify();
 

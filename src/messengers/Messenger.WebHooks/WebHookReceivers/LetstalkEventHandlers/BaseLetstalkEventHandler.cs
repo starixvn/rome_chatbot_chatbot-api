@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
     using Messenger.WebHooks.Models;
     using Microsoft.AspNet.WebHooks;
+    using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
     public abstract class BaseLetstalkEventHandler : WebHookQueueHandler
@@ -22,6 +23,7 @@
             if (data != null && data["type"].Value<string>() == EventTypeName)
             {
                 var hookEvent = data.ToObject<HookEvent>();
+                hookEvent.PayloadObject = JsonConvert.DeserializeObject<Payload>(hookEvent.EncodedPayload);
 
                 EnqueueAsync(context, hookEvent);
             }

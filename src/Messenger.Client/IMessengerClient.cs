@@ -7,6 +7,8 @@
     {
         Result Push(int botId, IEnumerable<string> receivers, Payload payload);
 
+        Result Push(int botId, IEnumerable<string> receivers, string message);
+
         Result PushToTag(int botId, string tag, Payload payload);
 
         Result AddTag(int botId, string tag);
@@ -26,6 +28,8 @@
         Result SetWebhook(int botId, string url);
 
         Result SetWelcomeMessage(int botId, string message);
+
+        Result ChangeDisplayName(int botId, string botName);
 
         string GetUserPublicKey(int botId, string userId);
 

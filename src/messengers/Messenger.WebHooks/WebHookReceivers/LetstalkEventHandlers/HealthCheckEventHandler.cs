@@ -1,10 +1,8 @@
 ﻿namespace Messenger.WebHooks.WebHookReceivers.LetstalkEventHandlers
 {
     using System.Threading.Tasks;
-    using System.Web;
     using Messenger.Client;
     using Messenger.WebHooks.App_Start;
-    using Messenger.WebHooks.Helpers;
     using Messenger.WebHooks.Models;
     using Microsoft.AspNet.WebHooks;
 
@@ -23,7 +21,7 @@
         protected override Task EnqueueAsync(WebHookQueueContext context, HookEvent hookEvent)
         {
             // Log first, implement real business later
-            Fanex.Logging.LogService.Info(LogHelper.BuildRequestContent(HttpContext.Current.Request.Headers, hookEvent));
+            //Fanex.Logging.LogService.Info(LogHelper.BuildRequestContent(HttpContext.Current.Request.Headers, hookEvent));
 
             return Task.FromResult(true);
         }

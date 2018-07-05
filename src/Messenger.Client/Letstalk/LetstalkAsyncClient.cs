@@ -12,12 +12,12 @@
             ValidateInputParam(nameof(users), users);
             ValidateInputParam(nameof(tag), tag);
 
-            return restClientHelper.ExecuteAsyncPost<Result>(
+            return restClientHelper.ExecutePostAsync<Result>(
                 $"bot/modify_contact_tag/{botId}",
-                new
+                new Dictionary<string, object>
                 {
-                    users,
-                    tag
+                    { nameof(users), users },
+                    { nameof(tag), tag }
                 });
         }
 
@@ -27,12 +27,12 @@
             ValidateInputParam(nameof(users), users);
             ValidateInputParam(nameof(tag), tag);
 
-            return restClientHelper.ExecuteAsyncDelete<Result>(
+            return restClientHelper.ExecuteDeleteAsync<Result>(
                 $"bot/modify_contact_tag/{botId}",
-                new
+                new Dictionary<string, object>
                 {
-                    users,
-                    tag
+                    { nameof(users), users },
+                    { nameof(tag), tag }
                 });
         }
 
@@ -41,11 +41,11 @@
             ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(tag), tag);
 
-            return restClientHelper.ExecuteAsyncDelete<Result>(
+            return restClientHelper.ExecuteDeleteAsync<Result>(
                 $"bot/modify_tag/{botId}",
-                new
+                new Dictionary<string, object>
                 {
-                    tag
+                    { nameof(tag), tag }
                 });
         }
 
@@ -54,7 +54,7 @@
             ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(userId), userId);
 
-            var result = await restClientHelper.ExecuteAsyncGet<ProfileResult>($"bot/get_profile/{botId}/user/{userId}");
+            var result = await restClientHelper.ExecuteGetAsync<ProfileResult>($"bot/get_profile/{botId}/user/{userId}");
 
             return new Contact
             {
@@ -69,7 +69,7 @@
             ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(tag), tag);
 
-            var result = await restClientHelper.ExecuteAsyncGet<ContactListResult>($"bot/get_contacts/{botId}/tag/{tag}");
+            var result = await restClientHelper.ExecuteGetAsync<ContactListResult>($"bot/get_contacts/{botId}/tag/{tag}");
 
             return result.Contacts;
         }
@@ -78,7 +78,7 @@
         {
             ValidateInputParam(nameof(botId), botId);
 
-            var result = await restClientHelper.ExecuteAsyncGet<TagListResult>($"bot/list_tag/{botId}");
+            var result = await restClientHelper.ExecuteGetAsync<TagListResult>($"bot/list_tag/{botId}");
 
             return result.Tags;
         }
@@ -89,12 +89,12 @@
             ValidateInputParam(nameof(receivers), receivers);
             ValidateInputParam(nameof(payload), payload);
 
-            return restClientHelper.ExecuteAsyncPost<Result>(
+            return restClientHelper.ExecutePostAsync<Result>(
                 $"bot/push/{botId}",
-                new
+                new Dictionary<string, object>
                 {
-                    receiver = receivers,
-                    payload
+                    { "receiver", receivers },
+                    { "payload", payload }
                 });
         }
 
@@ -104,11 +104,11 @@
             ValidateInputParam(nameof(tag), tag);
             ValidateInputParam(nameof(payload), payload);
 
-            return restClientHelper.ExecuteAsyncPost<Result>(
+            return restClientHelper.ExecutePostAsync<Result>(
                 $"bot/push_to_tag/{botId}/tag/{tag}",
-                new
+                new Dictionary<string, object>
                 {
-                    payload
+                    { "payload", payload }
                 });
         }
 
@@ -117,11 +117,11 @@
             ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(url), url);
 
-            return restClientHelper.ExecuteAsyncPost<Result>(
+            return restClientHelper.ExecutePostAsync<Result>(
                 $"bot/set_webhook/{botId}",
-                new
+                new Dictionary<string, object>
                 {
-                    url
+                    { "url", url }
                 });
         }
 
@@ -130,12 +130,12 @@
             ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(message), message);
 
-            return restClientHelper.ExecuteAsyncPost<Result>(
+            return restClientHelper.ExecutePostAsync<Result>(
                   $"bot/set_welcome_msg/{botId}",
-                  new
-                  {
-                      message
-                  });
+                  new Dictionary<string, object>
+                {
+                    { "message", message }
+                });
         }
 
         public Task<Result> AddTagAsync(int botId, string tag)
@@ -143,12 +143,12 @@
             ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(tag), tag);
 
-            return restClientHelper.ExecuteAsyncPost<Result>(
+            return restClientHelper.ExecutePostAsync<Result>(
                $"bot/modify_tag/{botId}",
-               new
-               {
-                   tag
-               });
+               new Dictionary<string, object>
+                {
+                    { "tag", tag }
+                });
         }
 
         public async Task<string> GetUserPublicKeyAsync(int botId, string userId)
@@ -156,7 +156,7 @@
             ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(userId), userId);
 
-            var result = await restClientHelper.ExecuteAsyncGet<PublicKeyResult>($"bot/get_user_public_key/{botId}/user/{userId}");
+            var result = await restClientHelper.ExecuteGetAsync<PublicKeyResult>($"bot/get_user_public_key/{botId}/user/{userId}");
 
             return result.PublicKey;
         }
@@ -168,12 +168,12 @@
             ValidateInputParam(nameof(hashId), hashId);
             ValidateInputParam(nameof(hashKey), hashKey);
 
-            return restClientHelper.ExecuteAsyncPost<Result>(
+            return restClientHelper.ExecutePostAsync<Result>(
                 $"bot/set_key_to_user/{botId}/user/{userId}",
-                new
+                new Dictionary<string, object>
                 {
-                    encryption_key = hashKey,
-                    hash_id = hashId
+                    { "encryption_key", hashKey },
+                    { "hash_id", hashId }
                 });
         }
 
@@ -183,12 +183,25 @@
             ValidateInputParam(nameof(hashId), hashId);
             ValidateInputParam(nameof(hashKey), hashKey);
 
-            return restClientHelper.ExecuteAsyncPost<Result>(
+            return restClientHelper.ExecutePostAsync<Result>(
                 $"bot/set_hash_key/{botId}",
-                new
+                new Dictionary<string, object>
                 {
-                    hash_key = hashKey,
-                    hash_id = hashId
+                    { "hash_key", hashKey },
+                    { "hash_id", hashId }
+                });
+        }
+
+        public Task<Result> ChangeDisplayNameAsync(int botId, string botName)
+        {
+            ValidateInputParam(nameof(botId), botId);
+            ValidateInputParam(nameof(botName), botName);
+
+            return restClientHelper.ExecutePutAsync<Result>(
+                $"bot/set_hash_key/{botId}",
+                new Dictionary<string, object>
+                {
+                    { "display_name", botName }
                 });
         }
     }

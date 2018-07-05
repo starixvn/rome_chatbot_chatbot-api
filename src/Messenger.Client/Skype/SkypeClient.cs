@@ -1,6 +1,7 @@
 ﻿namespace Messenger.Client.Skype
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Fanex.Bot.Client;
     using Messenger.Client.Models;
 
@@ -19,6 +20,16 @@
         }
 
         public Result AddTag(int botId, string tag)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Result ChangeDisplayName(int botId, string botName)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<Result> ChangeDisplayNameAsync(int botId, string botName)
         {
             throw new System.NotImplementedException();
         }
@@ -53,6 +64,11 @@
             var result = botConnector.Send(payload.HashContent, payload.UserId);
 
             return new Result { Status = 1, Message = result };
+        }
+
+        public Result Push(int botId, IEnumerable<string> receivers, string message)
+        {
+            throw new System.NotImplementedException();
         }
 
         public Result PushToTag(int botId, string tag, Payload payload)

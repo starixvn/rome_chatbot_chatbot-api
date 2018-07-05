@@ -3,7 +3,7 @@
     using System;
     using SimpleInjector;
 
-    public class DependencyResolver
+    public static class DependencyResolver
     {
         public static Container Container { get; private set; }
 

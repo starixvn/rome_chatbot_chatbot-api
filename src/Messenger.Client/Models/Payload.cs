@@ -19,7 +19,7 @@
         public long Time { get; set; }
 
         [JsonProperty(PropertyName = "send_time")]
-        public long SendTime { get; set; }
+        public long SendTime => Time;
 
         [JsonProperty(PropertyName = "due_date")]
         public long DueDate { get; set; }
