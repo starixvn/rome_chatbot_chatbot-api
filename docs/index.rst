@@ -39,7 +39,7 @@
    agent-services/intro
    agent-services/report-services
    agent-services/message-services
-   agent-services/annoucement-services   
+   agent-services/announcement-services   
    agent-services/customer-services      
 
 .. toctree::
