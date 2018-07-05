@@ -15,7 +15,7 @@
    general-info/changelog
 
 .. toctree::
-   :caption: System Overview
+   :caption: Architectural Overview
    :maxdepth: 2
    
    overview/hld
