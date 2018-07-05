@@ -20,8 +20,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Agent Bot Services'
-copyright = '2018, Starix Soft'
-author = 'Starix Soft'
+copyright = '2018, Starixsoft Company'
+author = 'Starixsoft Company'
 
 # The short X.Y version
 version = ''
