@@ -1,5 +1,5 @@
 **************************
-Report Services
+Report
 **************************
 
 .. contents:: Table of Contents

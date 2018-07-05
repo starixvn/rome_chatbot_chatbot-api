@@ -26,9 +26,9 @@
    :caption: Bot Services
    :maxdepth: 2
    
-   bot-services/overview
-   bot-services/agent-integration
-   bot-services/letstalk-intagration
+   bot-services/overview   
+   bot-services/chatbot-setting
+   bot-services/letstalk-intagration   
    bot-services/notification-services
    bot-services/auto-reply-msg
 

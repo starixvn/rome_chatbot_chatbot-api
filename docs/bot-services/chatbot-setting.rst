@@ -1,5 +1,5 @@
 **************************
-Agent Site Integration
+Chatbot Setting Services
 **************************
 
 .. contents:: Table of Contents
@@ -20,7 +20,7 @@ Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac tu
 Pellentesque dictum dui sem, non placerat tortor rhoncus in. Sed placerat nulla at rhoncus iaculis. 
 
 
-Chatbot Conversation Setting
+Chatbot Report Setting
 ----------------------------
 Etiam turpis ante, luctus sed velit tristique, finibus volutpat dui. Nam sagittis vel ante nec malesuada.
 Praesent dignissim mi nec ornare elementum. Nunc eu augue vel sem dignissim cursus sed et nulla.

@@ -1,4 +1,9 @@
 *************
 References
 *************
-This section should list all the applicable and reference documents, identified by title, author and date.  Each document should be marked as applicable or reference.  If appropriate, report number, journal name and publishing organisation should be included. 
+
+- Chatbot Specification: https://bit.ly/2NtRuHl
+
+- JWT Handbook: https://bit.ly/2Nt51zg
+
+- Colloboration link: http://bit.ly/2KSbXEp

@@ -1,5 +1,5 @@
 **************************
-Annoucements Services
+Annoucements
 **************************
 
 Get Special Annoucenemts
