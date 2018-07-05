@@ -37,10 +37,10 @@
    :maxdepth: 2
    
    agent-services/overview
-   agent-services/agent-services
-   agent-services/letstalk-intagration
-   agent-services/notification-services
-   agent-services/auto-reply-msg      
+   agent-services/report-services
+   agent-services/message-services
+   agent-services/annoucement-services   
+   agent-services/customer-services      
 
 .. toctree::
    :caption: Webhook
