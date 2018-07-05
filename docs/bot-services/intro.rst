@@ -2,4 +2,4 @@
 Introduction
 **************************
 
-.. image:: assets/agent-services-design.png
+.. image:: assets/bot-services-intro.png
