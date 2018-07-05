@@ -27,8 +27,7 @@
    :maxdepth: 2
    
    bot-services/intro   
-   bot-services/chatbot-setting
-   bot-services/letstalk-intagration   
+   bot-services/chatbot-setting 
    bot-services/notification-services
    bot-services/auto-reply-msg
 
