@@ -1,5 +1,5 @@
 **************************
-Annoucements
+Annoucement Services
 **************************
 
 .. contents:: Table of Contents

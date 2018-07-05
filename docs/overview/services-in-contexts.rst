@@ -1,5 +1,5 @@
 ********************
-Usecase Diagrams
+Use Case Diagrams
 ********************
 
 Integrate with Agent site
