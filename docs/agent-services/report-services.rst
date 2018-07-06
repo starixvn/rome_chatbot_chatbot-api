@@ -3,6 +3,8 @@ Report Services
 ***************
 
 .. contents:: Table of Contents
+   :local:
+   :backlinks: top
 
 Get Yesterday Win-Loss
 ----------------------
@@ -46,10 +48,12 @@ Describe the purpose of the service
         "company": "-500.00"
     }
 
---------------------------
+----------------------
 
 Get Today Win-Loss
 ------------------
+
+Describe the purpose of the service
 
   **Http Request:**
 

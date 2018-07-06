@@ -3,6 +3,8 @@ Chatbot Setting
 **************************
 
 .. contents:: Table of Contents
+   :local:
+   :backlinks: top
 
 Manage Chatbot Settings
 ========================

@@ -3,6 +3,8 @@ Annoucement Services
 **************************
 
 .. contents:: Table of Contents
+   :local:
+   :backlinks: top
 
 Special Announcements
 --------------------
