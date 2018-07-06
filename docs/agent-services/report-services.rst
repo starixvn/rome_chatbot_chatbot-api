@@ -49,7 +49,7 @@ Describe the purpose of the service
 --------------------------
 
 Get Today Win-Loss
-----------------------
+------------------
 
   **Http Request:**
 
@@ -88,15 +88,79 @@ Get Today Win-Loss
         "company": "-500.00"
     }
 
-
+--------------------------
 
 Get Outstanding
-----------------------
-Etiam turpis ante, luctus sed velit tristique, finibus volutpat dui. Nam sagittis vel ante nec malesuada.
-Praesent dignissim mi nec ornare elementum. Nunc eu augue vel sem dignissim cursus sed et nulla.
+---------------
 
+  **Http Request:**
+
+  ``GET: /api/oustanding/cid``
+
+  **Query Paramaters:**
+
+  ==========  =====  ============================
+  Paramater   Type   Description
+  ==========  =====  ============================
+  cid         int    customer id
+  ==========  =====  ============================
+
+  **Request Headers:**
+
+  ==========  ===============  ============================
+  Paramater   Value            Description
+  ==========  ===============  ============================
+  :method     GET                 
+  ==========  ===============  ============================
+
+
+  **Respone:**
+
+  .. code-block:: json
+
+    {
+        "totalmember": "1,000.00",
+        "totalsuper": "50.00"
+    }
+
+--------------------------
 
 Get Balance Info
-----------------------
-Etiam turpis ante, luctus sed velit tristique, finibus volutpat dui. Nam sagittis vel ante nec malesuada.
-Praesent dignissim mi nec ornare elementum. Nunc eu augue vel sem dignissim cursus sed et nulla.
+----------------
+
+**Http Request:**
+
+  ``GET: /api/balance/cid``
+
+  **Query Paramaters:**
+
+  ==========  =====  ============================
+  Paramater   Type   Description
+  ==========  =====  ============================
+  cid         int    customer id
+  ==========  =====  ============================
+
+  **Request Headers:**
+
+  ==========  ===============  ============================
+  Paramater   Value            Description
+  ==========  ===============  ============================
+  :method     GET                 
+  ==========  ===============  ============================
+
+
+  **Respone:**
+
+  .. code-block:: json
+
+    {
+        "currency": "UUS",
+        "cashbalance": "1,500,000.00",
+        "yesterdaycashbalance": "1,500,000.00",
+        "totalbalance": "-120,000.00",
+        "yesterdaytotalbalance": "-120,906.77",
+        "todaywinloss": "0.00",
+        "yesterdaywinloss": "0.00",
+        "givencredit": "6,000,000.00",
+        "membercredit": "5,630,000.00"
+    }
