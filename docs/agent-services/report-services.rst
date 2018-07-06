@@ -11,81 +11,82 @@ Describe the purpose of the service
 
   **Http Request:**
 
-    ``GET: /api/winloss/yesterday/cid``
+  ``GET: /api/winloss/yesterday/cid``
 
   **Query Paramaters:**
 
-    ==========  =====  ============================
-    Paramater   Type   Description
-    ==========  =====  ============================
-    cid         int    customer id
-    ==========  =====  ============================
+  ==========  =====  ============================
+  Paramater   Type   Description
+  ==========  =====  ============================
+  cid         int    customer id
+  ==========  =====  ============================
 
   **Request Headers:**
 
-    ==========  ===============  ============================
-    Paramater   Value            Description
-    ==========  ===============  ============================
-    :method     GET                 
-    ==========  ===============  ============================
+  ==========  ===============  ============================
+  Paramater   Value            Description
+  ==========  ===============  ============================
+  :method     GET                 
+  ==========  ===============  ============================
 
 
   **Respone:**
 
-    .. code-block:: json
+  .. code-block:: json
 
-      {
-          "turnover": "30,000.00",
-          "grosscomm": "50.00",
-          "mastertotal": "50.00",
-          "super": {
-              "winloss": "-50.00",
-              "comm": "-5.00",
-              "total": "-70.00"
-          },
-          "company": "-500.00"
-      }
+    {
+        "turnover": "30,000.00",
+        "grosscomm": "50.00",
+        "mastertotal": "50.00",
+        "super": {
+            "winloss": "-50.00",
+            "comm": "-5.00",
+            "total": "-70.00"
+        },
+        "company": "-500.00"
+    }
 
 --------------------------
 
 Get Today Win-Loss
 ----------------------
 
+**Http Request:**
 
 ``GET: /api/winloss/today/cid``
 
-**Query Paramaters:**
+  **Query Paramaters:**
 
-==========  =====  ============================
-Paramater   Type   Description
-==========  =====  ============================
-cid         int    customer id
-==========  =====  ============================
+  ==========  =====  ============================
+  Paramater   Type   Description
+  ==========  =====  ============================
+  cid         int    customer id
+  ==========  =====  ============================
 
-**Request Headers:**
+  **Request Headers:**
 
-==========  ===============  ============================
-Paramater   Value            Description
-==========  ===============  ============================
-:method     GET                 
-==========  ===============  ============================
+  ==========  ===============  ============================
+  Paramater   Value            Description
+  ==========  ===============  ============================
+  :method     GET                 
+  ==========  ===============  ============================
 
 
-**Respone:**
+  **Respone:**
 
-.. code-block:: json
+  .. code-block:: json
 
-  {
-      "turnover": "30,000.00",
-      "grosscomm": "50.00",
-      "mastertotal": "50.00",
-      "super": {
-          "winloss": "-50.00",
-          "comm": "-5.00",
-          "total": "-70.00"
-      },
-      "company": "-500.00"
-  }
+    {
+        "turnover": "30,000.00",
+        "grosscomm": "50.00",
+        "mastertotal": "50.00",
+        "super": {
+            "winloss": "-50.00",
+            "comm": "-5.00",
+            "total": "-70.00"
+        },
+        "company": "-500.00"
+    }
 
 
 
