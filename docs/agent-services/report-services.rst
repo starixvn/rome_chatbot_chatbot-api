@@ -51,9 +51,9 @@ Describe the purpose of the service
 Get Today Win-Loss
 ----------------------
 
-**Http Request:**
+  **Http Request:**
 
-``GET: /api/winloss/today/cid``
+  ``GET: /api/winloss/today/cid``
 
   **Query Paramaters:**
 
