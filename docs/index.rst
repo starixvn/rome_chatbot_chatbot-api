@@ -23,27 +23,24 @@
    overview/database-design
 
 .. toctree::
-   :caption: Bot Services
+   :caption: Chatbot API
+   :glob:
    :maxdepth: 2
    
-   bot-services/intro   
-   bot-services/chatbot-setting 
-   bot-services/notification-services
-   bot-services/auto-reply-msg
+   bot-services/*   
+   
 
 .. toctree::
-   :caption: Agent Services
+   :caption: Agent API
+   :glob:
    :maxdepth: 2
    
-   agent-services/intro
-   agent-services/report-services
-   agent-services/message-services
-   agent-services/announcement-services   
-   agent-services/customer-services      
+   agent-services/*
+   
 
 .. toctree::
    :caption: Webhook
    :maxdepth: 2
-
-   webhook/introduction
+   
+   all about introduction <webhook/introduction>
    webhook/security
