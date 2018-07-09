@@ -32,7 +32,7 @@ Describe the purpose of the service
   ==========  ===============  ============================
 
 
-  **Respone:**
+  **Response:**
 
   .. code-block:: json
 
@@ -76,7 +76,7 @@ Describe the purpose of the service
   ==========  ===============  ============================
 
 
-  **Respone:**
+  **Response:**
 
   .. code-block:: json
 
@@ -118,7 +118,7 @@ Get Outstanding
   ==========  ===============  ============================
 
 
-  **Respone:**
+  **Response:**
 
   .. code-block:: json
 
@@ -153,7 +153,7 @@ Get Balance Info
   ==========  ===============  ============================
 
 
-  **Respone:**
+  **Response:**
 
   .. code-block:: json
 
