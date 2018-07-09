@@ -31,7 +31,13 @@ Describe the purpose of the service
 
   .. code-block:: json
 
-    {
-        { "messageid": 1073779205, "content" : "Testing message" },
-        { "messageid": 1073779206, "content" : "Testing message" }
-    }
+    [
+        { 
+            "messageid": 1073779205, 
+            "content" : "Testing message" 
+        },
+        { 
+            "messageid": 1073779206, 
+            "content" : "Testing message" 
+        }
+    ]

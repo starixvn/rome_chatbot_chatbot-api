@@ -227,8 +227,8 @@ Get Outstanding
   .. code-block:: json
 
     {
-        "outstanding": "1,000.00",
-        "totaloutstanding": "50.00"
+        "totaloutstanding": "1,000.00",
+        "outstanding": "50.00"
     }
 
 --------------------------
