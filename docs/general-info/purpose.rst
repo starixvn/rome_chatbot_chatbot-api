@@ -1,6 +1,6 @@
-*************
+*****************
 Document Purpose
-*************
+*****************
 This section should
 
 - 	Describe the purpose of this document
