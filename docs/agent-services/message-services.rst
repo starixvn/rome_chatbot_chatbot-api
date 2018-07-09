@@ -2,6 +2,36 @@
 Message Services
 **************************
 
-Etiam turpis ante, luctus sed velit tristique, finibus volutpat dui. Nam sagittis vel ante nec malesuada.
-Praesent dignissim mi nec ornare elementum. Nunc eu augue vel sem dignissim cursus sed et nulla.
+Get Personal Messages
+--------------------
+Describe the purpose of the service
 
+  **Http Request:**
+
+  ``GET: /api/{cid}/messages``
+
+  **Query Paramaters:**
+
+  ==========  =====  ============================
+  Paramater   Type   Description
+  ==========  =====  ============================
+  cid         int    customer id
+  ==========  =====  ============================
+
+  **Request Headers:**
+
+  ==========  ===============  ============================
+  Paramater   Value            Description
+  ==========  ===============  ============================
+  :method     GET                 
+  ==========  ===============  ============================
+
+
+  **Response:**
+
+  .. code-block:: json
+
+    {
+        { "messageid": 1073779205, "content" : "Testing message" },
+        { "messageid": 1073779206, "content" : "Testing message" }
+    }

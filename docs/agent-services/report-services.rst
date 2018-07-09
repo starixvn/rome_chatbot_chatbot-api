@@ -13,7 +13,7 @@ Describe the purpose of the service
 
   **Http Request:**
 
-  ``GET: /api/winloss/yesterday/cid``
+  ``GET: /api/winloss/yesterday/{cid}``
 
   **Query Paramaters:**
 
@@ -34,12 +34,64 @@ Describe the purpose of the service
 
   **Response:**
 
+  * Level Agent:
+
   .. code-block:: json
 
     {
         "turnover": "30,000.00",
         "grosscomm": "50.00",
-        "mastertotal": "50.00",
+        "member": {
+            "winloss": "-50.00",
+            "comm": "-5.00",
+            "total": "-55.00"
+        },
+        "agent": {
+            "winloss": "-50.00",
+            "comm": "-5.00",
+            "total": "-70.00"
+        },
+        "master": null,
+        "super": null,
+        "company": "-500.00"
+    }
+
+  * Level Master:
+
+  .. code-block:: json
+
+    {
+        "turnover": "30,000.00",
+        "grosscomm": "50.00",
+        "member": null,
+        "agent": {
+            "winloss": null,
+            "comm": null,
+            "total": "-70.00"
+        },
+        "master": {
+            "winloss": "-50.00",
+            "comm": "-5.00",
+            "total": "-70.00"
+        },
+        "super": null,
+        "company": "-500.00"
+    }
+
+  * Level Super:
+
+  .. code-block:: json
+
+    {
+        "turnover": "30,000.00",
+        "grosscomm": "50.00",
+        "member": null,
+        "agent": null,
+        "master": {
+            "winloss": null,
+            "comm": null,
+            "total": "-70.00"
+        },
         "super": {
             "winloss": "-50.00",
             "comm": "-5.00",
@@ -57,7 +109,7 @@ Describe the purpose of the service
 
   **Http Request:**
 
-  ``GET: /api/winloss/today/cid``
+  ``GET: /api/winloss/today/{cid}``
 
   **Query Paramaters:**
 
@@ -78,12 +130,64 @@ Describe the purpose of the service
 
   **Response:**
 
+  * Level Agent:
+
   .. code-block:: json
 
     {
         "turnover": "30,000.00",
         "grosscomm": "50.00",
-        "mastertotal": "50.00",
+        "member": {
+            "winloss": "-50.00",
+            "comm": "-5.00",
+            "total": "-55.00"
+        },
+        "agent": {
+            "winloss": "-50.00",
+            "comm": "-5.00",
+            "total": "-70.00"
+        },
+        "master": null,
+        "super": null,
+        "company": "-500.00"
+    }
+
+  * Level Master:
+
+  .. code-block:: json
+
+    {
+        "turnover": "30,000.00",
+        "grosscomm": "50.00",
+        "member": null,
+        "agent": {
+            "winloss": null,
+            "comm": null,
+            "total": "-70.00"
+        },
+        "master": {
+            "winloss": "-50.00",
+            "comm": "-5.00",
+            "total": "-70.00"
+        },
+        "super": null,
+        "company": "-500.00"
+    }
+
+  * Level Super:
+
+  .. code-block:: json
+
+    {
+        "turnover": "30,000.00",
+        "grosscomm": "50.00",
+        "member": null,
+        "agent": null,
+        "master": {
+            "winloss": null,
+            "comm": null,
+            "total": "-70.00"
+        },
         "super": {
             "winloss": "-50.00",
             "comm": "-5.00",
@@ -99,7 +203,7 @@ Get Outstanding
 
   **Http Request:**
 
-  ``GET: /api/oustanding/cid``
+  ``GET: /api/oustanding/{cid}``
 
   **Query Paramaters:**
 
@@ -123,8 +227,8 @@ Get Outstanding
   .. code-block:: json
 
     {
-        "totalmember": "1,000.00",
-        "totalsuper": "50.00"
+        "outstanding": "1,000.00",
+        "totaloutstanding": "50.00"
     }
 
 --------------------------
@@ -134,7 +238,7 @@ Get Balance Info
 
 **Http Request:**
 
-  ``GET: /api/balance/cid``
+  ``GET: /api/balance/{cid}``
 
   **Query Paramaters:**
 
