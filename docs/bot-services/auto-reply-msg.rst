@@ -1,6 +1,15 @@
-Auto Reply Services
+Auto Reply Service
 **************************
 
-Purpose:
---------
-Enable auto reply message for ``ChatBot`` in a period of time, any messages sent to ``ChatBot`` in the time-range will be automatically replied  by ``Letstalk Platform``, no events are sent to webhook
+Set message that is used by ``Chatbot`` for automated replying to Letstalk users. 
+
+
+Usage Scenarios
+----------------
+1. Notify Maintenance Time of System
+
+.. image:: assets/auto_reply_msg.png
+
+
+
+

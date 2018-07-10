@@ -23,7 +23,7 @@
    overview/database-design
 
 .. toctree::
-   :caption: Chatbot API
+   :caption: Chatbot Services
    :glob:
    :maxdepth: 2
    
@@ -31,7 +31,7 @@
    
 
 .. toctree::
-   :caption: Agent API
+   :caption: Agent Services
    :glob:
    :maxdepth: 2
    
