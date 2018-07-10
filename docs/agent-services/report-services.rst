@@ -8,7 +8,8 @@ Report Services
 
 Get Yesterday Win-Loss
 ----------------------
-Describe the purpose of the service
+
+Gets yesterday win loss report for customer.
 
 
   **Http Request:**
@@ -33,80 +34,84 @@ Describe the purpose of the service
 
   **Response:**
 
-  Returns the status code ``200`` and a JSON object.
+  Returns the status code ``200`` and a JSON object depending on level of customer.
 
-  * Level Agent:
+    .. hlist::
+        :columns: 3
 
-  .. code-block:: json
+        - Member Yesterday Win Loss (Customer level is Agent)
 
-    {
-        "turnover": "30,000.00",
-        "grosscomm": "50.00",
-        "member": {
-            "winloss": "-50.00",
-            "comm": "-5.00",
-            "total": "-55.00"
-        },
-        "agent": {
-            "winloss": "-50.00",
-            "comm": "-5.00",
-            "total": "-70.00"
-        },
-        "master": null,
-        "super": null,
-        "company": "-500.00"
-    }
+            .. code-block:: JSON
 
-  * Level Master:
+                {
+                    "turnover": 30000,
+                    "grosscomm": 50,
+                    "member": {
+                        "winloss": -50,
+                        "comm": -5,
+                        "total": -55
+                    },
+                    "agent": {
+                        "winloss": -50,
+                        "comm": 5,
+                        "total": -70
+                    },
+                    "master": null,
+                    "super": null,
+                    "company": -500
+                }
 
-  .. code-block:: json
 
-    {
-        "turnover": "30,000.00",
-        "grosscomm": "50.00",
-        "member": null,
-        "agent": {
-            "winloss": null,
-            "comm": null,
-            "total": "-70.00"
-        },
-        "master": {
-            "winloss": "-50.00",
-            "comm": "-5.00",
-            "total": "-70.00"
-        },
-        "super": null,
-        "company": "-500.00"
-    }
+        - Agent Yesterday Win Loss (Customer level is Master)
 
-  * Level Super:
+            .. code-block:: JSON
 
-  .. code-block:: json
+                {
+                    "turnover": 30000,
+                    "grosscomm": 50,
+                    "member": null,
+                    "agent": {
+                        "winloss": null,
+                        "comm": null,
+                        "total": -70
+                    },
+                    "master": {
+                        "winloss": -50,
+                        "comm": -5,
+                        "total": -70
+                    },
+                    "super": null,
+                    "company": -500
+                }
 
-    {
-        "turnover": "30,000.00",
-        "grosscomm": "50.00",
-        "member": null,
-        "agent": null,
-        "master": {
-            "winloss": null,
-            "comm": null,
-            "total": "-70.00"
-        },
-        "super": {
-            "winloss": "-50.00",
-            "comm": "-5.00",
-            "total": "-70.00"
-        },
-        "company": "-500.00"
-    }
+        - Master Yesterday Win Loss (Customer level is Super)
+
+            .. code-block:: JSON
+
+                {
+                    "turnover": 30000,
+                    "grosscomm": 50,
+                    "member": null,
+                    "agent": null,
+                    "master": {
+                        "winloss": null,
+                        "comm": null,
+                        "total": -70
+                    },
+                    "super": {
+                        "winloss": -50,
+                        "comm": -5,
+                        "total": -70
+                    },
+                    "company": -500
+                }
 
 ----------------------
 
 Get Today Win-Loss
 ------------------
 
-Describe the purpose of the service
+Gets today win loss report for customer.
 
   **Http Request:**
 
@@ -130,82 +135,96 @@ Describe the purpose of the service
 
   **Response:**
 
-  Returns the status code ``200`` and a JSON object.
+  Returns the status code ``200`` and a JSON object depending on level of customer.
 
-  * Level Agent:
+    .. hlist::
+        :columns: 3
 
-  .. code-block:: json
+        - Member Today Win Loss (Customer level is Agent)
 
-    {
-        "turnover": "30,000.00",
-        "grosscomm": "50.00",
-        "member": {
-            "winloss": "-50.00",
-            "comm": "-5.00",
-            "total": "-55.00"
-        },
-        "agent": {
-            "winloss": "-50.00",
-            "comm": "-5.00",
-            "total": "-70.00"
-        },
-        "master": null,
-        "super": null,
-        "company": "-500.00"
-    }
+            .. code-block:: JSON
 
-  * Level Master:
+                {
+                    "turnover": 30000,
+                    "grosscomm": 50,
+                    "member": {
+                        "winloss": -50,
+                        "comm": -5,
+                        "total": -55
+                    },
+                    "agent": {
+                        "winloss": -50,
+                        "comm": 5,
+                        "total": -70
+                    },
+                    "master": null,
+                    "super": null,
+                    "company": -500
+                }
 
-  .. code-block:: json
 
-    {
-        "turnover": "30,000.00",
-        "grosscomm": "50.00",
-        "member": null,
-        "agent": {
-            "winloss": null,
-            "comm": null,
-            "total": "-70.00"
-        },
-        "master": {
-            "winloss": "-50.00",
-            "comm": "-5.00",
-            "total": "-70.00"
-        },
-        "super": null,
-        "company": "-500.00"
-    }
+        - Agent Today Win Loss (Customer level is Master)
 
-  * Level Super:
+            .. code-block:: JSON
 
-  .. code-block:: json
+                {
+                    "turnover": 30000,
+                    "grosscomm": 50,
+                    "member": null,
+                    "agent": {
+                        "winloss": null,
+                        "comm": null,
+                        "total": -70
+                    },
+                    "master": {
+                        "winloss": -50,
+                        "comm": -5,
+                        "total": -70
+                    },
+                    "super": null,
+                    "company": -500
+                }
 
-    {
-        "turnover": "30,000.00",
-        "grosscomm": "50.00",
-        "member": null,
-        "agent": null,
-        "master": {
-            "winloss": null,
-            "comm": null,
-            "total": "-70.00"
-        },
-        "super": {
-            "winloss": "-50.00",
-            "comm": "-5.00",
-            "total": "-70.00"
-        },
-        "company": "-500.00"
-    }
+        - Master Today Win Loss (Customer level is Super)
+
+            .. code-block:: JSON
+
+                {
+                    "turnover": 30000,
+                    "grosscomm": 50,
+                    "member": null,
+                    "agent": null,
+                    "master": {
+                        "winloss": null,
+                        "comm": null,
+                        "total": -70
+                    },
+                    "super": {
+                        "winloss": -50,
+                        "comm": -5,
+                        "total": -70
+                    },
+                    "company": -500
+                }
 
 --------------------------
 
 Get Outstanding
 ---------------
 
+Gets oustanding report for customer.
+
   **Http Request:**
 
   ``GET: /api/oustanding/{cid}``
+
+  **Request Headers:**
+
+  ===============  ============================
+  Request Header   Description
+  ===============  ============================
+  Authorization    Bearer ``<token>``          
+  ===============  ============================
 
   **Query Paramaters:**
 
@@ -215,14 +234,6 @@ Get Outstanding
   cid         int    customer id
   ==========  =====  ============================
 
-  **Request Headers:**
-
-  ==========  ===============  ============================
-  Paramater   Value            Description
-  ==========  ===============  ============================
-  :method     GET                 
-  ==========  ===============  ============================
-
   **Response:**
 
   Returns the status code ``200`` and a JSON object.
@@ -230,14 +241,16 @@ Get Outstanding
   .. code-block:: json
 
     {
-        "totaloutstanding": "1,000.00",
-        "outstanding": "50.00"
+        "totaloutstanding": 1000,
+        "outstanding": 50
     }
 
 --------------------------
 
 Get Balance Info
 ----------------
+
+Gets balance info for customer
 
   **Http Request:**
 
@@ -267,12 +280,12 @@ Get Balance Info
 
     {
         "currency": "UUS",
-        "cashbalance": "1,500,000.00",
-        "yesterdaycashbalance": "1,500,000.00",
-        "totalbalance": "-120,000.00",
-        "yesterdaytotalbalance": "-120,906.77",
-        "todaywinloss": "0.00",
-        "yesterdaywinloss": "0.00",
-        "givencredit": "6,000,000.00",
-        "membercredit": "5,630,000.00"
+        "cashbalance": 1500000,
+        "yesterdaycashbalance": 1500000,
+        "totalbalance": -120000,
+        "yesterdaytotalbalance": -120906,
+        "todaywinloss": 0,
+        "yesterdaywinloss": 0,
+        "givencredit": 6000000,
+        "membercredit": 5630000
     }

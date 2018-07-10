@@ -1,13 +1,13 @@
-**************************
+****************
 Message Services
-**************************
+****************
 
 .. contents:: Table of Contents
    :local:
    :backlinks: top
 
 Get Messages
---------------------
+------------
 Gets personal/special/normal messages for customer.
 
   **Http Request:**
