@@ -15,6 +15,14 @@ Describe the purpose of the service
 
   ``GET: /api/winloss/yesterday/{cid}``
 
+  **Request Headers:**
+
+  ===============  ============================
+  Request Header   Description
+  ===============  ============================
+  Authorization    Bearer ``<token>``          
+  ===============  ============================
+
   **Query Paramaters:**
 
   ==========  =====  ============================
@@ -23,16 +31,9 @@ Describe the purpose of the service
   cid         int    customer id
   ==========  =====  ============================
 
-  **Request Headers:**
-
-  ==========  ===============  ============================
-  Paramater   Value            Description
-  ==========  ===============  ============================
-  :method     GET                 
-  ==========  ===============  ============================
-
-
   **Response:**
+
+  Returns the status code ``200`` and a JSON object.
 
   * Level Agent:
 
@@ -111,6 +112,14 @@ Describe the purpose of the service
 
   ``GET: /api/winloss/today/{cid}``
 
+  **Request Headers:**
+
+  ===============  ============================
+  Request Header   Description
+  ===============  ============================
+  Authorization    Bearer ``<token>``          
+  ===============  ============================
+
   **Query Paramaters:**
 
   ==========  =====  ============================
@@ -119,16 +128,9 @@ Describe the purpose of the service
   cid         int    customer id
   ==========  =====  ============================
 
-  **Request Headers:**
-
-  ==========  ===============  ============================
-  Paramater   Value            Description
-  ==========  ===============  ============================
-  :method     GET                 
-  ==========  ===============  ============================
-
-
   **Response:**
+
+  Returns the status code ``200`` and a JSON object.
 
   * Level Agent:
 
@@ -221,8 +223,9 @@ Get Outstanding
   :method     GET                 
   ==========  ===============  ============================
 
-
   **Response:**
+
+  Returns the status code ``200`` and a JSON object.
 
   .. code-block:: json
 
@@ -236,9 +239,17 @@ Get Outstanding
 Get Balance Info
 ----------------
 
-**Http Request:**
+  **Http Request:**
 
   ``GET: /api/balance/{cid}``
+
+  **Request Headers:**
+
+  ===============  ============================
+  Request Header   Description
+  ===============  ============================
+  Authorization    Bearer ``<token>``          
+  ===============  ============================
 
   **Query Paramaters:**
 
@@ -248,16 +259,9 @@ Get Balance Info
   cid         int    customer id
   ==========  =====  ============================
 
-  **Request Headers:**
-
-  ==========  ===============  ============================
-  Paramater   Value            Description
-  ==========  ===============  ============================
-  :method     GET                 
-  ==========  ===============  ============================
-
-
   **Response:**
+
+  Returns the status code ``200`` and a JSON object.
 
   .. code-block:: json
 
