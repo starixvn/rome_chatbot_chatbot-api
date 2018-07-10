@@ -74,7 +74,7 @@ Describe the purpose of the service
   ===========  =============  ============================
   Paramater    Type           Description
   ===========  =============  ============================
-  messageids   Array of int   Array of messages IDs.
+  messageIds   Array of int   Array of messages IDs.
   ===========  =============  ============================
 
   **Response:**

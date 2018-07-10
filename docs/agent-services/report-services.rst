@@ -11,7 +11,6 @@ Get Yesterday Win-Loss
 
 Gets yesterday win loss report for customer.
 
-
   **Http Request:**
 
   ``GET: /api/winloss/yesterday/{cid}``
@@ -60,7 +59,6 @@ Gets yesterday win loss report for customer.
                     "super": null,
                     "company": -500
                 }
-
 
         - Agent Yesterday Win Loss (Customer level is Master)
 
@@ -161,7 +159,6 @@ Gets today win loss report for customer.
                     "super": null,
                     "company": -500
                 }
-
 
         - Agent Today Win Loss (Customer level is Master)
 
