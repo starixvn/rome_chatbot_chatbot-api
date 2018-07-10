@@ -12,7 +12,7 @@ Chatbot Report & Notification Setting
 This setting allow user to set what they want to receive from letstalk bot account. This sequence diagram below describes how request is processed 
 
 
-.. image:: assets/setting-bot-functions.png
+.. image:: assets/SQ_Setting_Bot_Command_Notification.png
 
 Query Bot Setting
 ------------------------
@@ -46,15 +46,16 @@ This API allow consumer site to query bot setting
 
   .. code-block:: json
 
-    {
-        "enabledOutstanding": true,
-        "enabledTodayWinLoss": true,
-        "enabledBalanceInfo": true,
-        "enabledYesterdayWinLoss": true,
-        "enabledPersonalMessage": true,
-        "enabledSpecialAnnouncement": true,
-        "enabledNormalAnnouncement": true
-    }
+    [
+        {
+            "id": 1,
+            "enabled": true
+        },
+        {
+            "id": 2,
+            "enabled": true
+        }
+    ]
 
 ----------------------
 
@@ -86,15 +87,16 @@ This API allow consumer site to update bot setting in order to receive reports/n
 
   .. code-block:: json
 
-    {
-        "enabledOutstanding": true,
-        "enabledTodayWinLoss": true,
-        "enabledBalanceInfo": true,
-        "enabledYesterdayWinLoss": true,
-        "enabledPersonalMessage": true,
-        "enabledSpecialAnnouncement": true,
-        "enabledNormalAnnouncement": true
-    }
+    [
+        {
+            "id": 1,
+            "enabled": true
+        },
+        {
+            "id": 2,
+            "enabled": true
+        }
+    ]
 
   **Response:**
 
@@ -239,7 +241,7 @@ This is initial step for SMA can use chat bot funtion. After SMA set up, bot acc
 The sequence diagram below describes how set up account work
 
  
-.. image:: assets/SQ_Setup_Letstalk_Account.jpg
+.. image:: assets/SQ_Setup_Letstalk_Account.png
 
 Add Letstalk Account
 ------------------------
@@ -370,7 +372,7 @@ Unsubscibe Letstalk Account
 
 This API allow SMA can unsubscibe receive message from bot, and cannot chat with bot anymore
 
-  .. image:: assets/SQ_Remove_Letstalk_Account.jpg
+  .. image:: assets/SQ_Remove_Letstalk_Account.png
 
 
   **Http Request:**
