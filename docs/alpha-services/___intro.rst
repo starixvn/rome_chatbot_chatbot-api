@@ -9,8 +9,7 @@ Introduction
 Overview
 --------
 
-.. image:: assets/alpha-service-intro.png    
-    :align: left
+.. image:: assets/alpha-service-intro.png
 
 Common Specifications
 ---------------------
