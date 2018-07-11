@@ -10,6 +10,10 @@ Glossary and Acronyms
 
   .. glossary::
 
+    .. _SMA-label:
+    SMA
+      Represent for customers (of Agency Site) with level Super, Master or Agent.
+
     Letsttalk Platform
       What is Letsttalk Platform, brief it's role and how it can be used.
 

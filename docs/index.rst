@@ -18,8 +18,9 @@
    :caption: Architectural Overview
    :maxdepth: 2
    
+    
    overview/hld
-   overview/services-in-contexts
+   overview/use-cases
    overview/database-design
 
 .. toctree::
