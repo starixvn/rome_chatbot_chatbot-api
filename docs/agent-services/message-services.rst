@@ -34,7 +34,9 @@ Gets personal/special/normal messages for customer.
 
   **Response:**
 
-  Returns the status code ``200`` and a JSON object.
+  Returns the status code ``200`` and an array of JSON object.
+
+  Example response:
 
   .. code-block:: json
 

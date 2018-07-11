@@ -35,6 +35,8 @@ Gets yesterday win loss report for customer.
 
   Returns the status code ``200`` and a JSON object depending on level of customer.
 
+  Example response:
+
     .. hlist::
         :columns: 3
 
@@ -134,6 +136,8 @@ Gets today win loss report for customer.
   **Response:**
 
   Returns the status code ``200`` and a JSON object depending on level of customer.
+
+  Example response:
 
     .. hlist::
         :columns: 3
@@ -235,6 +239,8 @@ Gets oustanding report for customer.
 
   Returns the status code ``200`` and a JSON object.
 
+  Example response:
+
   .. code-block:: json
 
     {
@@ -272,6 +278,8 @@ Gets balance info for customer
   **Response:**
 
   Returns the status code ``200`` and a JSON object.
+
+  Example response:
 
   .. code-block:: json
 
