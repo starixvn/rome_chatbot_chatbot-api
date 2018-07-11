@@ -8,7 +8,7 @@ Set message that is used by ``Chatbot`` for automated replying to Letstalk users
 
 **Usage Scenarios:**
 
-- Scenario 1: Notify Letstalk users about maintenance time of Agent Site
+- Scenario 1: Notify Letstalk users about maintenance time of Alpha Site
 
 .. image:: assets/auto_reply_msg.png
 

@@ -1,5 +1,5 @@
 **************************
-Chatbot Setting
+Setting Service
 **************************
 
 .. contents:: Table of Contents
@@ -154,7 +154,7 @@ Chatbot Language Setting
 In setting page, we allow user to set what language they want receive from bot
 
 
-.. image:: assets/setting-bot-language.png
+.. image:: assets/SQ_Setting_Bot_Language.png
 
 Query Bot Language
 ------------------------
