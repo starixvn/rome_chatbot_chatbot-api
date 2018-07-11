@@ -2,11 +2,11 @@
 Introduction
 **************************
 
-Chat Bot API is the heart of this architecture, every request interacts with letstalk app, chat bot database ..., must go though this service.
+ChatBot (Bot) API is a group of services, every request interacts with letstalk app, chatbot database ..., must go though these services.
 
 .. image:: assets/bot-services-intro.png
 
-Chat Bot API includes two main parts:
+Chatbot API includes two main parts:
 
 - Bot Client: a dll, every consumer site uses this client to access provided APIs
 - Bot Services: 

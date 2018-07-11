@@ -259,7 +259,7 @@ Manage Letstalk Account
 
 Setup Letstalk Account
 ------------------------
-This is initial step for SMA can use chat bot funtion. After SMA set up, bot account is ready to send message to SMA's letstalk account
+This is initial step for SMA can use chatbot funtions. After SMA set up, bot account is ready to send message to SMA's letstalk account
 
 The sequence diagram below describes how set up account work
 
