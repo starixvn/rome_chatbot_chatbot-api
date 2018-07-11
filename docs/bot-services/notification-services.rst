@@ -16,7 +16,7 @@ Notification Services are service do some scheduled job, such as sending report 
 Yesterday Win Loss
 =============================================
 
-This notification service collects SMA yesterday win loss and send in schedule, this schedule will be fixed or depend on SMA's chatbot setting. 
+This notification service collects SMA yesterday win loss and send in schedule, this schedule will be fixed or customized depend on SMA's chatbot setting. 
 
 .. image:: assets/Report_Notification_Service.png
 
