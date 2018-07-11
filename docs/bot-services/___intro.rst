@@ -15,6 +15,6 @@ Chatbot API includes two main parts:
     - run scheduled jobs to collect data and send to letstalk service
     - set auto reply messages in some cases like UM time
 
-.. image:: assets/ChatBotAPI_Services.png 
+.. image:: assets/ChatBotAPI_Services.png  
 
-In this implementation, we use *Message Pack* https://msgpack.org/index.html to serialize message content
+In this implementation, we use *Message Pack* https://msgpack.org/index.html to serialize message content 
