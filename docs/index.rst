@@ -32,11 +32,11 @@
    
 
 .. toctree::
-   :caption: Agent Services
+   :caption: Alpha Services
    :glob:
    :maxdepth: 2
    
-   agent-services/*
+   alpha-services/*
    
 
 .. toctree::
