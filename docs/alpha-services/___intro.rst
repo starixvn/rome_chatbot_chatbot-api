@@ -9,6 +9,8 @@ Introduction
 Overview
 --------
 
+The Aplpha Services lets you retrieve customer data with a customer id, such as some basic reports, message & announcements.
+
 .. image:: assets/alpha-service-intro.png
 
 Common Specifications
@@ -17,23 +19,23 @@ Common Specifications
 Status Codes
 ~~~~~~~~~~~~
 
-The following status codes are returned by the Agent Services.
+The following status codes are returned by the Alpha Services.
 
-    ============  =======================================
+    ============  =======================
     Status Code   Description
-    ============  =======================================
+    ============  =======================
     200           Request successful
-    ------------  ---------------------------------------
+    ------------  -----------------------
     400           Bad Request
-    ------------  ---------------------------------------
+    ------------  -----------------------
     401           Unauthorized
-    ------------  ---------------------------------------
+    ------------  -----------------------
     403           Forbidden
-    ------------  ---------------------------------------
+    ------------  -----------------------
     429           Too Many Requests
-    ------------  ---------------------------------------
+    ------------  -----------------------
     500           Internal Server Error
-    ============  =======================================
+    ============  =======================
 
 Error Responses
 ~~~~~~~~~~~~~~~
