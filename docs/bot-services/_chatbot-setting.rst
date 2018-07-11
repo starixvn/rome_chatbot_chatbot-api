@@ -9,7 +9,7 @@ Chatbot Setting
 Chatbot Report & Notification Setting
 =============================================
 
-This setting allow user to set what they want to receive from letstalk bot account. This sequence diagram below describes how request is processed 
+This setting allow user to set what they want to receive from Letstalk bot account. This sequence diagram below describes how request is processed 
 
 
 .. image:: assets/SQ_Setting_Bot_Command_Notification.png
@@ -31,10 +31,10 @@ This API allow consumer site to query bot setting
   ===============  ============================
   
 
-  **Query Paramaters:**
+  **Query Parameters:**
 
   ============  =====  ===========================================================================
-  Paramater     Type   Description
+  Parameter     Type   Description
   ============  =====  ===========================================================================
   cid           int    customer id
   ============  =====  ===========================================================================
@@ -49,10 +49,12 @@ This API allow consumer site to query bot setting
     [
         {
             "id": 1,
+            "name": "Report Outstanding",
             "enabled": true
         },
         {
             "id": 2,
+            "name": "Today Win Loss",
             "enabled": true
         }
     ]
@@ -98,10 +100,10 @@ This API allow consumer site to update bot setting in order to receive reports/n
    Authorization    Bearer ``<token>``             
   ===============  ============================
 
-  **Query Paramaters:**
+  **Query Parameters:**
 
   ============  =====  ================
-  Paramater     Type   Description
+  Parameter     Type   Description
   ============  =====  ================
   cid           int    customer id
   ============  =====  ================
@@ -170,10 +172,10 @@ This API allow consumer site to query user's bot language
    Authorization    Bearer ``<token>``             
   ===============  ============================
 
-  **Query Paramaters:** 
+  **Query Parameters:** 
 
   ============  =====  ===========================================================================
-  Paramater     Type   Description
+  Parameter     Type   Description
   ============  =====  ===========================================================================
   cid           int    customer id
   ============  =====  ===========================================================================
@@ -207,10 +209,10 @@ This API allow consumer site to update bot language
    Authorization    Bearer ``<token>``             
   ===============  ============================
 
-  **Query Paramaters:**
+  **Query Parameters:**
 
   ============  =====  ===========================================================================
-  Paramater     Type   Description
+  Parameter     Type   Description
   ============  =====  ===========================================================================
   cid           int    customer id
   ============  =====  ===========================================================================
@@ -224,9 +226,17 @@ This API allow consumer site to update bot language
     }
 
   ============  =======  ===================================================================================
-  Paramater     Type     Description
+  Parameter     Type     Description
   ============  =======  ===================================================================================
-  language      string   language key, allowed languages: en-US, vi-VN, zh-CN, zh-TW, th-TH, ja-JP, ko-KR
+  language      string   language key, allowed languages: 
+
+                         - en-US
+                         - vi-VN
+                         - zh-CN
+                         - zh-TW
+                         - th-TH
+                         - ja-JP
+                         - ko-KR
   ============  =======  ===================================================================================
 
   **Response:**
@@ -259,7 +269,7 @@ Manage Letstalk Account
 
 Setup Letstalk Account
 ------------------------
-This is initial step for SMA can use chatbot funtions. After SMA set up, bot account is ready to send message to SMA's letstalk account
+This is initial step for SMA can use chatbot functions. After SMA set up, bot account is ready to send message to SMA's Letstalk account
 
 The sequence diagram below describes how set up account work
 
@@ -268,7 +278,7 @@ The sequence diagram below describes how set up account work
 
 Add Letstalk Account
 ------------------------
-This API allow consumer site to add user letstalk account
+This API allow consumer site to add user Letstalk account
 
   **Http Request:**
 
@@ -282,10 +292,10 @@ This API allow consumer site to add user letstalk account
    Authorization    Bearer ``<token>``             
   ===============  ============================
 
-  **Query Paramaters:**
+  **Query Parameters:**
 
   ============  =====  ===========================================================================
-  Paramater     Type   Description
+  Parameter     Type   Description
   ============  =====  ===========================================================================
   cid           int    customer id
   ============  =====  ===========================================================================
@@ -299,9 +309,9 @@ This API allow consumer site to add user letstalk account
     }
 
   ============  =======  =====================================================
-  Paramater     Type     Description
+  Parameter     Type     Description
   ============  =======  =====================================================
-  account       string   SMA's letstalk account name
+  account       string   SMA's Letstalk account name
   ============  =======  =====================================================
 
   **Response:**
@@ -328,7 +338,7 @@ This API allow consumer site to add user letstalk account
 
 ----------------------
 
-Check Verfication Code 
+Check Verification Code 
 --------------------------
 This API allow consumer site to check verification code
 
@@ -344,10 +354,10 @@ This API allow consumer site to check verification code
    Authorization    Bearer ``<token>``             
   ===============  ============================
 
-  **Query Paramaters:**
+  **Query Parameters:**
 
   ============  =====  ===========================================================================
-  Paramater     Type   Description
+  Parameter     Type   Description
   ============  =====  ===========================================================================
   cid           int    customer id
   ============  =====  ===========================================================================
@@ -360,11 +370,13 @@ This API allow consumer site to check verification code
          "verificationCode": "549388"
     }
 
-  ================  =======  ==========================================================================================================
-  Paramater         Type     Description
-  ================  =======  ==========================================================================================================
-  verificationCode  string   Verifiation Code receive from Letstalk app to verify whether SMA possesses that account or not
-  ================  =======  ==========================================================================================================
+  ================  =======  =======================================================
+  Parameter         Type     Description
+  ================  =======  =======================================================
+  verificationCode  string   Verification Code receive from Letstalk app to verify
+
+                             whether SMA possesses that account or not
+  ================  =======  =======================================================
 
   **Response:**
 
@@ -390,17 +402,17 @@ This API allow consumer site to check verification code
 
 ----------------------
 
-Unsubscibe Letstalk Account
+Unsubscribe Letstalk Account
 -----------------------------
 
-This API allow SMA can unsubscibe receive message from bot, and cannot chat with bot anymore
+This API allow SMA can unsubscribe receive message from bot, and cannot chat with bot anymore
 
   .. image:: assets/SQ_Remove_Letstalk_Account.png
 
 
   **Http Request:**
 
-  ``POST: /api/bot/{cid}/unsubscibe``
+  ``POST: /api/bot/{cid}/unsubscribe``
 
   **Request Headers:**
 
@@ -410,10 +422,10 @@ This API allow SMA can unsubscibe receive message from bot, and cannot chat with
    Authorization    Bearer ``<token>``             
   ===============  ============================
 
-  **Query Paramaters:**
+  **Query Parameters:**
 
   ============  =====  ===========================================================================
-  Paramater     Type   Description
+  Parameter     Type   Description
   ============  =====  ===========================================================================
   cid           int    customer id
   ============  =====  ===========================================================================
@@ -426,7 +438,7 @@ This API allow SMA can unsubscibe receive message from bot, and cannot chat with
 
     {
         "code": 0,
-        "message": "Unsubscibed successfully!"
+        "message": "Unsubscribed successfully!"
     }
 
   **Return Code Information:**
@@ -434,7 +446,7 @@ This API allow SMA can unsubscibe receive message from bot, and cannot chat with
   ============  ======================================
   Code          Description
   ============  ======================================
-  0             Unsubscibed successfully!
+  0             Unsubscribed successfully!
   ------------  --------------------------------------
   x             Other code will be defined later
   ============  ======================================
