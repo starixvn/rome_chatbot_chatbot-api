@@ -8,7 +8,7 @@ Message Services
 
 Get Messages
 ------------
-Gets personal/special/normal messages for customer.
+Gets personal messages, normal/special announcements for customer.
 
   **Http Request:**
 
@@ -34,9 +34,9 @@ Gets personal/special/normal messages for customer.
 
   **Response:**
 
-  Returns the status code ``200`` and an array of JSON object.
+  Returns the status code ``200`` and an array of message.
 
-  Example response:
+  Response body sample in JSON format:
 
   .. code-block:: json
 
@@ -55,7 +55,8 @@ Gets personal/special/normal messages for customer.
 
 Update Status Of Messages
 -------------------------
-Describe the purpose of the service
+
+Updates status of messages and announcements.
 
   **Http Request:**
 
@@ -81,4 +82,4 @@ Describe the purpose of the service
 
   **Response:**
 
-  Return the status code ``200`` and an empty JSON object.
+  Return the status code ``200``.
