@@ -1,5 +1,5 @@
 **************************
-Notification Services
+Schedule Service
 **************************
 
 .. contents:: Table of Contents

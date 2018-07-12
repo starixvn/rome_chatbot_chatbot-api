@@ -24,7 +24,7 @@
    overview/database-design
 
 .. toctree::
-   :caption: Letstalk Chatbot Services
+   :caption: Chatbot Services
    :glob:
    :maxdepth: 2
    
