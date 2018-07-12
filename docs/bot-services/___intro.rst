@@ -2,7 +2,12 @@
 Introduction
 **************************
 
-ChatBot (Bot) API is a group of services, every request interacts with Letstalk app, Chatbot database ..., must go though these services.
+**Chatbot services** is a single entry point for clients to access services across boundary. Currently, it includes three main components:
+
+1.  **Notification service**: *a window service* periodically get data in order to send to Letstalk users.
+2.  **Setting Services**: a web service   
+3.  **Setting Services**: a web service   
+
 
 .. image:: assets/bot-services-intro.png
 

@@ -4,6 +4,7 @@ Setting Service
 
 .. contents:: Table of Contents
    :local:
+   :numbered:
    :backlinks: top
 
 Chatbot Report & Notification Setting
