@@ -1,5 +1,5 @@
 *****************
-Document Purpose
+Purpose
 *****************
 
 This document provides a description of our technical solution to build up a more secure and more convenient way for SMA to receive up-to-date significant information from the Alpha site via Letstalk channel.
