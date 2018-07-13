@@ -2,16 +2,12 @@
 Setting Service
 **************************
 
-.. contents:: Table of Contents
-   :local:
-   :numbered:
-   :backlinks: top
-
 Chatbot Report & Notification Setting
 =============================================
 
-This setting allow user to set what they want to receive from Letstalk bot account. This sequence diagram below describes how request is processed 
+SMA can on/off setting depend on their business.
 
+This sequence diagram below describes how Alpha Site 
 
 .. image:: assets/SQ_Setting_Bot_Command_Notification.png
 
@@ -23,13 +19,13 @@ This API allow consumer site to query bot setting
 
   ``GET: /api/bot/{cid}/setting``
 
-  **Request Headers:**
+  **Request Headers:** 
  
   ===============  ============================
   Request Header   Description
   ===============  ============================
   Authorization    Bearer ``<token>``             
-  ===============  ============================
+  ===============  ============================ 
   
 
   **Query Parameters:**
@@ -43,7 +39,10 @@ This API allow consumer site to query bot setting
 
   **Response:**
 
-  Returns the status code ``200`` and a JSON object.
+  Returns the status code ``200`` and a object.
+  
+  This json code below describes the return object
+
 
   .. code-block:: json
 
@@ -60,7 +59,6 @@ This API allow consumer site to query bot setting
         }
     ]
    
-
 
   **Return Code Information:**
 
@@ -126,7 +124,9 @@ This API allow consumer site to update bot setting in order to receive reports/n
 
   **Response:**
 
-  Returns the status code ``200`` and a JSON object.
+  Returns the status code ``200`` and a object.
+  
+  This json code below describes the return object
 
   .. code-block:: json
 
@@ -184,7 +184,9 @@ This API allow consumer site to query user's bot language
 
   **Response:**
 
-  Returns the status code ``200`` and a JSON object.
+  Returns the status code ``200`` and a object.
+  
+  This json code below describes the return object
 
   .. code-block:: json
 
@@ -242,7 +244,9 @@ This API allow consumer site to update bot language
 
   **Response:**
 
-  Returns the status code ``200`` and a JSON object.
+  Returns the status code ``200`` and a object.
+  
+  This json code below describes the return object
 
   .. code-block:: json
 
@@ -317,7 +321,9 @@ This API allow consumer site to add user Letstalk account
 
   **Response:**
 
-  Returns the status code ``200`` and a JSON object.
+  Returns the status code ``200`` and a object.
+  
+  This json code below describes the return object
 
   .. code-block:: json
 
@@ -381,7 +387,9 @@ This API allow consumer site to check verification code
 
   **Response:**
 
-  Returns the status code ``200`` and a JSON object.
+  Returns the status code ``200`` and a object.
+  
+  This json code below describes the return object
 
   .. code-block:: json
 
@@ -433,7 +441,9 @@ This API allow SMA can unsubscribe receive message from bot, and cannot chat wit
 
   **Response:**
 
-  Returns the status code ``200`` and a JSON object.
+  Returns the status code ``200`` and a object.
+  
+  This json code below describes the return object
 
   .. code-block:: json
 
@@ -450,7 +460,7 @@ This API allow SMA can unsubscribe receive message from bot, and cannot chat wit
   0             Unsubscribed successfully!
   ------------  --------------------------------------
   x             Other code will be defined later
-  ============  ======================================
+  ============  ====================================== 
 
 
 
