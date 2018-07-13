@@ -2,12 +2,10 @@
 Introduction
 **************************
 
-**Chatbot services** is a single entry point for clients to access services across boundary. Currently, it includes three main components:
+**Chatbot services** work like `message oriented middleware <https://en.wikipedia.org/wiki/Message-oriented_middleware>`_, a business service layer. The layer abstracts away all backend services and dependencies behind facades, it also address things like security, logging, audit trail, cross-domain communication, etc.
 
-1.  **Notification service**: *a window service* periodically get data in order to send to Letstalk users.
-2.  **Setting Services**: *a web service* provides function   
-3.  **Auto Reply Service**: *a window service* to  
 
+The following diagram and subsequent annotations explain the architecture:
 
 .. image:: assets/bot-services-intro.png
 
