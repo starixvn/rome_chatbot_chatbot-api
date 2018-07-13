@@ -20,11 +20,16 @@ This notification service collects SMA yesterday win loss and send in schedule, 
 
 Yesterday Win Loss Notification Service includes two parts: 
 
-- The first part, is background worker, collects all customer enabled yesterday win loss report setting, and schedule job to collect customer report data in queue. The first part also take responsibility to collect all retry jobs and put it in queue. 
+- The first part:
 
+    - is background worker
+    - collects all customer enabled yesterday win loss report setting, and schedule job to collect customer report data
+    - collects all retry jobs start it
+    - on schedule time, it starts job worker to collect data
+ 
 .. image:: assets/Report_Notification_Service_1.png
 
-- The second part includes multiple background workers, these workers enqueue job from message queue to compose report message then send to Letstalk Service.
+- The second part includes multiple background workers, these workers run asynchronous to collect user data.
 
 .. image:: assets/Report_Notification_Service_2.png
 
