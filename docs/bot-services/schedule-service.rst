@@ -9,16 +9,16 @@ Schedule Service
 Overview
 =============================================
 
-Notification Services are service do some scheduled job, such as sending report daily, collecting all SMA messages and push it to Letstalk service
+Schedule services are services do scheduled jobs, such as sending report daily, collecting all SMA messages and push it to Letstalk service
 
 .. image:: assets/Notification_Services_Overview.png
 
 Yesterday Win Loss
 =============================================
 
-This notification service collects SMA yesterday win loss and send in schedule, this schedule will be fixed or customized depend on SMA's chatbot setting. 
+This schedule service collects SMA yesterday win loss and send in schedule, this schedule will be fixed or customized depend on SMA's chatbot setting. 
 
-Yesterday Win Loss Notification Service includes two parts: 
+Yesterday Win Loss Schedule Service includes two parts: 
 
 - The first part:
 
@@ -32,9 +32,3 @@ Yesterday Win Loss Notification Service includes two parts:
 - The second part includes multiple background workers, these workers run asynchronous to collect user data.
 
 .. image:: assets/Report_Notification_Service_2.png
-
-
-Message & Announcement
-=============================================
-
-This notification service collects SMA message & announcement, then send it to SMA's Letstalk Account
