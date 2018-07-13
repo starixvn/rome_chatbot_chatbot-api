@@ -2,8 +2,9 @@
 Introduction
 **************************
 
-**Chatbot services** work like `message oriented middleware <https://en.wikipedia.org/wiki/Message-oriented_middleware>`_, a business service layer. The layer abstracts away all backend services and dependencies behind facades, it also address things like security, logging, audit trail, cross-domain communication, etc.
+**Chatbot services** work like `message-oriented middleware <https://en.wikipedia.org/wiki/Message-oriented_middleware>`_, play a role as a business service layer (fully asynchronous service layer) which abstracts away all backend services and dependencies behind facades.
 
+The middleware also addresses things like security, logging, audit trail, and cross-platform communications, etc.
 
 The following diagram and subsequent annotations explain the architecture:
 
