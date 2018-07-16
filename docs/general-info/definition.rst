@@ -9,8 +9,10 @@ Glossary and Acronyms
 #.	The following is a list of definitions for this template based on the UML approach to system design:
 
   .. glossary::
+    
+    System
+      It includes Alpha, and Letsttalk platform.
 
-    .. _SMA-label:
     SMA
       Represent for customers (of Agency Site) with level Super, Master or Agent.
 

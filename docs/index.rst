@@ -18,9 +18,8 @@
    :caption: Architectural Overview
    :maxdepth: 2
    
-    
-   overview/hld
-   Use Cases <overview/use-cases>
+   System Overview <overview/use-cases> 
+   High Level Design <overview/hld>   
    overview/database-design
 
 .. toctree::
