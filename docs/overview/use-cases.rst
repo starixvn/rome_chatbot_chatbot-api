@@ -4,7 +4,7 @@ System Overview
 System use case diagrams below describe functions that system should peform in colloboration with SMA. 
 
 .. note:: - To get more details about functional specification, please refer to document `Alpha chat bot via Letstalk <ttps://bit.ly/2NtRuHl>`_.
-          - Developers are required to clearly understand all business cases before reading further content.
+          - The use case diagrams are prerequistie knowledge before reading the system technical design.
 
 1. Business Cases of Alpha
 --------------------------
