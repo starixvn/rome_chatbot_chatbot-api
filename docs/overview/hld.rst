@@ -10,7 +10,7 @@ From the traditional **n-tier architecture** point of view, system can be devide
 
 .. image:: assets/hld.png
 
-.. warning:: The picture above does **NOT** put ``Alpha site`` and ``Chatbot backend`` at the right place. They should belong to Presentation tier.
+.. note:: To outline an overview of the system architecture, placing the **Alpha site** and **Chatbot backend** at incorrect tiers is temporarily acceptable. They truly belong to the **Presentation tier**.
 
 
 
