@@ -1,5 +1,6 @@
-Introduction
-============
+==================
+High Level Design
+==================
 
 .. image:: assets/hld.png
 
