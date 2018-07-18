@@ -2,22 +2,23 @@
 Introduction
 *********************
 
-From the traditional **n-tier architecture** point of view, system can be devided into three tiers as follows:
-
-    1. **Presentation tier:** Letstalk app, Alpha setup page, and Chatbot backend site.
-    2. **Business tier:** A collection of scalable **microservices** which perform operations read data (queries) and update data (commands). 
-    3. **Data tier:** Alpha service provides SMA's data such as *customer info*, `report`, `balance`, etc.
-
 .. image:: assets/hld.png
 
-.. note:: 
-    - To outline an overview of the system architecture, placing the **Alpha site** and **Chatbot backend** at incorrect tiers is temporarily acceptable. They truly belong to the *Presentation tier*.
+With vertical slicing, project is to separate into three domains: **Alpha**, **Chatbot**, and **Letstalk**. And every part has a dedicated database of their own, that would enable `microservice architecture <https://martinfowler.com/articles/microservices.html>`_.
 
-    - References:
+With horizontal slicing, from the traditional **n-architecture** point of view, the project is divided into three tiers.
 
-        - **CQRS** https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs
+1. **Presentation tier:** Letstalk app, Alpha setup page, and Chatbot backend site.
+2. **Business tier:** A collection of scalable **microservices**, when each service perform only one operation read data (query) or update data (command). 
+3. **Data tier:** Alpha service provides SMA's data such as *customer info*, `report`, `balance`, etc.
 
-        - **Microservices** https://martinfowler.com/articles/microservices.html
+
+
+.. note::       
+
+    - **CQRS** https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs
+
+    - **Microservices** https://martinfowler.com/articles/microservices.html
 
 
 
