@@ -19,13 +19,13 @@ Glossary and Acronyms
     Letsttalk Platform
       What is Letsttalk Platform, brief it's role and how it can be used.
 
-    Letsttalk Bot Services
+    Letsttalk Services
       What is Letsttalk Bot Services, brief it's role and how it can be used.
 
     Letsttalk Bot Client (LBC)
       What is Letsttalk Bot Client, brief it's role and how it can be used.
 
-    Agent Bot Services (ABS)
+    Chatbot
       What is Agemt Bot Services, brief it's role and how it can be used.
     
     Agent Bot Client (ABC)
