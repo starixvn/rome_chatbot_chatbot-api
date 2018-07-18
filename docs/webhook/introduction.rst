@@ -1,9 +1,10 @@
 **************************
 Introduction
 **************************
-Every time SMA chat with Letstalk App, Letstalk Platform posts an event to incoming webhook. 
 
-Webhook receives and transform it, then send that event to right replying service endpoint for further processing.
+Every message sent to **Chatbot** will trigger **Letstalk platform (sender)** to post a request to **Chatbot webhook (receiver)**.
+
+Firstly, webhook authenticates the request to make sure it sent by **Letstalk service**, and then do some necessary actions before forwarding the request to **Chatbot services** for further business processing.
 
 .. image:: assets/HL_Webhook.png
 

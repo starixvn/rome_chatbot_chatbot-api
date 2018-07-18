@@ -26,7 +26,7 @@ Glossary and Acronyms
       What is Letsttalk Bot Client, brief it's role and how it can be used.
 
     Chatbot
-      What is Agemt Bot Services, brief it's role and how it can be used.
+      A collection of services that handle busines process of project. It is handled by Alpha team
     
     Agent Bot Client (ABC)
       What is Letsttalk Bot Client, brief it's role and how it can be used.
