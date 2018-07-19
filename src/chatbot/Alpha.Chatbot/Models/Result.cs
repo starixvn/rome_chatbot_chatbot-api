@@ -13,6 +13,11 @@
 
     public class AddingMessengerAccountResult : Result
     {
+        private const int AccountDoesNotExistCode = 2;
+
+        public static AddingMessengerAccountResult CreateAccountDoesNotExistResult()
+            => new AddingMessengerAccountResult { Code = AccountDoesNotExistCode };
+
         public string VerificationCode { get; set; }
     }
 }

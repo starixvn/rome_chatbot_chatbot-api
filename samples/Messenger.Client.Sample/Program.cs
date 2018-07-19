@@ -2,11 +2,8 @@
 namespace Messenger.Client.Sample
 {
     using System;
-    using System.Collections.Generic;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
-    using Messenger.Client.Letstalk;
-    using Messenger.Client.Models;
     using Newtonsoft.Json;
 
     public static class Program
@@ -20,7 +17,7 @@ namespace Messenger.Client.Sample
             //var result = letstalkClient.Push(botId, new List<string> { "ricky.nguyen" }, "a lo");
             //Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(result)}");
 
-            var profile = letstalkClient.GetProfile("ricky.nguyen135");
+            var profile = letstalkClient.GetProfileAsync("ricky.nguyen").Result;
 
             Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(profile)}");
 
@@ -86,240 +83,240 @@ namespace Messenger.Client.Sample
             ////SetHashKeyAsync(letstalkClient);
         }
 
-        public static void SetWebHook()
-        {
-            ////LOCAL
-            ////1.https://ha.nexdev.net:7419/Local01
-            ////2.https://bot.nexdev.net:7499/whoami.aspx
+        //public static void SetWebHook()
+        //{
+        //    ////LOCAL
+        //    ////1.https://ha.nexdev.net:7419/Local01
+        //    ////2.https://bot.nexdev.net:7499/whoami.aspx
 
-            ////Public
-            ////https://bot.nexdev.net:7149/local01/whoami.aspx
+        //    ////Public
+        //    ////https://bot.nexdev.net:7149/local01/whoami.aspx
 
-            var botId = AppSettings.Messenger.BotAccountId;
-            var restClient = new RestClientHelper(RestClientHelper.CreateDefaultClient(), new JwtHelper());
-            var letstalkClient = new LetstalkClient(restClient, new CryptographyHelper());
+        //    var botId = AppSettings.Messenger.BotAccountId;
+        //    var restClient = new RestClientHelper(RestClientHelper.CreateDefaultClient(), new JwtHelper());
+        //    var letstalkClient = new LetstalkClient(restClient, new CryptographyHelper());
 
-            var result = letstalkClient.SetWebhook("https://bot.nexdev.net:7419/api/webhooks/incoming/letstalk/");
-            //var result = letstalkClient.mo(botId, "https://bot.nexdev.net:7499/api/webhooks/incoming/letstalk/");
-        }
+        //    var result = letstalkClient.SetWebhook("https://bot.nexdev.net:7419/api/webhooks/incoming/letstalk/");
+        //    //var result = letstalkClient.mo(botId, "https://bot.nexdev.net:7499/api/webhooks/incoming/letstalk/");
+        //}
 
-        private static void Push(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.Push(
-                            new List<string>
-                            {
-                                "receiver_1",
-                                "receiver_2"
-                            },
-                            new Payload
-                            {
-                                Id = 1,
-                                From = 0,
-                                UserId = "UserId",
-                                HashContent = "Content"
-                            });
+        //private static void Push(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.Push(
+        //                    new List<string>
+        //                    {
+        //                        "receiver_1",
+        //                        "receiver_2"
+        //                    },
+        //                    new Payload
+        //                    {
+        //                        Id = 1,
+        //                        From = 0,
+        //                        UserId = "UserId",
+        //                        HashContent = "Content"
+        //                    });
 
-            Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void SetWebhook(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.SetWebhook("webhook_url");
+        //private static void SetWebhook(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.SetWebhook("webhook_url");
 
-            Console.WriteLine($"Request: SetWebhook, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: SetWebhook, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void SetWelcomeMessage(LetstalkClient letstalkClient)
-        {
-            var pushResult = letstalkClient.SetWelcomeMessage("message");
+        //private static void SetWelcomeMessage(LetstalkClient letstalkClient)
+        //{
+        //    var pushResult = letstalkClient.SetWelcomeMessage("message");
 
-            Console.WriteLine($"Request: SetWelcomeMessage, response: {JsonConvert.SerializeObject(pushResult)}");
-        }
+        //    Console.WriteLine($"Request: SetWelcomeMessage, response: {JsonConvert.SerializeObject(pushResult)}");
+        //}
 
-        private static void PushToTag(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.PushToTag(
-                            "tagName",
-                            new Payload
-                            {
-                                Id = 1,
-                                From = 0,
-                                UserId = "UserId",
-                                HashContent = "Content"
-                            });
+        //private static void PushToTag(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.PushToTag(
+        //                    "tagName",
+        //                    new Payload
+        //                    {
+        //                        Id = 1,
+        //                        From = 0,
+        //                        UserId = "UserId",
+        //                        HashContent = "Content"
+        //                    });
 
-            Console.WriteLine($"Request: PushToTag, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: PushToTag, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void UpdateTag(LetstalkClient letstalkClient)
-        {
-            Console.WriteLine($"Request: UpdateTag, response: need confirm");
-        }
+        //private static void UpdateTag(LetstalkClient letstalkClient)
+        //{
+        //    Console.WriteLine($"Request: UpdateTag, response: need confirm");
+        //}
 
-        private static void DeleteTag(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.DeleteTag("tagName");
+        //private static void DeleteTag(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.DeleteTag("tagName");
 
-            Console.WriteLine($"Request: DeleteTag, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: DeleteTag, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void GetTags(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.GetTags(1);
+        //private static void GetTags(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.GetTags(1);
 
-            Console.WriteLine($"Request: GetTags, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: GetTags, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void GetContacts(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.GetContacts("tag");
+        //private static void GetContacts(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.GetContacts("tag");
 
-            Console.WriteLine($"Request: GetContacts, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: GetContacts, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void AddContactToTag(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.AddContactToTag(new string[] { "user1", "user2" }, "tag");
+        //private static void AddContactToTag(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.AddContactToTag(new string[] { "user1", "user2" }, "tag");
 
-            Console.WriteLine($"Request: AddContactToTag, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: AddContactToTag, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void RemoveContactFromTag(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.RemoveContactFromTag(new string[] { "user1", "user2" }, "tag");
+        //private static void RemoveContactFromTag(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.RemoveContactFromTag(new string[] { "user1", "user2" }, "tag");
 
-            Console.WriteLine($"Request: RemoveContactFromTag, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: RemoveContactFromTag, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void SetUserKey(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.SetUserKey("userid", "hash_id", "hash_key");
+        //private static void SetUserKey(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.SetUserKey("userid", "hash_id", "hash_key");
 
-            Console.WriteLine($"Request: SetContactKey, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: SetContactKey, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void GetUserPublicKey(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.GetUserPublicKey("userid");
+        //private static void GetUserPublicKey(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.GetUserPublicKey("userid");
 
-            Console.WriteLine($"Request: GetContactPublicKey, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: GetContactPublicKey, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void SetHashKey(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.SetHashKey("hash_id", "hash_key");
+        //private static void SetHashKey(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.SetHashKey("hash_id", "hash_key");
 
-            Console.WriteLine($"Request: SetHashKey, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: SetHashKey, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        // Async
-        private static void PushAsync(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.PushAsync(
-                            new List<string>
-                            {
-                                "receiver_1",
-                                "receiver_2"
-                            },
-                            new Payload
-                            {
-                                Id = 1,
-                                From = 0,
-                                UserId = "UserId",
-                                HashContent = "Content"
-                            }).Result;
+        //// Async
+        //private static void PushAsync(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.PushAsync(
+        //                    new List<string>
+        //                    {
+        //                        "receiver_1",
+        //                        "receiver_2"
+        //                    },
+        //                    new Payload
+        //                    {
+        //                        Id = 1,
+        //                        From = 0,
+        //                        UserId = "UserId",
+        //                        HashContent = "Content"
+        //                    }).Result;
 
-            Console.WriteLine($"Request: PushAsync, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: PushAsync, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void SetWebhookAsync(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.SetWebhookAsync("webhook_url").Result;
+        //private static void SetWebhookAsync(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.SetWebhookAsync("webhook_url").Result;
 
-            Console.WriteLine($"Request: SetWebhookAsync, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: SetWebhookAsync, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void SetWelcomeMessageAsync(LetstalkClient letstalkClient)
-        {
-            var pushResult = letstalkClient.SetWelcomeMessageAsync("message").Result;
+        //private static void SetWelcomeMessageAsync(LetstalkClient letstalkClient)
+        //{
+        //    var pushResult = letstalkClient.SetWelcomeMessageAsync("message").Result;
 
-            Console.WriteLine($"Request: SetWelcomeMessageAsync, response: {JsonConvert.SerializeObject(pushResult)}");
-        }
+        //    Console.WriteLine($"Request: SetWelcomeMessageAsync, response: {JsonConvert.SerializeObject(pushResult)}");
+        //}
 
-        private static void PushToTagAsync(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.PushToTagAsync(
-                            "tagName",
-                            new Payload
-                            {
-                                Id = 1,
-                                From = 0,
-                                UserId = "UserId",
-                                HashContent = "Content"
-                            }).Result;
+        //private static void PushToTagAsync(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.PushToTagAsync(
+        //                    "tagName",
+        //                    new Payload
+        //                    {
+        //                        Id = 1,
+        //                        From = 0,
+        //                        UserId = "UserId",
+        //                        HashContent = "Content"
+        //                    }).Result;
 
-            Console.WriteLine($"Request: PushToTagAsync, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: PushToTagAsync, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void UpdateTagAsync(LetstalkClient letstalkClient)
-        {
-            Console.WriteLine($"Request: UpdateTagAsync, response: need confirm");
-        }
+        //private static void UpdateTagAsync(LetstalkClient letstalkClient)
+        //{
+        //    Console.WriteLine($"Request: UpdateTagAsync, response: need confirm");
+        //}
 
-        private static void DeleteTagAsync(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.DeleteTagAsync("tagName").Result;
+        //private static void DeleteTagAsync(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.DeleteTagAsync("tagName").Result;
 
-            Console.WriteLine($"Request: DeleteTagAsync, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: DeleteTagAsync, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void GetTagsAsync(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.GetTagsAsync(1).Result;
+        //private static void GetTagsAsync(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.GetTagsAsync(1).Result;
 
-            Console.WriteLine($"Request: GetTagsAsync, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: GetTagsAsync, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void GetContactsAsync(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.GetContactsAsync("tag").Result;
+        //private static void GetContactsAsync(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.GetContactsAsync("tag").Result;
 
-            Console.WriteLine($"Request: GetContactsAsync, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: GetContactsAsync, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void AddContactToTagAsync(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.AddContactToTagAsync(new string[] { "user1", "user2" }, "tag").Result;
+        //private static void AddContactToTagAsync(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.AddContactToTagAsync(new string[] { "user1", "user2" }, "tag").Result;
 
-            Console.WriteLine($"Request: AddContactToTagAsync, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: AddContactToTagAsync, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void RemoveContactFromTagAsync(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.RemoveContactFromTagAsync(new string[] { "user1", "user2" }, "tag").Result;
+        //private static void RemoveContactFromTagAsync(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.RemoveContactFromTagAsync(new string[] { "user1", "user2" }, "tag").Result;
 
-            Console.WriteLine($"Request: RemoveContactFromTagAsync, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: RemoveContactFromTagAsync, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void SetUserKeyAsync(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.SetUserKeyAsync("userid", "hash_id", "hash_key").Result;
+        //private static void SetUserKeyAsync(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.SetUserKeyAsync("userid", "hash_id", "hash_key").Result;
 
-            Console.WriteLine($"Request: SetContactKeyAsync, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: SetContactKeyAsync, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void GetUserPublicKeyAsync(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.GetUserPublicKeyAsync("userid").Result;
+        //private static void GetUserPublicKeyAsync(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.GetUserPublicKeyAsync("userid").Result;
 
-            Console.WriteLine($"Request: GetContactPublicKeyAsync, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: GetContactPublicKeyAsync, response: {JsonConvert.SerializeObject(result)}");
+        //}
 
-        private static void SetHashKeyAsync(LetstalkClient letstalkClient)
-        {
-            var result = letstalkClient.SetHashKeyAsync("hash_id", "hash_key").Result;
+        //private static void SetHashKeyAsync(LetstalkClient letstalkClient)
+        //{
+        //    var result = letstalkClient.SetHashKeyAsync("hash_id", "hash_key").Result;
 
-            Console.WriteLine($"Request: SetHashKeyAsync, response: {JsonConvert.SerializeObject(result)}");
-        }
+        //    Console.WriteLine($"Request: SetHashKeyAsync, response: {JsonConvert.SerializeObject(result)}");
+        //}
     }
 }

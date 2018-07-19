@@ -4,6 +4,8 @@
     {
         public int MessengerType { get; set; }
 
-        public string MessengerAccountName { get; set; }
+        public string AccountId { get; set; }
+
+        public bool Enabled { get; set; }
     }
 }

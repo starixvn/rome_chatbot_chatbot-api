@@ -6,6 +6,8 @@
     using System.Text;
     using System.Threading.Tasks;
     using Alpha.Chatbot.Models;
+    using Alpha.Chatbot.Models.Dtos;
+    using Alpha.Chatbot.Params.Db;
     using Fanex.Data.Repository;
     using Messenger.Client;
 
@@ -19,55 +21,87 @@
 
         Task<Result> UpdateLanguage(int custId, int subAccountId, string language);
 
-        Task<string> GenerateVerificationCode(int custId, int subAccountId);
+        Task<string> GenerateVerificationCode(MessengerAccount messengerAccount);
 
         Task<AddingMessengerAccountResult> AddMessengerAccount(int custId, int subAccountId, MessengerAccount messengerAccount);
 
-        Task<Result> AddChatbotAccount(ChatbotAccount account);
+        Task<Result> AddChatbotAccount(User account);
 
         Task<IDictionary<int, IEnumerable<string>>> GetAllFunctionCommands();
 
-        Task<ChatbotAccount> GetChatbotAccount(int custId, int subAccountId);
+        Task<User> GetUser(int custId, int subAccountId);
     }
 
     public class SettingServiceImpl : SettingService
     {
         private readonly IDynamicRepository dynamicRepository;
         private readonly MessengerFactory messengerFactory;
+        private readonly Func<string> randomNumberFunc;
 
         public SettingServiceImpl(
             IDynamicRepository dynamicRepository,
-            MessengerFactory messengerFactory)
+            MessengerFactory messengerFactory,
+            Func<string> randomNumberFunc = null)
         {
             this.dynamicRepository = dynamicRepository;
             this.messengerFactory = messengerFactory;
+            this.randomNumberFunc = randomNumberFunc ?? RandomSixDigitsNumber;
         }
 
-        public Task<Result> AddChatbotAccount(ChatbotAccount account)
+        public Task<Result> AddChatbotAccount(User account)
         {
             throw new NotImplementedException();
         }
 
-        public Task<AddingMessengerAccountResult> AddMessengerAccount(int custId, int subAccountId, MessengerAccount messengerAccount)
+        public async Task<AddingMessengerAccountResult> AddMessengerAccount(int custId, int subAccountId, MessengerAccount messengerAccount)
         {
-            var messengerClient = messengerFactory.CreateMessengerClient(messengerAccount.MessengerType);
+            var client = messengerFactory.CreateMessengerClient(messengerAccount.MessengerType);
+            var profileResult = await client.GetProfileAsync(messengerAccount.AccountId);
 
-            //var checkAccountResult = messengerClient.GetProfile();
+            // Account does not exist
+            if(!profileResult.Item2)
+            {
+                return AddingMessengerAccountResult.CreateAccountDoesNotExistResult();
+            }
 
-            return null;
+            var verificcationCode = await GenerateVerificationCode(messengerAccount);
+
+            return new AddingMessengerAccountResult { VerificationCode = verificcationCode };
         }
 
-        public Task<string> GenerateVerificationCode(int custId, int subAccountId)
+        public async Task<string> GenerateVerificationCode(MessengerAccount messengerAccount)
         {
-            throw new NotImplementedException();
+            var verificationCode = RandomSixDigitsNumber();
+            var client = messengerFactory.CreateMessengerClient(messengerAccount.MessengerType);
+
+            var result = await client.PushAsync(messengerAccount.AccountId, verificationCode);
+
+            if(result.IsNotOk)
+            {
+                throw new InvalidOperationException(result.Message);
+            }
+
+            return verificationCode;
         }
 
-        public Task<IDictionary<int, IEnumerable<string>>> GetAllFunctionCommands()
+        private string RandomSixDigitsNumber()
+            => new Random().Next(0, 999999).ToString("D6");
+
+        public async Task<IDictionary<int, IEnumerable<string>>> GetAllFunctionCommands()
         {
-            throw new NotImplementedException();
+            var funtions = await dynamicRepository.FetchAsync<FunctionDto>(new GetAllFunctionsCriteria());
+
+            if(funtions == null || !funtions.Any())
+            {
+                return new Dictionary<int, IEnumerable<string>>();
+            }
+
+            return funtions.ToDictionary(
+                value => value.FunctionId, 
+                value => value.DefaultCommand.Split(',').AsEnumerable());
         }
 
-        public Task<ChatbotAccount> GetChatbotAccount(int custId, int subAccountId)
+        public Task<User> GetUser(int custId, int subAccountId)
         {
             throw new NotImplementedException();
         }

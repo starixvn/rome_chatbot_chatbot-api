@@ -4,7 +4,6 @@
     using Messenger.Client;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
-    using Messenger.Client.Letstalk;
     using SimpleInjector;
 
     public static class DependencyConfig

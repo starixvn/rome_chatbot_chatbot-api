@@ -1,6 +1,8 @@
 ﻿namespace Alpha.Chatbot.Models
 {
-    public class ChatbotAccount
+    using System.Collections.Generic;
+
+    public class User
     {
         public int Id { get; set; }
 
@@ -8,7 +10,7 @@
 
         public int SubAccountId { get; set; }
 
-        public MessengerAccount MessengerAccount { get; set; }
+        public IEnumerable<MessengerAccount>  MessengerAccounts { get; set; }
 
         public bool Enabled { get; set; }
 

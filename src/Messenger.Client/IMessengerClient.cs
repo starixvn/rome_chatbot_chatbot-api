@@ -1,40 +1,23 @@
 ﻿namespace Messenger.Client
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Messenger.Client.Models;
 
-    public partial interface IMessengerClient
+    public interface IMessengerClient
     {
-        Result Push(IEnumerable<string> receivers, Payload payload);
+        Task<Result> PushAsync(IEnumerable<string> accountIds, Payload payload);
 
-        Result Push(IEnumerable<string> receivers, string message);
+        Task<Result> PushAsync(IEnumerable<string> accountIds, string message);
 
-        Result PushToTag(string tag, Payload payload);
+        Task<Result> PushAsync(string accountId, string message);
 
-        Result AddTag(string tag);
+        Task<(Contact, bool)> GetProfileAsync(string accountId);
 
-        Result DeleteTag(string tag);
+        Task<Result> SetWebhookAsync(string url);
 
-        IEnumerable<string> GetTags(int botId);
+        Task<Result> SetWelcomeMessageAsync(string message);
 
-        IEnumerable<Contact> GetContacts(string tag);
-
-        Contact GetProfile(string userId);
-
-        Result AddContactToTag(string[] users, string tag);
-
-        Result RemoveContactFromTag(string[] users, string tag);
-
-        Result SetWebhook(string url);
-
-        Result SetWelcomeMessage(string message);
-
-        Result ChangeDisplayName( string botName);
-
-        string GetUserPublicKey(string userId);
-
-        Result SetUserKey(string userId, string hashId, string hashKey);
-
-        Result SetHashKey(string hashId, string hashKey);
+        Task<Result> ChangeDisplayNameAsync(string botName);
     }
 }

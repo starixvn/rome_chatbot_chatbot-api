@@ -5,9 +5,10 @@
 
     public class Result
     {
-        public int Status { get; set; }
+        [JsonProperty(PropertyName = "status")]
+        public int Code { get; set; }
 
-        public bool IsOk => Status == 1;
+        public bool IsOk => Code == 1;
 
         public bool IsNotOk => !IsOk;
 
@@ -49,6 +50,6 @@
         [JsonProperty(PropertyName = "display_name")]
         public string DisplayName { get; set; }
 
-        public bool IsAccountNotExistent => Status == AccountDoesNotExistStatus;
+        public bool IsAccountNotExistent => Code == AccountDoesNotExistStatus;
     }
 }

@@ -1,7 +1,6 @@
 ﻿namespace Alpha.Chatbot.Services
 {
     using Messenger.Client;
-    using Messenger.Client.Letstalk;
 
     public interface MessengerFactory
     {
@@ -10,6 +9,9 @@
 
     public class MessengerFactoryImpl : MessengerFactory
     {
+        /// <summary>
+        /// can support other messengers here
+        /// </summary>
         public IMessengerClient CreateMessengerClient(int messagerType)
         {
             switch (messagerType)

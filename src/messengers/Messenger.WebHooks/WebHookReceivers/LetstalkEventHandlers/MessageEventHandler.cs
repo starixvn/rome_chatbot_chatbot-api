@@ -44,7 +44,7 @@
 
             var message = JsonConvert.DeserializeObject<MessageContent>(messageContent).Msg;
 
-            messengerClient.Push(
+            return messengerClient.PushAsync(
                 new List<string> { hookEvent.Source.UserId },
                 $"Receive message from {hookEvent.Source.UserId}: {message} on {DateTime.Now}");
 
