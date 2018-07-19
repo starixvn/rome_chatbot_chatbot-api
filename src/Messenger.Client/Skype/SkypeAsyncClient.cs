@@ -6,27 +6,27 @@
 
     public partial class SkypeClient
     {
-        public Task<Result> AddContactToTagAsync(int botId, string[] users, string tag)
+        public Task<Result> AddContactToTagAsync(string[] users, string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> AddTagAsync(int botId, string tag)
+        public Task<Result> AddTagAsync(string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> DeleteTagAsync(int botId, string tag)
+        public Task<Result> DeleteTagAsync(string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<IEnumerable<Contact>> GetContactsAsync(int botId, string tag)
+        public Task<IEnumerable<Contact>> GetContactsAsync(string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Contact> GetProfileAsync(int botId, string userId)
+        public Task<Contact> GetProfileAsync(string userId)
         {
             throw new System.NotImplementedException();
         }
@@ -36,42 +36,42 @@
             throw new System.NotImplementedException();
         }
 
-        public Task<string> GetUserPublicKeyAsync(int botId, string userId)
+        public Task<string> GetUserPublicKeyAsync(string userId)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> PushAsync(int botId, IEnumerable<string> receivers, Payload payload)
+        public Task<Result> PushAsync(IEnumerable<string> receivers, Payload payload)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> PushToTagAsync(int botId, string tag, Payload payload)
+        public Task<Result> PushToTagAsync(string tag, Payload payload)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> RemoveContactFromTagAsync(int botId, string[] users, string tag)
+        public Task<Result> RemoveContactFromTagAsync(string[] users, string tag)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> SetHashKeyAsync(int botId, string hashId, string hashKey)
+        public Task<Result> SetHashKeyAsync(string hashId, string hashKey)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> SetUserKeyAsync(int botId, string userId, string hashId, string hashKey)
+        public Task<Result> SetUserKeyAsync(string userId, string hashId, string hashKey)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> SetWebhookAsync(int botId, string url)
+        public Task<Result> SetWebhookAsync(string url)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> SetWelcomeMessageAsync(int botId, string message)
+        public Task<Result> SetWelcomeMessageAsync(string message)
         {
             throw new System.NotImplementedException();
         }

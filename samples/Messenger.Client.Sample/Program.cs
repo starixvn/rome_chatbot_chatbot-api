@@ -17,13 +17,17 @@ namespace Messenger.Client.Sample
             var restClient = new RestClientHelper(RestClientHelper.CreateDefaultClient(), new JwtHelper());
             var letstalkClient = new LetstalkClient(restClient, new CryptographyHelper());
 
-            //var result = letstalkClient.Push(botId, new List<string> { "ricky.nguyen" }, "433434-");
+            //var result = letstalkClient.Push(botId, new List<string> { "ricky.nguyen" }, "a lo");
             //Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(result)}");
 
-            //var result = letstalkClient.setidd(botId, new List<string> { "ricky.nguyen" }, "----------2323------------------------------------------------");
-            var result1 = letstalkClient.ChangeDisplayName(botId, "alpha bot");
+            var profile = letstalkClient.GetProfile("ricky.nguyen135");
 
-            Console.WriteLine($"Request: ChangeDisplayName, response: {JsonConvert.SerializeObject(result1)}");
+            Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(profile)}");
+
+            //var result = letstalkClient.setidd(botId, new List<string> { "ricky.nguyen" }, "----------2323------------------------------------------------");
+            //var result1 = letstalkClient.ChangeDisplayName(botId, "alpha bot");
+
+            //Console.WriteLine($"Request: ChangeDisplayName, response: {JsonConvert.SerializeObject(result1)}");
 
             //var hash_content = AES - 256_encode_with_key_and_iv(plainText, chatKey, iv);
 
@@ -95,14 +99,13 @@ namespace Messenger.Client.Sample
             var restClient = new RestClientHelper(RestClientHelper.CreateDefaultClient(), new JwtHelper());
             var letstalkClient = new LetstalkClient(restClient, new CryptographyHelper());
 
-            var result = letstalkClient.SetWebhook(botId, "https://bot.nexdev.net:7419/api/webhooks/incoming/letstalk/");
+            var result = letstalkClient.SetWebhook("https://bot.nexdev.net:7419/api/webhooks/incoming/letstalk/");
             //var result = letstalkClient.mo(botId, "https://bot.nexdev.net:7499/api/webhooks/incoming/letstalk/");
         }
 
         private static void Push(LetstalkClient letstalkClient)
         {
             var result = letstalkClient.Push(
-                            1,
                             new List<string>
                             {
                                 "receiver_1",
@@ -121,14 +124,14 @@ namespace Messenger.Client.Sample
 
         private static void SetWebhook(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.SetWebhook(1, "webhook_url");
+            var result = letstalkClient.SetWebhook("webhook_url");
 
             Console.WriteLine($"Request: SetWebhook, response: {JsonConvert.SerializeObject(result)}");
         }
 
         private static void SetWelcomeMessage(LetstalkClient letstalkClient)
         {
-            var pushResult = letstalkClient.SetWelcomeMessage(1, "message");
+            var pushResult = letstalkClient.SetWelcomeMessage("message");
 
             Console.WriteLine($"Request: SetWelcomeMessage, response: {JsonConvert.SerializeObject(pushResult)}");
         }
@@ -136,7 +139,6 @@ namespace Messenger.Client.Sample
         private static void PushToTag(LetstalkClient letstalkClient)
         {
             var result = letstalkClient.PushToTag(
-                            1,
                             "tagName",
                             new Payload
                             {
@@ -156,7 +158,7 @@ namespace Messenger.Client.Sample
 
         private static void DeleteTag(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.DeleteTag(1, "tagName");
+            var result = letstalkClient.DeleteTag("tagName");
 
             Console.WriteLine($"Request: DeleteTag, response: {JsonConvert.SerializeObject(result)}");
         }
@@ -170,42 +172,42 @@ namespace Messenger.Client.Sample
 
         private static void GetContacts(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.GetContacts(1, "tag");
+            var result = letstalkClient.GetContacts("tag");
 
             Console.WriteLine($"Request: GetContacts, response: {JsonConvert.SerializeObject(result)}");
         }
 
         private static void AddContactToTag(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.AddContactToTag(1, new string[] { "user1", "user2" }, "tag");
+            var result = letstalkClient.AddContactToTag(new string[] { "user1", "user2" }, "tag");
 
             Console.WriteLine($"Request: AddContactToTag, response: {JsonConvert.SerializeObject(result)}");
         }
 
         private static void RemoveContactFromTag(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.RemoveContactFromTag(1, new string[] { "user1", "user2" }, "tag");
+            var result = letstalkClient.RemoveContactFromTag(new string[] { "user1", "user2" }, "tag");
 
             Console.WriteLine($"Request: RemoveContactFromTag, response: {JsonConvert.SerializeObject(result)}");
         }
 
         private static void SetUserKey(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.SetUserKey(1, "userid", "hash_id", "hash_key");
+            var result = letstalkClient.SetUserKey("userid", "hash_id", "hash_key");
 
             Console.WriteLine($"Request: SetContactKey, response: {JsonConvert.SerializeObject(result)}");
         }
 
         private static void GetUserPublicKey(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.GetUserPublicKey(1, "userid");
+            var result = letstalkClient.GetUserPublicKey("userid");
 
             Console.WriteLine($"Request: GetContactPublicKey, response: {JsonConvert.SerializeObject(result)}");
         }
 
         private static void SetHashKey(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.SetHashKey(1, "hash_id", "hash_key");
+            var result = letstalkClient.SetHashKey("hash_id", "hash_key");
 
             Console.WriteLine($"Request: SetHashKey, response: {JsonConvert.SerializeObject(result)}");
         }
@@ -214,7 +216,6 @@ namespace Messenger.Client.Sample
         private static void PushAsync(LetstalkClient letstalkClient)
         {
             var result = letstalkClient.PushAsync(
-                            1,
                             new List<string>
                             {
                                 "receiver_1",
@@ -233,14 +234,14 @@ namespace Messenger.Client.Sample
 
         private static void SetWebhookAsync(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.SetWebhookAsync(1, "webhook_url").Result;
+            var result = letstalkClient.SetWebhookAsync("webhook_url").Result;
 
             Console.WriteLine($"Request: SetWebhookAsync, response: {JsonConvert.SerializeObject(result)}");
         }
 
         private static void SetWelcomeMessageAsync(LetstalkClient letstalkClient)
         {
-            var pushResult = letstalkClient.SetWelcomeMessageAsync(1, "message").Result;
+            var pushResult = letstalkClient.SetWelcomeMessageAsync("message").Result;
 
             Console.WriteLine($"Request: SetWelcomeMessageAsync, response: {JsonConvert.SerializeObject(pushResult)}");
         }
@@ -248,7 +249,6 @@ namespace Messenger.Client.Sample
         private static void PushToTagAsync(LetstalkClient letstalkClient)
         {
             var result = letstalkClient.PushToTagAsync(
-                            1,
                             "tagName",
                             new Payload
                             {
@@ -268,7 +268,7 @@ namespace Messenger.Client.Sample
 
         private static void DeleteTagAsync(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.DeleteTagAsync(1, "tagName").Result;
+            var result = letstalkClient.DeleteTagAsync("tagName").Result;
 
             Console.WriteLine($"Request: DeleteTagAsync, response: {JsonConvert.SerializeObject(result)}");
         }
@@ -282,42 +282,42 @@ namespace Messenger.Client.Sample
 
         private static void GetContactsAsync(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.GetContactsAsync(1, "tag").Result;
+            var result = letstalkClient.GetContactsAsync("tag").Result;
 
             Console.WriteLine($"Request: GetContactsAsync, response: {JsonConvert.SerializeObject(result)}");
         }
 
         private static void AddContactToTagAsync(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.AddContactToTagAsync(1, new string[] { "user1", "user2" }, "tag").Result;
+            var result = letstalkClient.AddContactToTagAsync(new string[] { "user1", "user2" }, "tag").Result;
 
             Console.WriteLine($"Request: AddContactToTagAsync, response: {JsonConvert.SerializeObject(result)}");
         }
 
         private static void RemoveContactFromTagAsync(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.RemoveContactFromTagAsync(1, new string[] { "user1", "user2" }, "tag").Result;
+            var result = letstalkClient.RemoveContactFromTagAsync(new string[] { "user1", "user2" }, "tag").Result;
 
             Console.WriteLine($"Request: RemoveContactFromTagAsync, response: {JsonConvert.SerializeObject(result)}");
         }
 
         private static void SetUserKeyAsync(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.SetUserKeyAsync(1, "userid", "hash_id", "hash_key").Result;
+            var result = letstalkClient.SetUserKeyAsync("userid", "hash_id", "hash_key").Result;
 
             Console.WriteLine($"Request: SetContactKeyAsync, response: {JsonConvert.SerializeObject(result)}");
         }
 
         private static void GetUserPublicKeyAsync(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.GetUserPublicKeyAsync(1, "userid").Result;
+            var result = letstalkClient.GetUserPublicKeyAsync("userid").Result;
 
             Console.WriteLine($"Request: GetContactPublicKeyAsync, response: {JsonConvert.SerializeObject(result)}");
         }
 
         private static void SetHashKeyAsync(LetstalkClient letstalkClient)
         {
-            var result = letstalkClient.SetHashKeyAsync(1, "hash_id", "hash_key").Result;
+            var result = letstalkClient.SetHashKeyAsync("hash_id", "hash_key").Result;
 
             Console.WriteLine($"Request: SetHashKeyAsync, response: {JsonConvert.SerializeObject(result)}");
         }

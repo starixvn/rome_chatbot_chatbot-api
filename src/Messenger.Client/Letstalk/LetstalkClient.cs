@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
     using Messenger.Client.Models;
@@ -15,230 +14,67 @@
         private const int AESEncryptionMode = 5;
         private const int BusinessAccountType = 2;
         private const int ChatKeyVersion = 3;
+        private readonly int botId;
         private readonly IRestClientHelper restClientHelper;
         private readonly ICryptographyHelper cryptographyHelper;
         private readonly IMessengerSettings messengerSettings;
         private readonly JsonSerializerSettings DefaultJsonSerializeSetting = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
         public LetstalkClient(
-            IRestClientHelper restClientHelper,
-            ICryptographyHelper cryptographyHelper,
+            IRestClientHelper restClientHelper = null,
+            ICryptographyHelper cryptographyHelper = null,
             IMessengerSettings messengerSettings = null)
         {
-            this.restClientHelper = restClientHelper;
-            this.cryptographyHelper = cryptographyHelper;
+            this.restClientHelper = restClientHelper ?? new RestClientHelper(RestClientHelper.CreateDefaultClient(), new JwtHelper());
+            this.cryptographyHelper = cryptographyHelper ?? new CryptographyHelper();
             this.messengerSettings = messengerSettings ?? AppSettings.Messenger;
+            botId = this.messengerSettings.BotAccountId;
         }
 
-        public Result AddContactToTag(int botId, string[] users, string tag)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(users), users);
-            ValidateInputParam(nameof(tag), tag);
+        public Result AddContactToTag(string[] users, string tag)
+            => AddContactToTagAsync(users, tag).Result;
 
-            return restClientHelper.ExecutePost<Result>(
-                $"bot/modify_contact_tag/{botId}",
-                new Dictionary<string, object>
-                {
-                    { nameof(users), users },
-                    { nameof(tag), tag }
-                });
-        }
+        public Result RemoveContactFromTag(string[] users, string tag)
+            => RemoveContactFromTagAsync(users, tag).Result;
 
-        public Result RemoveContactFromTag(int botId, string[] users, string tag)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(users), users);
-            ValidateInputParam(nameof(tag), tag);
+        public Result DeleteTag(string tag)
+            => DeleteTagAsync(tag).Result;
 
-            return restClientHelper.ExecuteDelete<Result>(
-                $"bot/modify_contact_tag/{botId}",
-                new Dictionary<string, object>
-                {
-                    { "contact", users },
-                    { nameof(tag), tag }
-                });
-        }
+        public Contact GetProfile(string userId)
+            => GetProfileAsync(userId).Result;
 
-        public Result DeleteTag(int botId, string tag)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(tag), tag);
-
-            return restClientHelper.ExecuteDelete<Result>(
-                $"bot/modify_tag/{botId}",
-                new Dictionary<string, object>
-                {
-                    { nameof(tag), tag }
-                });
-        }
-
-        public Contact GetProfile(int botId, string userId)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(userId), userId);
-
-            var result = restClientHelper.ExecuteGet<ProfileResult>($"bot/get_profile/{botId}/user/{userId}");
-
-            return new Contact
-            {
-                UserId = userId,
-                AvatarUrl = result.AvatarUrl,
-                DisplayName = result.DisplayName
-            };
-        }
-
-        public IEnumerable<Contact> GetContacts(int botId, string tag)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(tag), tag);
-
-            var result = restClientHelper.ExecuteGet<ContactListResult>($"bot/get_contacts/{botId}/tag/{tag}");
-
-            return result.Contacts;
-        }
+        public IEnumerable<Contact> GetContacts(string tag)
+            => GetContactsAsync(tag).Result;
 
         public IEnumerable<string> GetTags(int botId)
-        {
-            ValidateInputParam(nameof(botId), botId);
+            => GetTagsAsync(botId).Result;
 
-            var result = restClientHelper.ExecuteGet<TagListResult>($"bot/list_tag/{botId}");
+        public Result Push(IEnumerable<string> receivers, string message)
+            => PushAsync(receivers, message).Result;
 
-            return result.Tags;
-        }
+        public Result Push(IEnumerable<string> receivers, Payload payload)
+            => PushAsync(receivers, payload).Result;
 
-        public Result Push(int botId, IEnumerable<string> receivers, string message)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(receivers), receivers);
-            ValidateInputParam(nameof(message), message);
+        public Result PushToTag(string tag, Payload payload)
+            => PushToTagAsync(tag, payload).Result;
 
-            var payload = new Payload();
-            var formattedMessage = JsonConvert.SerializeObject(new { msg = message });
+        public Result SetWebhook(string url)
+            => SetWebhookAsync(url).Result;
 
-            payload.HashContentKey = cryptographyHelper.Hash(formattedMessage);
-            payload.HashContent = cryptographyHelper.Encrypt(formattedMessage, messengerSettings.ChatKey, payload.HashContentKey);
+        public Result SetWelcomeMessage(string message)
+            => SetWelcomeMessageAsync(message).Result;
 
-            return Push(botId, receivers, payload);
-        }
+        public Result AddTag(string tag)
+            => AddTagAsync(tag).Result;
 
-        public Result Push(int botId, IEnumerable<string> receivers, Payload payload)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(receivers), receivers);
-            ValidateInputParam(nameof(payload), payload);
+        public string GetUserPublicKey(string userId)
+            => GetUserPublicKeyAsync(userId).Result;
 
-            payload.UserId = messengerSettings.BotUserId;
-            payload.Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            payload.HashType = AESEncryptionMode;
-            payload.From = BusinessAccountType;
-            payload.Type = MessageType.Text;
-            payload.Id = 100;
-            payload.Receiver = receivers.ElementAt(0);
-            payload.HashId = ChatKeyVersion;
+        public Result SetUserKey(string userId, string hashId, string hashKey)
+            => SetUserKeyAsync(userId, hashId, hashKey).Result;
 
-            return restClientHelper.ExecutePost<Result>(
-                $"bot/push/{botId}",
-                new Dictionary<string, object>
-                {
-                    { "receiver", receivers },
-                    { "payload", JsonConvert.SerializeObject(payload, DefaultJsonSerializeSetting) }
-                });
-        }
-
-        public Result PushToTag(int botId, string tag, Payload payload)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(tag), tag);
-            ValidateInputParam(nameof(payload), payload);
-
-            return restClientHelper.ExecutePost<Result>(
-                $"bot/push_to_tag/{botId}/tag/{tag}",
-                new Dictionary<string, object>
-                {
-                    { "payload", payload }
-                });
-        }
-
-        public Result SetWebhook(int botId, string url)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(url), url);
-
-            return restClientHelper.ExecutePost<Result>(
-                $"bot/set_webhook/{botId}",
-                new Dictionary<string, object>
-                {
-                    { "url", url }
-                });
-        }
-
-        public Result SetWelcomeMessage(int botId, string message)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(message), message);
-
-            return restClientHelper.ExecutePost<Result>(
-                  $"bot/set_welcome_msg/{botId}",
-                  new Dictionary<string, object>
-                {
-                    { "message", message }
-                });
-        }
-
-        public Result AddTag(int botId, string tag)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(tag), tag);
-
-            return restClientHelper.ExecutePost<Result>(
-                $"bot/modify_tag/{botId}",
-                new Dictionary<string, object>
-                {
-                    { "tag", tag }
-                });
-        }
-
-        public string GetUserPublicKey(int botId, string userId)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(userId), userId);
-
-            var result = restClientHelper.ExecuteGet<PublicKeyResult>($"bot/get_user_public_key/{botId}/user/{userId}");
-
-            return result.PublicKey;
-        }
-
-        public Result SetUserKey(int botId, string userId, string hashId, string hashKey)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(userId), userId);
-            ValidateInputParam(nameof(hashId), hashId);
-            ValidateInputParam(nameof(hashKey), hashKey);
-
-            return restClientHelper.ExecutePost<Result>(
-                $"bot/set_key_to_user/{botId}/user/{userId}",
-                new Dictionary<string, object>
-                {
-                    { "encryption_key", hashKey },
-                    { "hash_id", hashId }
-                });
-        }
-
-        public Result SetHashKey(int botId, string hashId, string hashKey)
-        {
-            ValidateInputParam(nameof(botId), botId);
-            ValidateInputParam(nameof(hashId), hashId);
-            ValidateInputParam(nameof(hashKey), hashKey);
-
-            return restClientHelper.ExecutePost<Result>(
-                $"bot/set_hash_key/{botId}",
-                new Dictionary<string, object>
-                {
-                    { "hash_key", hashKey },
-                    { "hash_id", hashId }
-                });
-        }
+        public Result SetHashKey(string hashId, string hashKey)
+            => SetHashKeyAsync(hashId, hashKey).Result;
 
         private static void ValidateInputParam(string paramName, object paramValue)
         {
@@ -262,9 +98,8 @@
             }
         }
 
-        public Result ChangeDisplayName(int botId, string botName)
+        public Result ChangeDisplayName(string botName)
         {
-            ValidateInputParam(nameof(botId), botId);
             ValidateInputParam(nameof(botName), botName);
 
             return restClientHelper.ExecutePut<Result>(

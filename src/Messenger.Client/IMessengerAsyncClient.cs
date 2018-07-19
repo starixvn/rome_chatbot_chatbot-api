@@ -6,34 +6,34 @@
 
     public partial interface IMessengerClient
     {
-        Task<Result> PushAsync(int botId, IEnumerable<string> receivers, Payload payload);
+        Task<Result> PushAsync(IEnumerable<string> receivers, Payload payload);
 
-        Task<Result> PushToTagAsync(int botId, string tag, Payload payload);
+        Task<Result> PushToTagAsync(string tag, Payload payload);
 
-        Task<Result> AddTagAsync(int botId, string tag);
+        Task<Result> AddTagAsync(string tag);
 
-        Task<Result> DeleteTagAsync(int botId, string tag);
+        Task<Result> DeleteTagAsync(string tag);
 
         Task<IEnumerable<string>> GetTagsAsync(int botId);
 
-        Task<IEnumerable<Contact>> GetContactsAsync(int botId, string tag);
+        Task<IEnumerable<Contact>> GetContactsAsync(string tag);
 
-        Task<Contact> GetProfileAsync(int botId, string userId);
+        Task<Contact> GetProfileAsync(string userId);
 
-        Task<Result> AddContactToTagAsync(int botId, string[] users, string tag);
+        Task<Result> AddContactToTagAsync(string[] users, string tag);
 
-        Task<Result> RemoveContactFromTagAsync(int botId, string[] users, string tag);
+        Task<Result> RemoveContactFromTagAsync(string[] users, string tag);
 
-        Task<Result> SetWebhookAsync(int botId, string url);
+        Task<Result> SetWebhookAsync(string url);
 
-        Task<Result> SetWelcomeMessageAsync(int botId, string message);
+        Task<Result> SetWelcomeMessageAsync(string message);
 
-        Task<string> GetUserPublicKeyAsync(int botId, string userId);
+        Task<string> GetUserPublicKeyAsync(string userId);
 
-        Task<Result> SetUserKeyAsync(int botId, string userId, string hashId, string hashKey);
+        Task<Result> SetUserKeyAsync(string userId, string hashId, string hashKey);
 
-        Task<Result> SetHashKeyAsync(int botId, string hashId, string hashKey);
+        Task<Result> SetHashKeyAsync(string hashId, string hashKey);
 
-        Task<Result> ChangeDisplayNameAsync(int botId, string botName);
+        Task<Result> ChangeDisplayNameAsync(string botName);
     }
 }

@@ -1,5 +1,7 @@
 ﻿namespace Messenger.WebHooks.WebHookReceivers.LetstalkEventHandlers
 {
+    using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Messenger.Client;
     using Messenger.Client.Configurations;
@@ -41,6 +43,10 @@
                 hookEvent.PayloadObject.HashContentKey);
 
             var message = JsonConvert.DeserializeObject<MessageContent>(messageContent).Msg;
+
+            messengerClient.Push(
+                new List<string> { hookEvent.Source.UserId },
+                $"Receive message from {hookEvent.Source.UserId}: {message} on {DateTime.Now}");
 
             return Task.FromResult(true);
         }

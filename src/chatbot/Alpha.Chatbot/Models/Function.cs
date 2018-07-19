@@ -1,7 +1,5 @@
 ﻿namespace Alpha.Chatbot.Models
 {
-    using System.Collections.Generic;
-
     public interface IFunction
     {
         int Id { get; }
@@ -12,7 +10,7 @@
 
         int Type { get; }
 
-        IEnumerable<string> Commands { get; }
+        string Command { get; }
     }
 
     public class Function : IFunction
@@ -25,6 +23,6 @@
 
         public int Type { get; set; }
 
-        public IEnumerable<string> Commands { get; set; }
+        public string Command { get; set; }
     }
 }
