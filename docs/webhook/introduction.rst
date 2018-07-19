@@ -8,6 +8,8 @@ Every message sent to Chatbot will trigger **Letstalk platform (sender)** to pos
 
 .. image:: assets/HL_Webhook.png
 
+.. note:: **Letstalk client** is developed by Alpha team and required to support `.NET Standard 2.x <https://docs.microsoft.com/en-us/dotnet/standard/net-standard>`_.
+
 --------------
 
 .. [#bc] Bounded Context https://martinfowler.com/bliki/BoundedContext.html
