@@ -14,7 +14,7 @@ With vertical slicing, the project is to separate into three domains: **Alpha**,
 With horizontal slicing, from the traditional **n-architecture** point of view, the project is divided into three tiers:
 
 1. **Presentation tier:** Letstalk app, Alpha chatbot setup page, and Chatbot backend site.
-2. **Business tier:** A collection of scalable **microservices**, when each service perform only one operation read data (query) or update data (command), CQRS [#cqrs]_ pattern can be applied.
+2. **Business tier:** A collection of scalable **microservices**, when each service perform only one operation read data (query) or update data (command), CQRS [#cqrs]_ pattern may be applied.
 3. **Data tier:** Alpha service provides SMA's data such as *customer info*, `report`, `balance`, etc.
 
 
