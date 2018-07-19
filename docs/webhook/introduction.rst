@@ -2,20 +2,17 @@
 Introduction
 **************************
 
-Every message sent to **Chatbot** will trigger **Letstalk platform (sender)** to post a request to **Chatbot webhook (receiver)**.
+Every message sent to Chatbot will trigger **Letstalk platform (sender)** to post a request to **Chatbot webhook (receiver)**. Conversely, **Message Sender** is responsible for working with **Letstalk client** to send messages to users. Additionally, **Message Logger** logs all incoming and outgoing messages passed across the border of Chatbot *bounded context* [#bc]_.
 
-Firstly, webhook authenticates the request to make sure it sent by **Letstalk service**, and then do some necessary actions before forwarding the request to **Chatbot services** for further business processing.
+**Message Bus Pattern** [#esb]_ is applied to enable non-blocking and asynchronous architecture. It transmit authenticated requests sent from webhook to corresponding subscribers for further business processing.
 
 .. image:: assets/HL_Webhook.png
 
+--------------
 
-**************************
-Command
-**************************
+.. [#bc] Bounded Context https://martinfowler.com/bliki/BoundedContext.html
 
-Command is text that SMA chat with bot, command can be ``outstanding``, ``win loss`` or ``balance``. 
-This sequence diagram below describes how message pass to webhook and return result message to user.
+.. [#esb] Message Bus http://bit.ly/2NrGKZf
 
 
-.. image:: assets/SQ_Webhook_Command.png
  
