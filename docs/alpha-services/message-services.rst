@@ -12,7 +12,7 @@ Gets personal messages, normal/special announcements for customer.
 
   **Http Request:**
 
-  ``GET: /api/{cid}/messages/{messageType}``
+  ``GET: /api/message/{cid}/messages/{messageType}/{language}/{fromTime}/{toTime}``
 
   **Request Headers:**
 
@@ -24,13 +24,19 @@ Gets personal messages, normal/special announcements for customer.
 
   **Query Paramaters:**
 
-  ============  =====  ===========================================================================
-  Paramater     Type   Description
-  ============  =====  ===========================================================================
-  cid           int    customer id
-  ------------  -----  ---------------------------------------------------------------------------
-  messageType   int    Message Type (0: normal message, 1: personal message, 2: special message )
-  ============  =====  ===========================================================================
+  ============  =======  ===========================================================================
+  Paramater     Type     Description
+  ============  =======  ===========================================================================
+  cid           int      customer id
+  ------------  -------  ---------------------------------------------------------------------------
+  messageType   int      Message Type (0: normal message, 1: personal message, 2: special message )
+  ------------  -------  ---------------------------------------------------------------------------
+  language      string   language code (en-US, zh-TW, zh-CN, ja-JP, th-TH, ko-KR, vi-VN)
+  ------------  -------  ---------------------------------------------------------------------------
+  fromTime      long     Start time to query messages in milliseconds.
+  ------------  -------  ---------------------------------------------------------------------------
+  toTime        long     End time to query messages in milliseconds.
+  ============  =======  ===========================================================================
 
   **Response:**
 
@@ -50,36 +56,3 @@ Gets personal messages, normal/special announcements for customer.
             "content" : "Testing message" 
         }
     ]
-
-----------------------
-
-Update Status Of Messages
--------------------------
-
-Updates status of messages and announcements.
-
-  **Http Request:**
-
-  ``POST: /api/messages/updatestatus``
-  
-  **Request Headers:**
-
-  ===============  ============================
-  Request Header   Description
-  ===============  ============================
-  Content-Type     application/json            
-  ---------------  ----------------------------
-  Authorization    Bearer ``<token>``            
-  ===============  ============================
-
-  **Request Body:**
-
-  ===========  =============  ============================
-  Paramater    Type           Description
-  ===========  =============  ============================
-  messageIds   Array of int   Array of messages IDs.
-  ===========  =============  ============================
-
-  **Response:**
-
-  Return the status code ``200``.

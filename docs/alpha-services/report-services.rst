@@ -6,14 +6,14 @@ Report Services
    :local:
    :backlinks: top
 
-Get Yesterday Win-Loss
+Get Win-Loss
 ----------------------
 
-Gets yesterday win loss report for customer.
+Gets win loss report for customer by date.
 
   **Http Request:**
 
-  ``GET: /api/winloss/yesterday/{cid}``
+  ``GET: /api/report/{custId}/winloss/{date}``
 
   **Request Headers:**
 
@@ -25,11 +25,13 @@ Gets yesterday win loss report for customer.
 
   **Query Paramaters:**
 
-  ==========  =====  ============================
+  ==========  =====  ===================================
   Paramater   Type   Description
-  ==========  =====  ============================
+  ==========  =====  ===================================
   cid         int    customer id
-  ==========  =====  ============================
+  ----------  -----  -----------------------------------
+  date        long   Time of the report in milliseconds
+  ==========  =====  ===================================
 
   **Response:**
 
@@ -47,18 +49,18 @@ Gets yesterday win loss report for customer.
                 {
                     "turnover": 30000,
                     "grosscomm": 50,
-                    "member": {
+                    "memberwinloss": {
                         "winloss": -50,
                         "comm": -5,
                         "total": -55
                     },
-                    "agent": {
+                    "agentwinloss": {
                         "winloss": -50,
                         "comm": 5,
                         "total": -70
                     },
-                    "master": null,
-                    "super": null,
+                    "masterwinloss": null,
+                    "superwinloss": null,
                     "company": -500
                 }
 
@@ -69,18 +71,18 @@ Gets yesterday win loss report for customer.
                 {
                     "turnover": 30000,
                     "grosscomm": 50,
-                    "member": null,
-                    "agent": {
+                    "memberwinloss": null,
+                    "agentwinloss": {
                         "winloss": null,
                         "comm": null,
                         "total": -70
                     },
-                    "master": {
+                    "masterwinloss": {
                         "winloss": -50,
                         "comm": -5,
                         "total": -70
                     },
-                    "super": null,
+                    "superwinloss": null,
                     "company": -500
                 }
 
@@ -91,14 +93,14 @@ Gets yesterday win loss report for customer.
                 {
                     "turnover": 30000,
                     "grosscomm": 50,
-                    "member": null,
-                    "agent": null,
-                    "master": {
+                    "memberwinloss": null,
+                    "agentwinloss": null,
+                    "masterwinloss": {
                         "winloss": null,
                         "comm": null,
                         "total": -70
                     },
-                    "super": {
+                    "superwinloss": {
                         "winloss": -50,
                         "comm": -5,
                         "total": -70
@@ -108,108 +110,6 @@ Gets yesterday win loss report for customer.
 
 ----------------------
 
-Get Today Win-Loss
-------------------
-
-Gets today win loss report for customer.
-
-  **Http Request:**
-
-  ``GET: /api/winloss/today/{cid}``
-
-  **Request Headers:**
-
-  ===============  ============================
-  Request Header   Description
-  ===============  ============================
-  Authorization    Bearer ``<token>``          
-  ===============  ============================
-
-  **Query Paramaters:**
-
-  ==========  =====  ============================
-  Paramater   Type   Description
-  ==========  =====  ============================
-  cid         int    customer id
-  ==========  =====  ============================
-
-  **Response:**
-
-  Returns the status code ``200`` and a resource in response body depending on level of customer.
-
-  Response body sample in JSON format:
-
-    .. hlist::
-        :columns: 3
-
-        - Member Today Win Loss (Customer level is Agent)
-
-            .. code-block:: JSON
-
-                {
-                    "turnover": 30000,
-                    "grosscomm": 50,
-                    "member": {
-                        "winloss": -50,
-                        "comm": -5,
-                        "total": -55
-                    },
-                    "agent": {
-                        "winloss": -50,
-                        "comm": 5,
-                        "total": -70
-                    },
-                    "master": null,
-                    "super": null,
-                    "company": -500
-                }
-
-        - Agent Today Win Loss (Customer level is Master)
-
-            .. code-block:: JSON
-
-                {
-                    "turnover": 30000,
-                    "grosscomm": 50,
-                    "member": null,
-                    "agent": {
-                        "winloss": null,
-                        "comm": null,
-                        "total": -70
-                    },
-                    "master": {
-                        "winloss": -50,
-                        "comm": -5,
-                        "total": -70
-                    },
-                    "super": null,
-                    "company": -500
-                }
-
-        - Master Today Win Loss (Customer level is Super)
-
-            .. code-block:: JSON
-
-                {
-                    "turnover": 30000,
-                    "grosscomm": 50,
-                    "member": null,
-                    "agent": null,
-                    "master": {
-                        "winloss": null,
-                        "comm": null,
-                        "total": -70
-                    },
-                    "super": {
-                        "winloss": -50,
-                        "comm": -5,
-                        "total": -70
-                    },
-                    "company": -500
-                }
-
---------------------------
-
 Get Outstanding
 ---------------
 
@@ -217,7 +117,7 @@ Gets oustanding report for customer.
 
   **Http Request:**
 
-  ``GET: /api/oustanding/{cid}``
+  ``GET: /api/report/oustanding/{cid}``
 
   **Request Headers:**
 
@@ -244,6 +144,7 @@ Gets oustanding report for customer.
   .. code-block:: json
 
     {
+        "levelid": 2,
         "totaloutstanding": 1000,
         "outstanding": 50
     }
@@ -257,7 +158,7 @@ Gets balance info for customer
 
   **Http Request:**
 
-  ``GET: /api/balance/{cid}``
+  ``GET: /api/report/balance/{cid}``
 
   **Request Headers:**
 
