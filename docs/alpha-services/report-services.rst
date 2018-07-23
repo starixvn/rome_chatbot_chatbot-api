@@ -117,7 +117,7 @@ Gets oustanding report for customer.
 
   **Http Request:**
 
-  ``GET: /api/report/oustanding/{custId}``
+  ``GET: /api/report/{custId}/oustanding``
 
   **Request Headers:**
 
@@ -158,7 +158,7 @@ Gets balance info for customer
 
   **Http Request:**
 
-  ``GET: /api/report/balance/{custId}``
+  ``GET: /api/report/{custId}/balance``
 
   **Request Headers:**
 
