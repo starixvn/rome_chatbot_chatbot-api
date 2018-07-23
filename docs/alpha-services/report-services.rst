@@ -28,7 +28,7 @@ Gets win loss report for customer by date.
   ==========  =====  ===================================
   Paramater   Type   Description
   ==========  =====  ===================================
-  cid         int    customer id
+  custId      int    customer id
   ----------  -----  -----------------------------------
   date        long   Time of the report in milliseconds
   ==========  =====  ===================================
@@ -117,7 +117,7 @@ Gets oustanding report for customer.
 
   **Http Request:**
 
-  ``GET: /api/report/oustanding/{cid}``
+  ``GET: /api/report/oustanding/{custId}``
 
   **Request Headers:**
 
@@ -132,7 +132,7 @@ Gets oustanding report for customer.
   ==========  =====  ============================
   Paramater   Type   Description
   ==========  =====  ============================
-  cid         int    customer id
+  custId      int    customer id
   ==========  =====  ============================
 
   **Response:**
@@ -158,7 +158,7 @@ Gets balance info for customer
 
   **Http Request:**
 
-  ``GET: /api/report/balance/{cid}``
+  ``GET: /api/report/balance/{custId}``
 
   **Request Headers:**
 
@@ -173,7 +173,7 @@ Gets balance info for customer
   ==========  =====  ============================
   Paramater   Type   Description
   ==========  =====  ============================
-  cid         int    customer id
+  custId      int    customer id
   ==========  =====  ============================
 
   **Response:**

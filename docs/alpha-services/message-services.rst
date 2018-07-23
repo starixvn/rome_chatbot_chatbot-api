@@ -12,7 +12,7 @@ Gets personal messages, normal/special announcements for customer.
 
   **Http Request:**
 
-  ``GET: /api/message/{cid}/messages/{messageType}/{language}/{fromTime}/{toTime}``
+  ``GET: /api/message/{custId}/messages/{messageType}/{language}/{fromTime}/{toTime}``
 
   **Request Headers:**
 
@@ -27,7 +27,7 @@ Gets personal messages, normal/special announcements for customer.
   ============  =======  ===========================================================================
   Paramater     Type     Description
   ============  =======  ===========================================================================
-  cid           int      customer id
+  custId        int      customer id
   ------------  -------  ---------------------------------------------------------------------------
   messageType   int      Message Type (0: normal message, 1: personal message, 2: special message )
   ------------  -------  ---------------------------------------------------------------------------
