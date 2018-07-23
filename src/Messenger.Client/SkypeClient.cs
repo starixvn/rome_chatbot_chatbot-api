@@ -36,6 +36,11 @@
             throw new System.NotImplementedException();
         }
 
+        public Task<Result> PushAsync(string accountId, string message)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Task<Result> SetWebhookAsync(string url)
         {
             throw new System.NotImplementedException();
