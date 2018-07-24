@@ -7,9 +7,9 @@ Document History
 +------------------+-----------------------------------------------------+
 | Initation Date   | 1 July, 2018                                        |
 +------------------+-----------------------------------------------------+
-| Key Contributors | Anders Le, Ricky Nguyen, and Alvin Nguyen           |
+| Key Contributors | Anders, Ricky, and Alvin                            |
 +------------------+-----------------------------------------------------+
-| Approver         | Phuong Doan                                         |
+| Approver         | Phuong                                              |
 +------------------+-----------------------------------------------------+
 
 Revision

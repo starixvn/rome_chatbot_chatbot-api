@@ -2,23 +2,21 @@
 Introduction
 **************************
 
-**Chatbot services** work like `message-oriented middleware <https://en.wikipedia.org/wiki/Message-oriented_middleware>`_, play a role as a business service layer (fully asynchronous service layer) which abstracts away all backend services and dependencies behind facades.
+**Chatbot services** work like `message-oriented middleware <https://en.wikipedia.org/wiki/Message-oriented_middleware>`_, play a role as a business service tier (fully asynchronous and non-blocking service tier) which abstracts away all backend services and dependencies behind facades.
 
-The middleware also addresses things like security, logging, audit trail, and cross-platform communications, etc.
+The services also addresses things like security, logging, audit trail, and cross-platform communications, etc.
 
-The following diagram and subsequent annotations explain the architecture:
+The following diagram and subsequent annotations display a simple layout of the architecture:
 
-.. image:: assets/bot-services-intro.png
+.. image:: assets/chatbot-service-simpleview.png
 
-Chatbot API includes two main parts:
-
-- Bot Client: a dll, every consumer site uses this client to access provided APIs
-- Bot Services: 
-
-    - receives requests related to bot, such as setting bot, send message to bot ...
-    - run scheduled jobs to collect data and send to letstalk service
-    - set auto reply messages in some cases like UM time
-
-.. image:: assets/ChatBotAPI_Services.png  
-
-In this implementation, we use *Message Pack* https://msgpack.org/index.html to serialize message content 
+There are seven main components of chatbot:
+    - `Webhook receives incoming requests from Letstalk Platform. <../webhook/introduction.html>`_ 
+    - *Command* process requests regarding user Letstalk message so-called command. 
+    - *Schedule* query data of SMA from **Alpha services** on schedule.
+    - *Message*
+        - Sender sends message to Letstalk Platform.
+        - Builder receives data from *Command* or *Schedule* then produce a plain-text message.
+        - Logger saves all incoming and outgoing messages across the chatbot boundary to persistent storage.
+    - *Setting* API supports SMA to setup chatbot on Alpha site. 
+         

@@ -7,9 +7,9 @@ High Level Design
 With vertical slicing, the project is to separate into three domains: **Alpha**, **Chatbot**, and **Letstalk**. Every part has a dedicated database of their own, that would enable **microservice architecture**. [#microservice]_
 
 .. note::       
-    -  Alpha team takes responsibilities on Alpha and Chatbot. 
+    -  Alpha team is in charge of Alpha and Chatbot. 
 
-    -  Letstalk team is responsible for all things belong to Letstalk platform.
+    -  Letstalk team is responsible for Letstalk platform.
 
 With horizontal slicing, from the traditional **n-architecture** point of view, the project is divided into three tiers:
 

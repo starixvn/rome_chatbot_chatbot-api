@@ -8,8 +8,7 @@
    :caption: General Information
    :maxdepth: 2
    
-   general-info/purpose
-   general-info/scope
+   general-info/purpose   
    general-info/definition
    general-info/references
    general-info/changelog
@@ -34,7 +33,7 @@
    :caption: Webhook
    :maxdepth: 2
    
-   webhook/introduction
+   webhook/webhook_intro
    webhook/security   
 
 .. toctree::

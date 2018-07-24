@@ -3,7 +3,7 @@ System Overview
 
 System use case diagrams below describe functions that system should peform in colloboration with SMA. 
 
-.. warning:: The use case diagrams are required knowledge. Please understand it wholly before reading the system technical design.
+.. caution:: The use case diagrams are required knowledge. Please understand it wholly before reading the system technical design.
 
 1. Business Cases of Alpha
 --------------------------
