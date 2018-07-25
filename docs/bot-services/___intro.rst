@@ -8,7 +8,7 @@ The following diagram and subsequent annotations display a simple layout of the 
 
 .. image:: assets/chatbot-service-simpleview.png
 
-There is no p2p connection between two services, communications inside the chatbot services boundary are all based on a **message bus**.
+There is no p2p connection between two services, communications inside the chatbot services boundary are all based on a **message bus**. HAProxy is applied to guarantee high availability and scalability of the services.
 
 .. image:: assets/cb-msgbus.png
 
