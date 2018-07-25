@@ -1,6 +1,6 @@
-******
-Errors
-******
+************************
+Conventions & Standards
+************************
 
 .. contents:: Table of Contents
    :local:

@@ -2,6 +2,6 @@
 Introduction
 ************
 
-The Aplpha Services lets you retrieve customer data with a customer id, such as some basic reports, message & announcements.
+The Alpha service plays a role as a data tier which provides report data, customer info, messages and announcements for **Chatbot services**.
 
 .. image:: assets/alpha-service-intro.png
