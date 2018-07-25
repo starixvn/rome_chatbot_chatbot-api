@@ -11,7 +11,7 @@
 
     public interface SettingService
     {
-        Task<IEnumerable<Function>> GetFunctions(int userId);
+        Task<IEnumerable<Function>> GetFunctions(int userId, string language);
 
         Task<Result> UpdateFunctions(int userId, IEnumerable<Function> functions);
 
@@ -25,7 +25,7 @@
 
         Task<IEnumerable<Function>> GetAllFunctions();
 
-        Task<User> GetUser(int custId, int subAccountId);
+        Task<User> GetUser(int custId, int subAccountId, string language);
 
         Task<Result> Unsubscribe(int userId, int messengerType);
     }
@@ -60,7 +60,7 @@
 
             if(returnCode != 0)
             {
-                return string.Empty;
+                throw new InvalidOperationException($"Failed insert Verification Code with code {returnCode}");
             }
 
             var result = await client.PushAsync(messenger.Account, verificationCode);
@@ -83,49 +83,45 @@
             return funtions;
         }
 
-        public async Task<User> GetUser(int custId, int subAccountId)
+        public async Task<User> GetUser(int custId, int subAccountId, string language)
         {
-            var userDto = await dynamicRepository.FetchAsync<UserDto>(new GetUserCriteria());
+            var user = await dynamicRepository.GetAsync<User>(new GetUserCriteria());
 
-            if (!userDto.Any())
+            if (user == null)
             {
-                return default(User);
+                return user;
             }
 
-            var firstDto = userDto.ElementAt(0);
-            var userId = firstDto.UserId;
-            var user = new User
-            {
-                Id = userId,
-                CustId = firstDto.CustId,
-                Language = firstDto.Language,
-                SubAccountId = firstDto.SubAccountId,
-                MessengerAccounts = userDto.Select(dto => new Messenger
+            user.MessengerAccounts = await dynamicRepository.FetchAsync<Messenger>(
+                new GetMessengerByUserCriteria
                 {
-                    Account = dto.MessengerAcc,
-                    Enabled = dto.Enabled,
-                    Type = dto.MessengerType
-                })
-            };
+                    UserId = user.Id
+                });
+
+            user.Functions = await GetFunctions(user.Id, language);
 
             return user;
         }
 
-        public async Task<IEnumerable<Function>> GetFunctions(int userId)
+        public async Task<IEnumerable<Function>> GetFunctions(int userId, string language)
         {
-            var functions = await dynamicRepository.FetchAsync<Function>(new GetFunctionsCriteria
-            {
-                UserId = userId
-            });
+            var functions = await dynamicRepository.FetchAsync<Function>(
+                new GetFunctionsCriteria
+                {
+                    UserId = userId
+                });
 
             foreach (var function in functions)
             {
+                //TODO: Need cache here
                 var functionLanguages = await dynamicRepository.FetchAsync<FunctionLanguageDto>(new GetFunctionNameCriteria
                 {
                     FunctionId = function.Id
                 });
 
-                function.NameByLanguage = functionLanguages.ToDictionary(lang => lang.LanguageCode, lang => lang.FunctionName);
+                function.Name = functionLanguages
+                    .FirstOrDefault(languageDto => languageDto.LanguageCode == language)
+                    ?.FunctionName;
             }
 
             return functions;
@@ -191,8 +187,7 @@
                     return new AddingUserResult
                     {
                         Code = code,
-                        UserId = insertCommand.UserId,
-                        VerificationCode = verificationCode
+                        UserId = insertCommand.UserId
                     };
                 }
             }

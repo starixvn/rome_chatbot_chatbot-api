@@ -1,8 +1,9 @@
-﻿namespace Chatbot.Client.Configurations
+﻿namespace Chatbot.Client.Sample
 {
     using System;
     using System.Collections.Specialized;
     using System.Configuration;
+    using Chatbot.Client.Configurations;
 
     public static class AppSettings
     {

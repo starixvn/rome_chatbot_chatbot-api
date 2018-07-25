@@ -27,9 +27,7 @@
         public static AddingUserResult CreateAccountDoesNotExistResult()
             => new AddingUserResult { Code = AccountDoesNotExistCode };
 
-        public string VerificationCode { get; set; }
-
-        public string UserId { get; set; }
+        public int UserId { get; set; }
 
         public bool IsAccountDoesNotExist 
             => Code == AccountDoesNotExistCode;

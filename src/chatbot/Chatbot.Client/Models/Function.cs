@@ -13,7 +13,5 @@
         public string Command { get; set; }
 
         public bool Enabled { get; set; }
-
-        public IDictionary<string, string> NameByLanguage { get; set; }
     }
 }

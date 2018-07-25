@@ -43,7 +43,13 @@
             }
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
-            app.UseMvc();
+            app.UseMvc(
+                routes =>
+                {
+                    routes.MapRoute(
+                        name: "default",
+                        template: "{controller=Home}/{action=Index}");
+                });
 
             DbSettingProviderManager
               .StartNewSession()

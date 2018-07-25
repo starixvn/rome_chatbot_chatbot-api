@@ -20,23 +20,26 @@
         public async Task<Result> UpdateFunctions(int userId, [FromBody]IEnumerable<Function> functions)
             => await settingService.UpdateFunctions(userId, functions);
 
-        [Route("api/setting/{userId}/function"), HttpGet]
-        public async Task<IEnumerable<Function>> GetFunctions(int userId)
-            => await settingService.GetFunctions(userId);
+        [Route("api/setting/{userId}/function/{language}"), HttpGet]
+        public async Task<IEnumerable<Function>> GetFunctions(int userId, string language)
+            => await settingService.GetFunctions(userId, language);
 
         [Route("api/setting/{userId}/language/{language}"), HttpPost]
         public async Task<Result> UpdateLanguage(int userId, string language)
             => await settingService.UpdateLanguage(userId, language);
 
         [Route("api/setting/{userId}/generateVerificationCode"), HttpPost]
-        public async Task<string> GenerateVerificationCode(int userId, [FromBody]VerificationCodeParam param)
-            => await settingService.GenerateVerificationCode(
-                userId, 
-                new Messenger
-                {
-                    Account = param.MessengerAccount,
-                    Type = param.MessengerType
-                });
+        public async Task<Result> GenerateVerificationCode(int userId, [FromBody]VerificationCodeParam param)
+            => new Result
+            {
+                Message = await settingService.GenerateVerificationCode(
+                                userId,
+                                new Messenger
+                                {
+                                    Account = param.MessengerAccount,
+                                    Type = param.MessengerType
+                                })
+            };
 
         [Route("api/setting/{userId}/verifyVerificationCode"), HttpPost]
         public async Task<Result> VerifyVerificationCode(int userId, [FromBody]VerificationCodeParam param)
@@ -62,12 +65,8 @@
                 });
 
         [Route("api/setting/user"), HttpGet]
-        public async Task<User> GetUser(int custId, int subAccountId)
-            => await settingService.GetUser(custId, subAccountId);
-
-        [Route("api/setting/allfunctions"), HttpGet]
-        public async Task<IEnumerable<Function>> GetAllFunctions()
-            => await settingService.GetAllFunctions();
+        public async Task<User> GetUser(int custId, int subAccountId, string language)
+            => await settingService.GetUser(custId, subAccountId, language);
 
         [Route("api/setting/{userId}/unsubscribe/{messengerType}"), HttpPost]
         public async Task<Result> Unsubscribe(int userId, int messengerType)

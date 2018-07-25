@@ -1,22 +1,14 @@
-﻿namespace Chatbot.Client.Helpers
+﻿namespace Chatbot.Client.Transport
 {
     using System;
     using System.Threading.Tasks;
-    using Chatbot.Client.Configurations;
     using RestSharp;
 
-    public interface IRestClientHelper
+    public class RestClient : Helpers.IRestClient
     {
-        Task<T> ExecuteGetAsync<T>(string endPoint, object data = null);
+        private readonly RestSharp.IRestClient restClient;
 
-        Task<T> ExecutePostAsync<T>(string endPoint, object data = null);
-    }
-
-    public class RestClientHelper : IRestClientHelper
-    {
-        private readonly IRestClient restClient;
-
-        public RestClientHelper(IRestClient restClient = null)
+        public RestClient(RestSharp.IRestClient restClient = null)
         {
             this.restClient = restClient ?? CreateDefaultClient();
         }
@@ -27,11 +19,10 @@
         public Task<T> ExecutePostAsync<T>(string endPoint, object data = null)
             => ExecuteSync<T>(endPoint, Method.POST, data);
 
-        public static IRestClient CreateDefaultClient()
-           => new RestClient
+        public static RestSharp.IRestClient CreateDefaultClient()
+           => new RestSharp.RestClient
            {
-               BaseUrl = new Uri(AppSettings.BotClientConfigs.ApiBaseUrl),
-               Authenticator = new HmacAuthenticator()
+               BaseUrl = new Uri(ChatbotClientManager.BotClientConfigs.ApiBaseUrl)
            };
 
         private async Task<T> ExecuteSync<T>(string endPoint, Method method, object data)

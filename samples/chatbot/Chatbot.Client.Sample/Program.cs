@@ -1,22 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Chatbot.Client.Models;
-using Chatbot.Client.Services;
-
 namespace Chatbot.Client.Sample
 {
-    class Program
+    using System;
+    using Chatbot.Client.Services;
+
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            ChatbotClientManager
+                .UseConfig(AppSettings.BotClientConfigs)
+                .UseRestClient(new Transport.RestClient());
+
             var settingService = new SettingServiceImpl();
 
             //var functions = settingService.GetFunctions(1).Result;
 
-            //var addUserResult = settingService.AddUser(1, 2, "en-us", "demo");
+            var addUserResult = settingService.AddUser(1, 2, "en-us", "demo");
 
             //settingService.UpdateLanguage(1, "fdfd");
 
@@ -42,6 +41,7 @@ namespace Chatbot.Client.Sample
             //settingService.GetAllFunctions();
 
             //settingService.Unsubscribe(3, 4);
+            Console.ReadLine();
         }
     }
 }
