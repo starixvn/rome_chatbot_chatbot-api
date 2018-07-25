@@ -19,8 +19,7 @@ With horizontal slicing, from the traditional **n-architecture** point of view, 
 
 
 
-References       
-==========
+------------
 .. [#cqrs] CQRS https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs
 
 .. [#microservice] Microservice https://martinfowler.com/articles/microservices.html

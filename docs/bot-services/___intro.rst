@@ -8,7 +8,7 @@ The following diagram and subsequent annotations display a simple layout of the 
 
 .. image:: assets/chatbot-service-simpleview.png
 
-There is no p2p connection between two services, communications inside the chatbot services boundary are all based on a **message bus**. HAProxy is applied to guarantee high availability and scalability of the services.
+There is no p2p connection between two services, communications inside the chatbot services boundary are all based on a **message bus**. HAProxy [#haproxy]_ is applied to guarantee high availability and scalability for the services.
 
 .. image:: assets/cb-msgbus.png
 
@@ -22,4 +22,7 @@ Technically, each service takes only one responsibility:
     - Builder receives data from *Command* or *Schedule* then produce a plain-text message.
     - Logger saves all incoming and outgoing messages across the chatbot boundary to persistent storage.
 * `Setting <_chatbot-setting.html>`_ API supports SMA to setup chatbot on Alpha site. 
-         
+
+---------------
+
+.. [#haproxy] HAProxy https://www.haproxy.org/         
