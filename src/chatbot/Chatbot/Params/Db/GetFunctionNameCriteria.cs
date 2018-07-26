@@ -4,7 +4,12 @@
 
     public class GetFunctionNameCriteria : CriteriaBase
     {
-        public int FunctionId { get; set; }
+        public GetFunctionNameCriteria(int functionId)
+        {
+            FunctionId = functionId;
+        }
+
+        public int FunctionId { get; }
 
         public override string GetSettingKey() => "GetFunctionNameCriteria";
 

@@ -7,9 +7,15 @@
 
     public class UpdateFunctionsCommand : NonQueryCommand
     {
-        public int UserId { get; set; }
+        public UpdateFunctionsCommand(int userId, IEnumerable<Function> functions)
+        {
+            UserId = userId;
+            Functions = functions;
+        }
 
-        public IEnumerable<Function> Functions { get; set; }
+        public int UserId { get; }
+
+        public IEnumerable<Function> Functions { get; }
 
         public override string GetSettingKey() => "UpdateFunctionsCommand";
 

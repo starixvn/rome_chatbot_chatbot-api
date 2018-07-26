@@ -4,7 +4,12 @@
 
     public class GetFunctionsCriteria : CriteriaBase
     {
-        public int UserId { get; set; }
+        public GetFunctionsCriteria(int userId)
+        {
+            UserId = userId;
+        }
+
+        public int UserId { get; }
 
         public override string GetSettingKey() => "GetFunctionsCriteria";
 

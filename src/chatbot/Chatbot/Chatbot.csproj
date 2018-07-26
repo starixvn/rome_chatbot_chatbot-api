@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Fanex.Caching" Version="2.2.0-beta2" />
     <PackageReference Include="Fanex.Data" Version="3.0.0-rc1" />
     <PackageReference Include="Fanex.Data.Repository" Version="3.0.0-rc1" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />

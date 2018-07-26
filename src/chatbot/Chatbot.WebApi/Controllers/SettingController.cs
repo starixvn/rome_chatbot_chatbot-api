@@ -30,22 +30,19 @@
 
         [Route("api/setting/{userId}/generateVerificationCode"), HttpPost]
         public async Task<Result> GenerateVerificationCode(int userId, [FromBody]VerificationCodeParam param)
-            => new Result
-            {
-                Message = await settingService.GenerateVerificationCode(
+            => await settingService.GenerateVerificationCode(
                                 userId,
                                 new Messenger
                                 {
                                     Account = param.MessengerAccount,
                                     Type = param.MessengerType
-                                })
-            };
+                                });
 
         [Route("api/setting/{userId}/verifyVerificationCode"), HttpPost]
         public async Task<Result> VerifyVerificationCode(int userId, [FromBody]VerificationCodeParam param)
             => await settingService.VerifyVerificationCode(
                 userId,
-                param.VerificationCode, 
+                param.VerificationCode,
                 new Messenger
                 {
                     Account = param.MessengerAccount,

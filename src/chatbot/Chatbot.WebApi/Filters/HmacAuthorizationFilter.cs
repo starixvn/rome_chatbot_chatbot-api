@@ -18,7 +18,7 @@
     public sealed class HmacAuthorizationFilter
     {
         private const long RequestMaxAgeInSeconds = 300;
-        private const string TokenAuthenticationScheme = "amx"; 
+        private const string TokenAuthenticationScheme = "amx";
 
         public void OnAuthorization(AuthorizationHandlerContext actionContext, HttpRequestMessage request)
         {

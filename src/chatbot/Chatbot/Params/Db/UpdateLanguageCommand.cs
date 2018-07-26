@@ -4,9 +4,15 @@
 
     public class UpdateLanguageCommand : NonQueryCommand
     {
-        public int UserId { get; set; }
+        public UpdateLanguageCommand(int userId, string language)
+        {
+            UserId = userId;
+            Language = language;
+        }
 
-        public string Language { get; set; }
+        public int UserId { get; }
+
+        public string Language { get; }
 
         public override string GetSettingKey() => "UpdateLanguageCommand";
 

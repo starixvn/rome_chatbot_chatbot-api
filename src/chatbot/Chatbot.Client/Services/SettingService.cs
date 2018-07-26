@@ -30,7 +30,11 @@
     {
         private readonly IRestClient restClient;
 
-        public SettingServiceImpl(IRestClient restClient = null)
+        public SettingServiceImpl() : this(null)
+        {
+        }
+
+        internal SettingServiceImpl(IRestClient restClient)
         {
             this.restClient = restClient ?? ChatbotClientManager.RestClient;
         }

@@ -20,11 +20,10 @@
 
         public MessageEventHandler() : this(null, null, null)
         {
-            
         }
 
         public MessageEventHandler(
-            IMessengerClient messengerClient = null, 
+            IMessengerClient messengerClient = null,
             ICryptographyHelper cryptographyHelper = null,
             IMessengerSettings messengerSettings = null)
         {

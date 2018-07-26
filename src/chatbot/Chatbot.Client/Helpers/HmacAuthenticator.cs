@@ -17,14 +17,12 @@
 
 //        public HmacAuthenticator() : this(null)
 //        {
-
 //        }
 
 //        internal HmacAuthenticator(IBotClientConfigs botClientConfigs)
 //        {
 //            this.botClientConfigs = botClientConfigs ?? AppSettings.BotClientConfigs;
 //        }
-
 
 //        public void Authenticate(IRestClient client, IRestRequest request)
 //        {

@@ -4,11 +4,18 @@
 
     public class InsertUserCommand : NonQueryCommand
     {
-        public int CustId { get; set; }
+        public InsertUserCommand(int custId, int subAccountId, string language)
+        {
+            CustId = custId;
+            SubAccountId = subAccountId;
+            Language = language;
+        }
 
-        public int SubAccountId { get; set; }
+        public int CustId { get; }
 
-        public string Language { get; set; }
+        public int SubAccountId { get; }
+
+        public string Language { get; }
 
         public override string GetSettingKey() => "InsertUserCommand";
 

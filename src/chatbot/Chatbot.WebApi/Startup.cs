@@ -1,9 +1,7 @@
 ﻿namespace Chatbot.WebApi
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using Chatbot.Services;
     using Chatbot.WebApi.Middlewares;
     using Fanex.Data;
@@ -12,8 +10,6 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Options;
 
     public class Startup
     {
@@ -32,6 +28,11 @@
             services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
             services.AddSingleton<SettingService, SettingServiceImpl>();
             services.AddSingleton<IDynamicRepository, DynamicRepository>();
+
+            services.Configure<IISOptions>(options =>
+            {
+                options.ForwardClientCertificate = false;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,15 +52,16 @@
                         template: "{controller=Home}/{action=Index}");
                 });
 
+            var connections = Configuration
+               .GetSection("ConnectionStrings")
+               .GetChildren()
+               .ToDictionary(connection => connection.Key, connection => connection.Value, StringComparer.OrdinalIgnoreCase);
+
             DbSettingProviderManager
               .StartNewSession()
-              .UseConnectionStrings(new Dictionary<string, string>
-              {
-                  { "CHATBOT_DB", Configuration["CHATBOT_DB"] }
-              })
+              .UseConnectionStrings(connections)
               .UseDefaultDbSettingProvider("~/App_Data")
               .Run();
-
         }
     }
 }

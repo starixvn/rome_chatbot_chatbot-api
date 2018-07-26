@@ -1,7 +1,7 @@
 ﻿namespace Chatbot.Client.Models
 {
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class User
     {
@@ -11,7 +11,7 @@
 
         public int SubAccountId { get; set; }
 
-        public IEnumerable<Messenger>  MessengerAccounts { get; set; }
+        public IEnumerable<Messenger> MessengerAccounts { get; set; }
 
         public IEnumerable<Function> Functions { get; set; }
 

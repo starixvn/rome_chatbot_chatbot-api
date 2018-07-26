@@ -4,9 +4,15 @@
 
     public class GetUserCriteria : CriteriaBase
     {
-        public int CustId { get; set; }
+        public GetUserCriteria(int custId, int subAccountId)
+        {
+            CustId = custId;
+            SubAccountId = subAccountId;
+        }
 
-        public int SubAccountId { get; set; }
+        public int CustId { get; }
+
+        public int SubAccountId { get; }
 
         public override string GetSettingKey() => "GetUser";
 
