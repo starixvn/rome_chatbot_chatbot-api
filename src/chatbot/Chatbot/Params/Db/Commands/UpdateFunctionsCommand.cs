@@ -1,11 +1,10 @@
-﻿namespace Chatbot.Params.Db
+﻿namespace Chatbot.Params.Db.Commands
 {
     using System.Collections.Generic;
     using System.Linq;
     using Chatbot.Models;
-    using Fanex.Data.Repository;
 
-    public class UpdateFunctionsCommand : NonQueryCommand
+    public class UpdateFunctionsCommand : BaseCommand
     {
         public UpdateFunctionsCommand(int userId, IEnumerable<Function> functions)
         {

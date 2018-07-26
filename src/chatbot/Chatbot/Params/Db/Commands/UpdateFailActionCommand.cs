@@ -1,8 +1,6 @@
-﻿namespace Chatbot.Params.Db
+﻿namespace Chatbot.Params.Db.Commands
 {
-    using Fanex.Data.Repository;
-
-    public class UpdateFailActionCommand : NonQueryCommand
+    public class UpdateFailActionCommand : BaseCommand
     {
         public UpdateFailActionCommand(int userId, int actionId, int messengerType)
         {

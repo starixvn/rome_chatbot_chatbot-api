@@ -1,7 +1,5 @@
 ﻿namespace Chatbot.Models
 {
-    using System.Collections.Generic;
-
     public class Function
     {
         public int Id { get; set; }
@@ -13,5 +11,7 @@
         public string Command { get; set; }
 
         public bool Enabled { get; set; }
+
+        public string Environment { get; set; }
     }
 }

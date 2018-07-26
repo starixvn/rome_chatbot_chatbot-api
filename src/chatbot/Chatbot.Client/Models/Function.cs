@@ -13,5 +13,7 @@
         public string Command { get; set; }
 
         public bool Enabled { get; set; }
+
+        public string Environment { get; set; }
     }
 }

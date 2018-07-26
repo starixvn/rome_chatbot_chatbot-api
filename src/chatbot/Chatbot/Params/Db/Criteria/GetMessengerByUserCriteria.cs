@@ -1,4 +1,4 @@
-﻿namespace Chatbot.Params.Db
+﻿namespace Chatbot.Params.Db.Criteria
 {
     using Fanex.Data.Repository;
 

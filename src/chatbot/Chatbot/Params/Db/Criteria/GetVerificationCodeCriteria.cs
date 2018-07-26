@@ -1,10 +1,10 @@
-﻿namespace Chatbot.Params.Db
+﻿namespace Chatbot.Params.Db.Criteria
 {
     using Fanex.Data.Repository;
 
-    public class DisabledMessengerCommand : NonQueryCommand
+    public class GetVerificationCodeCriteria : CriteriaBase
     {
-        public DisabledMessengerCommand(int userId, int messengerType)
+        public GetVerificationCodeCriteria(int userId, int messengerType)
         {
             UserId = userId;
             MessengerType = messengerType;
@@ -14,7 +14,7 @@
 
         public int MessengerType { get; }
 
-        public override string GetSettingKey() => "DisabledMessengerCommand";
+        public override string GetSettingKey() => "GetVerificationCodeCriteria";
 
         public override bool IsValid()
             => UserId > 0

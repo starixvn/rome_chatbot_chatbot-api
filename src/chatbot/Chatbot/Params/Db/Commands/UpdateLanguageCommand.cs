@@ -1,8 +1,6 @@
-﻿namespace Chatbot.Params.Db
+﻿namespace Chatbot.Params.Db.Commands
 {
-    using Fanex.Data.Repository;
-
-    public class UpdateLanguageCommand : NonQueryCommand
+    public class UpdateLanguageCommand : BaseCommand
     {
         public UpdateLanguageCommand(int userId, string language)
         {

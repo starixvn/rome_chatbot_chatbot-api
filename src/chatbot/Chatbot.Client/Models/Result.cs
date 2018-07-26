@@ -31,7 +31,6 @@
         private const int MessengerAccountDoesNotExist = 2;
         private const int MessengerAccountHasBeenRegisteredByAnotherCustomer = 5;
 
-
         public bool IsMessengerAccountHasBeenRegisteredByAnotherCustomer
             => Code == MessengerAccountHasBeenRegisteredByAnotherCustomer;
 

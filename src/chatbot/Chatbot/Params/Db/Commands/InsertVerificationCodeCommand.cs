@@ -1,9 +1,8 @@
-﻿namespace Chatbot.Params.Db
+﻿namespace Chatbot.Params.Db.Commands
 {
     using System;
-    using Fanex.Data.Repository;
 
-    public class InsertVerificationCodeCommand : NonQueryCommand
+    public class InsertVerificationCodeCommand : BaseCommand
     {
         public InsertVerificationCodeCommand(int userId, int messengerType, string verificationCode)
         {

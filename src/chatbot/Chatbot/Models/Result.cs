@@ -63,6 +63,9 @@
         public static AddingUserResult CreateSuccessfulResult(int userId)
             => new AddingUserResult(0, string.Empty, userId);
 
+        public static AddingUserResult CreateSuccessfulResult()
+            => new AddingUserResult(0, string.Empty, 0);
+
         public static AddingUserResult CreateAccountDoesNotExistResult()
             => new AddingUserResult(MessengerAccountDoesNotExist);
 
