@@ -4,16 +4,24 @@
 
     public class User
     {
-        public int Id { get; set; }
+        public User(int id, int custId, int subAccountId, string language)
+        {
+            Id = id;
+            CustId = custId;
+            SubAccountId = subAccountId;
+            Language = language;
+        }
 
-        public int CustId { get; set; }
+        public int Id { get; }
 
-        public int SubAccountId { get; set; }
+        public int CustId { get; }
 
-        public IEnumerable<Messenger>  MessengerAccounts { get; set; }
+        public int SubAccountId { get; }
+
+        public IEnumerable<Messenger> MessengerAccounts { get; set; }
 
         public IEnumerable<Function> Functions { get; set; }
 
-        public string Language { get; set; }
+        public string Language { get; }
     }
 }

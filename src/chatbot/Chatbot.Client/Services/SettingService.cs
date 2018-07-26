@@ -17,7 +17,7 @@
 
         Task<Result> GenerateVerificationCode(int userId, string messengerAccount, int messengerType = MessengerType.Letstalk);
 
-        Task<Result> VerifyVerificationCode(int userId, string verificationCode, string messengerAccount, int messengerType = MessengerType.Letstalk);
+        Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, string messengerAccount, int messengerType = MessengerType.Letstalk);
 
         Task<AddingUserResult> AddUser(int custId, int subAccountId, string language, string messengerAccount, int messengerType = MessengerType.Letstalk);
 
@@ -128,14 +128,14 @@
             }
         }
 
-        public Task<Result> VerifyVerificationCode(int userId, string verificationCode, string messengerAccount, int messengerType = 1)
+        public Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, string messengerAccount, int messengerType = 1)
         {
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(verificationCode), verificationCode);
             ValidateInputParam(nameof(messengerAccount), messengerAccount);
             ValidateInputParam(nameof(messengerType), messengerType);
 
-            return restClient.ExecutePostAsync<Result>(
+            return restClient.ExecutePostAsync<VerificationCodeResult>(
                 $"setting/{userId}/verifyVerificationCode",
                 new
                 {

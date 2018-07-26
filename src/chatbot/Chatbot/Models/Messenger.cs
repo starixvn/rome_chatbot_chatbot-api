@@ -2,10 +2,17 @@
 {
     public class Messenger
     {
-        public int Type { get; set; }
+        public Messenger(int type, string account, bool enabled = false)
+        {
+            Type = type;
+            Account = account;
+            Enabled = enabled;
+        }
 
-        public string Account { get; set; }
+        public int Type { get; }
 
-        public bool Enabled { get; set; }
+        public string Account { get; }
+
+        public bool Enabled { get; }
     }
 }

@@ -20,7 +20,7 @@
 
         Task<Result> GenerateVerificationCode(int userId, Messenger messenger);
 
-        Task<Result> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger);
+        Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger);
 
         Task<AddingUserResult> AddUser(int custId, int subAccountId, string language, Messenger messenger);
 
@@ -33,7 +33,8 @@
 
     public class SettingServiceImpl : SettingService
     {
-        private const int NotExistAccountActionId = 100;
+        private const int MaxAddActionTimes = 10;
+        private const int AddAccountActionId = 100;
         private const int WrongVerificationCodeActionId = 101;
         private const string functionNameByLanguageCacheKey = "SettingServiceImpl.FunctionNameByLanguageCacheKey.{0}";
         private readonly IDynamicRepository dynamicRepository;
@@ -64,7 +65,8 @@
             var verificationCode = RandomSixDigitsNumber();
             var client = messengerFactory.CreateMessengerClient(messenger.Type);
 
-            var returnCode = await dynamicRepository.ExecuteAsync(new InsertVerificationCodeCommand(userId, messenger.Type, verificationCode));
+            var command = new InsertVerificationCodeCommand(userId, messenger.Type, verificationCode);
+            var returnCode = await dynamicRepository.ExecuteAsync(command);
 
             if (returnCode != 0)
             {
@@ -103,7 +105,6 @@
             }
 
             user.MessengerAccounts = await dynamicRepository.FetchAsync<Messenger>(new GetMessengerByUserCriteria(user.Id));
-
             user.Functions = await GetFunctions(user.Id, language);
 
             return user;
@@ -120,7 +121,7 @@
             {
                 var functionLanguages = await cacheService.GetOrSetAsync(
                         string.Format(functionNameByLanguageCacheKey, function.Id),
-                        () => dynamicRepository.FetchAsync<FunctionLanguageDto>(new GetFunctionNameCriteria(function.Id)).Result,
+                        () => GetFunctionLanguage(function.Id).Result,
                         new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0)));
 
                 function.Name = functionLanguages
@@ -131,12 +132,16 @@
             return functions;
         }
 
+        private async Task<IEnumerable<FunctionLanguageDto>> GetFunctionLanguage(int functionId)
+            => await dynamicRepository.FetchAsync<FunctionLanguageDto>(new GetFunctionNameCriteria(functionId));
+
         public async Task<Result> UpdateFunctions(int userId, IEnumerable<Function> functions)
         {
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(functions), functions);
 
-            var code = await dynamicRepository.ExecuteAsync(new UpdateFunctionsCommand(userId, functions));
+            var command = new UpdateFunctionsCommand(userId, functions);
+            var code = await dynamicRepository.ExecuteAsync(command);
 
             return new Result(code);
         }
@@ -146,7 +151,8 @@
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(language), language);
 
-            var code = await dynamicRepository.ExecuteAsync(new UpdateLanguageCommand(userId, language));
+            var command = new UpdateLanguageCommand(userId, language);
+            var code = await dynamicRepository.ExecuteAsync(command);
 
             return new Result(code);
         }
@@ -161,12 +167,16 @@
             ValidateInputParam(nameof(messenger), messenger);
 
             var userId = await InsertUser(custId, subAccountId, language);
-            var isExisted = await CheckMessengerAccountExisted(messenger);
 
-            if (!isExisted)
+            await UpdateFailedActionCount(userId, AddAccountActionId, messenger.Type);
+
+            if(await IsUserAddAccountOverMaxTimeInDay(userId, messenger.Type))
             {
-                await UpdateFailedActionCount(userId, NotExistAccountActionId, messenger.Type);
+                return AddingUserResult.CreateIsOverMaxAddAccountTimesResult();
+            }
 
+            if (await IsMessengerAccountNotExisted(messenger))
+            {
                 return AddingUserResult.CreateAccountDoesNotExistResult();
             }
 
@@ -175,7 +185,6 @@
                 return AddingUserResult.CreateMessengerAccountHasBeenRegisteredByAnotherCustomerResult();
             }
 
-            // Need refactor code here
             await GenerateVerificationCode(userId, messenger);
 
             return AddingUserResult.CreateSuccessfulResult(userId);
@@ -186,7 +195,8 @@
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(messenger), messenger);
 
-            var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(new GetMessengerCriteria(messenger.Account, messenger.Type));
+            var criteria = new GetMessengerCriteria(messenger.Account, messenger.Type);
+            var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(criteria);
 
             if (messengerDto != null
                 && messengerDto.UserId != userId)
@@ -199,19 +209,34 @@
 
         private async Task<int> InsertUser(int custId, int subAccountId, string language)
         {
-            var insertCommand = new InsertUserCommand(custId, subAccountId, language);
+            var command = new InsertUserCommand(custId, subAccountId, language);
 
-            await dynamicRepository.ExecuteAsync(insertCommand);
+            await dynamicRepository.ExecuteAsync(command);
 
-            return insertCommand.UserId;
+            return command.UserId;
         }
 
-        private async Task<bool> CheckMessengerAccountExisted(Messenger messenger)
+        private async Task<bool> IsUserAddAccountOverMaxTimeInDay(int userId, int messengerType)
+        {
+            var numOfAddTime = (await GetUserAction(userId, messengerType, AddAccountActionId)).ActionCount;
+
+            return numOfAddTime > MaxAddActionTimes;
+        }
+
+        private async Task<UserActionDto> GetUserAction(int userId, int messengerType, int actionId)
+        {
+            var criteria = new GetFailedActionCriteria(userId, actionId, messengerType);
+            var userAction = await dynamicRepository.GetAsync<UserActionDto>(criteria);
+
+            return userAction;
+        }
+
+        private async Task<bool> IsMessengerAccountNotExisted(Messenger messenger)
         {
             var client = messengerFactory.CreateMessengerClient(messenger.Type);
             var profileResult = await client.GetProfileAsync(messenger.Account);
 
-            return profileResult.Item2;
+            return !profileResult.Item2;
         }
 
         public async Task<Result> Unsubscribe(int userId, int messengerType)
@@ -219,28 +244,30 @@
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(messengerType), messengerType);
 
-            var code = await dynamicRepository.ExecuteAsync(new DisabledMessengerCommand(userId, messengerType));
+            var command = new DisabledMessengerCommand(userId, messengerType);
+            var code = await dynamicRepository.ExecuteAsync(command);
 
             return new Result(code);
         }
 
-        public async Task<Result> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger)
+        public async Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger)
         {
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(verificationCode), verificationCode);
             ValidateInputParam(nameof(messenger), messenger);
 
-            var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(new GetMessengerByUserCriteria(userId, messenger.Type));
+            var criteria = new GetMessengerByUserCriteria(userId, messenger.Type);
+            var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(criteria);
 
             if (messengerDto == null
                 || messengerDto.Account != messenger.Account)
             {
-                return Result.CreateWrongVerificationCodeResult();
+                return VerificationCodeResult.CreateWrongVerificationCodeResult();
             }
 
             if (messengerDto.GeneratedVerificationCodeTime.AddMinutes(5) > getCurrentDateTimeFunc())
             {
-                return Result.CreateVerificationCodeExpiredResult();
+                return VerificationCodeResult.CreateVerificationCodeExpiredResult();
             }
 
             if (messengerDto.VerificationCode != verificationCode)
@@ -248,12 +275,13 @@
                 await UpdateFailedActionCount(userId, WrongVerificationCodeActionId, messenger.Type);
             }
 
-            return Result.CreateSuccessfulResult();
+            return VerificationCodeResult.CreateVerificationSuccessfulResult();
         }
 
         private async Task<Result> UpdateFailedActionCount(int userId, int actionId, int messengerType)
         {
-            var code = await dynamicRepository.ExecuteAsync(new UpdateFailActionCommand(userId, actionId, messengerType));
+            var command = new UpdateFailActionCommand(userId, actionId, messengerType);
+            var code = await dynamicRepository.ExecuteAsync(command);
 
             return new Result(code);
         }

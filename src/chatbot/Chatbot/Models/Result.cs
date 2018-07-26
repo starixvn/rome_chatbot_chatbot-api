@@ -2,10 +2,6 @@
 {
     public class Result
     {
-        public const int VerificationCodeExpiredCode = 3;
-        public const int WrongVerificationCode = 4;
-        public const int OverMaxAddAccountTimes = 6;
-
         public Result(int code, string message = "")
         {
             Code = code;
@@ -20,32 +16,44 @@
 
         public string Message { get; }
 
-        public bool IsVerificationCodeExpired
-            => Code == VerificationCodeExpiredCode;
-
-        public static Result CreateVerificationCodeExpiredResult()
-            => new Result(VerificationCodeExpiredCode);
-
-        public bool IsWrongVerificationCode
-            => Code == WrongVerificationCode;
-
-        public static Result CreateWrongVerificationCodeResult()
-            => new Result(WrongVerificationCode);
-
-        public bool IsOverMaxAddAccountTimes
-            => Code == OverMaxAddAccountTimes;
-
-        public static Result CreateIsOverMaxAddAccountTimesResult()
-            => new Result(OverMaxAddAccountTimes);
-
         public static Result CreateSuccessfulResult()
             => new Result(0);
     }
 
+    public class VerificationCodeResult : Result
+    {
+        private const int VerificationCodeExpiredCode = 3;
+        private const int WrongVerificationCode = 4;
+
+        public VerificationCodeResult(int code, string message = "", int failedTimes = 0)
+            : base(code, message)
+        {
+            FailedTimes = failedTimes;
+        }
+
+        public int FailedTimes { get; }
+
+        public bool IsVerificationCodeExpired
+            => Code == VerificationCodeExpiredCode;
+
+        public static VerificationCodeResult CreateVerificationCodeExpiredResult()
+            => new VerificationCodeResult(VerificationCodeExpiredCode);
+
+        public bool IsWrongVerificationCode
+            => Code == WrongVerificationCode;
+
+        public static VerificationCodeResult CreateWrongVerificationCodeResult()
+            => new VerificationCodeResult(WrongVerificationCode);
+
+        public static VerificationCodeResult CreateVerificationSuccessfulResult()
+            => new VerificationCodeResult(0, string.Empty, 0);
+    }
+
     public class AddingUserResult : Result
     {
+        private const int OverMaxAddAccountTimes = 6;
         private const int MessengerAccountDoesNotExist = 2;
-        public const int MessengerAccountHasBeenRegisteredByAnotherCustomer = 5;
+        private const int MessengerAccountHasBeenRegisteredByAnotherCustomer = 5;
 
         public AddingUserResult(int code, string message = "", int userId = 0) : base(code, message)
         {
@@ -64,6 +72,12 @@
         public bool IsMessengerAccountHasBeenRegisteredByAnotherCustomer
             => Code == MessengerAccountHasBeenRegisteredByAnotherCustomer;
 
-        public int UserId { get; set; }
+        public bool IsOverMaxAddAccountTimes
+           => Code == OverMaxAddAccountTimes;
+
+        public static AddingUserResult CreateIsOverMaxAddAccountTimesResult()
+            => new AddingUserResult(OverMaxAddAccountTimes);
+
+        public int UserId { get; }
     }
 }

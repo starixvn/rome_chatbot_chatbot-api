@@ -32,22 +32,14 @@
         public async Task<Result> GenerateVerificationCode(int userId, [FromBody]VerificationCodeParam param)
             => await settingService.GenerateVerificationCode(
                                 userId,
-                                new Messenger
-                                {
-                                    Account = param.MessengerAccount,
-                                    Type = param.MessengerType
-                                });
+                                new Messenger(param.MessengerType, param.MessengerAccount));
 
         [Route("api/setting/{userId}/verifyVerificationCode"), HttpPost]
         public async Task<Result> VerifyVerificationCode(int userId, [FromBody]VerificationCodeParam param)
             => await settingService.VerifyVerificationCode(
                 userId,
                 param.VerificationCode,
-                new Messenger
-                {
-                    Account = param.MessengerAccount,
-                    Type = param.MessengerType
-                });
+                new Messenger(param.MessengerType, param.MessengerAccount));
 
         [Route("api/setting/addUser"), HttpPost]
         public async Task<AddingUserResult> AddUser([FromBody]UserParam param)
@@ -55,11 +47,7 @@
                 param.CustId,
                 param.SubAccountId,
                 param.Language,
-                new Messenger
-                {
-                    Account = param.MessengerAccount,
-                    Type = param.MessengerType
-                });
+                new Messenger(param.MessengerType, param.MessengerAccount));
 
         [Route("api/setting/user"), HttpGet]
         public async Task<User> GetUser(int custId, int subAccountId, string language)
