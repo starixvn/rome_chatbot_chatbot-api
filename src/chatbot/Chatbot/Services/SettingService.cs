@@ -76,10 +76,10 @@
 
         private async Task<MessengerClient.Models.Result> SendMessage(
             Messenger messenger, 
-            string verificationCode)
+            string message)
         {
             var client = messengerFactory.CreateMessengerClient(messenger.Type);
-            var result = await client.PushAsync(messenger.Account, verificationCode);
+            var result = await client.PushAsync(messenger.Account, message);
 
             if (result.IsNotOk)
             {

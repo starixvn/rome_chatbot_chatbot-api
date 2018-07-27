@@ -17,9 +17,10 @@ namespace Messenger.Client.Sample
             //var result = letstalkClient.Push(botId, new List<string> { "ricky.nguyen" }, "a lo");
             //Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(result)}");
 
-            var profile = letstalkClient.GetProfileAsync("ricky.nguyen").Result;
+            
+            var profile = letstalkClient.SetAutoReplyAsync("auto reply test", true).Result;
 
-            Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(profile)}");
+            //Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(profile)}");
 
             //var result = letstalkClient.setidd(botId, new List<string> { "ricky.nguyen" }, "----------2323------------------------------------------------");
             //var result1 = letstalkClient.ChangeDisplayName(botId, "alpha bot");

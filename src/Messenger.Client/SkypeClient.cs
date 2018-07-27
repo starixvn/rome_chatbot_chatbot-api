@@ -50,5 +50,10 @@
         {
             throw new System.NotImplementedException();
         }
+
+        public Task<Result> SetAutoReplyAsync(string message, bool enabled)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

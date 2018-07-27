@@ -167,5 +167,16 @@
             }
         }
 
+        public Task<Result> SetAutoReplyAsync(string message, bool enabled)
+        {
+            ValidateInputParam(nameof(message), message);
+
+            return restClientHelper.ExecutePostAsync<Result>(
+                $"bot/set_auto_reply/{botId}",
+                new Dictionary<string, object>
+                {
+                    { "enable", enabled ? 1 : 0 }
+                });
+        }
     }
 }

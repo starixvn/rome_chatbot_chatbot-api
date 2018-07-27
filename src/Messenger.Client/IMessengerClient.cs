@@ -18,6 +18,8 @@
 
         Task<Result> SetWelcomeMessageAsync(string message);
 
+        Task<Result> SetAutoReplyAsync(string message, bool enabled);
+
         Task<Result> ChangeDisplayNameAsync(string botName);
     }
 }

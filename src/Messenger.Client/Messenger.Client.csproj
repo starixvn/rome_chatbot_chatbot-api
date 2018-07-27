@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
 	<Description>Messenger Client to talk with Messenger API</Description>
+	<Version>1.0.0-beta1</Version>
+	<Authors>_</Authors>
+	<Product>_</Product>
   </PropertyGroup>
 
   <ItemGroup>
