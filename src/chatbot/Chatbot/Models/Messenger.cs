@@ -2,17 +2,26 @@
 {
     public class Messenger
     {
-        public Messenger(int type, string account, bool enabled = false)
+        public Messenger() { }
+
+        public Messenger(
+            int type, 
+            string username, 
+            bool enabled = false,
+            bool isVerifying = false)
         {
             Type = type;
-            Account = account;
+            Username = username;
             Enabled = enabled;
+            IsVerifying = isVerifying;
         }
 
-        public int Type { get; }
+        public int Type { get; private set; }
 
-        public string Account { get; }
+        public string Username { get; private set; }
 
-        public bool Enabled { get; }
+        public bool Enabled { get; private set; }
+
+        public bool IsVerifying { get; private set; }
     }
 }

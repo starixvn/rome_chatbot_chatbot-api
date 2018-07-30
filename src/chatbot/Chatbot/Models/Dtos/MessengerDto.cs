@@ -8,9 +8,11 @@
 
         public int Type { get; set; }
 
-        public string Account { get; set; }
+        public string Username { get; set; }
 
         public bool Enabled { get; set; }
+
+        public bool IsVerifying { get; set; }
 
         public string VerificationCode { get; set; }
 

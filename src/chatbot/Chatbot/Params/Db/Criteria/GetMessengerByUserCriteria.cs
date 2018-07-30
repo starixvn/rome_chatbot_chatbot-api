@@ -13,7 +13,7 @@
 
         public int MessengerType { get; }
 
-        public override string GetSettingKey() => "GetMessengerByUserCriteria";
+        public override string GetSettingKey() => "GetMessengerByUser";
 
         public override bool IsValid()
             => UserId > 0;

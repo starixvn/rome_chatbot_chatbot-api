@@ -28,7 +28,7 @@
         {
             var result = botConnector.Send(payload.HashContent, payload.UserId);
 
-            return Task.FromResult(new Result { Code = 1, Message = result });
+            return Task.FromResult(new Result { Status = 1, Message = result });
         }
 
         public Task<Result> PushAsync(IEnumerable<string> receivers, string message)

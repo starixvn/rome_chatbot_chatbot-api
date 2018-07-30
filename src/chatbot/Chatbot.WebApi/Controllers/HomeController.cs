@@ -8,7 +8,7 @@
         public IActionResult Index()
         {
             var contentResult = new ContentResult();
-            contentResult.Content = "App has been started.";
+            contentResult.Content = "Chatbot API has been started.";
             return contentResult;
         }
     }

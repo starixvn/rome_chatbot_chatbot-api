@@ -32,14 +32,14 @@
         public async Task<Result> GenerateVerificationCode(int userId, [FromBody]VerificationCodeParam param)
             => await settingService.GenerateVerificationCode(
                                 userId,
-                                new Messenger(param.MessengerType, param.MessengerAccount));
+                                new Messenger(param.MessengerType, param.MessengerUsername));
 
         [Route("api/setting/{userId}/verifyVerificationCode"), HttpPost]
         public async Task<Result> VerifyVerificationCode(int userId, [FromBody]VerificationCodeParam param)
             => await settingService.VerifyVerificationCode(
                 userId,
                 param.VerificationCode,
-                new Messenger(param.MessengerType, param.MessengerAccount));
+                new Messenger(param.MessengerType, param.MessengerUsername));
 
         [Route("api/setting/addUser"), HttpPost]
         public async Task<AddingUserResult> AddUser([FromBody]UserParam param)
@@ -47,14 +47,14 @@
                 param.CustId,
                 param.SubAccountId,
                 param.Language,
-                new Messenger(param.MessengerType, param.MessengerAccount));
+                new Messenger(param.MessengerType, param.MessengerUsername));
 
         [Route("api/setting/user"), HttpGet]
         public async Task<User> GetUser(int custId, int subAccountId, string language)
             => await settingService.GetUser(custId, subAccountId, language);
 
-        [Route("api/setting/{userId}/unsubscribe/{messengerType}"), HttpPost]
-        public async Task<Result> Unsubscribe(int userId, int messengerType)
-            => await settingService.Unsubscribe(userId, messengerType);
+        [Route("api/setting/{userId}/unsubscribe/{messengerType}/{messengerUsername}"), HttpPost]
+        public async Task<Result> Unsubscribe(int userId, int messengerType, string messengerUsername)
+            => await settingService.UpdateMessengerStatus(userId, messengerType, messengerUsername, false);
     }
 }

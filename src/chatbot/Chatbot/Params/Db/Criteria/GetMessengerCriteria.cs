@@ -4,21 +4,21 @@
 
     public class GetMessengerCriteria : CriteriaBase
     {
-        public GetMessengerCriteria(string messengerAccount, int messengerType)
+        public GetMessengerCriteria(string messengerUsername, int messengerType)
         {
-            MessengerAccount = messengerAccount;
+            MessengerUsername = messengerUsername;
             MessengerType = messengerType;
         }
 
-        public string MessengerAccount { get; }
+        public string MessengerUsername { get; }
 
         public int MessengerType { get; }
 
         public override string GetSettingKey()
-            => "GetMessengerCriteria";
+            => "GetMessenger";
 
         public override bool IsValid()
-            => !string.IsNullOrWhiteSpace(MessengerAccount)
+            => !string.IsNullOrWhiteSpace(MessengerUsername)
             && MessengerType > 0;
     }
 }

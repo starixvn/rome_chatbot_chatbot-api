@@ -15,15 +15,15 @@
 
         Task<Result> UpdateLanguage(int userId, string language);
 
-        Task<Result> GenerateVerificationCode(int userId, string messengerAccount, int messengerType = MessengerType.Letstalk);
+        Task<Result> GenerateVerificationCode(int userId, string messengerUsername, int messengerType = MessengerType.Letstalk);
 
-        Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, string messengerAccount, int messengerType = MessengerType.Letstalk);
+        Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, string messengerUsername, int messengerType = MessengerType.Letstalk);
 
-        Task<AddingUserResult> AddUser(int custId, int subAccountId, string language, string messengerAccount, int messengerType = MessengerType.Letstalk);
+        Task<AddingUserResult> AddUser(int custId, int subAccountId, string language, string messengerUsername, int messengerType = MessengerType.Letstalk);
 
         Task<User> GetUser(int custId, int subAccountId, string language);
 
-        Task<Result> Unsubscribe(int userId, int messengerType);
+        Task<Result> Unsubscribe(int userId, int messengerType, string messengerUsername);
     }
 
     public class SettingServiceImpl : SettingService
@@ -62,24 +62,24 @@
             return restClient.ExecutePostAsync<Result>($"setting/{userId}/language/{language}");
         }
 
-        public Task<Result> GenerateVerificationCode(int userId, string messengerAccount, int messengerType = 1)
+        public Task<Result> GenerateVerificationCode(int userId, string messengerUsername, int messengerType = 1)
         {
-            ValidateInputParam(nameof(messengerAccount), messengerAccount);
+            ValidateInputParam(nameof(messengerUsername), messengerUsername);
             ValidateInputParam(nameof(messengerType), messengerType);
 
             return restClient.ExecutePostAsync<Result>(
                 $"setting/{userId}/generateVerificationCode",
                 new
                 {
-                    messengerAccount,
+                    messengerUsername,
                     messengerType
                 });
         }
 
-        public Task<AddingUserResult> AddUser(int custId, int subAccountId, string language, string messengerAccount, int messengerType = 1)
+        public Task<AddingUserResult> AddUser(int custId, int subAccountId, string language, string messengerUsername, int messengerType = 1)
         {
             ValidateInputParam(nameof(custId), custId);
-            ValidateInputParam(nameof(messengerAccount), messengerAccount);
+            ValidateInputParam(nameof(messengerUsername), messengerUsername);
             ValidateInputParam(nameof(messengerType), messengerType);
             ValidateInputParam(nameof(language), language);
 
@@ -90,7 +90,7 @@
                     custId,
                     subAccountId,
                     language,
-                    messengerAccount,
+                    messengerUsername,
                     messengerType
                 });
         }
@@ -98,12 +98,12 @@
         public Task<User> GetUser(int custId, int subAccountId, string language)
             => restClient.ExecuteGetAsync<User>($"setting/user?custId={custId}&subAccountId={subAccountId}&language={language}");
 
-        public Task<Result> Unsubscribe(int userId, int messengerType)
+        public Task<Result> Unsubscribe(int userId, int messengerType, string messengerUsername)
         {
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(messengerType), messengerType);
 
-            return restClient.ExecutePostAsync<Result>($"setting/{userId}/unsubscribe/{messengerType}");
+            return restClient.ExecutePostAsync<Result>($"setting/{userId}/unsubscribe/{messengerType}/{messengerUsername}");
         }
 
         private static void ValidateInputParam(string paramName, object paramValue)
@@ -128,11 +128,11 @@
             }
         }
 
-        public Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, string messengerAccount, int messengerType = 1)
+        public Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, string messengerUsername, int messengerType = 1)
         {
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(verificationCode), verificationCode);
-            ValidateInputParam(nameof(messengerAccount), messengerAccount);
+            ValidateInputParam(nameof(messengerUsername), messengerUsername);
             ValidateInputParam(nameof(messengerType), messengerType);
 
             return restClient.ExecutePostAsync<VerificationCodeResult>(
@@ -140,7 +140,7 @@
                 new
                 {
                     verificationCode,
-                    messengerAccount,
+                    messengerUsername,
                     messengerType
                 });
         }

@@ -2,13 +2,18 @@
 {
     using System;
 
-    public class InsertVerificationCodeCommand : BaseCommand
+    public class InsertMessengerCommand : BaseCommand
     {
-        public InsertVerificationCodeCommand(int userId, int messengerType, string verificationCode)
+        public InsertMessengerCommand(
+            int userId, 
+            int messengerType, 
+            string messengerUsername, 
+            string verificationCode)
         {
             UserId = userId;
             MessengerType = messengerType;
             VerificationCode = verificationCode;
+            MessengerUsername = messengerUsername;
         }
 
         public int UserId { get; }
@@ -17,9 +22,11 @@
 
         public string VerificationCode { get; }
 
+        public string MessengerUsername { get; }
+
         public DateTime GeneratedTime => DateTime.Now;
 
-        public override string GetSettingKey() => "InsertVerificationCodeCommand";
+        public override string GetSettingKey() => "InsertMessengerAccount";
 
         public override bool IsValid()
             => UserId > 0

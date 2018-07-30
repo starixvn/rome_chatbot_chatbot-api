@@ -1,7 +1,10 @@
 namespace Chatbot.Client.Sample
 {
     using System;
+    using System.Linq;
+    using System.Collections.Generic;
     using Chatbot.Client.Services;
+    using Chatbot.Client.Models;
 
     internal class Program
     {
@@ -12,27 +15,27 @@ namespace Chatbot.Client.Sample
                 .UseRestClient(new Transport.RestClient());
 
             var settingService = new SettingServiceImpl();
+            var userId = 402;
+            var messengerUsername = "demo1";
 
             //var functions = settingService.GetFunctions(1).Result;
 
-            var addUserResult = settingService.AddUser(1, 2, "en-us", "demo");
+            //var addUserResult = settingService.AddUser(1000, 3, "en-US", "starix_test1");
+            //var user = settingService.GetUser(1, 3, "en-US");
+            //var result = settingService.UpdateLanguage(402, "en-US");
+            //var functions = settingService.GetFunctions(402, "en-US").Result;
+            //var firstFunction = functions.ElementAt(0);
+            //firstFunction.Command = "bcd";
+            //firstFunction.Enabled = false;
 
-            //settingService.UpdateLanguage(1, "fdfd");
+            //var updateFunctions = settingService.UpdateFunctions(402, new List<Function>
+            //{
+            //    firstFunction
+            //});
 
-            //settingService.UpdateFunctions(
-            //    1,
-            //    new List<Function>
-            //    {
-            //        new Function
-            //        {
-            //            Id = 1,
-            //            Name = "fdfdfd"
-            //        }
-            //    });
-
-            //settingService.GenerateVerificationCode(1, "ffff");
-
-            //settingService.VerifyVerificationCode(1, "23232", "ffff");
+            settingService.GenerateVerificationCode(1000, "starix_test1");
+            //settingService.VerifyVerificationCode(1000, "637418", "starix_test1");
+            //settingService.VerifyVerificationCode(userId, "346717", messengerUsername);
 
             //settingService.AddUser(1, 2, "4", "5");
 
@@ -40,7 +43,7 @@ namespace Chatbot.Client.Sample
 
             //settingService.GetAllFunctions();
 
-            //settingService.Unsubscribe(3, 4);
+            //settingService.Unsubscribe(userId, 1, messengerUsername);
             Console.ReadLine();
         }
     }

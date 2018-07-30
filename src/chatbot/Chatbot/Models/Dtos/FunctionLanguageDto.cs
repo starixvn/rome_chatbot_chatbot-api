@@ -6,7 +6,7 @@
 
         public string FunctionName { get; set; }
 
-        public int ResourceType { get; set; }
+        public string ResourceType { get; set; }
 
         public string LanguageCode { get; set; }
     }

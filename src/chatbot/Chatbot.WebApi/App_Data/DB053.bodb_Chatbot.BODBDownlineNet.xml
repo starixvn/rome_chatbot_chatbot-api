@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Functions>
+  <Function Name="Setting">
+    <Setting Key="GetFunctionName" SpName="GetFunctionName" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="GetMessenger" SpName="GetMessenger" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+      <Mapping ObjectProperty="Type" DataField="messengertype" />
+      <Mapping ObjectProperty="Username" DataField="messengerusername" />
+      <Mapping ObjectProperty="GeneratedVerificationCodeTime" DataField="verificationcodedatetime" />
+    </Setting>
+    <Setting Key="GetMessengerByUser" SpName="GetMessengerByUser" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+      <Mapping ObjectProperty="Type" DataField="messengertype" />
+      <Mapping ObjectProperty="Username" DataField="messengerusername" />
+      <Mapping ObjectProperty="GeneratedVerificationCodeTime" DataField="verificationcodedatetime" />
+    </Setting>
+    <Setting Key="GetUser" SpName="GetUser" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+      <Mapping ObjectProperty="Id" DataField="userid" />
+    </Setting>
+    <Setting Key="GetUserActions" SpName="GetUserActions" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="GetUserFunctions" SpName="GetUserFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+      <Mapping ObjectProperty="Id" DataField="functionid" />
+    </Setting>
+    <Setting Key="InsertUserAction" SpName="InsertUserAction" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="InsertMessengerAccount" SpName="InsertMessengerAccount" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="InsertUser" SpName="InsertUser" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="UpdateMessengerAccountStatus" SpName="UpdateMessengerAccountStatus" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="UpdateUserFunctions" SpName="UpdateUserFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="UpdateUserLanguage" SpName="UpdateUserLanguage" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+  </Function>
+</Functions>

@@ -30,7 +30,7 @@
 
         Task<User> GetUser(int custId, int subAccountId, string language);
 
-        Task<Result> Unsubscribe(int userId, int messengerType);
+        Task<Result> UpdateMessengerStatus(int userId, int messengerType, string messengerUsername, bool enabled);
     }
 
     public class SettingServiceImpl : SettingService
@@ -68,8 +68,8 @@
 
             var verificationCode = RandomSixDigitsNumber();
 
-            await InsertVerificationCode(userId, messenger, verificationCode);
-            await SendMessage(messenger, verificationCode);
+            await InsertMessengerWithVerificationCode(userId, messenger, verificationCode);
+            await SendMessage(messenger, $"Your Letstalk validation code is {verificationCode}. The validation code will be expired after 5 minutes.");
 
             return Result.CreateSuccessfulResult();
         }
@@ -79,7 +79,7 @@
             string message)
         {
             var client = messengerFactory.CreateMessengerClient(messenger.Type);
-            var result = await client.PushAsync(messenger.Account, message);
+            var result = await client.PushAsync(messenger.Username, message);
 
             if (result.IsNotOk)
             {
@@ -89,15 +89,18 @@
             return result;
         }
 
-        private async Task<bool> InsertVerificationCode(int userId, Messenger messenger, string verificationCode)
+        private async Task<bool> InsertMessengerWithVerificationCode(
+            int userId, 
+            Messenger messenger, 
+            string verificationCode)
         {
-            var command = new InsertVerificationCodeCommand(userId, messenger.Type, verificationCode);
+            var command = new InsertMessengerCommand(userId, messenger.Type, messenger.Username, verificationCode);
 
             await dynamicRepository.ExecuteAsync(command);
 
             if(command.IsCommandRunFailed)
             {
-                throw new InvalidOperationException($"Insert Verification Code failed with code {command.Code}");
+                throw new InvalidOperationException($"Insert Messenger With Verification Code failed with code {command.Code}");
             }
 
             return command.IsCommandRunSuccessfully;
@@ -135,7 +138,7 @@
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(language), language);
 
-            var functions = await dynamicRepository.FetchAsync<Function>(new GetFunctionsCriteria(userId));
+            var functions = await dynamicRepository.FetchAsync<Function>(new GetUserFunctionsCriteria(userId));
 
             foreach (var function in functions)
             {
@@ -160,7 +163,7 @@
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(functions), functions);
 
-            var command = new UpdateFunctionsCommand(userId, functions);
+            var command = new UpdateUserFunctionsCommand(userId, functions);
 
             await dynamicRepository.ExecuteAsync(command);
 
@@ -177,7 +180,7 @@
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(language), language);
 
-            var command = new UpdateLanguageCommand(userId, language);
+            var command = new UpdateUserLanguageCommand(userId, language);
 
             await dynamicRepository.ExecuteAsync(command);
 
@@ -200,7 +203,11 @@
 
             var userId = await InsertUser(custId, subAccountId, language);
 
-            await UpdateUserActionCount(userId, AddAccountActionId, messenger.Type);
+            await UpdateUserActionCount(
+                userId, 
+                AddAccountActionId, 
+                messenger.Type,
+                messenger.Username);
 
             var result = await VerifyMessengerAccount(userId, messenger);
             if(result.IsNotOk)
@@ -215,7 +222,7 @@
 
         private async Task<AddingUserResult> VerifyMessengerAccount(int userId, Messenger messenger)
         {
-            if (await IsUserAddAccountOverMaxTimeInDay(userId, messenger.Type))
+            if (await IsUserAddAccountOverMaxTimeInDay(userId, messenger.Type, messenger.Username))
             {
                 return AddingUserResult.CreateIsOverMaxAddAccountTimesResult();
             }
@@ -238,7 +245,7 @@
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(messenger), messenger);
 
-            var criteria = new GetMessengerCriteria(messenger.Account, messenger.Type);
+            var criteria = new GetMessengerCriteria(messenger.Username, messenger.Type);
             var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(criteria);
 
             return messengerDto != null
@@ -259,18 +266,26 @@
             return command.UserId;
         }
 
-        private async Task<bool> IsUserAddAccountOverMaxTimeInDay(int userId, int messengerType)
+        private async Task<bool> IsUserAddAccountOverMaxTimeInDay(
+            int userId, 
+            int messengerType,
+            string messengerUsername)
         {
-            var numOfAddTime = (await GetUserAction(userId, messengerType, AddAccountActionId)).ActionCount;
+            var addUserLogActions = await GetUserAction(userId, messengerType, messengerUsername, AddAccountActionId);
+            var numOfAddTime = addUserLogActions.Sum(action => action.CountTimes);
 
             return numOfAddTime > MaxAddActionTimes;
         }
 
-        private async Task<UserActionDto> GetUserAction(int userId, int messengerType, int actionId)
+        private async Task<IEnumerable<UserActionDto>> GetUserAction(
+            int userId, 
+            int messengerType, 
+            string messengerUsername,
+            int actionId)
         {
-            var criteria = new GetFailedActionCriteria(userId, actionId, messengerType);
+            var criteria = new GetUserActionsCriteria(userId, actionId, messengerType, messengerUsername);
 
-            var userAction = await dynamicRepository.GetAsync<UserActionDto>(criteria);
+            var userAction = await dynamicRepository.FetchAsync<UserActionDto>(criteria);
 
             return userAction;
         }
@@ -279,23 +294,27 @@
         {
             var client = messengerFactory.CreateMessengerClient(messenger.Type);
 
-            var profileResult = await client.GetProfileAsync(messenger.Account);
+            var profileResult = await client.GetProfileAsync(messenger.Username);
 
             return !profileResult.Item2;
         }
 
-        public async Task<Result> Unsubscribe(int userId, int messengerType)
+        public async Task<Result> UpdateMessengerStatus(
+            int userId, 
+            int messengerType, 
+            string messengerUsername, 
+            bool enabled)
         {
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(messengerType), messengerType);
 
-            var command = new DisabledMessengerCommand(userId, messengerType);
+            var command = new UpdateMessengerStatusCommand(userId, messengerType, messengerUsername, enabled);
 
             await dynamicRepository.ExecuteAsync(command);
 
             if (command.IsCommandRunFailed)
             {
-                throw new InvalidOperationException($"Disabled Messenger failed with code {command.Code}");
+                throw new InvalidOperationException($"Update Messenger status failed with code {command.Code}");
             }
 
             return Result.CreateSuccessfulResult();
@@ -311,29 +330,39 @@
             var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(criteria);
 
             if (messengerDto == null
-                || messengerDto.Account != messenger.Account)
+                || messengerDto.Username != messenger.Username)
             {
                 return VerificationCodeResult.CreateWrongVerificationCodeResult();
             }
 
-            if (messengerDto.GeneratedVerificationCodeTime.AddMinutes(VerificationCodeExpiredTimeInMinutes) > getCurrentDateTimeFunc())
+            if (messengerDto.GeneratedVerificationCodeTime.AddMinutes(VerificationCodeExpiredTimeInMinutes) < getCurrentDateTimeFunc())
             {
                 return VerificationCodeResult.CreateVerificationCodeExpiredResult();
             }
 
             if (messengerDto.VerificationCode != verificationCode)
             {
-                await UpdateUserActionCount(userId, WrongVerificationCodeActionId, messenger.Type);
+                await UpdateUserActionCount(
+                    userId, 
+                    WrongVerificationCodeActionId, 
+                    messenger.Type,
+                    messenger.Username);
 
                 return VerificationCodeResult.CreateWrongVerificationCodeResult();
             }
 
-            return VerificationCodeResult.CreateVerificationSuccessfulResult();
+            var result = await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true);
+
+            return new VerificationCodeResult(result.Code, result.Message);
         }
 
-        private async Task<Result> UpdateUserActionCount(int userId, int actionId, int messengerType)
+        private async Task<Result> UpdateUserActionCount(
+            int userId, 
+            int actionId, 
+            int messengerType,
+            string messengerUsername)
         {
-            var command = new UpdateFailActionCommand(userId, actionId, messengerType);
+            var command = new InsertUserActionCommand(userId, actionId, messengerType, messengerUsername);
 
             await dynamicRepository.ExecuteAsync(command);
 

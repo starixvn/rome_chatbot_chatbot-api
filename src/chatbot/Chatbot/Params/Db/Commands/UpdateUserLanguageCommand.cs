@@ -1,8 +1,8 @@
 ﻿namespace Chatbot.Params.Db.Commands
 {
-    public class UpdateLanguageCommand : BaseCommand
+    public class UpdateUserLanguageCommand : BaseCommand
     {
-        public UpdateLanguageCommand(int userId, string language)
+        public UpdateUserLanguageCommand(int userId, string language)
         {
             UserId = userId;
             Language = language;
@@ -12,7 +12,7 @@
 
         public string Language { get; }
 
-        public override string GetSettingKey() => "UpdateLanguageCommand";
+        public override string GetSettingKey() => "UpdateUserLanguage";
 
         public override bool IsValid()
             => UserId > 0

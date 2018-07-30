@@ -15,7 +15,7 @@
 
         public string Language { get; }
 
-        public override string GetSettingKey() => "InsertUserCommand";
+        public override string GetSettingKey() => "InsertUser";
 
         public int UserId { get; set; }
 

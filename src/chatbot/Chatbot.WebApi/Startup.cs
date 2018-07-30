@@ -4,6 +4,7 @@
     using System.Linq;
     using Chatbot.Services;
     using Chatbot.WebApi.Middlewares;
+    using Fanex.Caching;
     using Fanex.Data;
     using Fanex.Data.Repository;
     using Microsoft.AspNetCore.Builder;
@@ -28,11 +29,7 @@
             services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
             services.AddSingleton<SettingService, SettingServiceImpl>();
             services.AddSingleton<IDynamicRepository, DynamicRepository>();
-
-            services.Configure<IISOptions>(options =>
-            {
-                options.ForwardClientCertificate = false;
-            });
+            services.AddSingleton<ICacheService, CacheService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

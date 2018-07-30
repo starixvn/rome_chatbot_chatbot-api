@@ -2,16 +2,16 @@
 {
     using Fanex.Data.Repository;
 
-    public class GetFunctionsCriteria : CriteriaBase
+    public class GetUserFunctionsCriteria : CriteriaBase
     {
-        public GetFunctionsCriteria(int userId)
+        public GetUserFunctionsCriteria(int userId)
         {
             UserId = userId;
         }
 
         public int UserId { get; }
 
-        public override string GetSettingKey() => "GetFunctionsCriteria";
+        public override string GetSettingKey() => "GetUserFunctions";
 
         public override bool IsValid() => UserId > 0;
     }

@@ -10,6 +10,6 @@
 
         public int MessengerType { get; set; }
 
-        public string MessengerAccount { get; set; }
+        public string MessengerUsername { get; set; }
     }
 }

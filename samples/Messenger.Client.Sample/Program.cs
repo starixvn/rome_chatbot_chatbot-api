@@ -2,6 +2,7 @@
 namespace Messenger.Client.Sample
 {
     using System;
+    using System.Collections.Generic;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
     using Newtonsoft.Json;
@@ -14,11 +15,12 @@ namespace Messenger.Client.Sample
             var restClient = new RestClientHelper(RestClientHelper.CreateDefaultClient(), new JwtHelper());
             var letstalkClient = new LetstalkClient(restClient, new CryptographyHelper());
 
-            //var result = letstalkClient.Push(botId, new List<string> { "ricky.nguyen" }, "a lo");
+            var result = letstalkClient.PushAsync("starix_test1", "a lo").Result;
             //Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(result)}");
 
-            
-            var profile = letstalkClient.SetAutoReplyAsync("auto reply test", true).Result;
+
+            //var profile = letstalkClient.GetProfileAsync("hfghfgn1").Result;
+                //letstalkClient.SetAutoReplyAsync("auto reply test", true).Result;
 
             //Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(profile)}");
 

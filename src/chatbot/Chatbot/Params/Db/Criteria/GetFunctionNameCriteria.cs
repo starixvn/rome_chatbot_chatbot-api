@@ -11,7 +11,7 @@
 
         public int FunctionId { get; }
 
-        public override string GetSettingKey() => "GetFunctionNameCriteria";
+        public override string GetSettingKey() => "GetFunctionName";
 
         public override bool IsValid()
             => FunctionId > 0;

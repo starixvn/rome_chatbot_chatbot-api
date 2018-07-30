@@ -105,7 +105,7 @@
                 request.AddParameter(ContentType, encodedData, ParameterType.RequestBody);
             }
 
-            var response = await restClient.ExecuteTaskAsync<T>(request).ConfigureAwait(false);
+            var response = await restClient.ExecuteTaskAsync<T>(request);
 
             if (response.IsSuccessful)
             {
