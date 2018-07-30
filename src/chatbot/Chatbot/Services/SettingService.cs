@@ -326,34 +326,57 @@
             ValidateInputParam(nameof(verificationCode), verificationCode);
             ValidateInputParam(nameof(messenger), messenger);
 
-            var criteria = new GetMessengerByUserCriteria(userId, messenger.Type);
-            var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(criteria);
+            var verificationResult = await CheckVerificationCode(userId, verificationCode, messenger);
 
-            if (messengerDto == null
-                || messengerDto.Username != messenger.Username)
+            if(verificationResult.IsNotOk)
             {
-                return VerificationCodeResult.CreateWrongVerificationCodeResult();
-            }
-
-            if (messengerDto.GeneratedVerificationCodeTime.AddMinutes(VerificationCodeExpiredTimeInMinutes) < getCurrentDateTimeFunc())
-            {
-                return VerificationCodeResult.CreateVerificationCodeExpiredResult();
-            }
-
-            if (messengerDto.VerificationCode != verificationCode)
-            {
-                await UpdateUserActionCount(
-                    userId, 
-                    WrongVerificationCodeActionId, 
-                    messenger.Type,
-                    messenger.Username);
-
-                return VerificationCodeResult.CreateWrongVerificationCodeResult();
+                return verificationResult;
             }
 
             var result = await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true);
 
             return new VerificationCodeResult(result.Code, result.Message);
+        }
+
+        private async Task<VerificationCodeResult> CheckVerificationCode(int userId, string verificationCode, Messenger messenger)
+        {
+            var criteria = new GetMessengerByUserCriteria(userId, messenger.Type);
+            var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(criteria);
+            var result = VerificationCodeResult.CreateVerificationSuccessfulResult();
+
+            if (messengerDto == null
+                || messengerDto.Username != messenger.Username)
+            {
+                result = VerificationCodeResult.CreateWrongVerificationCodeResult();
+            }
+            else if (messengerDto.GeneratedVerificationCodeTime.AddMinutes(VerificationCodeExpiredTimeInMinutes) < getCurrentDateTimeFunc())
+            {
+                result = VerificationCodeResult.CreateVerificationCodeExpiredResult();
+            }
+            else if (messengerDto.VerificationCode != verificationCode)
+            {
+                result = VerificationCodeResult.CreateWrongVerificationCodeResult();
+            }
+
+            if(result.IsNotOk)
+            {
+                await UpdateUserActionCount(
+                        userId,
+                        WrongVerificationCodeActionId,
+                        messenger.Type,
+                        messenger.Username);
+
+                var failedAction = (await GetUserAction(userId, messenger.Type, messenger.Username, WrongVerificationCodeActionId)).FirstOrDefault();
+
+                result = new VerificationCodeResult(
+                    result.Code,
+                    result.Message,
+                    failedAction != null
+                        ? failedAction.CountTimes
+                        : 0);
+            }
+
+            return result;
         }
 
         private async Task<Result> UpdateUserActionCount(

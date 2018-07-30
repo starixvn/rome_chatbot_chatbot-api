@@ -31,6 +31,7 @@
         public override bool IsValid()
             => UserId > 0
             && MessengerType > 0
-            && !string.IsNullOrWhiteSpace(VerificationCode);
+            && !string.IsNullOrWhiteSpace(VerificationCode)
+            && !string.IsNullOrWhiteSpace(MessengerUsername);
     }
 }

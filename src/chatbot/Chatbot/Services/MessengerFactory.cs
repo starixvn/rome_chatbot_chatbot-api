@@ -4,7 +4,7 @@
 
     public interface MessengerFactory
     {
-        IMessengerClient CreateMessengerClient(int messagerType);
+        IMessengerClient CreateMessengerClient(int messengerType);
     }
 
     public class MessengerFactoryImpl : MessengerFactory
@@ -12,9 +12,9 @@
         /// <summary>
         /// can support other messengers here
         /// </summary>
-        public IMessengerClient CreateMessengerClient(int messagerType)
+        public IMessengerClient CreateMessengerClient(int messengerType)
         {
-            switch (messagerType)
+            switch (messengerType)
             {
                 default:
                     return new LetstalkClient();

@@ -42,8 +42,8 @@
         public bool IsWrongVerificationCode
             => Code == WrongVerificationCode;
 
-        public static VerificationCodeResult CreateWrongVerificationCodeResult()
-            => new VerificationCodeResult(WrongVerificationCode);
+        public static VerificationCodeResult CreateWrongVerificationCodeResult(int failedTimes = 0)
+            => new VerificationCodeResult(WrongVerificationCode, string.Empty, failedTimes);
 
         public static VerificationCodeResult CreateVerificationSuccessfulResult()
             => new VerificationCodeResult(0, string.Empty, 0);

@@ -11,9 +11,9 @@
 
         public int SubAccountId { get; set; }
 
-        public IEnumerable<Messenger> MessengerAccounts { get; set; }
+        public List<Messenger> MessengerAccounts { get; set; }
 
-        public IEnumerable<Function> Functions { get; set; }
+        public List<Function> Functions { get; set; }
 
         public string Language { get; set; }
 

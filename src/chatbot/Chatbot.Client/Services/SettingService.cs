@@ -9,7 +9,7 @@
 
     public interface SettingService
     {
-        Task<IEnumerable<Function>> GetFunctions(int userId, string language);
+        Task<List<Function>> GetFunctions(int userId, string language);
 
         Task<Result> UpdateFunctions(int userId, IEnumerable<Function> functions);
 
@@ -39,11 +39,11 @@
             this.restClient = restClient ?? ChatbotClientManager.RestClient;
         }
 
-        public Task<IEnumerable<Function>> GetFunctions(int userId, string language)
+        public Task<List<Function>> GetFunctions(int userId, string language)
         {
             ValidateInputParam(nameof(userId), userId);
 
-            return restClient.ExecuteGetAsync<IEnumerable<Function>>($"setting/{userId}/function/{language}");
+            return restClient.ExecuteGetAsync<List<Function>>($"setting/{userId}/function/{language}");
         }
 
         public Task<Result> UpdateFunctions(int userId, IEnumerable<Function> functions)

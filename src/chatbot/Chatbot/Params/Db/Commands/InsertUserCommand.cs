@@ -21,7 +21,7 @@
 
         public override bool IsValid()
             => CustId > 0
-            && SubAccountId > 0
+            && SubAccountId >= 0
             && !string.IsNullOrWhiteSpace(Language);
     }
 }

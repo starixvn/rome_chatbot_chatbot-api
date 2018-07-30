@@ -31,6 +31,7 @@ namespace Chatbot.Params.Db.Commands
         public override bool IsValid()
             => UserId > 0
             && ActionId > 0
-            && MessengerType > 0;
+            && MessengerType > 0
+            && !string.IsNullOrWhiteSpace(MessengerUsername);
     }
 }
