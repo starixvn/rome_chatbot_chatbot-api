@@ -37,11 +37,11 @@
         public RestClientHelper(
             IRestClient restClient, 
             IJwtHelper jwtHelper,
-            IMessengerSettings messengerSettings = null)
+            IMessengerSettings messengerSettings)
         {
             this.restClient = restClient;
             this.jwtHelper = jwtHelper;
-            this.messengerSettings = messengerSettings ?? AppSettings.Messenger;
+            this.messengerSettings = messengerSettings;
         }
 
         public T ExecuteGet<T>(string endPoint, IDictionary<string, object> data = null)
@@ -135,10 +135,10 @@
         public Task<T> ExecuteDeleteAsync<T>(string endPoint, IDictionary<string, object> data) where T : new()
             => ExecuteSync<T>(endPoint, Method.DELETE, data);
 
-        public static IRestClient CreateDefaultClient()
+        public static IRestClient CreateDefaultClient(string apiEndpoint)
             => new RestClient
             {
-                BaseUrl = new Uri(AppSettings.Messenger.ApiEndpoint)
+                BaseUrl = new Uri(apiEndpoint)
             };
 
         private string Encode(IDictionary<string, object> data)

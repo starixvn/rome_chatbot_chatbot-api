@@ -33,8 +33,8 @@ namespace Chatbot.Client.Sample
             //    firstFunction
             //});
 
-            //settingService.GenerateVerificationCode(1000, "starix_test1");
-            settingService.VerifyVerificationCode(1000, "63447418", "starix_test1");
+            settingService.GenerateVerificationCode(1000, "starix_test1");
+            //settingService.VerifyVerificationCode(1000, "63447418", "starix_test1");
             //settingService.VerifyVerificationCode(userId, "346717", messengerUsername);
 
             //settingService.AddUser(1, 2, "4", "5");

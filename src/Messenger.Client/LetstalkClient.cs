@@ -22,13 +22,13 @@
         private readonly JsonSerializerSettings DefaultJsonSerializeSetting = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
         public LetstalkClient(
+            IMessengerSettings messengerSettings,
             IRestClientHelper restClientHelper = null,
-            ICryptographyHelper cryptographyHelper = null,
-            IMessengerSettings messengerSettings = null)
+            ICryptographyHelper cryptographyHelper = null)
         {
-            this.restClientHelper = restClientHelper ?? new RestClientHelper(RestClientHelper.CreateDefaultClient(), new JwtHelper());
+            this.restClientHelper = restClientHelper ?? new RestClientHelper(RestClientHelper.CreateDefaultClient(messengerSettings.ApiEndpoint), new JwtHelper(), messengerSettings);
             this.cryptographyHelper = cryptographyHelper ?? new CryptographyHelper();
-            this.messengerSettings = messengerSettings ?? AppSettings.Messenger;
+            this.messengerSettings = messengerSettings;
             botId = this.messengerSettings.BotAccountId;
         }
 

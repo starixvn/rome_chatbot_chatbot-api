@@ -19,7 +19,7 @@
             container.RegisterSingleton<ICryptographyHelper, CryptographyHelper>();
             container.RegisterInstance(AppSettings.Messenger);
 
-            container.Register(() => RestClientHelper.CreateDefaultClient(), Lifestyle.Singleton);
+            container.Register(() => RestClientHelper.CreateDefaultClient(AppSettings.Messenger.ApiEndpoint), Lifestyle.Singleton);
 
             container.Verify();
 

@@ -3,6 +3,8 @@ namespace Messenger.Client.Sample
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Configuration;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
     using Newtonsoft.Json;
@@ -12,8 +14,8 @@ namespace Messenger.Client.Sample
         private static void Main()
         {
             var botId = AppSettings.Messenger.BotAccountId;
-            var restClient = new RestClientHelper(RestClientHelper.CreateDefaultClient(), new JwtHelper());
-            var letstalkClient = new LetstalkClient(restClient, new CryptographyHelper());
+            var restClient = new RestClientHelper(RestClientHelper.CreateDefaultClient(AppSettings.Messenger.ApiEndpoint), new JwtHelper(), AppSettings.Messenger);
+            var letstalkClient = new LetstalkClient(AppSettings.Messenger, restClient, new CryptographyHelper());
 
             var result = letstalkClient.PushAsync("starix_test1", "a lo").Result;
             //Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(result)}");
