@@ -21,9 +21,9 @@ namespace Chatbot.Client.Sample
             //var functions = settingService.GetFunctions(1).Result;
 
             //var addUserResult = settingService.AddUser(1000, 3, "en-US", "starix_test1");
-            //var user = settingService.GetUser(1, 3, "en-US");
+            //var user = settingService.GetUser(10001, 3, "en-US");
             //var result = settingService.UpdateLanguage(402, "en-US");
-            //var functions = settingService.GetFunctions(402, "en-US").Result;
+            var functions = settingService.GetFunctions(4202, "en-US").Result;
             //var firstFunction = functions.ElementAt(0);
             //firstFunction.Command = "bcd";
             //firstFunction.Enabled = false;
@@ -33,7 +33,7 @@ namespace Chatbot.Client.Sample
             //    firstFunction
             //});
 
-            settingService.GenerateVerificationCode(1000, "starix_test1");
+            //settingService.GenerateVerificationCode(1000, "starix_test1");
             //settingService.VerifyVerificationCode(1000, "637418", "starix_test1");
             //settingService.VerifyVerificationCode(userId, "346717", messengerUsername);
 
