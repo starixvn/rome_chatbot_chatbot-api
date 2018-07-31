@@ -27,11 +27,11 @@
             switch (messengerType)
             {
                 default:
-                    return CreateLestalkClient();
+                    return CreateLetstalkClient();
             }
         }
 
-        private LetstalkClient CreateLestalkClient()
+        private LetstalkClient CreateLetstalkClient()
         {
             var botId = configuration["MessengerAPIClient:BotAccountId"] ?? throw new InvalidOperationException("Missing config for MessengerAPIClient:BotAccountId");
             var messengerBotAccountId = int.Parse(botId);
