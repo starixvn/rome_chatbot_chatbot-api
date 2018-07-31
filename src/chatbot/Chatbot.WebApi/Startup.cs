@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Reflection;
     using Chatbot.Services;
     using Chatbot.WebApi.Middlewares;
     using Fanex.Caching;
@@ -11,6 +12,8 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using NJsonSchema;
+    using NSwag.AspNetCore;
 
     public class Startup
     {
@@ -39,6 +42,11 @@
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
+            {
+                settings.GeneratorSettings.DefaultPropertyNameHandling = PropertyNameHandling.CamelCase;
+            });
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc(

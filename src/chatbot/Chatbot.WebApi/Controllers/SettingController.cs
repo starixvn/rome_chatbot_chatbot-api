@@ -16,6 +16,18 @@
             this.settingService = settingService;
         }
 
+        [Route("api/setting/user"), HttpPost]
+        public async Task<AddingUserResult> AddUser([FromBody]UserParam param)
+            => await settingService.AddUser(
+                param.CustId,
+                param.SubAccountId,
+                param.Language,
+                new Messenger(param.MessengerType, param.MessengerUsername));
+
+        [Route("api/setting/user"), HttpGet]
+        public async Task<User> GetUser(int custId, int subAccountId, string language)
+            => await settingService.GetUser(custId, subAccountId, language);
+
         [Route("api/setting/{userId}/function"), HttpPost]
         public async Task<Result> UpdateFunctions(int userId, [FromBody]IEnumerable<Function> functions)
             => await settingService.UpdateFunctions(userId, functions);
@@ -40,18 +52,6 @@
                 userId,
                 param.VerificationCode,
                 new Messenger(param.MessengerType, param.MessengerUsername));
-
-        [Route("api/setting/addUser"), HttpPost]
-        public async Task<AddingUserResult> AddUser([FromBody]UserParam param)
-            => await settingService.AddUser(
-                param.CustId,
-                param.SubAccountId,
-                param.Language,
-                new Messenger(param.MessengerType, param.MessengerUsername));
-
-        [Route("api/setting/user"), HttpGet]
-        public async Task<User> GetUser(int custId, int subAccountId, string language)
-            => await settingService.GetUser(custId, subAccountId, language);
 
         [Route("api/setting/{userId}/unsubscribe/{messengerType}/{messengerUsername}"), HttpPost]
         public async Task<Result> Unsubscribe(int userId, int messengerType, string messengerUsername)

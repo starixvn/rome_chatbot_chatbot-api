@@ -65,6 +65,8 @@
         {
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(messenger), messenger);
+            ValidateInputParam("Messenger Username", messenger.Username);
+            ValidateInputParam("Messenger Type", messenger.Type);
 
             var verificationCode = RandomSixDigitsNumber();
 
@@ -200,6 +202,8 @@
             ValidateInputParam(nameof(custId), custId);
             ValidateInputParam(nameof(language), language);
             ValidateInputParam(nameof(messenger), messenger);
+            ValidateInputParam("Messenger Username", messenger.Username);
+            ValidateInputParam("Messenger Type", messenger.Type);
 
             var userId = await InsertUser(custId, subAccountId, language);
 
@@ -244,6 +248,8 @@
         {
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(messenger), messenger);
+            ValidateInputParam("Messenger Username", messenger.Username);
+            ValidateInputParam("Messenger Type", messenger.Type);
 
             var criteria = new GetMessengerCriteria(messenger.Username, messenger.Type);
             var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(criteria);
@@ -325,6 +331,8 @@
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(verificationCode), verificationCode);
             ValidateInputParam(nameof(messenger), messenger);
+            ValidateInputParam("Messenger Username", messenger.Username);
+            ValidateInputParam("Messenger Type", messenger.Type);
 
             var verificationResult = await CheckVerificationCode(userId, verificationCode, messenger);
 

@@ -84,7 +84,7 @@
             ValidateInputParam(nameof(language), language);
 
             return restClient.ExecutePostAsync<AddingUserResult>(
-                $"setting/adduser",
+                $"setting/user",
                 new
                 {
                     custId,

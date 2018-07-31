@@ -23,17 +23,17 @@ namespace Chatbot.Client.Sample
             //var addUserResult = settingService.AddUser(1000, 3, "en-US", "starix_test1");
             //var user = settingService.GetUser(1000, 3, "en-US");
             //var result = settingService.UpdateLanguage(402, "en-US");
-            //var functions = settingService.GetFunctions(4202, "en-US").Result;
-            //var firstFunction = functions.ElementAt(0);
-            //firstFunction.Command = "bcd";
-            //firstFunction.Enabled = false;
+            var functions = settingService.GetFunctions(407, "en-US").Result;
+            var firstFunction = functions.ElementAt(0);
+            firstFunction.Command = "bcd1";
+            firstFunction.Enabled = true;
 
-            //var updateFunctions = settingService.UpdateFunctions(402, new List<Function>
-            //{
-            //    firstFunction
-            //});
+            var updateFunctions = settingService.UpdateFunctions(402, new List<Function>
+            {
+                firstFunction
+            });
 
-            settingService.GenerateVerificationCode(1000, "starix_test1");
+            //settingService.GenerateVerificationCode(1000, "starix_test1");
             //settingService.VerifyVerificationCode(1000, "63447418", "starix_test1");
             //settingService.VerifyVerificationCode(userId, "346717", messengerUsername);
 

@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Specialized;
     using System.Configuration;
+    using System.IO;
+    using Microsoft.Extensions.Configuration;
 
     public interface IMessengerSettings
     {
@@ -52,15 +54,31 @@
 
     public static class AppSettings
     {
+        /// <summary>
+        /// Support for .net core
+        /// </summary>
+        private readonly static IConfigurationRoot configurationRoot;
+
         static AppSettings()
         {
-            var botId = Configs["MessengerAPIClient:BotAccountId"] ?? throw new InvalidOperationException("Missing config for MessengerAPIClient:BotAccountId");
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var configFileName = "appsettings.json";
+            if (File.Exists(Path.Combine(currentDirectory, configFileName)))
+            {
+                var builder = new ConfigurationBuilder()
+                    .SetBasePath(currentDirectory)
+                    .AddJsonFile(configFileName);
+
+                configurationRoot = builder.Build();
+            }
+
+            var botId = GetConfigs("MessengerAPIClient:BotAccountId");
             var messengerBotAccountId = int.Parse(botId);
-            var messengerApiEndpoint = Configs["MessengerAPIClient:ApiEndpoint"] ?? throw new InvalidOperationException("Missing config for MessengerAPIClient:ApiEndpoint");
-            var messengerApiKey = Configs["MessengerAPIClient:ApiKey"] ?? throw new InvalidOperationException("Missing config for MessengerAPIClient:ApiKey");
-            var messengerSecureKey = Configs["MessengerAPIClient:SecureKey"] ?? throw new InvalidOperationException("Missing config for MessengerAPIClient:SecureKey");
-            var messengerChatKey = Configs["MessengerAPIClient:ChatKey"] ?? throw new InvalidOperationException("Missing config for MessengerAPIClient:ChatKey");
-            var messengerBotUserId = Configs["MessengerAPIClient:BotUserId"] ?? throw new InvalidOperationException("Missing config for MessengerAPIClient:BotUserId");
+            var messengerApiEndpoint = GetConfigs("MessengerAPIClient:ApiEndpoint");
+            var messengerApiKey = GetConfigs("MessengerAPIClient:ApiKey");
+            var messengerSecureKey = GetConfigs("MessengerAPIClient:SecureKey");
+            var messengerChatKey = GetConfigs("MessengerAPIClient:ChatKey");
+            var messengerBotUserId = GetConfigs("MessengerAPIClient:BotUserId");
 
             Messenger = new LetstalkSettings(
                 messengerApiEndpoint,
@@ -71,6 +89,18 @@
                 messengerBotUserId);
         }
 
+        private static string GetConfigs(string configName)
+        {
+            var configValue = configurationRoot == null 
+                ? Configs[configName] 
+                : configurationRoot[configName];
+
+            return configValue ?? throw new InvalidOperationException($"Missing config for {configName}");
+        }
+
+        /// <summary>
+        /// Support for .net framework
+        /// </summary>
         internal static NameValueCollection Configs { get; set; } = ConfigurationManager.AppSettings;
 
         public static IMessengerSettings Messenger { get; private set; }

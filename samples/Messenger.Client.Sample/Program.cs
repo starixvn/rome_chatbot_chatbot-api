@@ -17,7 +17,7 @@ namespace Messenger.Client.Sample
             var restClient = new RestClientHelper(RestClientHelper.CreateDefaultClient(AppSettings.Messenger.ApiEndpoint), new JwtHelper(), AppSettings.Messenger);
             var letstalkClient = new LetstalkClient(AppSettings.Messenger, restClient, new CryptographyHelper());
 
-            var result = letstalkClient.PushAsync("starix_test1", "a lo").Result;
+            var result = letstalkClient.PushAsync("starix_test1", "a lo 1").Result;
             //Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(result)}");
 
 

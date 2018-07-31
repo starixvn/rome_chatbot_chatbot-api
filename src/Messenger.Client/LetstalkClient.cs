@@ -32,19 +32,6 @@
             botId = this.messengerSettings.BotAccountId;
         }
 
-        
-        public Result ChangeDisplayName(string botName)
-        {
-            ValidateInputParam(nameof(botName), botName);
-
-            return restClientHelper.ExecutePut<Result>(
-                $"bot/change_display_name/{botId}",
-                new Dictionary<string, object>
-                {
-                    { "display_name", botName }
-                });
-        }
-
         public async Task<(Contact, bool)> GetProfileAsync(string accountId)
         {
             ValidateInputParam(nameof(accountId), accountId);
