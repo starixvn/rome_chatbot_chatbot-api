@@ -14,6 +14,6 @@
 
         public bool Enabled { get; set; }
 
-        public string Environment { get; set; }
+        public int Environment { get; set; }
     }
 }
