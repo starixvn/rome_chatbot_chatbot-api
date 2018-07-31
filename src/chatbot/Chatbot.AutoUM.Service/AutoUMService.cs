@@ -9,12 +9,14 @@
     using Fanex.Caching;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
     using ONEbook.UM.AspNetCore.Services;
     using ONEbook.UM.Core.Models;
 
-    internal class AutoUMService : IHostedService
+    internal class AutoUMService : BackgroundService
     {
         private const string UMInfoCachedKey = "UMInfoCachedKey";
+        private readonly ILogger<AutoUMService> _logger;
         private readonly IMaintenanceService _maintenanceService;
         private readonly ICacheService _cacheService;
         private readonly MessengerFactory _messengerFactory;
@@ -24,25 +26,36 @@
             IMaintenanceService maintenanceService,
             ICacheService cacheService,
             MessengerFactory messengerFactory,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ILogger<AutoUMService> logger)
         {
             _maintenanceService = maintenanceService;
             _cacheService = cacheService;
             _messengerFactory = messengerFactory;
             _configuration = configuration;
+            _logger = logger;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Elapsed += new ElapsedEventHandler(GetUnderMaintenanceTime);
-            timer.Interval = Convert.ToDouble(_configuration.GetSection("GetUnderMaintenanceInfoInterval")?.Value ?? "10000");
-            timer.Enabled = true;
+            _logger.LogDebug("AutoUMService is starting.");
 
-            return Task.CompletedTask;
+            stoppingToken.Register(() =>
+                   _logger.LogDebug($" AutoUMService background task is stopping."));
+
+            var updateTime = Convert.ToInt32(_configuration.GetSection("GetUnderMaintenanceInfoInterval")?.Value ?? "10000");
+
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                _logger.LogDebug("AutoUMService is running to UM information");
+                await GetUnderMaintenanceTime();
+                await Task.Delay(updateTime, stoppingToken);
+            }
+
+            _logger.LogDebug($" AutoUMService background task is stopping.");
         }
 
-        private async void GetUnderMaintenanceTime(object sender, EventArgs e)
+        private async Task GetUnderMaintenanceTime()
         {
             var umInfo = _maintenanceService.GetUnderMaintenanceTime();
             var messengerClient = _messengerFactory.CreateMessengerClient(MessengerType.Letstalk);
@@ -65,11 +78,6 @@
             }
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
-
         private bool IsNewUMInfo(UnderMaintenanceTime umInfo)
         {
             if (umInfo == null)
@@ -86,7 +94,7 @@
                 umInfo.IsUnderMaintenanceTime != oldUMInfo.IsUnderMaintenanceTime;
         }
 
-        private async Task SendSkypeTest(UnderMaintenanceTime umInfo)
+        private async Task SendSkype(UnderMaintenanceTime umInfo)
         {
             umInfo.From = DateTime.Now.ToString();
             umInfo.To = DateTime.Now.AddHours(2).ToString();
