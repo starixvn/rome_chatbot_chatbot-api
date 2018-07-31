@@ -1,5 +1,6 @@
 ﻿namespace Messenger.Client
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Messenger.Client.Models;
@@ -18,7 +19,7 @@
 
         Task<Result> SetWelcomeMessageAsync(string message);
 
-        Task<Result> SetAutoReplyAsync(string message, bool enabled);
+        Task<Result> SetAutoReplyAsync(string message, bool enabled, DateTime startTime, DateTime endTime);
 
         Task<Result> ChangeDisplayNameAsync(string botName);
     }

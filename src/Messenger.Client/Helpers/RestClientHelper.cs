@@ -35,7 +35,7 @@
         private readonly IMessengerSettings messengerSettings;
 
         public RestClientHelper(
-            IRestClient restClient, 
+            IRestClient restClient,
             IJwtHelper jwtHelper,
             IMessengerSettings messengerSettings)
         {
@@ -130,7 +130,7 @@
             => ExecuteSync<T>(endPoint, Method.POST, data);
 
         public Task<T> ExecutePutAsync<T>(string endPoint, IDictionary<string, object> data) where T : new()
-            => ExecuteSync<T>(endPoint, Method.POST, data);
+            => ExecuteSync<T>(endPoint, Method.PUT, data);
 
         public Task<T> ExecuteDeleteAsync<T>(string endPoint, IDictionary<string, object> data) where T : new()
             => ExecuteSync<T>(endPoint, Method.DELETE, data);

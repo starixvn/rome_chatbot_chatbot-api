@@ -154,16 +154,22 @@
             }
         }
 
-        public Task<Result> SetAutoReplyAsync(string message, bool enabled)
+        public async Task<Result> SetAutoReplyAsync(string message, bool enabled, DateTime startTime, DateTime endTime)
         {
             ValidateInputParam(nameof(message), message);
 
-            return restClientHelper.ExecutePostAsync<Result>(
+            var result = await restClientHelper.ExecutePutAsync<Result>(
                 $"bot/set_auto_reply/{botId}",
                 new Dictionary<string, object>
                 {
-                    { "enable", enabled ? 1 : 0 }
+                    { "message", message },
+                    { "enable", enabled ? 1 : 0 },
+                    { "start_time", DateTimeHelper.DateTimeToUnixTimestamp(startTime) },
+                    { "duration", (endTime - startTime).TotalMilliseconds },
+                    { "duration_type", 0 }
                 });
+
+            return result;
         }
     }
 }
