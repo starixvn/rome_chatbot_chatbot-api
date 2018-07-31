@@ -6,7 +6,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using ONEbook.UM.AspNetCore.Services;
-    using ONEbook.UM.Core.Configurations;
     using System.IO;
     using Fanex.Caching;
     using Chatbot.Services;
@@ -32,7 +31,7 @@
                 {
                     services.AddLogging();
                     services.AddSingleton(_ => hostContext.Configuration);
-                    services.AddSingleton<MessengerFactory>(new MessengerFactoryImpl(hostContext.Configuration));
+                    services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
                     services.AddSingleton<ICacheService, CacheService>();
                     services.AddSingleton<IMaintenanceService>(new MaintenanceService(hostContext.Configuration));
                     services.AddHostedService<AutoUMService>();

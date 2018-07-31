@@ -57,9 +57,17 @@
                 if (umInfo.IsUnderMaintenanceTime)
                 {
                     await messengerClient.SetAutoReplyAsync(
-                        "System is under maintenance", true, Convert.ToDateTime(umInfo.From), Convert.ToDateTime(umInfo.To));
+                        $"System is under maintenance from {umInfo.From} to {umInfo.To}",
+                        true,
+                        Convert.ToDateTime(umInfo.From),
+                        Convert.ToDateTime(umInfo.To));
                 }
             }
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
         }
 
         private bool IsNewUMInfo(UnderMaintenanceTime umInfo)
@@ -78,9 +86,16 @@
                 umInfo.IsUnderMaintenanceTime != oldUMInfo.IsUnderMaintenanceTime;
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        private async Task SendSkypeTest(UnderMaintenanceTime umInfo)
         {
-            return Task.CompletedTask;
+            umInfo.From = DateTime.Now.ToString();
+            umInfo.To = DateTime.Now.AddHours(2).ToString();
+            var skypeClient = _messengerFactory.CreateMessengerClient(MessengerType.Skype);
+            await skypeClient.SetAutoReplyAsync(
+                  $"System is under maintenance  from {umInfo.From} to {umInfo.To}",
+                  true,
+                  Convert.ToDateTime(umInfo.From),
+                  Convert.ToDateTime(umInfo.To));
         }
     }
 }

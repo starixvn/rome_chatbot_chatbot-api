@@ -1,6 +1,7 @@
 ﻿namespace Chatbot.Services
 {
     using System;
+    using Chatbot.Constants;
     using Messenger.Client;
     using Messenger.Client.Configurations;
     using Microsoft.Extensions.Configuration;
@@ -19,6 +20,9 @@
         {
             switch (messengerType)
             {
+                case MessengerType.Skype:
+                    return new SkypeClient(AppSettings.Messenger);
+
                 default:
                     return new LetstalkClient(AppSettings.Messenger);
             }

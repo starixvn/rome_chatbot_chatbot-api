@@ -63,6 +63,7 @@
         {
             var currentDirectory = Directory.GetCurrentDirectory();
             var configFileName = "appsettings.json";
+
             if (File.Exists(Path.Combine(currentDirectory, configFileName)))
             {
                 var builder = new ConfigurationBuilder()
@@ -91,8 +92,8 @@
 
         private static string GetConfigs(string configName)
         {
-            var configValue = configurationRoot == null 
-                ? Configs[configName] 
+            var configValue = configurationRoot == null
+                ? Configs[configName]
                 : configurationRoot[configName];
 
             return configValue ?? throw new InvalidOperationException($"Missing config for {configName}");
