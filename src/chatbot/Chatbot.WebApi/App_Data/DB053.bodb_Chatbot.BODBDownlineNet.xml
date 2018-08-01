@@ -20,6 +20,7 @@
       <Mapping ObjectProperty="Id" DataField="functionid" />
     </Setting>
     <Setting Key="InsertUserAction" SpName="InsertUserAction" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="InsertMessage" SpName="InsertMessage" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="InsertMessengerAccount" SpName="InsertMessengerAccount" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="InsertUser" SpName="InsertUser" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="UpdateMessengerAccountStatus" SpName="UpdateMessengerAccountStatus" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />

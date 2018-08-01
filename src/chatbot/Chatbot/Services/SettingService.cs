@@ -6,11 +6,10 @@
     using System.Threading.Tasks;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
-    using Chatbot.Params.Db.Criteria;
     using Chatbot.Params.Db.Commands;
+    using Chatbot.Params.Db.Criteria;
     using Fanex.Caching;
     using Fanex.Data.Repository;
-    using MessengerClient = Messenger.Client;
 
     public interface SettingService
     {
@@ -35,6 +34,7 @@
 
     public class SettingServiceImpl : SettingService
     {
+        private const int BotUserId = -1;
         private const int MaxAddActionTimes = 10;
         private const int AddAccountActionId = 100;
         private const int WrongVerificationCodeActionId = 101;
@@ -42,23 +42,29 @@
         private const string functionNameByLanguageCacheKey = "SettingServiceImpl.FunctionNameByLanguageCacheKey.{0}";
         private readonly CacheItemOptions cacheItemOptions = new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0));
         private readonly IDynamicRepository dynamicRepository;
-        private readonly MessengerFactory messengerFactory;
         private readonly Func<string> randomNumberFunc;
         private readonly Func<DateTime> getCurrentDateTimeFunc;
         private readonly ICacheService cacheService;
+        private readonly IMessageSender messageSender;
+        private readonly IMessageBuilder messageBuilder;
+        private readonly IMessageLogger messageLogger;
 
         public SettingServiceImpl(
             IDynamicRepository dynamicRepository,
-            MessengerFactory messengerFactory,
+            IMessageSender messageSender,
+            IMessageBuilder messageBuilder,
             ICacheService cacheService,
+            IMessageLogger messageLogger,
             Func<string> randomNumberFunc = null,
             Func<DateTime> getCurrentDateTimeFunc = null)
         {
             this.dynamicRepository = dynamicRepository;
-            this.messengerFactory = messengerFactory;
             this.randomNumberFunc = randomNumberFunc ?? RandomSixDigitsNumber;
             this.cacheService = cacheService ?? new CacheService();
             this.getCurrentDateTimeFunc = getCurrentDateTimeFunc ?? GetCurrentDateTime;
+            this.messageSender = messageSender;
+            this.messageBuilder = messageBuilder;
+            this.messageLogger = messageLogger;
         }
 
         public async Task<Result> GenerateVerificationCode(int userId, Messenger messenger)
@@ -71,36 +77,29 @@
             var verificationCode = RandomSixDigitsNumber();
 
             await InsertMessengerWithVerificationCode(userId, messenger, verificationCode);
-            await SendMessage(messenger, $"Your Letstalk validation code is {verificationCode}. The validation code will be expired after 5 minutes.");
+            await SendVerificationCode(userId, messenger, verificationCode);
 
             return Result.CreateSuccessfulResult();
         }
 
-        private async Task<MessengerClient.Models.Result> SendMessage(
-            Messenger messenger, 
-            string message)
+        private async Task SendVerificationCode(int userId, Messenger messenger, string verificationCode)
         {
-            var client = messengerFactory.CreateMessengerClient(messenger.Type);
-            var result = await client.PushAsync(messenger.Username, message);
+            var message = messageBuilder.BuildVerificationCodeMessage(verificationCode);
 
-            if (result.IsNotOk)
-            {
-                throw new InvalidOperationException(result.Message);
-            }
-
-            return result;
+            await messageSender.SendMessage(messenger, message);
+            await messageLogger.LogMessage(BotUserId, userId, messenger, message);
         }
 
         private async Task<bool> InsertMessengerWithVerificationCode(
-            int userId, 
-            Messenger messenger, 
+            int userId,
+            Messenger messenger,
             string verificationCode)
         {
             var command = new InsertMessengerCommand(userId, messenger.Type, messenger.Username, verificationCode);
 
             await dynamicRepository.ExecuteAsync(command);
 
-            if(command.IsCommandRunFailed)
+            if (command.IsCommandRunFailed)
             {
                 throw new InvalidOperationException($"Insert Messenger With Verification Code failed with code {command.Code}");
             }
@@ -169,7 +168,7 @@
 
             await dynamicRepository.ExecuteAsync(command);
 
-            if(command.IsCommandRunFailed)
+            if (command.IsCommandRunFailed)
             {
                 throw new InvalidOperationException($"Update Functions failed with code {command.Code}");
             }
@@ -208,13 +207,13 @@
             var userId = await InsertUser(custId, subAccountId, language);
 
             await UpdateUserActionCount(
-                userId, 
-                AddAccountActionId, 
+                userId,
+                AddAccountActionId,
                 messenger.Type,
                 messenger.Username);
 
             var result = await VerifyMessengerAccount(userId, messenger);
-            if(result.IsNotOk)
+            if (result.IsNotOk)
             {
                 return result;
             }
@@ -231,7 +230,7 @@
                 return AddingUserResult.CreateIsOverMaxAddAccountTimesResult();
             }
 
-            if (await IsMessengerAccountNotExisted(messenger))
+            if (await messageSender.IsMessengerAccountNotExisted(messenger))
             {
                 return AddingUserResult.CreateAccountDoesNotExistResult();
             }
@@ -273,7 +272,7 @@
         }
 
         private async Task<bool> IsUserAddAccountOverMaxTimeInDay(
-            int userId, 
+            int userId,
             int messengerType,
             string messengerUsername)
         {
@@ -284,8 +283,8 @@
         }
 
         private async Task<IEnumerable<UserActionDto>> GetUserAction(
-            int userId, 
-            int messengerType, 
+            int userId,
+            int messengerType,
             string messengerUsername,
             int actionId)
         {
@@ -296,19 +295,10 @@
             return userAction;
         }
 
-        private async Task<bool> IsMessengerAccountNotExisted(Messenger messenger)
-        {
-            var client = messengerFactory.CreateMessengerClient(messenger.Type);
-
-            var profileResult = await client.GetProfileAsync(messenger.Username);
-
-            return !profileResult.Item2;
-        }
-
         public async Task<Result> UpdateMessengerStatus(
-            int userId, 
-            int messengerType, 
-            string messengerUsername, 
+            int userId,
+            int messengerType,
+            string messengerUsername,
             bool enabled)
         {
             ValidateInputParam(nameof(userId), userId);
@@ -336,7 +326,7 @@
 
             var verificationResult = await CheckVerificationCode(userId, verificationCode, messenger);
 
-            if(verificationResult.IsNotOk)
+            if (verificationResult.IsNotOk)
             {
                 return verificationResult;
             }
@@ -348,7 +338,7 @@
 
         private async Task<VerificationCodeResult> CheckVerificationCode(int userId, string verificationCode, Messenger messenger)
         {
-            var criteria = new GetMessengerByUserCriteria(userId, messenger.Type);
+            var criteria = new GetMessengerByUserCriteria(userId, messenger.Type, messenger.Username);
             var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(criteria);
             var result = VerificationCodeResult.CreateVerificationSuccessfulResult();
 
@@ -366,7 +356,7 @@
                 result = VerificationCodeResult.CreateWrongVerificationCodeResult();
             }
 
-            if(result.IsNotOk)
+            if (result.IsNotOk)
             {
                 await UpdateUserActionCount(
                         userId,
@@ -388,8 +378,8 @@
         }
 
         private async Task<Result> UpdateUserActionCount(
-            int userId, 
-            int actionId, 
+            int userId,
+            int actionId,
             int messengerType,
             string messengerUsername)
         {
