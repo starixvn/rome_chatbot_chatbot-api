@@ -324,23 +324,31 @@
 
             if (result.IsNotOk)
             {
-                await IncreaseUserActionCount(
-                        userId,
-                        WrongVerificationCodeActionId,
-                        messenger.Type,
-                        messenger.Username);
-
-                var failedAction = (await GetUserAction(userId, messenger.Type, messenger.Username, WrongVerificationCodeActionId)).FirstOrDefault();
-
-                result = new VerificationCodeResult(
-                    result.Code,
-                    result.Message,
-                    failedAction != null
-                        ? failedAction.CountTimes
-                        : 0);
+                result = await LogVerificationCodeFailedAction(userId, messenger, result);
             }
 
             return result;
+        }
+
+        private async Task<VerificationCodeResult> LogVerificationCodeFailedAction(
+            int userId, 
+            Messenger messenger,
+            VerificationCodeResult result)
+        {
+            await IncreaseUserActionCount(
+                                    userId,
+                                    WrongVerificationCodeActionId,
+                                    messenger.Type,
+                                    messenger.Username);
+
+            var failedAction = (await GetUserAction(userId, messenger.Type, messenger.Username, WrongVerificationCodeActionId)).FirstOrDefault();
+
+            return new VerificationCodeResult(
+                result.Code,
+                result.Message,
+                failedAction != null
+                    ? failedAction.CountTimes
+                    : 0);
         }
 
         private async Task IncreaseUserActionCount(
