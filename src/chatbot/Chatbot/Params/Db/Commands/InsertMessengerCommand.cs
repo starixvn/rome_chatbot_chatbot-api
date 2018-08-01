@@ -1,8 +1,9 @@
 ﻿namespace Chatbot.Params.Db.Commands
 {
     using System;
+    using Fanex.Data.Repository;
 
-    public class InsertMessengerCommand : BaseCommand
+    public class InsertMessengerCommand : NonQueryCommand
     {
         public InsertMessengerCommand(
             int userId, 

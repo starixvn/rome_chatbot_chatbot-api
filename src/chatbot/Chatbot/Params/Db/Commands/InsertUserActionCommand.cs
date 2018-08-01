@@ -1,8 +1,11 @@
-﻿using System;
+﻿
 
 namespace Chatbot.Params.Db.Commands
 {
-    public class InsertUserActionCommand : BaseCommand
+    using System;
+    using Fanex.Data.Repository;
+
+    public class InsertUserActionCommand : NonQueryCommand
     {
         public InsertUserActionCommand(
             int userId, 

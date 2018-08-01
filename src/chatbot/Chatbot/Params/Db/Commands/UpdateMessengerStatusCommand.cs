@@ -1,9 +1,11 @@
 ﻿namespace Chatbot.Params.Db.Commands
 {
-    public class UpdateMessengerStatusCommand : BaseCommand
+    using Fanex.Data.Repository;
+
+    public class UpdateMessengerStatusCommand : NonQueryCommand
     {
         public UpdateMessengerStatusCommand(
-            int userId, 
+            int userId,
             int messengerType,
             string messengerUsername,
             bool enabled)

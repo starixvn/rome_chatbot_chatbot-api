@@ -4,8 +4,9 @@
     using System.Linq;
     using Chatbot.Models;
     using Fanex.Data;
+    using Fanex.Data.Repository;
 
-    public class UpdateUserFunctionsCommand : BaseCommand
+    public class UpdateUserFunctionsCommand : NonQueryCommand
     {
         private const string RootXml = "<ROOT>{0}</ROOT>";
 

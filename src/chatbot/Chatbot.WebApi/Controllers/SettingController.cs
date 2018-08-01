@@ -30,7 +30,11 @@
 
         [Route("api/setting/{userId}/function"), HttpPost]
         public async Task<Result> UpdateFunctions(int userId, [FromBody]IEnumerable<Function> functions)
-            => await settingService.UpdateFunctions(userId, functions);
+        {
+            await settingService.UpdateFunctions(userId, functions);
+
+            return Result.CreateSuccessfulResult();
+        }
 
         [Route("api/setting/{userId}/function/{language}"), HttpGet]
         public async Task<IEnumerable<Function>> GetFunctions(int userId, string language)
@@ -38,15 +42,23 @@
 
         [Route("api/setting/{userId}/language/{language}"), HttpPost]
         public async Task<Result> UpdateLanguage(int userId, string language)
-            => await settingService.UpdateLanguage(userId, language);
+        {
+            await settingService.UpdateLanguage(userId, language);
+
+            return Result.CreateSuccessfulResult();
+        }
 
         [Route("api/setting/{userId}/generateVerificationCode"), HttpPost]
         public async Task<Result> GenerateVerificationCode(int userId, [FromBody]VerificationCodeParam param)
-            => await settingService.GenerateVerificationCode(
+        {
+            await settingService.GenerateVerificationCode(
                                 userId,
                                 new Messenger(param.MessengerType, param.MessengerUsername));
 
-        [Route("api/setting/{userId}/verifyVerificationCode"), HttpPost]
+            return Result.CreateSuccessfulResult();
+        }
+
+    [Route("api/setting/{userId}/verifyVerificationCode"), HttpPost]
         public async Task<Result> VerifyVerificationCode(int userId, [FromBody]VerificationCodeParam param)
             => await settingService.VerifyVerificationCode(
                 userId,
@@ -55,6 +67,10 @@
 
         [Route("api/setting/{userId}/unsubscribe/{messengerType}/{messengerUsername}"), HttpPost]
         public async Task<Result> Unsubscribe(int userId, int messengerType, string messengerUsername)
-            => await settingService.UpdateMessengerStatus(userId, messengerType, messengerUsername, false);
-    }
+        {
+            await settingService.UpdateMessengerStatus(userId, messengerType, messengerUsername, false);
+
+            return Result.CreateSuccessfulResult();
+        }
+}
 }

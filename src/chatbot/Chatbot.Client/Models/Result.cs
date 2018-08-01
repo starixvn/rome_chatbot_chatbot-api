@@ -9,6 +9,9 @@
         public bool IsNotOk => !IsOk;
 
         public string Message { get; set; }
+
+        public static Result CreateSuccessfulResult()
+            => new Result();
     }
 
     public class VerificationCodeResult : Result

@@ -32,6 +32,9 @@
             services.AddSingleton<SettingService, SettingServiceImpl>();
             services.AddSingleton<IDynamicRepository, DynamicRepository>();
             services.AddSingleton<ICacheService, CacheService>();
+            services.AddSingleton<IMessageBuilder, MessageBuilder>();
+            services.AddSingleton<IMessageLogger, MessageLogger>();
+            services.AddSingleton<IMessageSender, MessageSender>();
 
             services.AddSwaggerGen(c =>
             {
@@ -56,7 +59,6 @@
             {
                 c.SwaggerEndpoint("../swagger/v1/swagger.json", "Chatbot API");
             });
-
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc(

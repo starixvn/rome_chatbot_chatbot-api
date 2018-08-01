@@ -15,11 +15,11 @@
     {
         Task<IEnumerable<Function>> GetFunctions(int userId, string language);
 
-        Task<Result> UpdateFunctions(int userId, IEnumerable<Function> functions);
+        Task UpdateFunctions(int userId, IEnumerable<Function> functions);
 
-        Task<Result> UpdateLanguage(int userId, string language);
+        Task UpdateLanguage(int userId, string language);
 
-        Task<Result> GenerateVerificationCode(int userId, Messenger messenger);
+        Task GenerateVerificationCode(int userId, Messenger messenger);
 
         Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger);
 
@@ -29,7 +29,7 @@
 
         Task<User> GetUser(int custId, int subAccountId, string language);
 
-        Task<Result> UpdateMessengerStatus(int userId, int messengerType, string messengerUsername, bool enabled);
+        Task UpdateMessengerStatus(int userId, int messengerType, string messengerUsername, bool enabled);
     }
 
     public class SettingServiceImpl : SettingService
@@ -67,7 +67,7 @@
             this.messageLogger = messageLogger;
         }
 
-        public async Task<Result> GenerateVerificationCode(int userId, Messenger messenger)
+        public async Task GenerateVerificationCode(int userId, Messenger messenger)
         {
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(messenger), messenger);
@@ -78,8 +78,6 @@
 
             await InsertMessengerWithVerificationCode(userId, messenger, verificationCode);
             await SendVerificationCode(userId, messenger, verificationCode);
-
-            return Result.CreateSuccessfulResult();
         }
 
         private async Task SendVerificationCode(int userId, Messenger messenger, string verificationCode)
@@ -90,7 +88,7 @@
             await messageLogger.LogMessage(BotUserId, userId, messenger, message);
         }
 
-        private async Task<bool> InsertMessengerWithVerificationCode(
+        private async Task InsertMessengerWithVerificationCode(
             int userId,
             Messenger messenger,
             string verificationCode)
@@ -98,13 +96,6 @@
             var command = new InsertMessengerCommand(userId, messenger.Type, messenger.Username, verificationCode);
 
             await dynamicRepository.ExecuteAsync(command);
-
-            if (command.IsCommandRunFailed)
-            {
-                throw new InvalidOperationException($"Insert Messenger With Verification Code failed with code {command.Code}");
-            }
-
-            return command.IsCommandRunSuccessfully;
         }
 
         private string RandomSixDigitsNumber()
@@ -159,7 +150,7 @@
         private async Task<IEnumerable<FunctionLanguageDto>> GetFunctionLanguage(int functionId)
             => await dynamicRepository.FetchAsync<FunctionLanguageDto>(new GetFunctionNameCriteria(functionId));
 
-        public async Task<Result> UpdateFunctions(int userId, IEnumerable<Function> functions)
+        public async Task UpdateFunctions(int userId, IEnumerable<Function> functions)
         {
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(functions), functions);
@@ -167,16 +158,9 @@
             var command = new UpdateUserFunctionsCommand(userId, functions);
 
             await dynamicRepository.ExecuteAsync(command);
-
-            if (command.IsCommandRunFailed)
-            {
-                throw new InvalidOperationException($"Update Functions failed with code {command.Code}");
-            }
-
-            return Result.CreateSuccessfulResult();
         }
 
-        public async Task<Result> UpdateLanguage(int userId, string language)
+        public async Task UpdateLanguage(int userId, string language)
         {
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(language), language);
@@ -184,13 +168,6 @@
             var command = new UpdateUserLanguageCommand(userId, language);
 
             await dynamicRepository.ExecuteAsync(command);
-
-            if (command.IsCommandRunFailed)
-            {
-                throw new InvalidOperationException($"Update Language failed with code {command.Code}");
-            }
-
-            return Result.CreateSuccessfulResult();
         }
 
         /// <summary>
@@ -263,11 +240,6 @@
 
             await dynamicRepository.ExecuteAsync(command);
 
-            if (command.IsCommandRunFailed)
-            {
-                throw new InvalidOperationException($"Insert User failed with code {command.Code}");
-            }
-
             return command.UserId;
         }
 
@@ -295,7 +267,7 @@
             return userAction;
         }
 
-        public async Task<Result> UpdateMessengerStatus(
+        public async Task UpdateMessengerStatus(
             int userId,
             int messengerType,
             string messengerUsername,
@@ -307,13 +279,6 @@
             var command = new UpdateMessengerStatusCommand(userId, messengerType, messengerUsername, enabled);
 
             await dynamicRepository.ExecuteAsync(command);
-
-            if (command.IsCommandRunFailed)
-            {
-                throw new InvalidOperationException($"Update Messenger status failed with code {command.Code}");
-            }
-
-            return Result.CreateSuccessfulResult();
         }
 
         public async Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger)
@@ -331,9 +296,9 @@
                 return verificationResult;
             }
 
-            var result = await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true);
+            await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true);
 
-            return new VerificationCodeResult(result.Code, result.Message);
+            return VerificationCodeResult.CreateVerificationSuccessfulResult();
         }
 
         private async Task<VerificationCodeResult> CheckVerificationCode(int userId, string verificationCode, Messenger messenger)
@@ -377,7 +342,7 @@
             return result;
         }
 
-        private async Task<Result> UpdateUserActionCount(
+        private async Task UpdateUserActionCount(
             int userId,
             int actionId,
             int messengerType,
@@ -386,13 +351,6 @@
             var command = new InsertUserActionCommand(userId, actionId, messengerType, messengerUsername);
 
             await dynamicRepository.ExecuteAsync(command);
-
-            if (command.IsCommandRunFailed)
-            {
-                throw new InvalidOperationException($"Update Language failed with code {command.Code}");
-            }
-
-            return Result.CreateSuccessfulResult();
         }
 
         private static void ValidateInputParam(string paramName, object paramValue)
