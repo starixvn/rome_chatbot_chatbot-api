@@ -197,7 +197,7 @@
 
             await GenerateVerificationCode(userId, messenger);
 
-            return AddingUserResult.CreateSuccessfulResult(userId);
+            return AddingUserResult.CreateSuccessfulAddingUserResult(userId);
         }
 
         private async Task<AddingUserResult> VerifyMessengerAccount(int userId, Messenger messenger)
@@ -217,7 +217,7 @@
                 return AddingUserResult.CreateMessengerAccountHasBeenRegisteredByAnotherCustomerResult();
             }
 
-            return AddingUserResult.CreateSuccessfulResult();
+            return AddingUserResult.CreateSuccessfulAddingUserResult();
         }
 
         private async Task<bool> IsMessengerAccountBelongToAnotherUser(int userId, Messenger messenger)

@@ -60,10 +60,10 @@
             UserId = userId;
         }
 
-        public static AddingUserResult CreateSuccessfulResult(int userId)
+        public static AddingUserResult CreateSuccessfulAddingUserResult(int userId)
             => new AddingUserResult(0, string.Empty, userId);
 
-        public static AddingUserResult CreateSuccessfulResult()
+        public static AddingUserResult CreateSuccessfulAddingUserResult()
             => new AddingUserResult(0, string.Empty, 0);
 
         public static AddingUserResult CreateAccountDoesNotExistResult()
