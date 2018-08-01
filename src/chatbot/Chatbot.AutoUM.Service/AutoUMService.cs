@@ -59,8 +59,6 @@
             var umInfo = await _maintenanceService.GetUnderMaintenanceTime();
             var messengerClient = _messengerFactory.CreateMessengerClient(MessengerType.Letstalk);
 
-            await SendSkype(umInfo);
-
             if (IsNewUMInfo(umInfo))
             {
                 _cacheService.Set(
@@ -93,16 +91,6 @@
                 umInfo.To != oldUMInfo.To ||
                 umInfo.ErrorCode != oldUMInfo.ErrorCode ||
                 umInfo.IsUnderMaintenanceTime != oldUMInfo.IsUnderMaintenanceTime;
-        }
-
-        private async Task SendSkype(UnderMaintenanceTime umInfo)
-        {
-            var skypeClient = _messengerFactory.CreateMessengerClient(MessengerType.Skype);
-            await skypeClient.SetAutoReplyAsync(
-                  $"System is under maintenance  from {umInfo.From} to {umInfo.To}",
-                  true,
-                  Convert.ToDateTime(umInfo.From),
-                  Convert.ToDateTime(umInfo.To));
         }
     }
 }
