@@ -59,6 +59,7 @@
         /// </summary>
         private readonly static IConfigurationRoot configurationRoot;
 
+#pragma warning disable S3963 // "static" fields should be initialized inline
         static AppSettings()
         {
             var currentDirectory = Directory.GetCurrentDirectory();
@@ -89,6 +90,7 @@
                 messengerBotAccountId,
                 messengerBotUserId);
         }
+#pragma warning restore S3963 // "static" fields should be initialized inline
 
         private static string GetConfigs(string configName)
         {

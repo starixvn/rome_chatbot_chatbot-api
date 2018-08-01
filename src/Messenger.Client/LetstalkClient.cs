@@ -96,7 +96,9 @@
                 });
         }
 
+#pragma warning disable S3994 // URI Parameters should not be strings
         public Task<Result> SetWebhookAsync(string url)
+#pragma warning restore S3994 // URI Parameters should not be strings
         {
             ValidateInputParam(nameof(url), url);
 

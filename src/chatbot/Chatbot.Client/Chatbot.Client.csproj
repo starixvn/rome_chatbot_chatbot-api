@@ -13,4 +13,12 @@ To use it, please add these config to your config file:
      <PackageId>Chatbot.Client</PackageId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
+    <CodeAnalysisRuleSet>Chatbot.Client.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
+    <CodeAnalysisRuleSet>Chatbot.Client.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
 </Project>
