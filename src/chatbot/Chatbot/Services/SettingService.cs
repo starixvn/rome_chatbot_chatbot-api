@@ -183,7 +183,7 @@
 
             var userId = await InsertUser(custId, subAccountId, language);
 
-            await UpdateUserActionCount(
+            await IncreaseUserActionCount(
                 userId,
                 AddAccountActionId,
                 messenger.Type,
@@ -297,6 +297,7 @@
             }
 
             await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true);
+            await ResetUserActionCount(userId, WrongVerificationCodeActionId, messenger.Type, messenger.Username);
 
             return VerificationCodeResult.CreateVerificationSuccessfulResult();
         }
@@ -323,7 +324,7 @@
 
             if (result.IsNotOk)
             {
-                await UpdateUserActionCount(
+                await IncreaseUserActionCount(
                         userId,
                         WrongVerificationCodeActionId,
                         messenger.Type,
@@ -342,13 +343,24 @@
             return result;
         }
 
-        private async Task UpdateUserActionCount(
+        private async Task IncreaseUserActionCount(
             int userId,
             int actionId,
             int messengerType,
             string messengerUsername)
         {
             var command = new InsertUserActionCommand(userId, actionId, messengerType, messengerUsername);
+
+            await dynamicRepository.ExecuteAsync(command);
+        }
+
+        private async Task ResetUserActionCount(
+            int userId,
+            int actionId,
+            int messengerType,
+            string messengerUsername)
+        {
+            var command = new ResetActionCountTimesCommand(userId, actionId, messengerType, messengerUsername);
 
             await dynamicRepository.ExecuteAsync(command);
         }

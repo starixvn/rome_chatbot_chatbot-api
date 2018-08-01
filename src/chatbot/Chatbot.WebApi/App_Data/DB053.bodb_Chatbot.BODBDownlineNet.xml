@@ -26,5 +26,6 @@
     <Setting Key="UpdateMessengerAccountStatus" SpName="UpdateMessengerAccountStatus" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="UpdateUserFunctions" SpName="UpdateUserFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="UpdateUserLanguage" SpName="UpdateUserLanguage" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="ResetUserActionCount" SpName="ResetUserActionCount" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
   </Function>
 </Functions>
