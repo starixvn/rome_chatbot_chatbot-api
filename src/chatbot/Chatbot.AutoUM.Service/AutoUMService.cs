@@ -3,7 +3,6 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Timers;
     using Chatbot.Constants;
     using Chatbot.Services;
     using Fanex.Caching;
@@ -47,7 +46,7 @@
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogDebug("AutoUMService is running to UM information");
+                _logger.LogDebug("AutoUMService is running to get UM information");
                 await GetUnderMaintenanceTime();
                 await Task.Delay(updateTime, stoppingToken);
             }
@@ -57,8 +56,10 @@
 
         private async Task GetUnderMaintenanceTime()
         {
-            var umInfo = _maintenanceService.GetUnderMaintenanceTime();
+            var umInfo = await _maintenanceService.GetUnderMaintenanceTime();
             var messengerClient = _messengerFactory.CreateMessengerClient(MessengerType.Letstalk);
+
+            await SendSkype(umInfo);
 
             if (IsNewUMInfo(umInfo))
             {
@@ -96,8 +97,6 @@
 
         private async Task SendSkype(UnderMaintenanceTime umInfo)
         {
-            umInfo.From = DateTime.Now.ToString();
-            umInfo.To = DateTime.Now.AddHours(2).ToString();
             var skypeClient = _messengerFactory.CreateMessengerClient(MessengerType.Skype);
             await skypeClient.SetAutoReplyAsync(
                   $"System is under maintenance  from {umInfo.From} to {umInfo.To}",

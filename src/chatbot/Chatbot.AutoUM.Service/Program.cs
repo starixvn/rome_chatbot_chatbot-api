@@ -33,7 +33,7 @@
                     services.AddSingleton(_ => hostContext.Configuration);
                     services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
                     services.AddSingleton<ICacheService, CacheService>();
-                    services.AddSingleton<IMaintenanceService>(new MaintenanceService(hostContext.Configuration));
+                    services.AddSingleton<IMaintenanceService, MaintenanceService>();
                     services.AddHostedService<AutoUMService>();
                 })
                 .UseConsoleLifetime()
