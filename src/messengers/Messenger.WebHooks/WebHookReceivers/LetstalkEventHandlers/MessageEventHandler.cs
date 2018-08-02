@@ -1,11 +1,9 @@
 ﻿namespace Messenger.WebHooks.WebHookReceivers.LetstalkEventHandlers
 {
-    using System;
-    using System.Collections.Generic;
+    using System.Configuration;
     using System.Threading.Tasks;
     using Chatbot.Client.Services;
-    using Messenger.Client;
-    using Messenger.Client.Configurations;
+    using Fanex.Logging;
     using Messenger.Client.Helpers;
     using Messenger.WebHooks.App_Start;
     using Messenger.WebHooks.Models;
@@ -15,9 +13,8 @@
     public class MessageEventHandler : BaseLetstalkEventHandler
     {
         private readonly CommandService commandService;
-        private readonly IMessengerClient messengerClient; 
         private readonly ICryptographyHelper cryptographyHelper;
-        private readonly IMessengerSettings messengerSettings;
+        private readonly ILogger logger;
         private const string eventTypeName = "message";
 
         public MessageEventHandler() : this(null, null, null)
@@ -26,14 +23,12 @@
 
         public MessageEventHandler(
             CommandService commandService,
-            IMessengerClient messengerClient,
             ICryptographyHelper cryptographyHelper = null,
-            IMessengerSettings messengerSettings = null)
+            ILogger logger = null)
         {
-            this.messengerClient = messengerClient ?? DependencyResolver.GetInstance<IMessengerClient>();
             this.commandService = commandService ?? DependencyResolver.GetInstance<CommandService>();
             this.cryptographyHelper = cryptographyHelper ?? DependencyResolver.GetInstance<ICryptographyHelper>();
-            this.messengerSettings = messengerSettings ?? DependencyResolver.GetInstance<IMessengerSettings>();
+            this.logger = logger ?? Logger.Log;
         }
 
         protected override string EventTypeName => eventTypeName;
@@ -42,10 +37,17 @@
         {
             var messageContent = cryptographyHelper.Decrypt(
                 hookEvent.PayloadObject.HashContent,
-                messengerSettings.ChatKey,
+                ConfigurationManager.AppSettings["MessengerAPIClient:ChatKey"],
                 hookEvent.PayloadObject.HashContentKey);
 
             var command = JsonConvert.DeserializeObject<MessageContent>(messageContent).Msg;
+
+            logger.Info(JsonConvert.SerializeObject(new
+            {
+                command,
+                MessengerType,
+                hookEvent
+            }, Formatting.Indented));
 
             await commandService.Run(command, MessengerType, hookEvent.Source.UserId);
         }

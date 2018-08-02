@@ -9,11 +9,9 @@
     public class AskKeyEventHandler : BaseLetstalkEventHandler
     {
         private const string eventTypeName = "ask_key";
-        private readonly IMessengerClient messengerClient;
 
         public AskKeyEventHandler()
         {
-            messengerClient = DependencyResolver.GetInstance<IMessengerClient>();
         }
 
         protected override string EventTypeName => eventTypeName;

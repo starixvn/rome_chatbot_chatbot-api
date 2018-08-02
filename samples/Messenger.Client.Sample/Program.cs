@@ -20,7 +20,7 @@ namespace Messenger.Client.Sample
             //var result = letstalkClient.PushAsync("starix_test1", "a lo 1").Result;
             //Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(result)}");
 
-            var result = letstalkClient.SetWebhookAsync("https://bot.nexdev.net:7419/api/webhooks/incoming/letstalk/").Result;
+            var result = letstalkClient.SetWebhookAsync("https://bot.nexdev.net:7419/local01/api/webhooks/incoming/letstalk/").Result;
 
             //var profile = letstalkClient.GetProfileAsync("hfghfgn1").Result;
             //letstalkClient.SetAutoReplyAsync("auto reply test", true).Result;

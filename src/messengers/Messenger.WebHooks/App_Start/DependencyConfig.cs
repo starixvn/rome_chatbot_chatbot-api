@@ -2,6 +2,7 @@
 {
     using Chatbot.Client.Services;
     using Fanex.Bot.Client;
+    using Fanex.Logging;
     using Messenger.Client;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
@@ -13,15 +14,10 @@
         {
             var container = new Container();
 
-            container.RegisterSingleton<IBotConnector, BotConnector>();
-            container.RegisterSingleton<IRestClientHelper, RestClientHelper>();
-            container.RegisterSingleton<IMessengerClient, LetstalkClient>();
             container.RegisterSingleton<IJwtHelper, JwtHelper>();
             container.RegisterSingleton<ICryptographyHelper, CryptographyHelper>();
-            container.RegisterInstance(AppSettings.Messenger);
             container.RegisterSingleton<CommandService, CommandServiceImpl>();
-
-            container.Register(() => RestClientHelper.CreateDefaultClient(AppSettings.Messenger.ApiEndpoint), Lifestyle.Singleton);
+            container.RegisterInstance(Logger.Log);
 
             container.Verify();
 

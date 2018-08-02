@@ -9,11 +9,9 @@
     public class HealthCheckEventHandler : BaseLetstalkEventHandler
     {
         private const string eventTypeName = "health_check";
-        private readonly IMessengerClient messengerClient;
 
         public HealthCheckEventHandler()
         {
-            messengerClient = DependencyResolver.GetInstance<IMessengerClient>();
         }
 
         protected override string EventTypeName => eventTypeName;
