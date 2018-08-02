@@ -29,7 +29,7 @@
             ValidateInputParam(nameof(messengerType), messengerType);
 
             return restClient.ExecutePostAsync<Result>(
-                $"run",
+                $"command/run",
                 new
                 {
                     command,

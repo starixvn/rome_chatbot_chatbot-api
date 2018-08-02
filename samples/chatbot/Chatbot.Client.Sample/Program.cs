@@ -11,7 +11,7 @@ namespace Chatbot.Client.Sample
         private static void Main(string[] args)
         {
             ChatbotClientManager
-                .UseConfig(AppSettings.BotClientConfigs)
+                .UseConfig(Chatbot.Client.Configurations.BotClientConfigs.GetDefaulBotClientConfig())
                 .UseRestClient(new Transport.RestClient());
 
             var settingService = new SettingServiceImpl();
@@ -21,7 +21,7 @@ namespace Chatbot.Client.Sample
             //var functions = settingService.GetFunctions(1).Result;
 
             //var addUserResult = settingService.AddUser(1000, 3, "en-US", "starix_test1");
-            //var user = settingService.GetUser(1000, 3, "en-US");
+            var user = settingService.GetUser(1000, 3, "en-US");
             //var result = settingService.UpdateLanguage(402, "en-US");
             //var functions = settingService.GetFunctions(407, "en-US").Result;
             //var firstFunction = functions.ElementAt(0);
@@ -34,7 +34,7 @@ namespace Chatbot.Client.Sample
             //});
 
             //settingService.GenerateVerificationCode(1000, "starix_test1");
-            settingService.VerifyVerificationCode(414, "34343", "starix_test1");
+            //settingService.VerifyVerificationCode(414, "34343", "starix_test1");
             //settingService.VerifyVerificationCode(userId, "346717", messengerUsername);
 
             //settingService.AddUser(1, 2, "4", "5");

@@ -47,13 +47,7 @@
 
             var command = JsonConvert.DeserializeObject<MessageContent>(messageContent).Msg;
 
-            await messengerClient.PushAsync(
-                new List<string> { hookEvent.Source.UserId },
-                $"Receive message from {hookEvent.Source.UserId}: {command} on {DateTime.Now}");
-
             await commandService.Run(command, MessengerType, hookEvent.Source.UserId);
-
-            ////return Task.FromResult(true);
         }
     }
 }
