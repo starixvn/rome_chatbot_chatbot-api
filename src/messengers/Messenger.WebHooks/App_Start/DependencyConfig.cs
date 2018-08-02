@@ -1,5 +1,6 @@
 ﻿namespace Messenger.WebHooks.App_Start
 {
+    using Chatbot.Client.Services;
     using Fanex.Bot.Client;
     using Messenger.Client;
     using Messenger.Client.Configurations;
@@ -18,6 +19,7 @@
             container.RegisterSingleton<IJwtHelper, JwtHelper>();
             container.RegisterSingleton<ICryptographyHelper, CryptographyHelper>();
             container.RegisterInstance(AppSettings.Messenger);
+            container.RegisterSingleton<CommandService, CommandServiceImpl>();
 
             container.Register(() => RestClientHelper.CreateDefaultClient(AppSettings.Messenger.ApiEndpoint), Lifestyle.Singleton);
 

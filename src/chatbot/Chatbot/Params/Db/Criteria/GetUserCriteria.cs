@@ -10,14 +10,21 @@
             SubAccountId = subAccountId;
         }
 
+        public GetUserCriteria(int userId)
+        {
+            UserId = userId;
+        }
+
         public int CustId { get; }
 
         public int SubAccountId { get; }
 
+        public int UserId { get; }
+
         public override string GetSettingKey() => "GetUser";
 
         public override bool IsValid() 
-            => CustId > 0
-            && SubAccountId >= 0;
+            => (CustId > 0 && SubAccountId >= 0)
+                || UserId > 0;
     }
 }

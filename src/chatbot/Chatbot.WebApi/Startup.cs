@@ -8,6 +8,7 @@
     using Fanex.Caching;
     using Fanex.Data;
     using Fanex.Data.Repository;
+    using Messenger.Client;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -35,6 +36,7 @@
             services.AddSingleton<IMessageBuilder, MessageBuilder>();
             services.AddSingleton<IMessageLogger, MessageLogger>();
             services.AddSingleton<IMessageSender, MessageSender>();
+            services.AddSingleton<CommandService, CommandServiceImpl>();
 
             services.AddSwaggerGen(c =>
             {

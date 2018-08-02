@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Chatbot.Constants;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
     using Chatbot.Params.Db.Commands;
@@ -13,7 +14,7 @@
 
     public interface SettingService
     {
-        Task<IEnumerable<Function>> GetFunctions(int userId, string language);
+        Task<IEnumerable<Function>> GetFunctions(int userId, string language = "");
 
         Task UpdateFunctions(int userId, IEnumerable<Function> functions);
 
@@ -29,12 +30,15 @@
 
         Task<User> GetUser(int custId, int subAccountId, string language);
 
+        Task<User> GetUser(int userId);
+
         Task UpdateMessengerStatus(int userId, int messengerType, string messengerUsername, bool enabled);
+
+        Task<MessengerDto> GetMessenger(int messengerType, string messengerUsername);
     }
 
     public class SettingServiceImpl : SettingService
     {
-        private const int BotUserId = -1;
         private const int MaxAddActionTimes = 10;
         private const int AddAccountActionId = 100;
         private const int WrongVerificationCodeActionId = 101;
@@ -85,7 +89,7 @@
             var message = messageBuilder.BuildVerificationCodeMessage(verificationCode);
 
             await messageSender.SendMessage(messenger, message);
-            await messageLogger.LogMessage(BotUserId, userId, messenger, message);
+            await messageLogger.LogMessage(CommonId.BotUserId, userId, messenger, message);
         }
 
         private async Task InsertMessengerWithVerificationCode(
@@ -125,23 +129,32 @@
             return user;
         }
 
-        public async Task<IEnumerable<Function>> GetFunctions(int userId, string language)
+        public async Task<User> GetUser(int userId)
         {
             ValidateInputParam(nameof(userId), userId);
-            ValidateInputParam(nameof(language), language);
+
+            return await dynamicRepository.GetAsync<User>(new GetUserCriteria(userId));
+        }
+
+        public async Task<IEnumerable<Function>> GetFunctions(int userId, string language = "")
+        {
+            ValidateInputParam(nameof(userId), userId);
 
             var functions = await dynamicRepository.FetchAsync<Function>(new GetUserFunctionsCriteria(userId));
 
-            foreach (var function in functions)
+            if (!string.IsNullOrWhiteSpace(language))
             {
-                var functionLanguages = await cacheService.GetOrSetAsync(
-                        string.Format(functionNameByLanguageCacheKey, function.Id),
-                        () => GetFunctionLanguage(function.Id).Result,
-                        cacheItemOptions);
+                foreach (var function in functions)
+                {
+                    var functionLanguages = await cacheService.GetOrSetAsync(
+                            string.Format(functionNameByLanguageCacheKey, function.Id),
+                            () => GetFunctionLanguage(function.Id).Result,
+                            cacheItemOptions);
 
-                function.Name = functionLanguages
-                    .FirstOrDefault(languageDto => languageDto.LanguageCode == language)
-                    ?.FunctionName;
+                    function.Name = functionLanguages
+                        .FirstOrDefault(languageDto => languageDto.LanguageCode == language)
+                        ?.FunctionName;
+                }
             }
 
             return functions;
@@ -181,13 +194,7 @@
             ValidateInputParam("Messenger Username", messenger.Username);
             ValidateInputParam("Messenger Type", messenger.Type);
 
-            var userId = await InsertUser(custId, subAccountId, language);
-
-            await IncreaseUserActionCount(
-                userId,
-                AddAccountActionId,
-                messenger.Type,
-                messenger.Username);
+            var userId = await InsertUser(custId, subAccountId, language, messenger);
 
             var result = await VerifyMessengerAccount(userId, messenger);
             if (result.IsNotOk)
@@ -234,11 +241,12 @@
                 && messengerDto.UserId != userId;
         }
 
-        private async Task<int> InsertUser(int custId, int subAccountId, string language)
+        private async Task<int> InsertUser(int custId, int subAccountId, string language, Messenger messenger)
         {
             var command = new InsertUserCommand(custId, subAccountId, language);
 
             await dynamicRepository.ExecuteAsync(command);
+            await IncreaseUserActionCount(command.UserId, AddAccountActionId, messenger.Type, messenger.Username);
 
             return command.UserId;
         }
@@ -401,6 +409,15 @@
             {
                 throw new ArgumentOutOfRangeException($"{paramName} does not contain any item");
             }
+        }
+
+        public async Task<MessengerDto> GetMessenger(int messengerType, string messengerUsername)
+        {
+            var criteria = new GetMessengerCriteria(messengerUsername, messengerType);
+
+            var messenger = await dynamicRepository.GetAsync<MessengerDto>(criteria);
+
+            return messenger;
         }
     }
 }

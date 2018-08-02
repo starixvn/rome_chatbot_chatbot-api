@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Chatbot.Client.Services;
     using Messenger.Client;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
@@ -13,7 +14,8 @@
 
     public class MessageEventHandler : BaseLetstalkEventHandler
     {
-        private readonly IMessengerClient messengerClient;
+        private readonly CommandService commandService;
+        private readonly IMessengerClient messengerClient; 
         private readonly ICryptographyHelper cryptographyHelper;
         private readonly IMessengerSettings messengerSettings;
         private const string eventTypeName = "message";
@@ -23,31 +25,35 @@
         }
 
         public MessageEventHandler(
-            IMessengerClient messengerClient = null,
+            CommandService commandService,
+            IMessengerClient messengerClient,
             ICryptographyHelper cryptographyHelper = null,
             IMessengerSettings messengerSettings = null)
         {
             this.messengerClient = messengerClient ?? DependencyResolver.GetInstance<IMessengerClient>();
+            this.commandService = commandService ?? DependencyResolver.GetInstance<CommandService>();
             this.cryptographyHelper = cryptographyHelper ?? DependencyResolver.GetInstance<ICryptographyHelper>();
             this.messengerSettings = messengerSettings ?? DependencyResolver.GetInstance<IMessengerSettings>();
         }
 
         protected override string EventTypeName => eventTypeName;
 
-        protected override Task EnqueueAsync(WebHookQueueContext context, HookEvent hookEvent)
+        protected override async Task EnqueueAsync(WebHookQueueContext context, HookEvent hookEvent)
         {
             var messageContent = cryptographyHelper.Decrypt(
                 hookEvent.PayloadObject.HashContent,
                 messengerSettings.ChatKey,
                 hookEvent.PayloadObject.HashContentKey);
 
-            var message = JsonConvert.DeserializeObject<MessageContent>(messageContent).Msg;
+            var command = JsonConvert.DeserializeObject<MessageContent>(messageContent).Msg;
 
-            return messengerClient.PushAsync(
+            await messengerClient.PushAsync(
                 new List<string> { hookEvent.Source.UserId },
-                $"Receive message from {hookEvent.Source.UserId}: {message} on {DateTime.Now}");
+                $"Receive message from {hookEvent.Source.UserId}: {command} on {DateTime.Now}");
 
-            return Task.FromResult(true);
+            await commandService.Run(command, MessengerType, hookEvent.Source.UserId);
+
+            ////return Task.FromResult(true);
         }
     }
 }

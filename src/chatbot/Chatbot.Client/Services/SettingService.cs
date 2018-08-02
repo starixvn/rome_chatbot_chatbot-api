@@ -24,9 +24,11 @@
         Task<User> GetUser(int custId, int subAccountId, string language);
 
         Task<Result> Unsubscribe(int userId, int messengerType, string messengerUsername);
+
+        Task<Messenger> GetMessenger(int messengerType, string messengerUsername);
     }
 
-    public class SettingServiceImpl : SettingService
+    public class SettingServiceImpl : ServiceBase, SettingService
     {
         private readonly IRestClient restClient;
 
@@ -106,28 +108,6 @@
             return restClient.ExecutePostAsync<Result>($"setting/{userId}/unsubscribe/{messengerType}/{messengerUsername}");
         }
 
-        private static void ValidateInputParam(string paramName, object paramValue)
-        {
-            if (paramValue == null
-                || (paramValue is string && string.IsNullOrWhiteSpace(paramValue as string)))
-            {
-                throw new ArgumentNullException(paramName);
-            }
-        }
-
-        private static void ValidateInputParam<T>(string paramName, IEnumerable<T> paramValue)
-        {
-            if (paramValue == null)
-            {
-                throw new ArgumentNullException(paramName);
-            }
-
-            if (!paramValue.Any())
-            {
-                throw new ArgumentOutOfRangeException($"{paramName} does not contain any item");
-            }
-        }
-
         public Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, string messengerUsername, int messengerType = 1)
         {
             ValidateInputParam(nameof(userId), userId);
@@ -143,6 +123,14 @@
                     messengerUsername,
                     messengerType
                 });
+        }
+
+        public Task<Messenger> GetMessenger(int messengerType, string messengerUsername)
+        {
+            ValidateInputParam(nameof(messengerType), messengerType);
+            ValidateInputParam(nameof(messengerUsername), messengerUsername);
+
+            return restClient.ExecutePostAsync<Messenger>($"setting/messenger/{messengerType}/{messengerUsername}");
         }
     }
 }

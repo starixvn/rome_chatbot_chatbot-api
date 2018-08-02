@@ -8,6 +8,8 @@
 
     public abstract class BaseLetstalkEventHandler : WebHookQueueHandler
     {
+        protected const int MessengerType = 1;
+
         protected BaseLetstalkEventHandler()
         {
             Receiver = LetstalkWebHookReceiver.ReceiverName;
