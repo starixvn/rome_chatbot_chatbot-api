@@ -14,8 +14,11 @@
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
+            var chatbotBaseUrl = ConfigurationManager.AppSettings["Chatbot:BaseUrl"] ?? throw new InvalidOperationException("Missing config for Chatbot:BaseUrl");
+            var chatbotApiKey = ConfigurationManager.AppSettings["Chatbot:ApiKey"] ?? throw new InvalidOperationException("Missing config for Chatbot:ApiKey");
+
             ChatbotClientManager
-                .UseConfig(BotClientConfigs.GetDefaulBotClientConfig())
+                .UseConfig(new BotClientConfigs(chatbotBaseUrl, chatbotApiKey))
                 .UseRestClient(new Chatbot.Client.Transport.RestClient());
 
             DependencyConfig.Init();
