@@ -4,15 +4,18 @@
     using System.Net;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
 
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate next;
+        private readonly ILogger<ErrorHandlingMiddleware> logger;
 
-        public ErrorHandlingMiddleware(RequestDelegate next)
+        public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
         {
             this.next = next;
+            this.logger = logger;
         }
 
         public async Task Invoke(HttpContext context /* other dependencies */)
@@ -23,6 +26,7 @@
             }
             catch (Exception ex)
             {
+                logger.LogError(ex.ToString());
                 await HandleExceptionAsync(context, ex);
             }
         }

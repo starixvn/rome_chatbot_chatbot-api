@@ -50,8 +50,7 @@
                 || !messengerDto.Enabled
                 || messengerDto.IsVerifying)
             {
-                // log not found messenger information
-                return;
+                throw new InvalidOperationException($"messenger {messengerUsername} is not verified or enabled");
             }
 
             var user = await settingService.GetUser(messengerDto.UserId);
