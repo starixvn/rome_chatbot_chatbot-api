@@ -89,6 +89,18 @@
         {
             var message = messageBuilder.BuildVerificationCodeMessage(verificationCode);
 
+            await SendMessage(userId, messenger, message);
+        }
+
+        private async Task SendWelcomeMessage(int userId, Messenger messenger)
+        {
+            var message = messageBuilder.BuildWelcomeMessage();
+
+            await SendMessage(userId, messenger, message);
+        }
+
+        private async Task SendMessage(int userId, Messenger messenger, string message)
+        {
             await messageSender.SendMessage(messenger, message);
             await messageLogger.LogMessage(CommonId.BotUserId, userId, messenger, message);
         }
@@ -145,29 +157,35 @@
 
             if (!string.IsNullOrWhiteSpace(language))
             {
-                language = DefaultLanguage;
-            }
-
-            foreach (var function in functions)
-            {
-                var functionLanguages = await cacheService.GetOrSetAsync(
-                        string.Format(functionNameByLanguageCacheKey, function.Id),
-                        () => GetFunctionLanguage(function.Id).Result,
-                        cacheItemOptions);
-
-                function.Name = functionLanguages
-                    .FirstOrDefault(languageDto => languageDto.LanguageCode == language)
-                    ?.FunctionName;
-
-                if (string.IsNullOrWhiteSpace(function.Name))
+                foreach (var function in functions)
                 {
-                    function.Name = functionLanguages
-                    .FirstOrDefault(languageDto => languageDto.LanguageCode == DefaultLanguage)
-                    ?.FunctionName;
+                    function.Name = await GetFunctionName(function.Id, language);
                 }
             }
 
             return functions;
+        }
+
+        private async Task<string> GetFunctionName(int functionId, string language)
+        {
+            var data = GetFunctionLanguage(functionId).Result;
+            var functionLanguages = await cacheService.GetOrSetAsync(
+                        string.Format(functionNameByLanguageCacheKey, functionId),
+                        () => GetFunctionLanguage(functionId).Result,
+                        cacheItemOptions);
+
+            var functionName = functionLanguages
+                .FirstOrDefault(languageDto => languageDto.LanguageCode == language)
+                ?.FunctionName;
+
+            if (string.IsNullOrWhiteSpace(functionName))
+            {
+                functionName = functionLanguages
+                .FirstOrDefault(languageDto => languageDto.LanguageCode == DefaultLanguage)
+                ?.FunctionName;
+            }
+
+            return functionName;
         }
 
         private async Task<IEnumerable<FunctionLanguageDto>> GetFunctionLanguage(int functionId)
@@ -316,6 +334,7 @@
 
             await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true);
             await ResetUserActionCount(userId, WrongVerificationCodeActionId, messenger.Type, messenger.Username);
+            await SendWelcomeMessage(userId, messenger);
 
             return VerificationCodeResult.CreateVerificationSuccessfulResult();
         }
