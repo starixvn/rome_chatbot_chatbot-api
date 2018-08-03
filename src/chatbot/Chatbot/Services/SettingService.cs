@@ -40,6 +40,7 @@
     public class SettingServiceImpl : SettingService
     {
         private const int MaxAddActionTimes = 10;
+        private const string DefaultLanguage = "en-US";
         private const int AddAccountActionId = 100;
         private const int WrongVerificationCodeActionId = 101;
         private const int VerificationCodeExpiredTimeInMinutes = 5;
@@ -144,16 +145,25 @@
 
             if (!string.IsNullOrWhiteSpace(language))
             {
-                foreach (var function in functions)
-                {
-                    var functionLanguages = await cacheService.GetOrSetAsync(
-                            string.Format(functionNameByLanguageCacheKey, function.Id),
-                            () => GetFunctionLanguage(function.Id).Result,
-                            cacheItemOptions);
+                language = DefaultLanguage;
+            }
 
+            foreach (var function in functions)
+            {
+                var functionLanguages = await cacheService.GetOrSetAsync(
+                        string.Format(functionNameByLanguageCacheKey, function.Id),
+                        () => GetFunctionLanguage(function.Id).Result,
+                        cacheItemOptions);
+
+                function.Name = functionLanguages
+                    .FirstOrDefault(languageDto => languageDto.LanguageCode == language)
+                    ?.FunctionName;
+
+                if (string.IsNullOrWhiteSpace(function.Name))
+                {
                     function.Name = functionLanguages
-                        .FirstOrDefault(languageDto => languageDto.LanguageCode == language)
-                        ?.FunctionName;
+                    .FirstOrDefault(languageDto => languageDto.LanguageCode == DefaultLanguage)
+                    ?.FunctionName;
                 }
             }
 
