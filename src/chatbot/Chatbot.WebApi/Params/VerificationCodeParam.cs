@@ -6,6 +6,8 @@
 
         public int MessengerType { get; set; }
 
+        public string CustName { get; set; }
+
         public string MessengerUsername { get; set; }
     }
 }

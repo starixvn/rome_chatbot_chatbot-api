@@ -20,7 +20,7 @@ namespace Chatbot.Client.Sample
 
             //var functions = settingService.GetFunctions(1).Result;
 
-            //var addUserResult = settingService.AddUser(1000, 3, "en-US", "starix_test1");
+            var addUserResult = settingService.AddUser(1176083, 0, "aaa", "en-US", "starix_test4");
             //var user = settingService.GetUser(1000, 3, "en-US");
             //var result = settingService.UpdateLanguage(402, "en-US");
             //var functions = settingService.GetFunctions(407, "en-US").Result;

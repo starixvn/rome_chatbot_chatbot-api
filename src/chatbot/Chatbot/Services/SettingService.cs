@@ -21,11 +21,11 @@
 
         Task UpdateLanguage(int userId, string language);
 
-        Task GenerateVerificationCode(int userId, Messenger messenger);
+        Task GenerateVerificationCode(int userId, string custName, Messenger messenger);
 
         Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger);
 
-        Task<AddingUserResult> AddUser(int custId, int subAccountId, string language, Messenger messenger);
+        Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, Messenger messenger);
 
         Task<IEnumerable<Function>> GetAllFunctions();
 
@@ -72,7 +72,7 @@
             this.chatbotConfigs = chatbotConfigs;
         }
 
-        public async Task GenerateVerificationCode(int userId, Messenger messenger)
+        public async Task GenerateVerificationCode(int userId, string custName, Messenger messenger)
         {
             ValidateInputParam(nameof(userId), userId);
             ValidateInputParam(nameof(messenger), messenger);
@@ -82,12 +82,13 @@
             var verificationCode = RandomSixDigitsNumber();
 
             await InsertMessengerWithVerificationCode(userId, messenger, verificationCode);
-            await SendVerificationCode(userId, messenger, verificationCode);
+            await SendVerificationCode(userId, custName, messenger, verificationCode);
         }
 
-        private async Task SendVerificationCode(int userId, Messenger messenger, string verificationCode)
+        private async Task SendVerificationCode(int userId, string custName, Messenger messenger, string verificationCode)
         {
             var message = messageBuilder.BuildVerificationCodeMessage(
+            	custName,
                 verificationCode, 
                 chatbotConfigs.VerificationCodeExpiredTimeInMinutes);
 
@@ -230,7 +231,7 @@
         /// <summary>
         /// Need more refactor here
         /// </summary>
-        public async Task<AddingUserResult> AddUser(int custId, int subAccountId, string language, Messenger messenger)
+        public async Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, Messenger messenger)
         {
             ValidateInputParam(nameof(custId), custId);
             ValidateInputParam(nameof(language), language);
@@ -246,7 +247,7 @@
                 return result;
             }
 
-            await GenerateVerificationCode(userId, messenger);
+            await GenerateVerificationCode(userId, custName, messenger);
 
             return AddingUserResult.CreateSuccessfulAddingUserResult(userId);
         }

@@ -24,6 +24,7 @@
             => await settingService.AddUser(
                 param.CustId,
                 param.SubAccountId,
+                param.CustName,
                 param.Language,
                 new Messenger(param.MessengerType, param.MessengerUsername));
 
@@ -56,6 +57,7 @@
         {
             await settingService.GenerateVerificationCode(
                                 userId,
+                                param.CustName,
                                 new Messenger(param.MessengerType, param.MessengerUsername));
 
             return Result.CreateSuccessfulResult();
