@@ -43,7 +43,7 @@
         private const string DefaultLanguage = "en-US";
         private const int AddAccountActionId = 100;
         private const int WrongVerificationCodeActionId = 101;
-        private const int VerificationCodeExpiredTimeInMinutes = 5;
+        private const int VerificationCodeExpiredTimeInMinutes = 3;
         private const string functionNameByLanguageCacheKey = "SettingServiceImpl.FunctionNameByLanguageCacheKey.{0}";
         private readonly CacheItemOptions cacheItemOptions = new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0));
         private readonly IDynamicRepository dynamicRepository;
@@ -87,7 +87,7 @@
 
         private async Task SendVerificationCode(int userId, Messenger messenger, string verificationCode)
         {
-            var message = messageBuilder.BuildVerificationCodeMessage(verificationCode);
+            var message = messageBuilder.BuildVerificationCodeMessage(verificationCode, VerificationCodeExpiredTimeInMinutes);
 
             await SendMessage(userId, messenger, message);
         }

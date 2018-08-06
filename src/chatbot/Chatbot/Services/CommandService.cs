@@ -7,6 +7,7 @@
     using Chatbot.Constants;
     using Microsoft.Extensions.Logging;
     using Models;
+    using Models.Dtos;
 
     public interface CommandService
     {
@@ -19,6 +20,7 @@
         private const int WinlossFunctionId = 2;
         private const int BalanceFunctionId = 3;
         private readonly ILogger<CommandServiceImpl> logger;
+        private readonly bool ReturnRawError = true;
 
         private static readonly Dictionary<int, ICommandHandler> commandHandlerTypes = new Dictionary<int, ICommandHandler>
         {
@@ -64,44 +66,66 @@
                 throw new InvalidOperationException($"user cannot be found for messenger {messengerUsername}");
             }
 
+            var messenger = new Messenger(messengerType, messengerUsername);
+
             try
             {
                 var userFuntions = await settingService.GetFunctions(messengerDto.UserId);
-                var messenger = new Messenger(messengerType, messengerUsername);
                 var commandFunction = userFuntions
                                         .FirstOrDefault(
                                             function => string.Compare(function.Command, command, true) == 0
                                             && function.Enabled);
 
                 await messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command);
-
-                if (commandFunction != null
-                    && commandHandlerTypes.ContainsKey(commandFunction.Id))
-                {
-                    await commandHandlerTypes[commandFunction.Id].RunCommand(
-                            user,
-                            messenger,
-                            new Dictionary<string, object>
-                            {
-                            { "command", command }
-                            });
-                }
-                else
-                {
-                    await SendNotRecognizedCommandMessage(user, messenger);
-                }
+                await RunCommand(command, user, messenger, commandFunction);
             }
             catch (Exception ex)
             {
-                this.logger.LogError(
-                    string.Join(
-                        "\r\n",
-                        "Command Service Exception",
-                        $"User: {user.Id}, CustId: {user.CustId}, SubAccId: {user.SubAccountId}, Language: {user.Language}",
-                        $"Messenger: {messengerDto.Username}, Type: {messengerDto.Type}",
-                        $"Command: {command}",
-                        ex.Message
-                    ));
+                await LogError(command, messengerDto, user, ex);
+            }
+        }
+
+        private async Task RunCommand(string command, User user, Messenger messenger, Function commandFunction)
+        {
+            if (commandFunction != null
+                                && commandHandlerTypes.ContainsKey(commandFunction.Id))
+            {
+                await commandHandlerTypes[commandFunction.Id].RunCommand(
+                        user,
+                        messenger,
+                        new Dictionary<string, object>
+                        {
+                            { "command", command }
+                        });
+            }
+            else
+            {
+                await SendNotRecognizedCommandMessage(user, messenger);
+            }
+        }
+
+        private async Task LogError(string command, MessengerDto messengerDto, User user, Exception ex)
+        {
+            var logMessage = string.Join(
+                                    "\r\n",
+                                    "Command Service Exception",
+                                    $"User: {user.Id}, CustId: {user.CustId}, SubAccId: {user.SubAccountId}, Language: {user.Language}",
+                                    $"Messenger: {messengerDto.Username}, Type: {messengerDto.Type}",
+                                    $"Command: {command}",
+                                    ex.ToString()
+                                );
+
+            logger.LogError(logMessage);
+
+            var messenger = new Messenger(messengerDto.Type, messengerDto.Username);
+
+            if (ReturnRawError)
+            {
+                await SendMessage(user, messenger, logMessage.Replace("\r\n", string.Empty));
+            }
+            else
+            {
+                await SendErrorMessage(user, messenger);
             }
         }
 
