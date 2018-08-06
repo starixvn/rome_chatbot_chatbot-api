@@ -13,8 +13,6 @@
 
         public List<Messenger> MessengerAccounts { get; set; }
 
-        public int InputWrongVerificationCodeTimes { get; set; }
-
         public List<Function> Functions { get; set; }
 
         public string Language { get; set; }

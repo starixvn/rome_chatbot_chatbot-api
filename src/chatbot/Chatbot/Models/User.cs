@@ -22,8 +22,6 @@
 
         public IEnumerable<Messenger> MessengerAccounts { get; set; }
 
-        public int InputWrongVerificationCodeTimes { get; set; }
-
         public IEnumerable<Function> Functions { get; set; }
 
         public string Language { get; private set; }

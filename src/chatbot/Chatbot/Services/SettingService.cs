@@ -135,12 +135,26 @@
             {
                 return user;
             }
-
-            user.MessengerAccounts = await dynamicRepository.FetchAsync<Messenger>(new GetMessengerByUserCriteria(user.Id));
-            user.InputWrongVerificationCodeTimes = await GetFailedCount(user.Id, user.MessengerAccounts.FirstOrDefault(msg => msg.IsVerifying));
+            
+            user.MessengerAccounts = await GetMessengers(user);
             user.Functions = await GetFunctions(user.Id, language);
 
             return user;
+        }
+
+        private async Task<IEnumerable<Messenger>> GetMessengers(User user)
+        {
+            var messengers = await dynamicRepository.FetchAsync<Messenger>(new GetMessengerByUserCriteria(user.Id));
+
+            foreach (var messenger in messengers)
+            {
+                if(messenger.IsVerifying)
+                {
+                    messenger.InputWrongVerificationCodeTimes = await GetFailedCount(user.Id, messenger);
+                }
+            }
+
+            return messengers;
         }
 
         public async Task<User> GetUser(int userId)

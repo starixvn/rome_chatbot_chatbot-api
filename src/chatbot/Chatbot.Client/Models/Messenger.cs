@@ -14,5 +14,7 @@
         public bool Enabled { get; set; }
 
         public bool IsVerifying { get; set; }
+
+        public int InputWrongVerificationCodeTimes { get; set; }
     }
 }
