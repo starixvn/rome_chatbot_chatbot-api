@@ -11,6 +11,8 @@
         string BuildNotRecognizedCommandMessage();
 
         string BuildWelcomeMessage();
+
+        string BuildErrorMessage();
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -24,6 +26,9 @@
 
             return SimpleJson.SerializeObject(data);
         }
+
+        public string BuildErrorMessage()
+            => "Oops...you are here because of a system error, please notify the administrators";
 
         public string BuildNotRecognizedCommandMessage()
             => "Your command is not recognized.";

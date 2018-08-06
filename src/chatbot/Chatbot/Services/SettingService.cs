@@ -237,7 +237,7 @@
 
         private async Task<AddingUserResult> VerifyMessengerAccount(int userId, Messenger messenger)
         {
-            if (await IsUserAddAccountOverMaxTimeInDay(userId, messenger.Type, messenger.Username))
+            if (await IsUserAddAccountOverMaxTimeInDay(userId, messenger.Type))
             {
                 return AddingUserResult.CreateIsOverMaxAddAccountTimesResult();
             }
@@ -281,10 +281,9 @@
 
         private async Task<bool> IsUserAddAccountOverMaxTimeInDay(
             int userId,
-            int messengerType,
-            string messengerUsername)
+            int messengerType)
         {
-            var addUserLogActions = await GetUserAction(userId, messengerType, messengerUsername, AddAccountActionId);
+            var addUserLogActions = await GetUserAction(userId, messengerType, string.Empty, AddAccountActionId);
             var numOfAddTime = addUserLogActions.Sum(action => action.CountTimes);
 
             return numOfAddTime > MaxAddActionTimes;
