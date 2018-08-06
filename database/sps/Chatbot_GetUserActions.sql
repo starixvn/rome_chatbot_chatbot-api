@@ -27,7 +27,7 @@ ALTER PROCEDURE [dbo].[Chatbot_GetUserActions]
 				@UserId				INT
 			,	@ActionId			INT
 			,	@MessengerType		TINYINT
-			,	@MessengerUsername	VARCHAR(50)			= NULL
+			,	@MessengerUsername	VARCHAR(50)			= ''
 			,	@Date				SMALLDATETIME			
 		
 AS
@@ -43,7 +43,7 @@ BEGIN
 	FROM	[dbo].[UserLogAction] WITH (NOLOCK)
 	WHERE	UserId = @UserId
 			AND MessengerType = @MessengerType
-			AND (@MessengerUsername = NULL OR MessengerUsername = @MessengerUsername)
+			AND (@MessengerUsername = '' OR MessengerUsername = @MessengerUsername)
 			AND ActionId = @ActionId
 			AND Date = @Date
 END
