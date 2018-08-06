@@ -137,6 +137,7 @@
             }
 
             user.MessengerAccounts = await dynamicRepository.FetchAsync<Messenger>(new GetMessengerByUserCriteria(user.Id));
+            user.InputWrongVerificationCodeTimes = await GetFailedCount(user.Id, user.MessengerAccounts.FirstOrDefault(msg => msg.IsVerifying));
             user.Functions = await GetFunctions(user.Id, language);
 
             return user;
@@ -382,9 +383,21 @@
             return new VerificationCodeResult(
                 result.Code,
                 result.Message,
-                failedAction != null
+                (await GetFailedCount(userId, messenger)));
+        }
+
+        private async Task<int> GetFailedCount(int userId, Messenger messenger)
+        {
+            if(userId == 0 || messenger == null)
+            {
+                return 0;
+            }
+
+            var failedAction = (await GetUserAction(userId, messenger.Type, messenger.Username, WrongVerificationCodeActionId)).FirstOrDefault();
+
+            return failedAction != null
                     ? failedAction.CountTimes
-                    : 0);
+                    : 0;
         }
 
         private async Task IncreaseUserActionCount(
