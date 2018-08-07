@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Chatbot.Configurations;
     using Chatbot.Constants;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
@@ -39,11 +40,7 @@
 
     public class SettingServiceImpl : SettingService
     {
-        private const int MaxAddActionTimes = 10;
         private const string DefaultLanguage = "en-US";
-        private const int AddAccountActionId = 100;
-        private const int WrongVerificationCodeActionId = 101;
-        private const int VerificationCodeExpiredTimeInMinutes = 3;
         private const string functionNameByLanguageCacheKey = "SettingServiceImpl.FunctionNameByLanguageCacheKey.{0}";
         private readonly CacheItemOptions cacheItemOptions = new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0));
         private readonly IDynamicRepository dynamicRepository;
@@ -53,6 +50,7 @@
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageLogger messageLogger;
+        private readonly IChatbotConfigs chatbotConfigs;
 
         public SettingServiceImpl(
             IDynamicRepository dynamicRepository,
@@ -60,6 +58,7 @@
             IMessageBuilder messageBuilder,
             ICacheService cacheService,
             IMessageLogger messageLogger,
+            IChatbotConfigs chatbotConfigs,
             Func<string> randomNumberFunc = null,
             Func<DateTime> getCurrentDateTimeFunc = null)
         {
@@ -70,6 +69,7 @@
             this.messageSender = messageSender;
             this.messageBuilder = messageBuilder;
             this.messageLogger = messageLogger;
+            this.chatbotConfigs = chatbotConfigs;
         }
 
         public async Task GenerateVerificationCode(int userId, Messenger messenger)
@@ -87,7 +87,9 @@
 
         private async Task SendVerificationCode(int userId, Messenger messenger, string verificationCode)
         {
-            var message = messageBuilder.BuildVerificationCodeMessage(verificationCode, VerificationCodeExpiredTimeInMinutes);
+            var message = messageBuilder.BuildVerificationCodeMessage(
+                verificationCode, 
+                chatbotConfigs.VerificationCodeExpiredTimeInMinutes);
 
             await SendMessage(userId, messenger, message);
         }
@@ -115,10 +117,10 @@
             await dynamicRepository.ExecuteAsync(command);
         }
 
-        private string RandomSixDigitsNumber()
+        private static string RandomSixDigitsNumber()
             => new Random().Next(0, 999999).ToString("D6");
 
-        private DateTime GetCurrentDateTime()
+        private static DateTime GetCurrentDateTime()
             => DateTime.Now;
 
         public async Task<IEnumerable<Function>> GetAllFunctions()
@@ -183,7 +185,6 @@
 
         private async Task<string> GetFunctionName(int functionId, string language)
         {
-            var data = GetFunctionLanguage(functionId).Result;
             var functionLanguages = await cacheService.GetOrSetAsync(
                         string.Format(functionNameByLanguageCacheKey, functionId),
                         () => GetFunctionLanguage(functionId).Result,
@@ -289,7 +290,7 @@
             var command = new InsertUserCommand(custId, subAccountId, language);
 
             await dynamicRepository.ExecuteAsync(command);
-            await IncreaseUserActionCount(command.UserId, AddAccountActionId, messenger.Type, messenger.Username);
+            await IncreaseUserActionCount(command.UserId, chatbotConfigs.AddAccountActionId, messenger.Type, messenger.Username);
 
             return command.UserId;
         }
@@ -298,10 +299,10 @@
             int userId,
             int messengerType)
         {
-            var addUserLogActions = await GetUserAction(userId, messengerType, string.Empty, AddAccountActionId);
+            var addUserLogActions = await GetUserAction(userId, messengerType, string.Empty, chatbotConfigs.AddAccountActionId);
             var numOfAddTime = addUserLogActions.Sum(action => action.CountTimes);
 
-            return numOfAddTime > MaxAddActionTimes;
+            return numOfAddTime > chatbotConfigs.MaxAddActionTimes;
         }
 
         private async Task<IEnumerable<UserActionDto>> GetUserAction(
@@ -347,7 +348,7 @@
             }
 
             await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true);
-            await ResetUserActionCount(userId, WrongVerificationCodeActionId, messenger.Type, messenger.Username);
+            await ResetUserActionCount(userId, chatbotConfigs.WrongVerificationCodeActionId, messenger.Type, messenger.Username);
             await SendWelcomeMessage(userId, messenger);
 
             return VerificationCodeResult.CreateVerificationSuccessfulResult();
@@ -364,7 +365,7 @@
             {
                 result = VerificationCodeResult.CreateWrongVerificationCodeResult();
             }
-            else if (messengerDto.GeneratedVerificationCodeTime.AddMinutes(VerificationCodeExpiredTimeInMinutes) < getCurrentDateTimeFunc())
+            else if (messengerDto.GeneratedVerificationCodeTime.AddMinutes(chatbotConfigs.VerificationCodeExpiredTimeInMinutes) < getCurrentDateTimeFunc())
             {
                 result = VerificationCodeResult.CreateVerificationCodeExpiredResult();
             }
@@ -388,11 +389,9 @@
         {
             await IncreaseUserActionCount(
                                     userId,
-                                    WrongVerificationCodeActionId,
+                                    chatbotConfigs.WrongVerificationCodeActionId,
                                     messenger.Type,
                                     messenger.Username);
-
-            var failedAction = (await GetUserAction(userId, messenger.Type, messenger.Username, WrongVerificationCodeActionId)).FirstOrDefault();
 
             return new VerificationCodeResult(
                 result.Code,
@@ -407,7 +406,7 @@
                 return 0;
             }
 
-            var failedAction = (await GetUserAction(userId, messenger.Type, messenger.Username, WrongVerificationCodeActionId)).FirstOrDefault();
+            var failedAction = (await GetUserAction(userId, messenger.Type, messenger.Username, chatbotConfigs.WrongVerificationCodeActionId)).FirstOrDefault();
 
             return failedAction != null
                     ? failedAction.CountTimes

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Chatbot.Configurations;
     using Chatbot.Constants;
     using Microsoft.Extensions.Logging;
     using Models;
@@ -16,36 +17,30 @@
 
     public class CommandServiceImpl : CommandService
     {
-        private const int OutstandingFunctionId = 1;
-        private const int WinlossFunctionId = 2;
-        private const int BalanceFunctionId = 3;
-        private readonly ILogger<CommandServiceImpl> logger;
-        private readonly bool ReturnRawError = true;
-
-        private static readonly Dictionary<int, ICommandHandler> commandHandlerTypes = new Dictionary<int, ICommandHandler>
-        {
-            { OutstandingFunctionId, new OutstandingCommandHandler() },
-            { WinlossFunctionId, new WinLossCommandHandler() },
-            { BalanceFunctionId, new BalanceInfoCommandHandler() }
-        };
-
+        private readonly Dictionary<int, ICommandHandler> commandHandlerTypes;
         private readonly SettingService settingService;
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageLogger messageLogger;
+        private readonly IChatbotConfigs chatbotConfigs;
+        private readonly ILogger<CommandServiceImpl> logger;
 
         public CommandServiceImpl(
             SettingService settingService,
             IMessageSender messageSender,
             IMessageBuilder messageBuilder,
             IMessageLogger messageLogger,
-            ILogger<CommandServiceImpl> logger)
+            ILogger<CommandServiceImpl> logger,
+            IChatbotConfigs chatbotConfigs,
+            Dictionary<int, ICommandHandler> commandHandlerTypes)
         {
             this.settingService = settingService;
             this.messageSender = messageSender;
             this.messageBuilder = messageBuilder;
             this.messageLogger = messageLogger;
             this.logger = logger;
+            this.chatbotConfigs = chatbotConfigs;
+            this.commandHandlerTypes = commandHandlerTypes;
         }
 
         public async Task Execute(string command, int messengerType, string messengerUsername)
@@ -85,7 +80,11 @@
             }
         }
 
-        private async Task RunCommand(string command, User user, Messenger messenger, Function commandFunction)
+        private async Task RunCommand(
+            string command, 
+            User user, 
+            Messenger messenger, 
+            Function commandFunction)
         {
             if (commandFunction != null
                                 && commandHandlerTypes.ContainsKey(commandFunction.Id))
@@ -112,14 +111,13 @@
                                     $"User: {user.Id}, CustId: {user.CustId}, SubAccId: {user.SubAccountId}, Language: {user.Language}",
                                     $"Messenger: {messengerDto.Username}, Type: {messengerDto.Type}",
                                     $"Command: {command}",
-                                    ex.ToString()
-                                );
+                                    ex.ToString());
 
             logger.LogError(logMessage);
 
             var messenger = new Messenger(messengerDto.Type, messengerDto.Username);
 
-            if (ReturnRawError)
+            if (chatbotConfigs.ReturnRawErrorToMessenger)
             {
                 await SendMessage(user, messenger, logMessage.Replace("\r\n", string.Empty));
             }

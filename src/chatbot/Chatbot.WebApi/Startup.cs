@@ -1,14 +1,14 @@
 ﻿namespace Chatbot.WebApi
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
+    using Chatbot.Configurations;
     using Chatbot.Services;
     using Chatbot.WebApi.Middlewares;
     using Fanex.Caching;
     using Fanex.Data;
     using Fanex.Data.Repository;
-    using Messenger.Client;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -29,6 +29,8 @@
         {
             services.AddMvc();
 
+            var chatbotConfigs = new ChatbotConfigs(Configuration);
+
             services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
             services.AddSingleton<SettingService, SettingServiceImpl>();
             services.AddSingleton<IDynamicRepository, DynamicRepository>();
@@ -37,6 +39,14 @@
             services.AddSingleton<IMessageLogger, MessageLogger>();
             services.AddSingleton<IMessageSender, MessageSender>();
             services.AddSingleton<CommandService, CommandServiceImpl>();
+            services.AddSingleton(chatbotConfigs);
+            services.AddSingleton<IChatbotConfigs>(new ChatbotConfigs(Configuration));
+            services.AddSingleton(new Dictionary<int, ICommandHandler>
+            {
+                { chatbotConfigs.OutstandingFunctionId, new OutstandingCommandHandler() },
+                { chatbotConfigs.WinlossFunctionId, new WinLossCommandHandler() },
+                { chatbotConfigs.BalanceFunctionId, new BalanceInfoCommandHandler() }
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -55,11 +65,17 @@
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Chatbot API");
+                var basePath = Environment.GetEnvironmentVariable("ASPNETCORE_APPL_PATH");
+                if (basePath == null)
+                {
+                    basePath = "/";
+                }
+
+                c.SwaggerEndpoint($"{basePath}swagger/v1/swagger.json", "Chatbot API Docs");
             });
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
