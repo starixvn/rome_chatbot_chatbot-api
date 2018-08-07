@@ -160,14 +160,14 @@
         {
             ValidateInputParam(nameof(message), message);
 
-            var result = await restClientHelper.ExecutePutAsync<Result>(
+            var result = await restClientHelper.ExecutePostAsync<Result>(
                 $"bot/set_auto_reply/{botId}",
                 new Dictionary<string, object>
                 {
-                    { "message", message },
+                    { "auto_reply_message", message },
                     { "enable", enabled ? 1 : 0 },
-                    { "start_time", DateTimeHelper.DateTimeToUnixTimestamp(startTime) },
-                    { "duration", (endTime - startTime).TotalMilliseconds },
+                    { "start_time",  (new DateTimeOffset(startTime)).ToUnixTimeMilliseconds() },
+                    { "duration", (endTime - startTime).TotalMinutes },
                     { "duration_type", 0 }
                 });
 
