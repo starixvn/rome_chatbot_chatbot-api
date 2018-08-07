@@ -69,13 +69,7 @@
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                var basePath = Environment.GetEnvironmentVariable("ASPNETCORE_APPL_PATH");
-                if (basePath == null)
-                {
-                    basePath = "/";
-                }
-
-                c.SwaggerEndpoint($"{basePath}swagger/v1/swagger.json", "Chatbot API Docs");
+                c.SwaggerEndpoint($"../swagger/v1/swagger.json", "Chatbot API Docs");
             });
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
