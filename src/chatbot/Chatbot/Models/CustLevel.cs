@@ -1,0 +1,75 @@
+﻿namespace Chatbot.Models
+{
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using Enumerations;
+
+    [Serializable]
+    public class CustLevel : Enumeration
+    {
+        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Reviewed!")]
+        public static readonly CustLevel Super = new CustLevel(4, "Super");
+
+        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Reviewed!")]
+        public static readonly CustLevel Master = new CustLevel(3, "Master");
+
+        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Reviewed!")]
+        public static readonly CustLevel Agent = new CustLevel(2, "Agent");
+
+        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Reviewed!")]
+        public static readonly CustLevel Member = new CustLevel(1, "Member");
+
+        public CustLevel()
+        {
+        }
+
+        private CustLevel(byte value, string displayName)
+            : base(value, displayName)
+        {
+        }
+
+        public bool IsAgentLevel() => this == Agent;
+
+        public bool IsNotAgentLevel() => !IsAgentLevel();
+
+        public bool IsMasterLevel() => this == Master;
+
+        public bool IsNotMasterLevel() => !IsMasterLevel();
+
+        public bool IsSuperLevel() => this == Super;
+
+        public bool IsMasterOrSuperLevel() => IsMasterLevel() || IsSuperLevel();
+
+        public bool IsNotSuperLevel() => !IsSuperLevel();
+
+        public bool IsMemberLevel() => this == Member;
+
+        public bool IsDirectUplineOf(byte downlineLevelValue)
+            => GapBetweenTwoLevels(Value, downlineLevelValue) == 1;
+
+        public bool IsDirectUplineOf(Enumeration downlineLevel)
+            => (downlineLevel != null) && IsDirectUplineOf(downlineLevel.Value);
+
+        public bool IsUplineOf(byte downlineLevelValue)
+            => GapBetweenTwoLevels(Value, downlineLevelValue) >= 1;
+
+        public bool IsUplineOf(Enumeration downlineLevel)
+            => (downlineLevel != null) && IsUplineOf(downlineLevel.Value);
+
+        public bool IsEqualOrUplineOf(Enumeration custLevel)
+           => this.Value == custLevel.Value || IsUplineOf(custLevel.Value);
+
+        public CustLevel GetDirectDownLineLevel() => FromValue<CustLevel>((byte)(Value - 1));
+
+        public bool IsDirectDownlineOf(Enumeration uplineLevel)
+            => (uplineLevel != null) && GapBetweenTwoLevels(uplineLevel.Value, Value) == 1;
+
+        public bool Is(Enumeration level)
+            => (level != null) && this == level;
+
+        public bool IsNot(Enumeration level) => !Is(level);
+
+        private static int GapBetweenTwoLevels(byte uplineLevelValue, byte downlineLevelValue)
+            => uplineLevelValue - downlineLevelValue;
+    }
+}

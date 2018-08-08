@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Chatbot.Configurations;
     using Chatbot.Constants;
+    using Chatbot.Params;
     using Microsoft.Extensions.Logging;
     using Models;
     using Models.Dtos;
@@ -17,12 +18,12 @@
 
     public class CommandServiceImpl : CommandService
     {
-        private readonly Dictionary<int, ICommandHandler> commandHandlerTypes;
         private readonly SettingService settingService;
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageLogger messageLogger;
         private readonly IChatbotConfigs chatbotConfigs;
+        private readonly ICommandHandler commandHandler;
         private readonly ILogger<CommandServiceImpl> logger;
 
         public CommandServiceImpl(
@@ -32,15 +33,15 @@
             IMessageLogger messageLogger,
             ILogger<CommandServiceImpl> logger,
             IChatbotConfigs chatbotConfigs,
-            Dictionary<int, ICommandHandler> commandHandlerTypes)
+            ICommandHandler commandHandler)
         {
             this.settingService = settingService;
             this.messageSender = messageSender;
             this.messageBuilder = messageBuilder;
-            this.messageLogger = messageLogger;
             this.logger = logger;
             this.chatbotConfigs = chatbotConfigs;
-            this.commandHandlerTypes = commandHandlerTypes;
+            this.commandHandler = commandHandler;
+            this.messageLogger = messageLogger;
         }
 
         public async Task Execute(string command, int messengerType, string messengerUsername)
@@ -54,12 +55,8 @@
                 throw new InvalidOperationException($"messenger {messengerUsername} is not verified or enabled");
             }
 
-            var user = await settingService.GetUser(messengerDto.UserId);
-
-            if (user == null)
-            {
-                throw new InvalidOperationException($"user cannot be found for messenger {messengerUsername}");
-            }
+            var user = await settingService.GetUser(messengerDto.UserId)
+                ?? throw new InvalidOperationException($"user cannot be found for messenger {messengerUsername}");
 
             var messenger = new Messenger(messengerType, messengerUsername);
 
@@ -86,16 +83,18 @@
             Messenger messenger, 
             Function commandFunction)
         {
-            if (commandFunction != null
-                                && commandHandlerTypes.ContainsKey(commandFunction.Id))
+            if (commandFunction != null)
             {
-                await commandHandlerTypes[commandFunction.Id].RunCommand(
+                var commandParam = new CommandParam(
                         user,
+                        commandFunction,
                         messenger,
                         new Dictionary<string, object>
                         {
                             { "command", command }
                         });
+
+                await commandHandler.RunCommand(commandParam);
             }
             else
             {
@@ -119,7 +118,7 @@
 
             if (chatbotConfigs.ReturnRawErrorToMessenger)
             {
-                await SendMessage(user, messenger, logMessage.Replace("\r\n", string.Empty));
+                await messageSender.SendMessage(user.Id, messenger, logMessage.Replace("\r\n", string.Empty));
             }
             else
             {
@@ -129,22 +128,16 @@
 
         protected async Task SendNotRecognizedCommandMessage(User user, Messenger messenger)
         {
-            var message = messageBuilder.BuildNotRecognizedCommandMessage();
+            var message = messageBuilder.BuildNotRecognizedCommandMessage(user.Language);
 
-            await SendMessage(user, messenger, message);
+            await messageSender.SendMessage(user.Id, messenger, message);
         }
 
         protected async Task SendErrorMessage(User user, Messenger messenger)
         {
-            var message = messageBuilder.BuildErrorMessage();
+            var message = messageBuilder.BuildErrorMessage(user.Language);
 
-            await SendMessage(user, messenger, message);
-        }
-
-        private async Task SendMessage(User user, Messenger messenger, string message)
-        {
-            await messageSender.SendMessage(messenger, message);
-            await messageLogger.LogMessage(CommonId.BotUserId, user.Id, messenger, message);
+            await messageSender.SendMessage(user.Id, messenger, message);
         }
     }
 }

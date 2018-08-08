@@ -26,6 +26,8 @@
         Task<Result> Unsubscribe(int userId, int messengerType, string messengerUsername);
 
         Task<Messenger> GetMessenger(int messengerType, string messengerUsername);
+
+        Task<List<User>> GetUsersByFunction(int functionId, int environment);
     }
 
     public class SettingServiceImpl : ServiceBase, SettingService
@@ -135,6 +137,13 @@
             ValidateInputParam(nameof(messengerUsername), messengerUsername);
 
             return restClient.ExecutePostAsync<Messenger>($"setting/messenger/{messengerType}/{messengerUsername}");
+        }
+
+        public Task<List<User>> GetUsersByFunction(int functionId, int environment)
+        {
+            ValidateInputParam(nameof(functionId), functionId);
+
+            return restClient.ExecuteGetAsync<List<User>>($"setting/users/function/{functionId}/{environment}");
         }
     }
 }

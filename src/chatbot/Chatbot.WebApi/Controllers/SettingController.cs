@@ -81,5 +81,9 @@
         [Route("messenger/{messengerType}/{messengerUsername}"), HttpGet]
         public async Task<MessengerDto> GetMessenger(int messengerType, string messengerUsername)
             => await settingService.GetMessenger(messengerType, messengerUsername);
+
+        [Route("users/function/{functionId}/{environment}"), HttpGet]
+        public async Task<IEnumerable<User>> GetUsersByFunction(int functionId, int environment)
+            => await settingService.GetUsersByFunction(functionId, environment);
     }
 }

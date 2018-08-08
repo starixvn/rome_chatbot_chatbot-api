@@ -2,9 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using Chatbot.Configurations;
+    using Chatbot.Constants;
     using Chatbot.Services;
+    using Chatbot.Templates;
     using Chatbot.WebApi.Middlewares;
     using Fanex.Caching;
     using Fanex.Data;
@@ -41,12 +44,25 @@
             services.AddSingleton<CommandService, CommandServiceImpl>();
             services.AddSingleton(chatbotConfigs);
             services.AddSingleton<IChatbotConfigs>(new ChatbotConfigs(Configuration));
-            services.AddSingleton(new Dictionary<int, ICommandHandler>
-            {
-                { chatbotConfigs.OutstandingFunctionId, new OutstandingCommandHandler() },
-                { chatbotConfigs.WinlossFunctionId, new WinLossCommandHandler() },
-                { chatbotConfigs.BalanceFunctionId, new BalanceInfoCommandHandler() }
-            });
+            services.AddSingleton<ICommandHandler, CommandHandler>();
+
+            services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate>());
+            services.AddSingleton<IDictionary<int, IMessengerFormatter>>(
+                new Dictionary<int, IMessengerFormatter>
+                {
+                    { MessengerType.Letstalk, new LetstalkFormatter() }
+                });
+            services.AddSingleton<IDictionary<string, CultureInfo>>(
+                new Dictionary<string, CultureInfo>
+                {
+                    { "en-US", CultureInfo.CreateSpecificCulture("en-US") },
+                    { "vi-VN", CultureInfo.CreateSpecificCulture("vi-VN") },
+                    { "th-TH", CultureInfo.CreateSpecificCulture("th-TH") },
+                    { "zh-CN", CultureInfo.CreateSpecificCulture("zh-CN") },
+                    { "zh-TW", CultureInfo.CreateSpecificCulture("zh-TW") },
+                    { "ja-JP", CultureInfo.CreateSpecificCulture("ja-JP") },
+                    { "ko-KR", CultureInfo.CreateSpecificCulture("ko-KR") }
+                });
 
             services.AddSwaggerGen(c =>
             {

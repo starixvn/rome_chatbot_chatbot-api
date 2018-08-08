@@ -42,7 +42,7 @@
         public override string GetSettingKey() => "InsertMessage";
 
         public override bool IsValid()
-            => (Sender > 0 || Receiver > 0)
+            => (Sender != 0 || Receiver != 0)
                 && !string.IsNullOrWhiteSpace(Message);
     }
 }

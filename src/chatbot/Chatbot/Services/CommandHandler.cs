@@ -4,114 +4,75 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Services;
+    using Chatbot.Configurations;
     using Chatbot.Constants;
-    using Chatbot.Models;
+    using Chatbot.Params;
 
     public interface ICommandHandler
     {
-        Task RunCommand(User user, Messenger messenger, IDictionary<string, object> parameters = null);
+        Task RunCommand(CommandParam param);
     }
 
-    public abstract class CommandBaseHandler
+    public class CommandHandler : ICommandHandler
     {
-        private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
-        private readonly IMessageLogger messageLogger;
+        private readonly IChatbotConfigs chatbotConfigs;
+        private readonly IMessageSender messageSender;
+        private readonly IDictionary<int, Func<CommandParam, Task<object>>> getDataHanlders;
 
-        protected CommandBaseHandler(
-            IMessageSender messageSender,
+        public CommandHandler(
             IMessageBuilder messageBuilder,
-            IMessageLogger messageLogger)
+            IChatbotConfigs chatbotConfigs,
+            IMessageSender messageSender,
+            IDictionary<int, Func<CommandParam, Task<object>>> getDataHanlders = null)
         {
-            this.messageBuilder = messageBuilder ?? new MessageBuilder();
-            this.messageLogger = messageLogger ?? new MessageLogger();
-            this.messageSender = messageSender ?? new MessageSender(new MessengerFactoryImpl());
+            this.messageBuilder = messageBuilder;
+            this.messageSender = messageSender;
+            this.chatbotConfigs = chatbotConfigs;
+            this.getDataHanlders = getDataHanlders ?? new Dictionary<int, Func<CommandParam, Task<object>>>
+            {
+                { chatbotConfigs.OutstandingFunctionId, GetOutstanding },
+                { chatbotConfigs.WinlossFunctionId, GetWinLoss },
+                { chatbotConfigs.BalanceFunctionId, GetBalanceInfo }
+            };
         }
 
-        protected async Task Handle(User user, Messenger messenger, object data)
+        private async Task<object> GetOutstanding(CommandParam param)
+            => await Task.FromResult(new Dictionary<string, object>
+            {
+                { "Outstanding", (decimal)45444545 }
+            }); 
+            //await (new ReportServiceImpl()).GetOutstandingAsync(param.User.CustId);
+
+        private async Task<object> GetWinLoss(CommandParam param)
+            => await (new ReportServiceImpl()).GetWinLossAsync(param.User.CustId, DateTime.Now);
+
+        private async Task<object> GetBalanceInfo(CommandParam param)
+            => await (new ReportServiceImpl()).GetBalanceInfoAsync(param.User.CustId);
+
+        public async Task RunCommand(CommandParam param)
         {
-            var message = messageBuilder.BuildCommandResultMessage(data);
+            // Check Params
 
-            await messageSender.SendMessage(messenger, message);
-            await messageLogger.LogMessage(CommonId.BotUserId, user.Id, messenger, message);
-        }
-    }
+            if (!getDataHanlders.ContainsKey(param.Function.Id))
+            {
+                throw new InvalidOperationException($"Cannot find get data function for function: {param.Function.Id}-{param.Function.Name}");
+            }
 
-    public class WinLossCommandHandler : CommandBaseHandler, ICommandHandler
-    {
-        private readonly ReportService reportService;
+            var data = await getDataHanlders[param.Function.Id](param);
 
-        public WinLossCommandHandler(
-            ReportService reportService = null,
-            IMessageSender messageSender = null,
-            IMessageBuilder messageBuilder = null,
-            IMessageLogger messageLogger = null)
-            : base(
-                    messageSender,
-                    messageBuilder,
-                    messageLogger
-                  )
-        {
-            this.reportService = reportService ?? new ReportServiceImpl();
-        }
-
-        public async Task RunCommand(User user, Messenger messenger, IDictionary<string, object> parameters = null)
-        {
-            var winloss = await reportService.GetWinLossAsync(user.CustId, DateTime.Now);
-
-            await Handle(user, messenger, winloss);
-        }
-    }
-
-    public class BalanceInfoCommandHandler : CommandBaseHandler, ICommandHandler
-    {
-        private readonly ReportService reportService;
-
-        public BalanceInfoCommandHandler(
-            ReportService reportService = null,
-            IMessageSender messageSender = null,
-            IMessageBuilder messageBuilder = null,
-            IMessageLogger messageLogger = null)
-            : base(
-                    messageSender,
-                    messageBuilder,
-                    messageLogger
-                  )
-        {
-            this.reportService = reportService ?? new ReportServiceImpl();
+            await Handle(param, data);
         }
 
-        public async Task RunCommand(User user, Messenger messenger, IDictionary<string, object> parameters = null)
+        private async Task Handle(CommandParam param, object data)
         {
-            var balanceInfo = await reportService.GetBalanceInfoAsync(user.CustId);
+            var message = messageBuilder.BuildCommandResultMessage(
+                param.User.Language,
+                param.Function.Id,
+                param.Messenger.Type,
+                data);
 
-            await Handle(user, messenger, balanceInfo);
-        }
-    }
-
-    public class OutstandingCommandHandler : CommandBaseHandler, ICommandHandler
-    {
-        private readonly ReportService reportService;
-
-        public OutstandingCommandHandler(
-            ReportService reportService = null,
-            IMessageSender messageSender = null,
-            IMessageBuilder messageBuilder = null,
-            IMessageLogger messageLogger = null)
-            : base(
-                    messageSender,
-                    messageBuilder,
-                    messageLogger
-                  )
-        {
-            this.reportService = reportService ?? new ReportServiceImpl();
-        }
-
-        public async Task RunCommand(User user, Messenger messenger, IDictionary<string, object> parameters = null)
-        {
-            var outstanding = await reportService.GetOutstandingAsync(user.CustId);
-
-            await Handle(user, messenger, outstanding);
+            await messageSender.SendMessage(param.User.Id, param.Messenger, message);
         }
     }
 }

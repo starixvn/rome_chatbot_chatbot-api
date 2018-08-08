@@ -1,0 +1,73 @@
+﻿namespace Chatbot.Templates
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using Chatbot.AppResources;
+    using Extensions;
+
+    public interface IBodyTemplate
+    {
+        string ToString(object data, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter);
+    }
+
+    public class BodyTemplate : IBodyTemplate
+    {
+        public string ToString(object data, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
+        {
+            var keyValues = Parse<Dictionary<string, object>>(data);
+            var textContainer = new List<string>();
+
+            foreach (var keyValue in keyValues)
+            {
+                if (keyValue.Value != null)
+                {
+                    textContainer.Add($"{GetResource(keyValue.Key, cultureInfo)}: {GetFormattedValue(keyValue.Value)}");
+                }
+            }
+
+            return string.Join(messengerFormatter.NewLine(), textContainer);
+        }
+
+        protected string GetFormattedValue(object value)
+        {
+            if (value is string)
+            {
+                return value as string;
+            }
+
+            if (value is decimal)
+            {
+                return ((decimal)value).ToFormattedNumber();
+            }
+
+            if (value is decimal?)
+            {
+                return ((decimal?)value).Value.ToFormattedNumber();
+            }
+
+            return value.ToString();
+        }
+
+        protected static T Parse<T>(object data)
+            where T : class
+        {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
+            var model = data as T;
+
+            if (model == null)
+            {
+                throw new InvalidOperationException($"Cannot parse {typeof(T)} model");
+            }
+
+            return model;
+        }
+
+        protected virtual string GetResource(string key, CultureInfo cultureInfo)
+            => Languages.ResourceManager.GetString(key, cultureInfo);
+    }
+}

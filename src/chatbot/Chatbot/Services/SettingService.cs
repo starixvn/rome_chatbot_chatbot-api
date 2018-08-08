@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Chatbot.Configurations;
-    using Chatbot.Constants;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
     using Chatbot.Params.Db.Commands;
@@ -36,6 +35,10 @@
         Task UpdateMessengerStatus(int userId, int messengerType, string messengerUsername, bool enabled);
 
         Task<MessengerDto> GetMessenger(int messengerType, string messengerUsername);
+
+        Task<IEnumerable<User>> GetUsersByFunction(int functionId, int environment);
+
+        Task<IEnumerable<Messenger>> GetMessengers(int userId, bool isEnabledOnly = false);
     }
 
     public class SettingServiceImpl : SettingService
@@ -80,32 +83,28 @@
             ValidateInputParam("Messenger Type", messenger.Type);
 
             var verificationCode = RandomSixDigitsNumber();
+            var user = await GetUser(userId);
 
             await InsertMessengerWithVerificationCode(userId, messenger, verificationCode);
-            await SendVerificationCode(userId, custName, messenger, verificationCode);
+            await SendVerificationCode(user, custName, messenger, verificationCode);
         }
 
-        private async Task SendVerificationCode(int userId, string custName, Messenger messenger, string verificationCode)
+        private async Task SendVerificationCode(User user, string custName, Messenger messenger, string verificationCode)
         {
             var message = messageBuilder.BuildVerificationCodeMessage(
-            	custName,
-                verificationCode, 
+                custName,
+                user.Language,
+                verificationCode,
                 chatbotConfigs.VerificationCodeExpiredTimeInMinutes);
 
-            await SendMessage(userId, messenger, message);
+            await messageSender.SendMessage(user.Id, messenger, message);
         }
 
-        private async Task SendWelcomeMessage(int userId, Messenger messenger)
+        private async Task SendWelcomeMessage(User user, Messenger messenger)
         {
-            var message = messageBuilder.BuildWelcomeMessage();
+            var message = messageBuilder.BuildWelcomeMessage(user.Language);
 
-            await SendMessage(userId, messenger, message);
-        }
-
-        private async Task SendMessage(int userId, Messenger messenger, string message)
-        {
-            await messageSender.SendMessage(messenger, message);
-            await messageLogger.LogMessage(CommonId.BotUserId, userId, messenger, message);
+            await messageSender.SendMessage(user.Id, messenger, message);
         }
 
         private async Task InsertMessengerWithVerificationCode(
@@ -138,22 +137,27 @@
             {
                 return user;
             }
-            
-            user.MessengerAccounts = await GetMessengers(user);
+
+            user.MessengerAccounts = await GetMessengers(user.Id);
             user.Functions = await GetFunctions(user.Id, language);
 
             return user;
         }
 
-        private async Task<IEnumerable<Messenger>> GetMessengers(User user)
+        public async Task<IEnumerable<Messenger>> GetMessengers(int userId, bool isEnabledOnly = false)
         {
-            var messengers = await dynamicRepository.FetchAsync<Messenger>(new GetMessengerByUserCriteria(user.Id));
+            var messengers = await dynamicRepository.FetchAsync<Messenger>(new GetMessengerByUserCriteria(userId));
+
+            if (isEnabledOnly)
+            {
+                return messengers.Where(messenger => messenger.Enabled);
+            }
 
             foreach (var messenger in messengers)
             {
-                if(messenger.IsVerifying)
+                if (messenger.IsVerifying)
                 {
-                    messenger.InputWrongVerificationCodeTimes = await GetFailedCount(user.Id, messenger);
+                    messenger.InputWrongVerificationCodeTimes = await GetFailedCount(userId, messenger);
                 }
             }
 
@@ -348,9 +352,11 @@
                 return verificationResult;
             }
 
+            var user = await GetUser(userId);
+
             await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true);
             await ResetUserActionCount(userId, chatbotConfigs.WrongVerificationCodeActionId, messenger.Type, messenger.Username);
-            await SendWelcomeMessage(userId, messenger);
+            await SendWelcomeMessage(user, messenger);
 
             return VerificationCodeResult.CreateVerificationSuccessfulResult();
         }
@@ -384,7 +390,7 @@
         }
 
         private async Task<VerificationCodeResult> LogVerificationCodeFailedAction(
-            int userId, 
+            int userId,
             Messenger messenger,
             VerificationCodeResult result)
         {
@@ -402,7 +408,7 @@
 
         private async Task<int> GetFailedCount(int userId, Messenger messenger)
         {
-            if(userId == 0 || messenger == null)
+            if (userId == 0 || messenger == null)
             {
                 return 0;
             }
@@ -473,6 +479,15 @@
             var messenger = await dynamicRepository.GetAsync<MessengerDto>(criteria);
 
             return messenger;
+        }
+
+        public async Task<IEnumerable<User>> GetUsersByFunction(int functionId, int environment)
+        {
+            var criteria = new GetUsersByFunctionCriteria(functionId, environment);
+
+            var users = await dynamicRepository.FetchAsync<User>(criteria);
+
+            return users;
         }
     }
 }

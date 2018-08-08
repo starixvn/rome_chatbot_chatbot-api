@@ -82,6 +82,7 @@
             payload.Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             payload.HashType = AESEncryptionMode;
             payload.From = BusinessAccountType;
+            //payload.DueDate = DateTimeOffset.Now.AddSeconds(10).ToUnixTimeMilliseconds();
             payload.Type = MessageType.Text;
             payload.Id = 100;
             payload.Receiver = accountIds.ElementAt(0);

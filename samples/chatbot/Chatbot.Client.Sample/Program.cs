@@ -32,9 +32,13 @@ namespace Chatbot.Client.Sample
             //{
             //    firstFunction
             //});
+            var messageService = new MessageServiceImpl();
 
+            //messageService.SendMessage(407, "from app");
+
+            var functions = settingService.GetUsersByFunction(1, 0).Result;
             //settingService.GenerateVerificationCode(1000, "starix_test1");
-            settingService.VerifyVerificationCode(414, "34343", "starix_test1");
+            //settingService.VerifyVerificationCode(414, "34343", "starix_test1");
             //settingService.VerifyVerificationCode(userId, "346717", messengerUsername);
 
             //settingService.AddUser(1, 2, "4", "5");
