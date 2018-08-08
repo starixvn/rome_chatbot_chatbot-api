@@ -9,6 +9,8 @@
     using Quartz;
     using Quartz.Impl;
     using System.Collections.Specialized;
+    using Chatbot.Client;
+    using Chatbot.Client.Configurations;
 
     public static class Program
     {
@@ -29,6 +31,12 @@
              })
              .ConfigureServices((hostContext, services) =>
              {
+                 ChatbotClientManager
+                       .UseConfig(new BotClientConfigs(
+                           hostContext.Configuration.GetSection("Chatbot:BaseUrl").Value,
+                           hostContext.Configuration.GetSection("Chatbot:ApiKey").Value))
+                       .UseRestClient(new Client.Transport.RestClient());
+
                  services.AddLogging();
                  services.AddSingleton(_ => hostContext.Configuration);
                  services.AddSingleton<ISchedulerFactory>(
@@ -36,13 +44,9 @@
                     {
                         { "quartz.serializer.type", "binary" }
                     }));
-                 services.AddSingleton<IJobRunner, JobRunner>();
-                 services.AddSingleton<IMessageSender, MessageSender>();
                  services.AddHostedService<ScheduleService>();
              })
-
              .UseConsoleLifetime()
-
              .Build();
 
             using (host)
