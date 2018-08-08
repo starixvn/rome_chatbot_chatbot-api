@@ -8,11 +8,11 @@
 
     internal class ScheduleService : BackgroundService
     {
-        private readonly IJobRunner _jobRunner;
+        private readonly IJobRunner jobRunner;
 
         public ScheduleService(IJobRunner jobRunner)
         {
-            _jobRunner = jobRunner;
+            this.jobRunner = jobRunner;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -21,7 +21,7 @@
 
             foreach (var function in scheduleFunctions)
             {
-                await _jobRunner.Start(function);
+                await jobRunner.Start(function);
             }
         }
 

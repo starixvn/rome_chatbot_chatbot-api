@@ -7,11 +7,11 @@
 
     internal class NotifyYesterdayWinLossJob : IJob
     {
-        private readonly IMessageSender _messageSender;
+        private readonly IMessageSender messageSender;
 
         public NotifyYesterdayWinLossJob(IMessageSender messageSender)
         {
-            _messageSender = messageSender;
+            this.messageSender = messageSender;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -22,7 +22,7 @@
             {
                 var report = GetYesterdayWinLossReport(customer.Id);
 
-                await _messageSender.SendMessage(customer.Id, report);
+                await messageSender.SendMessage(customer.Id, report);
             }
         }
 

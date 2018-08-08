@@ -11,16 +11,16 @@
 
     public class MessageSender : IMessageSender
     {
-        private readonly IJobRunner _jobRunner;
+        private readonly IJobRunner jobRunner;
 
         public MessageSender(IJobRunner jobRunner)
         {
-            _jobRunner = jobRunner;
+            this.jobRunner = jobRunner;
         }
 
         public async Task SendMessage(string customerId, string message)
         {
-            await _jobRunner.Start(
+            await jobRunner.Start(
                     new ScheduleFunction { Name = "SendMessage" },
                     trigger: TriggerBuilder
                         .Create()

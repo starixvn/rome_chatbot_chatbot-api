@@ -1,7 +1,6 @@
 ﻿namespace Chatbot.Schedule.Service
 {
-    using System.Linq;
-    using System.Reflection;
+    using System;
     using System.Threading.Tasks;
     using Chatbot.Schedule.Service.Models;
     using Quartz;
@@ -13,16 +12,16 @@
 
     public class JobRunner : IJobRunner
     {
-        private readonly ISchedulerFactory _schedulerFactory;
+        private readonly ISchedulerFactory schedulerFactory;
 
         public JobRunner(ISchedulerFactory schedulerFactory)
         {
-            _schedulerFactory = schedulerFactory;
+            this.schedulerFactory = schedulerFactory;
         }
 
         public async Task Start(ScheduleFunction scheduleFunction, IJobDetail job = null, ITrigger trigger = null)
         {
-            var scheduler = await _schedulerFactory.GetScheduler();
+            var scheduler = await schedulerFactory.GetScheduler();
 
             await scheduler.ScheduleJob(
                 job ?? CreateJob(scheduleFunction),
@@ -33,9 +32,7 @@
 
         private static IJobDetail CreateJob(ScheduleFunction scheduleFunction)
         {
-            var jobType = Assembly.GetExecutingAssembly()
-                 .GetTypes()
-                 .FirstOrDefault(t => t.Name == $"{scheduleFunction.Name}Job");
+            var jobType = Type.GetType($"Chatbot.Schedule.Service.Jobs.{scheduleFunction.Name}Job");
 
             return JobBuilder.Create(jobType)
                 .WithIdentity(scheduleFunction.Name, scheduleFunction.GroupName)
