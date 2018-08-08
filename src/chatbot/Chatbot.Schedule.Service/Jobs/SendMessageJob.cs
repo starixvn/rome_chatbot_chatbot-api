@@ -4,18 +4,17 @@
     using System.Threading.Tasks;
     using Quartz;
 
-    internal class GetAndSendCustomerReportJob : IJob
+    internal class SendMessageJob : IJob
     {
         public Task Execute(IJobExecutionContext context)
         {
             var dataMap = context.JobDetail.JobDataMap;
-            var customerId = dataMap.GetString("CustomerId");
+            var customerId = dataMap.GetString("customerId");
+            var message = dataMap.GetString("message");
 
             try
             {
-                var report = GetCustomerReport(customerId);
-
-                var isOk = SendReportMessage(customerId, report);
+                var isOk = SendMessage(customerId, message);
 
                 if (!isOk)
                 {
@@ -35,12 +34,7 @@
             return Task.CompletedTask;
         }
 
-        private object GetCustomerReport(string customerId)
-        {
-            return null;
-        }
-
-        private bool SendReportMessage(string customerId, object report)
+        private bool SendMessage(string customerId, string message)
         {
             return true;
         }

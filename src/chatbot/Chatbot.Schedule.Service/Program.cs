@@ -6,6 +6,9 @@
     using Microsoft.Extensions.Logging;
     using System.IO;
     using System.Threading.Tasks;
+    using Quartz;
+    using Quartz.Impl;
+    using System.Collections.Specialized;
 
     public static class Program
     {
@@ -28,9 +31,18 @@
              {
                  services.AddLogging();
                  services.AddSingleton(_ => hostContext.Configuration);
-                 services.AddHostedService<NotificationService>();
+                 services.AddSingleton<ISchedulerFactory>(
+                    new StdSchedulerFactory(new NameValueCollection
+                    {
+                        { "quartz.serializer.type", "binary" }
+                    }));
+                 services.AddSingleton<IJobRunner, JobRunner>();
+                 services.AddSingleton<IMessageSender, MessageSender>();
+                 services.AddHostedService<ScheduleService>();
              })
+
              .UseConsoleLifetime()
+
              .Build();
 
             using (host)
