@@ -69,10 +69,8 @@
         public string BuildVerificationCodeMessage(string custName, string language, string verificationCode, int expiredVerificationCodeInMinutes)
             => string.Join(
                 "\n",
-                $"You have requested to setup Chatbot for your account {custName}.",
-                $"Your verification code is {verificationCode}.",
-                $"The code will be expired in {expiredVerificationCodeInMinutes} minutes.",
-                "To secure your information, please delete this message after completing verification.");
+                string.Format(Languages.VerificationCode_1, custName, verificationCode),
+                string.Format(Languages.VerificationCode_2, expiredVerificationCodeInMinutes));
 
         private IMessageTemplate GetTemplate(int functionId)
             => messageTemplates.ContainsKey(functionId)

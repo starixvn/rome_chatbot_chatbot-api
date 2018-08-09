@@ -40,12 +40,12 @@
             return Task.FromResult(new Result { Status = 1, Message = result });
         }
 
-        public Task<Result> PushAsync(IEnumerable<string> receivers, string message)
+        public Task<Result> PushAsync(IEnumerable<string> receivers, string message, DateTime? expiredTime = null)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> PushAsync(string accountId, string message)
+        public Task<Result> PushAsync(string accountId, string message, DateTime? expiredTime = null)
         {
             var result = botConnector.Send(message, accountId);
 

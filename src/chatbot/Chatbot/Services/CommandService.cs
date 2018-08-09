@@ -68,7 +68,9 @@
                                             function => string.Compare(function.Command, command, true) == 0
                                             && function.Enabled);
 
-                await messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command);
+                var functionId = commandFunction != null ? commandFunction.Id : 0;
+
+                await messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command, functionId);
                 await RunCommand(command, user, messenger, commandFunction);
             }
             catch (Exception ex)
@@ -105,7 +107,7 @@
         private async Task LogError(string command, MessengerDto messengerDto, User user, Exception ex)
         {
             var logMessage = string.Join(
-                                    "\r\n",
+                                    "\n",
                                     "Command Service Exception",
                                     $"User: {user.Id}, CustId: {user.CustId}, SubAccId: {user.SubAccountId}, Language: {user.Language}",
                                     $"Messenger: {messengerDto.Username}, Type: {messengerDto.Type}",

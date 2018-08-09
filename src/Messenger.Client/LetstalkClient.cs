@@ -56,10 +56,10 @@
             throw new MessengerClientException(result.Message);
         }
 
-        public Task<Result> PushAsync(string accountId, string message)
-            => PushAsync(new List<string> { accountId }, message);
+        public Task<Result> PushAsync(string accountId, string message, DateTime? expiredTime = null)
+            => PushAsync(new List<string> { accountId }, message, expiredTime);
 
-        public Task<Result> PushAsync(IEnumerable<string> accountIds, string message)
+        public Task<Result> PushAsync(IEnumerable<string> accountIds, string message, DateTime? expiredTime = null)
         {
             ValidateInputParam(nameof(accountIds), accountIds);
             ValidateInputParam(nameof(message), message);
@@ -69,6 +69,16 @@
 
             payload.HashContentKey = cryptographyHelper.Hash(formattedMessage);
             payload.HashContent = cryptographyHelper.Encrypt(formattedMessage, messengerSettings.ChatKey, payload.HashContentKey);
+
+            if(expiredTime.HasValue)
+            {
+                payload.DueDate = new DateTimeOffset(expiredTime.Value).ToUnixTimeMilliseconds();
+            }
+            else
+            {
+                // Temporary do this, wait for TW team support null
+                payload.DueDate = DateTimeOffset.Now.AddDays(30).ToUnixTimeMilliseconds();
+            }
 
             return PushAsync(accountIds, payload);
         }
@@ -82,7 +92,6 @@
             payload.Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             payload.HashType = AESEncryptionMode;
             payload.From = BusinessAccountType;
-            //payload.DueDate = DateTimeOffset.Now.AddSeconds(10).ToUnixTimeMilliseconds();
             payload.Type = MessageType.Text;
             payload.Id = 100;
             payload.Receiver = accountIds.ElementAt(0);

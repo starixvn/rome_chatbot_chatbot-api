@@ -72,7 +72,7 @@
                 param.Messenger.Type,
                 data);
 
-            await messageSender.SendMessage(param.User.Id, param.Messenger, message);
+            await messageSender.SendMessage(param.User.Id, param.Messenger, message, param.Function.Id);
         }
     }
 }

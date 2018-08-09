@@ -259,6 +259,24 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have requested to set up Chatbot for your account {0}. Your verification code is {1}..
+        /// </summary>
+        public static string VerificationCode_1 {
+            get {
+                return ResourceManager.GetString("VerificationCode_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The code will be expired in {0} minutes. To secure your information, please delete this message after completing verification..
+        /// </summary>
+        public static string VerificationCode_2 {
+            get {
+                return ResourceManager.GetString("VerificationCode_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your Letstalk validation code is {0}.\nThe validation code will be expired after {1} minutes..
         /// </summary>
         public static string VerificationCodeMessage {

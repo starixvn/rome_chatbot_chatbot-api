@@ -22,7 +22,7 @@
         public long SendTime => Time;
 
         [JsonProperty(PropertyName = "duedate")]
-        public long DueDate { get; set; }
+        public long? DueDate { get; set; }
 
         public int From { get; set; }
 

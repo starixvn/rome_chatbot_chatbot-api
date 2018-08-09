@@ -9,9 +9,9 @@
     {
         Task<Result> PushAsync(IEnumerable<string> accountIds, Payload payload);
 
-        Task<Result> PushAsync(IEnumerable<string> accountIds, string message);
+        Task<Result> PushAsync(IEnumerable<string> accountIds, string message, DateTime? expiredTime = null);
 
-        Task<Result> PushAsync(string accountId, string message);
+        Task<Result> PushAsync(string accountId, string message, DateTime? expiredTime = null);
 
         Task<(Contact, bool)> GetProfileAsync(string accountId);
 
