@@ -38,14 +38,10 @@
         }
 
         private async Task<object> GetOutstanding(CommandParam param)
-            => await Task.FromResult(new Dictionary<string, object>
-            {
-                { "Outstanding", (decimal)45444545 }
-            }); 
-            //await (new ReportServiceImpl()).GetOutstandingAsync(param.User.CustId);
+            => await (new ReportServiceImpl()).GetOutstandingAsync(param.User.CustId);
 
         private async Task<object> GetWinLoss(CommandParam param)
-            => await (new ReportServiceImpl()).GetWinLossAsync(param.User.CustId, DateTime.Now);
+            => await (new ReportServiceImpl()).GetWinLossAsync(param.User.CustId, DateTime.Now.AddDays(-1).Date);
 
         private async Task<object> GetBalanceInfo(CommandParam param)
             => await (new ReportServiceImpl()).GetBalanceInfoAsync(param.User.CustId);

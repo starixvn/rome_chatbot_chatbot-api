@@ -129,58 +129,55 @@
   <data name="CommandIsNotRecognized" xml:space="preserve">
     <value>Your command is not recognized.</value>
   </data>
-  <data name="VerificationCodeMessage" xml:space="preserve">
-    <value>Your Letstalk validation code is {0}.\nThe validation code will be expired after {1} minutes.</value>
-  </data>
-  <data name="InformingVerifiedMessage" xml:space="preserve">
-    <value>Your account has been verified, Chatbot is fully functioning.\n You can turn off any feature via the Chatbot configuration page on your agency site.</value>
+  <data name="InformingVerifiedMessage_1" xml:space="preserve">
+    <value>Your account has been verified, Chatbot is fully functioning.</value>
   </data>
   <data name="Turnover" xml:space="preserve">
     <value>Turnover</value>
   </data>
-  <data name="Grosscomm" xml:space="preserve">
+  <data name="GrossComm" xml:space="preserve">
     <value>Gross Comm</value>
   </data>
   <data name="Company" xml:space="preserve">
     <value>Company</value>
   </data>
   <data name="TodayWinLoss" xml:space="preserve">
-    <value>Today Win Loss</value>
+    <value>Today WL</value>
   </data>
-  <data name="Winloss_Super" xml:space="preserve">
+  <data name="SuperNetWinLoss.WinLoss" xml:space="preserve">
     <value>Super WL</value>
   </data>
-  <data name="Winloss_Master" xml:space="preserve">
-    <value>Master  WL</value>
+  <data name="MasterNetWinLoss.WinLoss" xml:space="preserve">
+    <value>Master WL</value>
   </data>
-  <data name="Winloss_Agent" xml:space="preserve">
-    <value>Agent  WL</value>
+  <data name="AgentNetWinLoss.WinLoss" xml:space="preserve">
+    <value>Agent WL</value>
   </data>
-  <data name="Winloss_Member" xml:space="preserve">
-    <value>Member  WL</value>
+  <data name="MemberNetWinLoss.WinLoss" xml:space="preserve">
+    <value>Member WL</value>
   </data>
-  <data name="Comm_Super" xml:space="preserve">
+  <data name="SuperNetWinLoss.Comm" xml:space="preserve">
     <value>Super Comm</value>
   </data>
-  <data name="Comm_Master" xml:space="preserve">
-    <value>Master  Comm</value>
+  <data name="MasterNetWinLoss.Comm" xml:space="preserve">
+    <value>Master Comm</value>
   </data>
-  <data name="Comm_Agent" xml:space="preserve">
-    <value>Agent  Comm</value>
+  <data name="AgentNetWinLoss.Comm" xml:space="preserve">
+    <value>Agent Comm</value>
   </data>
-  <data name="Comm_Member" xml:space="preserve">
-    <value>Member  Comm</value>
+  <data name="MemberNetWinLoss.Comm" xml:space="preserve">
+    <value>Member Comm</value>
   </data>
-  <data name="TotalWinLoss_Super" xml:space="preserve">
+  <data name="SuperNetWinLoss.Total" xml:space="preserve">
     <value>Super Total</value>
   </data>
-  <data name="TotalWinLoss_Master" xml:space="preserve">
+  <data name="MasterNetWinLoss.Total" xml:space="preserve">
     <value>Master Total</value>
   </data>
-  <data name="TotalWinLoss_Agent" xml:space="preserve">
+  <data name="AgentNetWinLoss.Total" xml:space="preserve">
     <value>Agent Total</value>
   </data>
-  <data name="TotalWinLoss_Member" xml:space="preserve">
+  <data name="MemberNetWinLoss.Total" xml:space="preserve">
     <value>Member Total</value>
   </data>
   <data name="Super" xml:space="preserve">
@@ -203,5 +200,41 @@
   </data>
   <data name="VerificationCode_2" xml:space="preserve">
     <value>The code will be expired in {0} minutes. To secure your information, please delete this message after completing verification.</value>
+  </data>
+  <data name="CurrencyName" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="CashBalance" xml:space="preserve">
+    <value>Cash</value>
+  </data>
+  <data name="YesterdayCashBalance" xml:space="preserve">
+    <value>Yesterday Cash</value>
+  </data>
+  <data name="TotalBalance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="YesterdayTotalBalance" xml:space="preserve">
+    <value>Yesterday Bal.</value>
+  </data>
+  <data name="YesterdayWinLoss" xml:space="preserve">
+    <value>Yesterday WL</value>
+  </data>
+  <data name="GivenCredit" xml:space="preserve">
+    <value>Given Credit</value>
+  </data>
+  <data name="MemberCredit" xml:space="preserve">
+    <value>Member Credit</value>
+  </data>
+  <data name="companyWinLoss" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="InformingVerifiedMessage_2" xml:space="preserve">
+    <value>You can turn off any feature via the Chatbot configuration page on your agency site.</value>
+  </data>
+  <data name="Header_2" xml:space="preserve">
+    <value>Today Win Loss</value>
+  </data>
+  <data name="Header_3" xml:space="preserve">
+    <value>Balance Info</value>
   </data>
 </root>

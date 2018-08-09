@@ -70,38 +70,38 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agent  Comm.
+        ///   Looks up a localized string similar to Agent Comm.
         /// </summary>
-        public static string Comm_Agent {
+        public static string AgentNetWinLoss_Comm {
             get {
-                return ResourceManager.GetString("Comm_Agent", resourceCulture);
+                return ResourceManager.GetString("AgentNetWinLoss.Comm", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Master  Comm.
+        ///   Looks up a localized string similar to Agent Total.
         /// </summary>
-        public static string Comm_Master {
+        public static string AgentNetWinLoss_Total {
             get {
-                return ResourceManager.GetString("Comm_Master", resourceCulture);
+                return ResourceManager.GetString("AgentNetWinLoss.Total", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Member  Comm.
+        ///   Looks up a localized string similar to Agent WL.
         /// </summary>
-        public static string Comm_Member {
+        public static string AgentNetWinLoss_WinLoss {
             get {
-                return ResourceManager.GetString("Comm_Member", resourceCulture);
+                return ResourceManager.GetString("AgentNetWinLoss.WinLoss", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Super Comm.
+        ///   Looks up a localized string similar to Cash.
         /// </summary>
-        public static string Comm_Super {
+        public static string CashBalance {
             get {
-                return ResourceManager.GetString("Comm_Super", resourceCulture);
+                return ResourceManager.GetString("CashBalance", resourceCulture);
             }
         }
         
@@ -124,6 +124,24 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company.
+        /// </summary>
+        public static string companyWinLoss {
+            get {
+                return ResourceManager.GetString("companyWinLoss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currency.
+        /// </summary>
+        public static string CurrencyName {
+            get {
+                return ResourceManager.GetString("CurrencyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Oops...you are here because of a system error, please notify the administrators.
         /// </summary>
         public static string DefaultErrorMessage {
@@ -133,11 +151,20 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Given Credit.
+        /// </summary>
+        public static string GivenCredit {
+            get {
+                return ResourceManager.GetString("GivenCredit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gross Comm.
         /// </summary>
-        public static string Grosscomm {
+        public static string GrossComm {
             get {
-                return ResourceManager.GetString("Grosscomm", resourceCulture);
+                return ResourceManager.GetString("GrossComm", resourceCulture);
             }
         }
         
@@ -151,11 +178,38 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your account has been verified, Chatbot is fully functioning.\n You can turn off any feature via the Chatbot configuration page on your agency site..
+        ///   Looks up a localized string similar to Today Win Loss.
         /// </summary>
-        public static string InformingVerifiedMessage {
+        public static string Header_2 {
             get {
-                return ResourceManager.GetString("InformingVerifiedMessage", resourceCulture);
+                return ResourceManager.GetString("Header_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Balance Info.
+        /// </summary>
+        public static string Header_3 {
+            get {
+                return ResourceManager.GetString("Header_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your account has been verified, Chatbot is fully functioning..
+        /// </summary>
+        public static string InformingVerifiedMessage_1 {
+            get {
+                return ResourceManager.GetString("InformingVerifiedMessage_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can turn off any feature via the Chatbot configuration page on your agency site..
+        /// </summary>
+        public static string InformingVerifiedMessage_2 {
+            get {
+                return ResourceManager.GetString("InformingVerifiedMessage_2", resourceCulture);
             }
         }
         
@@ -169,11 +223,74 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Master Comm.
+        /// </summary>
+        public static string MasterNetWinLoss_Comm {
+            get {
+                return ResourceManager.GetString("MasterNetWinLoss.Comm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Master Total.
+        /// </summary>
+        public static string MasterNetWinLoss_Total {
+            get {
+                return ResourceManager.GetString("MasterNetWinLoss.Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Master WL.
+        /// </summary>
+        public static string MasterNetWinLoss_WinLoss {
+            get {
+                return ResourceManager.GetString("MasterNetWinLoss.WinLoss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Member.
         /// </summary>
         public static string Member {
             get {
                 return ResourceManager.GetString("Member", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Credit.
+        /// </summary>
+        public static string MemberCredit {
+            get {
+                return ResourceManager.GetString("MemberCredit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Comm.
+        /// </summary>
+        public static string MemberNetWinLoss_Comm {
+            get {
+                return ResourceManager.GetString("MemberNetWinLoss.Comm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Total.
+        /// </summary>
+        public static string MemberNetWinLoss_Total {
+            get {
+                return ResourceManager.GetString("MemberNetWinLoss.Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member WL.
+        /// </summary>
+        public static string MemberNetWinLoss_WinLoss {
+            get {
+                return ResourceManager.GetString("MemberNetWinLoss.WinLoss", resourceCulture);
             }
         }
         
@@ -205,7 +322,34 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Today Win Loss.
+        ///   Looks up a localized string similar to Super Comm.
+        /// </summary>
+        public static string SuperNetWinLoss_Comm {
+            get {
+                return ResourceManager.GetString("SuperNetWinLoss.Comm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Super Total.
+        /// </summary>
+        public static string SuperNetWinLoss_Total {
+            get {
+                return ResourceManager.GetString("SuperNetWinLoss.Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Super WL.
+        /// </summary>
+        public static string SuperNetWinLoss_WinLoss {
+            get {
+                return ResourceManager.GetString("SuperNetWinLoss.WinLoss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Today WL.
         /// </summary>
         public static string TodayWinLoss {
             get {
@@ -214,38 +358,11 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agent Total.
+        ///   Looks up a localized string similar to Balance.
         /// </summary>
-        public static string TotalWinLoss_Agent {
+        public static string TotalBalance {
             get {
-                return ResourceManager.GetString("TotalWinLoss_Agent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Master Total.
-        /// </summary>
-        public static string TotalWinLoss_Master {
-            get {
-                return ResourceManager.GetString("TotalWinLoss_Master", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member Total.
-        /// </summary>
-        public static string TotalWinLoss_Member {
-            get {
-                return ResourceManager.GetString("TotalWinLoss_Member", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Super Total.
-        /// </summary>
-        public static string TotalWinLoss_Super {
-            get {
-                return ResourceManager.GetString("TotalWinLoss_Super", resourceCulture);
+                return ResourceManager.GetString("TotalBalance", resourceCulture);
             }
         }
         
@@ -277,47 +394,29 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your Letstalk validation code is {0}.\nThe validation code will be expired after {1} minutes..
+        ///   Looks up a localized string similar to Yesterday Cash.
         /// </summary>
-        public static string VerificationCodeMessage {
+        public static string YesterdayCashBalance {
             get {
-                return ResourceManager.GetString("VerificationCodeMessage", resourceCulture);
+                return ResourceManager.GetString("YesterdayCashBalance", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agent  WL.
+        ///   Looks up a localized string similar to Yesterday Bal..
         /// </summary>
-        public static string Winloss_Agent {
+        public static string YesterdayTotalBalance {
             get {
-                return ResourceManager.GetString("Winloss_Agent", resourceCulture);
+                return ResourceManager.GetString("YesterdayTotalBalance", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Master  WL.
+        ///   Looks up a localized string similar to Yesterday WL.
         /// </summary>
-        public static string Winloss_Master {
+        public static string YesterdayWinLoss {
             get {
-                return ResourceManager.GetString("Winloss_Master", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member  WL.
-        /// </summary>
-        public static string Winloss_Member {
-            get {
-                return ResourceManager.GetString("Winloss_Member", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Super WL.
-        /// </summary>
-        public static string Winloss_Super {
-            get {
-                return ResourceManager.GetString("Winloss_Super", resourceCulture);
+                return ResourceManager.GetString("YesterdayWinLoss", resourceCulture);
             }
         }
     }

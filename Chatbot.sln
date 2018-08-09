@@ -51,7 +51,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "client", "client", "{EFA6E8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatbot.Client.Transport", "src\chatbot\Chatbot.Client.Transport\Chatbot.Client.Transport.csproj", "{6B9AE4EE-0466-42DC-95E7-CA12050BA436}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatbot.AutoUM.Service", "src\chatbot\Chatbot.AutoUM.Service\Chatbot.AutoUM.Service.csproj", "{38D41002-6906-4FC6-BBC0-DFCDDB81B73A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatbot.AutoUM.Service", "src\chatbot\Chatbot.AutoUM.Service\Chatbot.AutoUM.Service.csproj", "{38D41002-6906-4FC6-BBC0-DFCDDB81B73A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,7 +6,7 @@
     {
         private const string NumberFormat = "#,##0";
 
-        public static string ToFormattedNumber(this decimal numberValue)
+        public static string ToFormattedNumber(this double numberValue)
         {
             if(numberValue == 0)
             {

@@ -85,7 +85,10 @@
             => GetResource(nameof(Languages.CommandIsNotRecognized), language);
 
         public string BuildWelcomeMessage(string language)
-            => GetResource(nameof(Languages.InformingVerifiedMessage), language);
+            => string.Join(
+                "\n",
+                GetResource(nameof(Languages.InformingVerifiedMessage_1), language),
+                GetResource(nameof(Languages.InformingVerifiedMessage_2), language));
 
         private string GetResource(string key, string language)
             => Languages.ResourceManager.GetString(key, GetCultureInfo(language));

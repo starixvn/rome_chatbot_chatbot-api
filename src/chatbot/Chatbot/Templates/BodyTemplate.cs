@@ -36,14 +36,9 @@
                 return value as string;
             }
 
-            if (value is decimal)
+            if (value is double)
             {
-                return ((decimal)value).ToFormattedNumber();
-            }
-
-            if (value is decimal?)
-            {
-                return ((decimal?)value).Value.ToFormattedNumber();
+                return ((double)value).ToFormattedNumber();
             }
 
             return value.ToString();
