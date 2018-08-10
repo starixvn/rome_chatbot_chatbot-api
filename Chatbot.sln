@@ -47,6 +47,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatbot.Client.Transport", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatbot.AutoUM.Service", "src\chatbot\Chatbot.AutoUM.Service\Chatbot.AutoUM.Service.csproj", "{38D41002-6906-4FC6-BBC0-DFCDDB81B73A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatbot.Tests", "tests\chatbot\services\Chatbot.Tests\Chatbot.Tests.csproj", "{6A9E4D04-52F3-421F-9A7B-D8317FDEEBBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,10 @@ Global
 		{38D41002-6906-4FC6-BBC0-DFCDDB81B73A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38D41002-6906-4FC6-BBC0-DFCDDB81B73A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38D41002-6906-4FC6-BBC0-DFCDDB81B73A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A9E4D04-52F3-421F-9A7B-D8317FDEEBBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A9E4D04-52F3-421F-9A7B-D8317FDEEBBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A9E4D04-52F3-421F-9A7B-D8317FDEEBBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A9E4D04-52F3-421F-9A7B-D8317FDEEBBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,6 +127,7 @@ Global
 		{EFA6E899-7F8C-4372-A2F6-44142EA041C3} = {0F65B902-C55A-4444-94EA-18CAE7AF60F5}
 		{6B9AE4EE-0466-42DC-95E7-CA12050BA436} = {EFA6E899-7F8C-4372-A2F6-44142EA041C3}
 		{38D41002-6906-4FC6-BBC0-DFCDDB81B73A} = {02B1EC80-510D-4262-A06C-00AACAA8C44E}
+		{6A9E4D04-52F3-421F-9A7B-D8317FDEEBBB} = {0EA4E8BE-3C24-49D6-85A4-AD7B85F96211}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {713C7940-2634-4C55-A6AF-9A4779CBFCEF}

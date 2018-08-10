@@ -1,10 +1,8 @@
 ﻿namespace Chatbot.Services
 {
-    using System;
     using Chatbot.Constants;
     using Messenger.Client;
     using Messenger.Client.Configurations;
-    using Microsoft.Extensions.Configuration;
 
     public interface MessengerFactory
     {

@@ -29,7 +29,7 @@
             return string.Join(messengerFormatter.NewLine(), textContainer);
         }
 
-        protected string GetFormattedValue(object value)
+        private static string GetFormattedValue(object value)
         {
             if (value is string)
             {
@@ -44,7 +44,7 @@
             return value.ToString();
         }
 
-        protected static T Parse<T>(object data)
+        private static T Parse<T>(object data)
             where T : class
         {
             if (data == null)
