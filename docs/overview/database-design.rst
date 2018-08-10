@@ -62,4 +62,4 @@ A. Structure
 
 B. ERD
 
-.. image:: docs\overview\ERD.png
+.. image:: assets/ERD.png
