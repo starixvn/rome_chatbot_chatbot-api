@@ -97,6 +97,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Agent Credit.
+        /// </summary>
+        public static string AgentTotalCredit {
+            get {
+                return ResourceManager.GetString("AgentTotalCredit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cash.
         /// </summary>
         public static string CashBalance {
@@ -259,20 +268,20 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Master Credit.
+        /// </summary>
+        public static string MasterTotalCredit {
+            get {
+                return ResourceManager.GetString("MasterTotalCredit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Member.
         /// </summary>
         public static string Member {
             get {
                 return ResourceManager.GetString("Member", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Member Credit.
-        /// </summary>
-        public static string MemberCredit {
-            get {
-                return ResourceManager.GetString("MemberCredit", resourceCulture);
             }
         }
         
@@ -300,6 +309,15 @@ namespace Chatbot.AppResources {
         public static string MemberNetWinLoss_WinLoss {
             get {
                 return ResourceManager.GetString("MemberNetWinLoss.WinLoss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Credit.
+        /// </summary>
+        public static string MemberTotalCredit {
+            get {
+                return ResourceManager.GetString("MemberTotalCredit", resourceCulture);
             }
         }
         
@@ -354,6 +372,15 @@ namespace Chatbot.AppResources {
         public static string SuperNetWinLoss_WinLoss {
             get {
                 return ResourceManager.GetString("SuperNetWinLoss.WinLoss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Super Credit.
+        /// </summary>
+        public static string SuperTotalCredit {
+            get {
+                return ResourceManager.GetString("SuperTotalCredit", resourceCulture);
             }
         }
         

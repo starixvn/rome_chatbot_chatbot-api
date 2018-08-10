@@ -222,7 +222,7 @@
   <data name="GivenCredit" xml:space="preserve">
     <value>Given Credit</value>
   </data>
-  <data name="MemberCredit" xml:space="preserve">
+  <data name="MemberTotalCredit" xml:space="preserve">
     <value>Member Credit</value>
   </data>
   <data name="companyWinLoss" xml:space="preserve">
@@ -242,5 +242,14 @@
   </data>
   <data name="Comm" xml:space="preserve">
     <value>Comm</value>
+  </data>
+  <data name="AgentTotalCredit" xml:space="preserve">
+    <value>Agent Credit</value>
+  </data>
+  <data name="MasterTotalCredit" xml:space="preserve">
+    <value>Master Credit</value>
+  </data>
+  <data name="SuperTotalCredit" xml:space="preserve">
+    <value>Super Credit</value>
   </data>
 </root>

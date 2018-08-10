@@ -41,7 +41,7 @@
             => await (new ReportServiceImpl()).GetOutstandingAsync(param.User.CustId);
 
         private async Task<object> GetWinLoss(CommandParam param)
-            => await (new ReportServiceImpl()).GetWinLossAsync(param.User.CustId, DateTime.Now.AddDays(-1).Date);
+            => await (new ReportServiceImpl()).GetWinLossAsync(param.User.CustId, DateTime.Now.Date);
 
         private async Task<object> GetBalanceInfo(CommandParam param)
             => await (new ReportServiceImpl()).GetBalanceInfoAsync(param.User.CustId);
