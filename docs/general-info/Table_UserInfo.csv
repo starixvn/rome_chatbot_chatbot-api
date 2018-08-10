@@ -1,0 +1,5 @@
+Column Name,Data type,Length,Allow Null,Default value,Description
+UserId,INT,4,0,,Identity Column
+CustId,INT,4,0,,"Cluster Index on CustId, SubAccId"
+SubAccId,INT,4,0,,
+LanguageCode,CHAR(5),5,1,,"en-US,..."
