@@ -2,6 +2,10 @@
 Database Design
 ***************************
 
+
+.. image:: assets/ERD.png
+
+
 A. Structure
 
 1.UserInfo
