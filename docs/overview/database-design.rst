@@ -3,10 +3,12 @@ Database Design
 ***************************
 
 
+A. ERD
+
 .. image:: assets/ERD.png
 
 
-A. Structure
+B. Structure
 
 1.UserInfo
 
@@ -64,7 +66,6 @@ A. Structure
    :header-rows: 1
    :widths: 50, 50, 50, 50, 50, 200
 
-B. ERD
 
 
-.. image:: assets/ERD.png
+
