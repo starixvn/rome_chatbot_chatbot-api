@@ -121,7 +121,7 @@
     <value>Outstanding</value>
   </data>
   <data name="NoData" xml:space="preserve">
-    <value>There is no data.</value>
+    <value>No information is available</value>
   </data>
   <data name="DefaultErrorMessage" xml:space="preserve">
     <value>Oops...you are here because of a system error, please notify the administrators</value>

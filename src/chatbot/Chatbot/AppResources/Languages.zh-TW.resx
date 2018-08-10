@@ -139,4 +139,28 @@
   <data name="AgentNetWinLoss.Total" xml:space="preserve">
     <value>代理總和</value>
   </data>
+  <data name="Header_3" xml:space="preserve">
+    <value>餘額資料</value>
+  </data>
+  <data name="TotalBalance" xml:space="preserve">
+    <value>餘額資料</value>
+  </data>
+  <data name="CashBalance" xml:space="preserve">
+    <value>現金余額</value>
+  </data>
+  <data name="YesterdayCashBalance" xml:space="preserve">
+    <value>昨天現金余額</value>
+  </data>
+  <data name="CurrencyName" xml:space="preserve">
+    <value>貨幣</value>
+  </data>
+  <data name="NoData" xml:space="preserve">
+    <value>沒資料顯示</value>
+  </data>
+  <data name="DefaultErrorMessage" xml:space="preserve">
+    <value>哎喲..因為系統故障所以您會身在此處，請向管理層聯繫吧</value>
+  </data>
+  <data name="GivenCredit" xml:space="preserve">
+    <value>信用額度</value>
+  </data>
 </root>

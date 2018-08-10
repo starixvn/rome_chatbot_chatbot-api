@@ -121,4 +121,28 @@
   <data name="Header_1" xml:space="preserve">
     <value>Tiền chưa xử lý</value>
   </data>
+  <data name="Header_3" xml:space="preserve">
+    <value>Tài Khoản</value>
+  </data>
+  <data name="TotalBalance" xml:space="preserve">
+    <value>Tài Khoản</value>
+  </data>
+  <data name="CashBalance" xml:space="preserve">
+    <value>Số dư tài khoản</value>
+  </data>
+  <data name="YesterdayCashBalance" xml:space="preserve">
+    <value>Số dư tài khoản đến hết hôm qua</value>
+  </data>
+  <data name="CurrencyName" xml:space="preserve">
+    <value>Tiền tệ</value>
+  </data>
+  <data name="NoData" xml:space="preserve">
+    <value>Thông tin chưa được cập nhật</value>
+  </data>
+  <data name="DefaultErrorMessage" xml:space="preserve">
+    <value>Oh …hệ thống đang bi lỗi,Vui lòng báo với người quản lý</value>
+  </data>
+  <data name="GivenCredit" xml:space="preserve">
+    <value>Hạn mức được cấp</value>
+  </data>
 </root>

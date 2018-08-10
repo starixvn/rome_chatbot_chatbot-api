@@ -322,7 +322,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is no data..
+        ///   Looks up a localized string similar to No information is available.
         /// </summary>
         public static string NoData {
             get {

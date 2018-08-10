@@ -118,4 +118,16 @@
   <data name="Header_1" xml:space="preserve">
     <value>未払い</value>
   </data>
+  <data name="Header_3" xml:space="preserve">
+    <value>Balance Info</value>
+  </data>
+  <data name="CashBalance" xml:space="preserve">
+    <value>現金残高</value>
+  </data>
+  <data name="NoData" xml:space="preserve">
+    <value>情報がありません</value>
+  </data>
+  <data name="GivenCredit" xml:space="preserve">
+    <value>貸付金額</value>
+  </data>
 </root>

@@ -139,4 +139,28 @@
   <data name="Header_1" xml:space="preserve">
     <value>การเดิมพันที่ยังไม่สิ้นสุด</value>
   </data>
+  <data name="Header_3" xml:space="preserve">
+    <value>ข้อมูลยอดเงินคงเหลือ</value>
+  </data>
+  <data name="TotalBalance" xml:space="preserve">
+    <value>ข้อมูลยอดเงินคงเหลือ</value>
+  </data>
+  <data name="CashBalance" xml:space="preserve">
+    <value>ยอดเงินสด</value>
+  </data>
+  <data name="YesterdayCashBalance" xml:space="preserve">
+    <value>ยอดเงินสดคงเหลือของเมื่อวาน</value>
+  </data>
+  <data name="CurrencyName" xml:space="preserve">
+    <value>สกุลเงิน</value>
+  </data>
+  <data name="NoData" xml:space="preserve">
+    <value>ไม่มีข้อมูล</value>
+  </data>
+  <data name="DefaultErrorMessage" xml:space="preserve">
+    <value>อุ้ย...คุณอยู่ที่นี่เนื่องจากระบบผิดพลาด กรุณาแจ้งผู้ให้บริการ</value>
+  </data>
+  <data name="GivenCredit" xml:space="preserve">
+    <value>เครดิตทั้งหมด</value>
+  </data>
 </root>
