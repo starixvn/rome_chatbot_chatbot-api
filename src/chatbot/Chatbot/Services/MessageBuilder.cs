@@ -8,13 +8,13 @@
 
     public interface IMessageBuilder
     {
-        string BuildVerificationCodeMessage(string custName, string language, string verificationCode, int expiredVerificationCodeInMinutes);
+        string BuildVerificationCodeMessage(string custName, string language, int messengerType, string verificationCode, int expiredVerificationCodeInMinutes);
 
         string BuildCommandResultMessage(string language, int functionId, int messengerType, object data);
 
         string BuildNotRecognizedCommandMessage(string language);
 
-        string BuildWelcomeMessage(string language);
+        string BuildWelcomeMessage(string language, int messengerType);
 
         string BuildErrorMessage(string language);
     }
@@ -66,9 +66,9 @@
                             ? cultureInfoList[language]
                             : defaultCultureInfo;
 
-        public string BuildVerificationCodeMessage(string custName, string language, string verificationCode, int expiredVerificationCodeInMinutes)
+        public string BuildVerificationCodeMessage(string custName, string language, int messengerType, string verificationCode, int expiredVerificationCodeInMinutes)
             => string.Join(
-                "\n",
+                GetMessengerFormatter(messengerType).NewLine(),
                 string.Format(Languages.VerificationCode_1, custName, verificationCode),
                 string.Format(Languages.VerificationCode_2, expiredVerificationCodeInMinutes));
 
@@ -84,9 +84,9 @@
         public string BuildNotRecognizedCommandMessage(string language)
             => GetResource(nameof(Languages.CommandIsNotRecognized), language);
 
-        public string BuildWelcomeMessage(string language)
+        public string BuildWelcomeMessage(string language, int messengerType)
             => string.Join(
-                "\n",
+                GetMessengerFormatter(messengerType).NewLine(),
                 GetResource(nameof(Languages.InformingVerifiedMessage_1), language),
                 GetResource(nameof(Languages.InformingVerifiedMessage_2), language));
 

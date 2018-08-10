@@ -94,6 +94,7 @@
             var message = messageBuilder.BuildVerificationCodeMessage(
                 custName,
                 user.Language,
+                messenger.Type,
                 verificationCode,
                 chatbotConfigs.VerificationCodeExpiredTimeInMinutes);
 
@@ -102,7 +103,7 @@
 
         private async Task SendWelcomeMessage(User user, Messenger messenger)
         {
-            var message = messageBuilder.BuildWelcomeMessage(user.Language);
+            var message = messageBuilder.BuildWelcomeMessage(user.Language, messenger.Type);
 
             await messageSender.SendMessage(user.Id, messenger, message);
         }
