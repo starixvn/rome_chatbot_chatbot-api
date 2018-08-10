@@ -59,3 +59,7 @@ A. Structure
    :file: Table_UserLogAction.csv
    :header-rows: 1
    :widths: 50, 50, 50, 50, 50, 200
+
+B. ERD
+
+.. image:: docs\overview\ERD.png
