@@ -106,6 +106,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comm.
+        /// </summary>
+        public static string Comm {
+            get {
+                return ResourceManager.GetString("Comm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your command is not recognized..
         /// </summary>
         public static string CommandIsNotRecognized {
@@ -390,6 +399,15 @@ namespace Chatbot.AppResources {
         public static string VerificationCode_2 {
             get {
                 return ResourceManager.GetString("VerificationCode_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WL.
+        /// </summary>
+        public static string WinLossAbbr {
+            get {
+                return ResourceManager.GetString("WinLossAbbr", resourceCulture);
             }
         }
         

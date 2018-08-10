@@ -98,6 +98,42 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Outstanding" xml:space="preserve">
-    <value>Outstanding th-TH</value>
+    <value>การเดิมพันที่ยังไม่สิ้นสุด</value>
+  </data>
+  <data name="Turnover" xml:space="preserve">
+    <value>เงินหมุนเวียน</value>
+  </data>
+  <data name="GrossComm" xml:space="preserve">
+    <value>ยอดรวมของคอมมิชชั่น</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>บริษัท</value>
+  </data>
+  <data name="Super" xml:space="preserve">
+    <value>สูงสุด</value>
+  </data>
+  <data name="Master" xml:space="preserve">
+    <value>ตัวแทนหลัก</value>
+  </data>
+  <data name="Agent" xml:space="preserve">
+    <value>ตัวแทน</value>
+  </data>
+  <data name="Member" xml:space="preserve">
+    <value>สมาชิก</value>
+  </data>
+  <data name="WinLossAbbr" xml:space="preserve">
+    <value>ชนะ</value>
+  </data>
+  <data name="Comm" xml:space="preserve">
+    <value>คอมมิชชั่น</value>
+  </data>
+  <data name="companyWinLoss" xml:space="preserve">
+    <value>บริษัท</value>
+  </data>
+  <data name="MasterNetWinLoss.Total" xml:space="preserve">
+    <value>รวม Master</value>
+  </data>
+  <data name="AgentNetWinLoss.Total" xml:space="preserve">
+    <value>รวม เอเจนต์</value>
   </data>
 </root>

@@ -237,4 +237,10 @@
   <data name="Header_3" xml:space="preserve">
     <value>Balance Info</value>
   </data>
+  <data name="WinLossAbbr" xml:space="preserve">
+    <value>WL</value>
+  </data>
+  <data name="Comm" xml:space="preserve">
+    <value>Comm</value>
+  </data>
 </root>
