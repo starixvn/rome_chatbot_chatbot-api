@@ -1,4 +1,5 @@
-Column Name,Data type,Length,Allow Null,Default value,Description
+Column Name,"Data 
+Type",Length,Allow Null,Default value,Description
 UserId,INT,4,0,,
 MessengerUsername,VARCHAR(50),50,0,,Messenger username
 MessengerType,TINYINT,1,0,,"1: Letstalk, 2: Skype, 3: Line, ...."
