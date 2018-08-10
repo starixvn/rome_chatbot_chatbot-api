@@ -1,7 +1,0 @@
-Column Name,Data type,Length,Allow Null,Default value,Description
-UserId,INT,4,0,,
-MessengerUsername,VARCHAR(50),50,0,,Messenger username
-MessengerType,TINYINT,1,0,,"1: Letstalk, 2: Skype, 3: Line, ...."
-Status,TINYINT,1,0,0,0: Waiting for Verifying - 1: Enable - 2: Disable
-VerificationCode,VARCHAR(6),6,1,,
-VerificationCodeGeneratedTime,DATETIME,8,1,,
