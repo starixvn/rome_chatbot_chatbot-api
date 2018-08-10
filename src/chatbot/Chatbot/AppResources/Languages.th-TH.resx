@@ -136,4 +136,7 @@
   <data name="AgentNetWinLoss.Total" xml:space="preserve">
     <value>รวม เอเจนต์</value>
   </data>
+  <data name="Header_1" xml:space="preserve">
+    <value>การเดิมพันที่ยังไม่สิ้นสุด</value>
+  </data>
 </root>

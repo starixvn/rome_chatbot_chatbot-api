@@ -136,4 +136,7 @@
   <data name="AgentNetWinLoss.Total" xml:space="preserve">
     <value>총 에이전트</value>
   </data>
+  <data name="Header_1" xml:space="preserve">
+    <value>대기 포인트</value>
+  </data>
 </root>

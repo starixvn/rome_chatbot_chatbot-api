@@ -118,4 +118,7 @@
   <data name="AgentNetWinLoss.Total" xml:space="preserve">
     <value>Tổng giao dịch của Agent</value>
   </data>
+  <data name="Header_1" xml:space="preserve">
+    <value>Tiền chưa xử lý</value>
+  </data>
 </root>

@@ -115,4 +115,7 @@
   <data name="Comm" xml:space="preserve">
     <value>手数料</value>
   </data>
+  <data name="Header_1" xml:space="preserve">
+    <value>未払い</value>
+  </data>
 </root>
