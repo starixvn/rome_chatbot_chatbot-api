@@ -1,11 +1,7 @@
 ﻿namespace Chatbot.Configurations
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Microsoft.Extensions.Configuration;
 
     public interface IChatbotConfigs
@@ -46,6 +42,7 @@
             BalanceFunctionId = GetValue<int>("Chatbot:BalanceFunctionId");
             ReturnRawErrorToMessenger = GetValue<bool>("Chatbot:ReturnRawErrorToMessenger");
             SpDirectory = GetValue<string>("Chatbot:SpDirectory");
+            YesterdayWinLossFunctionId = GetValue<int>("Chatbot:YesterdayWinLossFunctionId");
         }
 
         public int MaxAddActionTimes { get; }
@@ -61,6 +58,8 @@
         public int WinlossFunctionId { get; }
 
         public int BalanceFunctionId { get; }
+
+        public int YesterdayWinLossFunctionId { get; }
 
         public bool ReturnRawErrorToMessenger { get; }
 

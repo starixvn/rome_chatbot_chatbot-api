@@ -23,7 +23,7 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageLogger messageLogger;
         private readonly IChatbotConfigs chatbotConfigs;
-        private readonly ICommandHandler commandHandler;
+        private readonly IFunctionHandler functionHandler;
         private readonly ILogger<CommandServiceImpl> logger;
 
         public CommandServiceImpl(
@@ -33,14 +33,14 @@
             IMessageLogger messageLogger,
             ILogger<CommandServiceImpl> logger,
             IChatbotConfigs chatbotConfigs,
-            ICommandHandler commandHandler)
+            IFunctionHandler commandHandler)
         {
             this.settingService = settingService;
             this.messageSender = messageSender;
             this.messageBuilder = messageBuilder;
             this.logger = logger;
             this.chatbotConfigs = chatbotConfigs;
-            this.commandHandler = commandHandler;
+            this.functionHandler = commandHandler;
             this.messageLogger = messageLogger;
         }
 
@@ -82,14 +82,14 @@
         }
 
         private async Task RunCommand(
-            string command, 
-            User user, 
-            Messenger messenger, 
+            string command,
+            User user,
+            Messenger messenger,
             Function commandFunction)
         {
             if (commandFunction != null)
             {
-                var commandParam = new CommandParam(
+                var functionParam = new FunctionParam(
                         user,
                         commandFunction,
                         messenger,
@@ -98,7 +98,7 @@
                             { "command", command }
                         });
 
-                await commandHandler.RunCommand(commandParam);
+                await functionHandler.Handle(functionParam);
             }
             else
             {

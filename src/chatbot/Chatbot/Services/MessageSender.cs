@@ -52,12 +52,12 @@
             }
 
             await messageLogger.LogMessage(
-                CommonId.BotUserId,
-                userId,
-                messenger,
-                message,
-                result.IsOk ? 1 : 0,
-                functionId);
+                    CommonId.BotUserId,
+                    userId,
+                    messenger,
+                    message,
+                    result.IsOk ? 1 : 0,
+                    functionId);
 
             return new Result(result.IsOk ? 0 : result.Status, result.Message);
         }

@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Globalization;
     using Chatbot.AppResources;
-    using Chatbot.Constants;
     using Chatbot.Templates;
 
     public interface IMessageBuilder
@@ -76,7 +75,6 @@
             => messageTemplates.ContainsKey(functionId)
                 ? messageTemplates[functionId]
                 : defaultTemplate;
-                
 
         public string BuildErrorMessage(string language)
             => GetResource(nameof(Languages.DefaultErrorMessage), language);

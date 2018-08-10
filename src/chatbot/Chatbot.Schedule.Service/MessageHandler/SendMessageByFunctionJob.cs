@@ -2,19 +2,18 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Chatbot.Client.Models;
     using Chatbot.Client.Services;
     using Quartz;
 
-    public class SendMessageJob : IJob
+    public class SendMessageByFunctionJob : IJob
     {
         private readonly MessageService messageService;
 
-        public SendMessageJob() : this(null)
+        public SendMessageByFunctionJob() : this(null)
         {
         }
 
-        public SendMessageJob(MessageService messageService)
+        public SendMessageByFunctionJob(MessageService messageService)
         {
             this.messageService = messageService ?? new MessageServiceImpl();
         }
@@ -23,15 +22,15 @@
         {
             var dataMap = context.JobDetail.JobDataMap;
             var userId = dataMap.GetInt("userId");
-            var message = dataMap.GetString("message");
+            var functionId = dataMap.GetInt("functionId");
 
             try
             {
-                var result = await SendMessage(userId, message);
+                var result = await messageService.SendByFunction(functionId, userId);
 
                 if (!result.IsOk)
                 {
-                    throw new JobExecutionException($"Send failed to customer: {userId}");
+                    throw new JobExecutionException($"Send failed to user: {userId}");
                 }
             }
             catch (Exception ex)
@@ -43,11 +42,6 @@
 
                 throw jobExecutionException;
             }
-        }
-
-        private async Task<Result> SendMessage(int userId, string message)
-        {
-            return await messageService.SendMessage(userId, message);
         }
     }
 }

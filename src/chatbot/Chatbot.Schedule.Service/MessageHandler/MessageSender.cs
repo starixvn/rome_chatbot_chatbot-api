@@ -1,5 +1,6 @@
 ﻿namespace Chatbot.Schedule.Service.MessageHandler
 {
+    using System;
     using System.Collections.Specialized;
     using System.Threading.Tasks;
     using Quartz;
@@ -7,7 +8,7 @@
 
     public interface IMessageSender
     {
-        Task SendMessage(int userId, string message);
+        Task SendMessageByFunction(int userId, int functionId);
     }
 
     public class MessageSender : IMessageSender
@@ -27,15 +28,15 @@
                 });
         }
 
-        public async Task SendMessage(int userId, string message)
+        public async Task SendMessageByFunction(int userId, int functionId)
         {
             var scheduler = await schedulerFactory.GetScheduler();
 
             await scheduler.ScheduleJob(
-                    JobBuilder.Create<SendMessageJob>()
-                        .WithIdentity($"SendMessage{userId}", "SendMessage")
+                    JobBuilder.Create<SendMessageByFunctionJob>()
+                        .WithIdentity($"SendMessage_{userId}_{functionId}_{DateTime.UtcNow.ToString()}", "SendMessage")
                         .UsingJobData("userId", userId)
-                        .UsingJobData("message", message)
+                        .UsingJobData("functionId", functionId)
                         .Build(),
                     TriggerBuilder
                         .Create()

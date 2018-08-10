@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using Chatbot.Models;
 
-    public class CommandParam
+    public class FunctionParam
     {
-        public CommandParam(
+        public FunctionParam(
             User user,
             Function function,
             Messenger messenger,

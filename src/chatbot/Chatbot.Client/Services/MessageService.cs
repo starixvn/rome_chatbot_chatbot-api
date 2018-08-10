@@ -7,6 +7,8 @@
     public interface MessageService
     {
         Task<Result> SendMessage(int userId, string message, int functionId = 0);
+
+        Task<Result> SendByFunction(int functionId, int userId);
     }
 
     public class MessageServiceImpl : ServiceBase, MessageService
@@ -35,6 +37,20 @@
                     message,
                     functionId
                 });
+        }
+
+        public Task<Result> SendByFunction(int functionId, int userId)
+        {
+            ValidateInputParam(nameof(userId), userId);
+            ValidateInputParam(nameof(functionId), functionId);
+
+            return restClient.ExecutePostAsync<Result>(
+               $"message/sendByFunction",
+               new
+               {
+                   userId,
+                   functionId
+               });
         }
     }
 }

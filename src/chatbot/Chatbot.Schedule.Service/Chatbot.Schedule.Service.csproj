@@ -30,4 +30,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />
     <PackageReference Include="Quartz" Version="3.0.6" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chatbot.Client\Chatbot.Client.csproj" />
+  </ItemGroup>
 </Project>

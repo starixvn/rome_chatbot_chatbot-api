@@ -12,13 +12,16 @@
     {
         private readonly IMessageSender messageSender;
         private readonly SettingService settingService;
+        private readonly FunctionService functionService;
 
         public MessageController(
             IMessageSender messageSender,
-            SettingService settingService)
+            SettingService settingService,
+            FunctionService functionService)
         {
             this.messageSender = messageSender;
             this.settingService = settingService;
+            this.functionService = functionService;
         }
 
         [Route("sendToSpecificMessenger"), HttpPost]
@@ -31,6 +34,12 @@
             var messengers = await settingService.GetMessengers(param.UserId, true);
 
             return await messageSender.SendMessage(param.UserId, param.Message, messengers, param.FunctionId);
+        }
+
+        [Route("sendByFunction"), HttpPost]
+        public async Task<Result> SendByFunction([FromBody]FunctionParam param)
+        {
+            return await functionService.Handle(param.FunctionId, param.UserId);
         }
     }
 }
