@@ -62,4 +62,5 @@ A. Structure
 
 B. ERD
 
+
 .. image:: assets/ERD.png
