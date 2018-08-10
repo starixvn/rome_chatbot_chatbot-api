@@ -1,0 +1,5 @@
+Column Name,Data type,Length,Allow Null,Default value,Description
+UserId,INT,4,0,,
+FunctionId,INT,4,0,,
+Command,VARCHAR(50),5,0,,"report command, shcedule time ..."
+Enabled,BIT,1,0,,

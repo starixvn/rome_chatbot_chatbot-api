@@ -1,0 +1,7 @@
+Column Name,Data type,Length,Allow Null,Default value,Description
+Date,SMALLDATETIME,4,0,,
+UserId,INT,4,0,,
+MessengerType,TINYINT,1,0,,
+MessengerUsername,VARCHAR(50),50,0,,
+ActionId,INT,4,0,,
+CountTimes,TINYINT,1,0,,

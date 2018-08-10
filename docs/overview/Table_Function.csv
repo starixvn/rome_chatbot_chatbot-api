@@ -1,0 +1,8 @@
+Column Name,Data type,Length,Allow Null,Default value,Description
+FunctionId,INT,4,0,,
+FunctionName,VARCHAR(255),255,0,,
+Type,TINYINT,1,0,,"1: Report 
+2: Notification 
+3: CSD Support"
+DefaultCommand,VARCHAR(50),50,1,,Ex: out
+Status,TINYINT,1,0,,0: PRO - 1: UAT - 2: Hide

@@ -1,0 +1,10 @@
+Column Name,Data type,Length,Allow Null,Default value,Description
+LogId,BIGINT,8,0,,
+Sender,INT,4,0,,"UserId, Bot(0)"
+Receiver,INT,4,0,,"UserId, Bot(0)"
+FunctionId,INT,4,1,,
+MessengerUsername,VARCHAR(50),50,0,,
+MessengerType,TINYINT,1,0,,"1: Letstalk, 2: Skype, 3: Telegram, 4.Line ...."
+Message,NVARCHAR(4000),4000,0,,
+SentDate,DATETIME,8,0,,
+Status,TINYINT,1,0,,

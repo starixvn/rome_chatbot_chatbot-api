@@ -1,0 +1,8 @@
+Column Name,Data type,Length,Allow Null,Default value,Description
+UserId,INT,4,0,,
+FunctionId,INT,4,0,,
+MessageType,TINYINT,1,0,,"1: Normal Msg
+2: Private Msg
+3: Special Msg
+4: System Update Msg"
+LastQueryTime,DATETIME,8,0,,

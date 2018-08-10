@@ -1,0 +1,5 @@
+Column Name,Data type,Length,Allow Null,Default value,Description
+Key,INT,4,0,,
+Type,VARCHAR(20),20,0,,
+LanguageCode,CHAR(5),5,0,,"en-US,..."
+Value,NVARCHAR(255),255,0,,
