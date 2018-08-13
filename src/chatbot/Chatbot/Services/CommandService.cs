@@ -70,8 +70,10 @@
 
                 var functionId = commandFunction != null ? commandFunction.Id : 0;
 
-                await messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command, functionId);
-                await RunCommand(command, user, messenger, commandFunction);
+                await Task.WhenAll(
+                    messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command, functionId),
+                    RunCommand(command, user, messenger, commandFunction));
+
             }
             catch (Exception ex)
             {

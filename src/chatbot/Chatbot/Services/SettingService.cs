@@ -85,8 +85,9 @@
             var verificationCode = RandomSixDigitsNumber();
             var user = await GetUser(userId);
 
-            await InsertMessengerWithVerificationCode(userId, messenger, verificationCode);
-            await SendVerificationCode(user, custName, messenger, verificationCode);
+            await Task.WhenAll(
+                InsertMessengerWithVerificationCode(userId, messenger, verificationCode),
+                SendVerificationCode(user, custName, messenger, verificationCode));
         }
 
         private async Task SendVerificationCode(User user, string custName, Messenger messenger, string verificationCode)
@@ -355,9 +356,10 @@
 
             var user = await GetUser(userId);
 
-            await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true);
-            await ResetUserActionCount(userId, chatbotConfigs.WrongVerificationCodeActionId, messenger.Type, messenger.Username);
-            await SendWelcomeMessage(user, messenger);
+            await Task.WhenAll(
+                UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true),
+                ResetUserActionCount(userId, chatbotConfigs.WrongVerificationCodeActionId, messenger.Type, messenger.Username),
+                SendWelcomeMessage(user, messenger));
 
             return VerificationCodeResult.CreateVerificationSuccessfulResult();
         }
