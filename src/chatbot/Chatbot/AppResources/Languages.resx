@@ -252,4 +252,7 @@
   <data name="SuperTotalCredit" xml:space="preserve">
     <value>Super Credit</value>
   </data>
+  <data name="Header_4" xml:space="preserve">
+    <value>Yesterday Win Loss</value>
+  </data>
 </root>

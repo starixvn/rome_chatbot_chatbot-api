@@ -44,7 +44,7 @@
                     {
                         { "quartz.serializer.type", "binary" }
                     }));
-                 services.AddHostedService<ScheduleService>();
+                 services.AddHostedService<ScheduleNotificationService>();
              })
              .UseConsoleLifetime()
              .Build();

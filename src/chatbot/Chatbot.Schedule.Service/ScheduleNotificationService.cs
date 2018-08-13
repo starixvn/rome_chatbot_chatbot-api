@@ -1,25 +1,27 @@
 ﻿namespace Chatbot.Schedule.Service
 {
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using Chatbot.Schedule.Service.Jobs;
     using Chatbot.Schedule.Service.Models;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
     using Quartz;
 
-    internal class ScheduleService : BackgroundService
+    internal class ScheduleNotificationService : BackgroundService
     {
         private readonly ISchedulerFactory schedulerFactory;
+        private readonly IConfiguration configuration;
 
-        public ScheduleService(ISchedulerFactory schedulerFactory)
+        public ScheduleNotificationService(ISchedulerFactory schedulerFactory, IConfiguration configuration)
         {
             this.schedulerFactory = schedulerFactory;
+            this.configuration = configuration;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var scheduleFunctions = GetScheduleFunctions();
+            var scheduleFunctions = configuration.GetSection("ScheduleFunctions").Get<ScheduleFunction[]>();
             var scheduler = await schedulerFactory.GetScheduler();
 
             foreach (var function in scheduleFunctions)
@@ -28,19 +30,6 @@
             }
 
             await scheduler.Start();
-        }
-
-        private IEnumerable<ScheduleFunction> GetScheduleFunctions()
-        {
-            return new List<ScheduleFunction>
-            {
-                new ScheduleFunction {
-                    Id = 4,
-                    Name = "NotifyYesterdayWinLoss",
-                    GroupName = "Notification",
-                    CronExpression = "0 0 16 ? * * *"
-                }
-            };
         }
 
         private static IJobDetail CreateJob(ScheduleFunction scheduleFunction)
@@ -53,10 +42,7 @@
             => TriggerBuilder.Create()
                 .WithIdentity($"{scheduleFunction.Name}Trigger", scheduleFunction.GroupName)
                 .StartNow()
-                .WithSimpleSchedule(x => x
-                    .WithIntervalInSeconds(10)
-                    .RepeatForever())
-                //.WithCronSchedule(scheduleFunction.CronExpression)
+                .WithCronSchedule(scheduleFunction.CronExpression)
                 .Build();
     }
 }

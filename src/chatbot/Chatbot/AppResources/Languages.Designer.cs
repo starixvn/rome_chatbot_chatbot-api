@@ -214,6 +214,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yesterday Win Loss.
+        /// </summary>
+        public static string Header_4 {
+            get {
+                return ResourceManager.GetString("Header_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your account has been verified, Chatbot is fully functioning..
         /// </summary>
         public static string InformingVerifiedMessage_1 {
