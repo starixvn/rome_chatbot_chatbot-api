@@ -6,6 +6,7 @@
     using Chatbot.Models;
     using System.Linq;
     using Microsoft.Extensions.Logging;
+    using System;
 
     public interface IMessageSender
     {
@@ -66,11 +67,20 @@
         /// </summary>
         public async Task<bool> IsMessengerAccountNotExisted(Messenger messenger)
         {
-            var client = messengerFactory.CreateMessengerClient(messenger.Type);
+            try
+            {
+                var client = messengerFactory.CreateMessengerClient(messenger.Type);
 
-            var profileResult = await client.GetProfileAsync(messenger.Username);
+                var profileResult = await client.GetProfileAsync(messenger.Username);
 
-            return !profileResult.Item2;
+                return !profileResult.Item2;
+            }
+            catch(Exception ex)
+            {
+                logger.LogError(ex.ToString());
+            }
+
+            return await Task.FromResult(false);
         }
 
         public async Task<Result> SendMessage(int userId, string message, IEnumerable<Messenger> messengers, int functionId = 0)
