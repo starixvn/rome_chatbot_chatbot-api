@@ -11,6 +11,7 @@
     using System.Collections.Specialized;
     using Chatbot.Client;
     using Chatbot.Client.Configurations;
+    using Chatbot.Schedule.Service.Jobs;
 
     public static class Program
     {
@@ -44,6 +45,7 @@
                     {
                         { "quartz.serializer.type", "binary" }
                     }));
+                 services.AddTransient<IJobListener, JobFailureHandler>();
                  services.AddHostedService<ScheduleNotificationService>();
              })
              .UseConsoleLifetime()

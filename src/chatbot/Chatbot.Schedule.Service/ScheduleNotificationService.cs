@@ -12,17 +12,23 @@
     {
         private readonly ISchedulerFactory schedulerFactory;
         private readonly IConfiguration configuration;
+        private readonly IJobListener jobFailureHandler;
 
-        public ScheduleNotificationService(ISchedulerFactory schedulerFactory, IConfiguration configuration)
+        public ScheduleNotificationService(
+            ISchedulerFactory schedulerFactory,
+            IConfiguration configuration,
+            IJobListener jobFailureHandler)
         {
             this.schedulerFactory = schedulerFactory;
             this.configuration = configuration;
+            this.jobFailureHandler = jobFailureHandler;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var scheduleFunctions = configuration.GetSection("ScheduleFunctions").Get<ScheduleFunction[]>();
             var scheduler = await schedulerFactory.GetScheduler();
+            //scheduler.ListenerManager.AddJobListener(jobFailureHandler);
 
             foreach (var function in scheduleFunctions)
             {
@@ -42,7 +48,10 @@
             => TriggerBuilder.Create()
                 .WithIdentity($"{scheduleFunction.Name}Trigger", scheduleFunction.GroupName)
                 .StartNow()
-                .WithCronSchedule(scheduleFunction.CronExpression)
+                .WithSimpleSchedule(x => x
+                    .WithIntervalInMinutes(10)
+                    .WithRepeatCount(10))
+                //.WithCronSchedule(scheduleFunction.CronExpression)
                 .Build();
     }
 }

@@ -1,6 +1,5 @@
 ﻿namespace Chatbot.Schedule.Service.MessageHandler
 {
-    using System;
     using System.Threading.Tasks;
     using Chatbot.Client.Services;
     using Quartz;
@@ -24,23 +23,11 @@
             var userId = dataMap.GetInt("userId");
             var functionId = dataMap.GetInt("functionId");
 
-            try
-            {
-                var result = await messageService.SendByFunction(functionId, userId);
+            var result = await messageService.SendByFunction(functionId, userId);
 
-                if (result.IsNotOk)
-                {
-                    throw new JobExecutionException($"Send failed to user: {userId}");
-                }
-            }
-            catch (Exception ex)
+            if (result.IsOk)
             {
-                var jobExecutionException = new JobExecutionException(ex)
-                {
-                    RefireImmediately = true
-                };
-
-                throw jobExecutionException;
+                throw new JobExecutionException($"Send failed to user: {userId}");
             }
         }
     }
