@@ -28,7 +28,7 @@
         {
             var scheduleFunctions = configuration.GetSection("ScheduleFunctions").Get<ScheduleFunction[]>();
             var scheduler = await schedulerFactory.GetScheduler();
-            //scheduler.ListenerManager.AddJobListener(jobFailureHandler);
+            scheduler.ListenerManager.AddJobListener(jobFailureHandler);
 
             foreach (var function in scheduleFunctions)
             {
@@ -48,10 +48,7 @@
             => TriggerBuilder.Create()
                 .WithIdentity($"{scheduleFunction.Name}Trigger", scheduleFunction.GroupName)
                 .StartNow()
-                .WithSimpleSchedule(x => x
-                    .WithIntervalInMinutes(10)
-                    .WithRepeatCount(10))
-                //.WithCronSchedule(scheduleFunction.CronExpression)
+                .WithCronSchedule(scheduleFunction.CronExpression)
                 .Build();
     }
 }

@@ -36,10 +36,10 @@
         public async Task SendMessageByFunction(int userId, int functionId)
         {
             var scheduler = await schedulerFactory.GetScheduler();
-            var jobKey = $"SendMessage_{userId}_{functionId}_{DateTime.UtcNow.ToString()}";
-            scheduler.ListenerManager.AddJobListener(new JobFailureHandler());
+            scheduler.ListenerManager.AddJobListener(jobFailureHandler);
+
             var job = JobBuilder.Create<SendMessageByFunctionJob>()
-                        .WithIdentity(jobKey, "SendMessage")
+                        .WithIdentity($"SendMessage_{userId}_{functionId}_{DateTime.UtcNow.ToString()}", "SendMessage")
                         .UsingJobData("userId", userId)
                         .UsingJobData("functionId", functionId)
                         .Build();
