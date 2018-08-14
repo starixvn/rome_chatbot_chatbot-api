@@ -9,11 +9,15 @@
     using System.IO;
     using Fanex.Caching;
     using Chatbot.Services;
+    using System.Diagnostics;
 
     public static class Program
     {
         public static async Task Main(string[] args)
         {
+            var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
+            var pathToContentRoot = Path.GetDirectoryName(pathToExe);
+
             var host = new HostBuilder()
                 .ConfigureLogging((hostContext, config) =>
                 {
@@ -36,6 +40,7 @@
                     services.AddSingleton<IMaintenanceService, MaintenanceService>();
                     services.AddHostedService<AutoUMService>();
                 })
+                .UseContentRoot(pathToContentRoot)
                 .UseConsoleLifetime()
                 .Build();
 
