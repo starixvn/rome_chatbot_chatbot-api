@@ -114,7 +114,7 @@
             Messenger messenger,
             string verificationCode)
         {
-            var command = new InsertMessengerCommand(userId, messenger.Type, messenger.Username.ToLowerInvariant(), verificationCode);
+            var command = new InsertMessengerCommand(userId, messenger.Type, messenger.Username, verificationCode);
 
             await dynamicRepository.ExecuteAsync(command);
         }

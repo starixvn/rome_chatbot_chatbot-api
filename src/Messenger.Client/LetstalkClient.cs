@@ -94,14 +94,14 @@
             payload.From = BusinessAccountType;
             payload.Type = MessageType.Text;
             payload.Id = 100;
-            payload.Receiver = accountIds.ElementAt(0).ToLowerInvariant();
+            payload.Receiver = accountIds.ElementAt(0);
             payload.HashId = ChatKeyVersion;
 
             return restClientHelper.ExecutePostAsync<Result>(
                 $"bot/push/{botId}",
                 new Dictionary<string, object>
                 {
-                    { "receiver", accountIds.Select(accountId => accountId.ToLowerInvariant()) },
+                    { "receiver", accountIds },
                     { "payload", JsonConvert.SerializeObject(payload, DefaultJsonSerializeSetting) }
                 });
         }
