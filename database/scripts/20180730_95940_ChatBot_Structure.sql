@@ -154,7 +154,7 @@ CREATE TABLE UserFunctionSetting(
 
 GO
 
-CREATE TABLE UserLogAction(
+CREATE TABLE CustActionCount(
 	Date SMALLDATETIME NOT NULL,
 	UserId INT NOT NULL,
 	MessengerType TINYINT NOT NULL,
