@@ -448,7 +448,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yesterday Bal..
+        ///   Looks up a localized string similar to Yesterday Bal.
         /// </summary>
         public static string YesterdayTotalBalance {
             get {

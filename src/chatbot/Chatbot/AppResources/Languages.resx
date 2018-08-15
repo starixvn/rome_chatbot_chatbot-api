@@ -214,7 +214,7 @@
     <value>Balance</value>
   </data>
   <data name="YesterdayTotalBalance" xml:space="preserve">
-    <value>Yesterday Bal.</value>
+    <value>Yesterday Bal</value>
   </data>
   <data name="YesterdayWinLoss" xml:space="preserve">
     <value>Yesterday WL</value>
