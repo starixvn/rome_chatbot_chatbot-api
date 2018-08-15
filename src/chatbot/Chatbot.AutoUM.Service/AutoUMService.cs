@@ -42,7 +42,7 @@
             stoppingToken.Register(() =>
                    _logger.LogDebug($" AutoUMService background task is stopping."));
 
-            var updateTime = Convert.ToInt32(_configuration.GetSection("GetUnderMaintenanceInfoInterval")?.Value ?? "10000");
+            var updateTime = Convert.ToInt32(_configuration.GetSection("GetUnderMaintenanceInfoInterval")?.Value ?? "3000");
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -59,6 +59,8 @@
             var umInfo = await _maintenanceService.GetUnderMaintenanceTime();
             var messengerClient = _messengerFactory.CreateMessengerClient(MessengerType.Letstalk);
 
+            _logger.LogDebug(umInfo.From);
+
             if (IsNewUMInfo(umInfo))
             {
                 _cacheService.Set(
@@ -68,11 +70,15 @@
 
                 if (umInfo.IsUnderMaintenanceTime)
                 {
-                    await messengerClient.SetAutoReplyAsync(
+                    _logger.LogDebug("Start set auto reply message");
+
+                    var result = await messengerClient.SetAutoReplyAsync(
                         $"System is under maintenance from {umInfo.From} to {umInfo.To}",
                         true,
                         Convert.ToDateTime(umInfo.From),
                         Convert.ToDateTime(umInfo.To));
+
+                    _logger.LogDebug(result.IsOk ? "Sent Success" : "Sent Failed");
                 }
             }
         }

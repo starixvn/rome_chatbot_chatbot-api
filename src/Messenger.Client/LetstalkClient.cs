@@ -70,7 +70,7 @@
             payload.HashContentKey = cryptographyHelper.Hash(formattedMessage);
             payload.HashContent = cryptographyHelper.Encrypt(formattedMessage, messengerSettings.ChatKey, payload.HashContentKey);
 
-            if(expiredTime.HasValue)
+            if (expiredTime.HasValue)
             {
                 payload.DueDate = new DateTimeOffset(expiredTime.Value).ToUnixTimeMilliseconds();
             }
@@ -107,6 +107,7 @@
         }
 
 #pragma warning disable S3994 // URI Parameters should not be strings
+
         public Task<Result> SetWebhookAsync(string url)
 #pragma warning restore S3994 // URI Parameters should not be strings
         {

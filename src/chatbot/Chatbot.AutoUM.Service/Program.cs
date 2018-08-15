@@ -4,26 +4,20 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
     using ONEbook.UM.AspNetCore.Services;
     using System.IO;
     using Fanex.Caching;
     using Chatbot.Services;
+    using ONEbook.UM.Core.Configurations;
+    using Serilog;
     using System.Diagnostics;
+    using System.Linq;
 
     public static class Program
     {
         public static async Task Main(string[] args)
         {
-            var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
-            var pathToContentRoot = Path.GetDirectoryName(pathToExe);
-
-            var host = new HostBuilder()
-                .ConfigureLogging((hostContext, config) =>
-                {
-                    config.AddConsole();
-                    config.AddDebug();
-                })
+            var builder = new HostBuilder()
                 .ConfigureAppConfiguration((hostContext, config) =>
                 {
                     config.AddEnvironmentVariables();
@@ -33,24 +27,31 @@
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
+                    var rootPath = hostContext.HostingEnvironment.ContentRootPath;
+                    UMClientConfiguration.InitConfigurationRoot(rootPath);
                     services.AddLogging();
                     services.AddSingleton(_ => hostContext.Configuration);
                     services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
                     services.AddSingleton<ICacheService, CacheService>();
                     services.AddSingleton<IMaintenanceService, MaintenanceService>();
                     services.AddHostedService<AutoUMService>();
+
+                    Log.Logger = new LoggerConfiguration()
+                       .MinimumLevel.Debug()
+                       .WriteTo.File($"{rootPath}\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
+                       .CreateLogger();
                 })
-                .UseContentRoot(pathToContentRoot)
-                .UseConsoleLifetime()
-                .Build();
+                .UseSerilog();
 
-            using (host)
+            var isService = !(Debugger.IsAttached || args.Contains("--console"));
+
+            if (isService)
             {
-                // Start the host
-                await host.StartAsync();
-
-                // Wait for the host to shutdown
-                await host.WaitForShutdownAsync();
+                await builder.RunAsServiceAsync();
+            }
+            else
+            {
+                await builder.RunConsoleAsync();
             }
         }
     }

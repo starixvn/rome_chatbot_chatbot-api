@@ -3,8 +3,6 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using System.IO;
     using System.Threading.Tasks;
     using Quartz;
     using Quartz.Impl;
@@ -12,30 +10,35 @@
     using Chatbot.Client;
     using Chatbot.Client.Configurations;
     using Chatbot.Schedule.Service.Jobs;
+    using System.Diagnostics;
+    using System.Linq;
+    using Serilog;
+    using System;
 
     public static class Program
     {
         private static async Task Main(string[] args)
         {
-            var host = new HostBuilder()
-             .ConfigureLogging((hostContext, config) =>
-             {
-                 config.AddConsole();
-                 config.AddDebug();
-             })
+            var builder = new HostBuilder()
              .ConfigureAppConfiguration((hostContext, config) =>
              {
                  config.AddEnvironmentVariables();
-                 config.SetBasePath(Directory.GetCurrentDirectory());
+                 config.SetBasePath(hostContext.HostingEnvironment.ContentRootPath);
                  config.AddJsonFile("appsettings.json", optional: true);
-                 config.AddCommandLine(args);
              })
              .ConfigureServices((hostContext, services) =>
              {
+                 Log.Logger = new LoggerConfiguration()
+                   .MinimumLevel.Debug()
+                   .WriteTo.File(
+                         $"{hostContext.HostingEnvironment.ContentRootPath}\\Logs\\log.txt",
+                         rollingInterval: RollingInterval.Day)
+                   .CreateLogger();
+
                  ChatbotClientManager
                        .UseConfig(new BotClientConfigs(
-                           hostContext.Configuration.GetSection("Chatbot:BaseUrl").Value,
-                           hostContext.Configuration.GetSection("Chatbot:ApiKey").Value))
+                            hostContext.Configuration.GetSection("Chatbot:BaseUrl").Value,
+                            hostContext.Configuration.GetSection("Chatbot:ApiKey").Value))
                        .UseRestClient(new Client.Transport.RestClient());
 
                  services.AddLogging();
@@ -48,16 +51,17 @@
                  services.AddTransient<IJobListener, JobFailureHandler>();
                  services.AddHostedService<ScheduleNotificationService>();
              })
-             .UseConsoleLifetime()
-             .Build();
+             .UseSerilog();
 
-            using (host)
+            var isService = !(Debugger.IsAttached || args.Contains("--console"));
+
+            if (isService)
             {
-                // Start the host
-                await host.StartAsync();
-
-                // Wait for the host to shutdown
-                await host.WaitForShutdownAsync();
+                await builder.RunAsServiceAsync();
+            }
+            else
+            {
+                await builder.RunConsoleAsync();
             }
         }
     }

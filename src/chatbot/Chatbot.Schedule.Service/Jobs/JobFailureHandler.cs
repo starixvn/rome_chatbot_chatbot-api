@@ -3,23 +3,10 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Chatbot.Schedule.Service.Helpers;
-    using Microsoft.Extensions.Configuration;
     using Quartz;
 
     internal class JobFailureHandler : IJobListener
     {
-        private readonly IConfigurationRoot configurationRoot;
-
-        public JobFailureHandler() : this(null)
-        {
-        }
-
-        public JobFailureHandler(IConfigurationRoot configurationRoot)
-        {
-            this.configurationRoot = configurationRoot ?? ConfigurationHelper.GetConfiguration();
-        }
-
         public string Name => "FailJobListener";
 
         public Task JobExecutionVetoed(IJobExecutionContext context, CancellationToken cancellationToken = default)
@@ -49,7 +36,7 @@
 
             var numberRetries = context.JobDetail.JobDataMap.GetIntValue(Constant.NumberOfRetriesKey);
 
-            if (numberRetries <= configurationRoot.GetValue<int>("MaxRetryJobFailTimes"))
+            if (numberRetries <= 5)
             {
                 var trigger = TriggerBuilder
                   .Create()

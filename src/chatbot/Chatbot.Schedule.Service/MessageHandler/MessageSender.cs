@@ -39,7 +39,7 @@
             scheduler.ListenerManager.AddJobListener(jobFailureHandler);
 
             var job = JobBuilder.Create<SendMessageByFunctionJob>()
-                        .WithIdentity($"SendMessage_{userId}_{functionId}_{DateTime.UtcNow.ToString()}", "SendMessage")
+                        .WithIdentity($"SendMessage_{userId}_{functionId}_{DateTime.UtcNow}", "SendMessage")
                         .UsingJobData("userId", userId)
                         .UsingJobData("functionId", functionId)
                         .Build();
