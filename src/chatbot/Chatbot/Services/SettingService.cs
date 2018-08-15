@@ -365,6 +365,11 @@
 
         private async Task<VerificationCodeResult> CheckVerificationCode(int userId, string verificationCode, Messenger messenger)
         {
+            if (await IsMessengerAccountBelongToAnotherUser(userId, messenger))
+            {
+                return VerificationCodeResult.CreateWrongVerificationCodeResult();
+            }
+
             var criteria = new GetMessengerByUserCriteria(userId, messenger.Type, messenger.Username);
             var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(criteria);
             var result = VerificationCodeResult.CreateVerificationSuccessfulResult();
