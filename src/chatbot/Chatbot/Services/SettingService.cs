@@ -285,8 +285,7 @@
             ValidateInputParam("Messenger Username", messenger.Username);
             ValidateInputParam("Messenger Type", messenger.Type);
 
-            var criteria = new GetMessengerCriteria(messenger.Username, messenger.Type);
-            var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(criteria);
+            var messengerDto = await GetMessenger(messenger.Type, messenger.Username);
 
             return messengerDto != null
                 && messengerDto.UserId != userId;
