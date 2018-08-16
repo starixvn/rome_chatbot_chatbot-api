@@ -12,11 +12,17 @@
   <ItemGroup>
     <None Remove="appsettings.json" />
     <None Remove="appsettings.local.json" />
+    <None Remove="appsettings.pro.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="appsettings.pro.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
     <Content Include="appsettings.local.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>appsettings.json</DependentUpon>
     </Content>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

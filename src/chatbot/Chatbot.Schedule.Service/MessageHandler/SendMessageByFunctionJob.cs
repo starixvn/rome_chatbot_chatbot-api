@@ -25,7 +25,7 @@
 
             var result = await messageService.SendByFunction(functionId, userId);
 
-            if (result.IsNotOk)
+            if (!result.IsNotOk)
             {
                 throw new JobExecutionException($"Send failed to user: {userId}");
             }
