@@ -10,6 +10,8 @@
 
     public static class AddFunctionHandlerMiddleware
     {
+        private static ReportService reportService;
+
         public static void AddFunctionHandler(
             this IServiceCollection services,
             ChatbotConfigs chatbotConfigs)
@@ -24,16 +26,29 @@
             });
         }
 
+        private static ReportService ReportService
+        {
+            get
+            {
+                if (reportService == null)
+                {
+                    reportService = new ReportServiceImpl();
+                }
+
+                return reportService;
+            }
+        }
+
         private static async Task<object> GetOutstanding(FunctionParam param)
-           => await (new ReportServiceImpl()).GetOutstandingAsync(param.User.CustId);
+           => await ReportService.GetOutstandingAsync(param.User.CustId);
 
         private static async Task<object> GetWinLoss(FunctionParam param)
-            => await (new ReportServiceImpl()).GetWinLossAsync(param.User.CustId, DateTime.Now.Date);
+            => await ReportService.GetWinLossAsync(param.User.CustId, DateTime.Now.Date);
 
         private static async Task<object> GetBalanceInfo(FunctionParam param)
-            => await (new ReportServiceImpl()).GetBalanceInfoAsync(param.User.CustId);
+            => await ReportService.GetBalanceInfoAsync(param.User.CustId);
 
         private static async Task<object> GetYesterdayWinLoss(FunctionParam param)
-          => await (new ReportServiceImpl()).GetWinLossAsync(param.User.CustId, DateTime.Now.AddDays(-1).Date);
+          => await ReportService.GetWinLossAsync(param.User.CustId, DateTime.Now.AddDays(-1).Date);
     }
 }
