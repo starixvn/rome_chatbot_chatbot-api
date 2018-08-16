@@ -15,9 +15,7 @@
         public string Name => "FailJobListener";
 
         public Task JobExecutionVetoed(IJobExecutionContext context, CancellationToken cancellationToken = default)
-        {
-            return Task.CompletedTask;
-        }
+            => Task.CompletedTask;
 
         public Task JobToBeExecuted(IJobExecutionContext context, CancellationToken cancellationToken = default)
         {
@@ -61,8 +59,11 @@
             }
             else
             {
-                Log.Logger.Error($"Job with ID and type: {context.JobDetail.Key}, {context.JobDetail.JobType} has run {MaxRetries} times and has failed each time.");
-                // Write more log here
+                Log.Logger.Error(
+                    $"Job with ID and type: {context.JobDetail.Key}, " +
+                    $"{context.JobDetail.JobType} has run {MaxRetries} times and has failed each time.");
+
+                // TODO: Write more log here
             }
 
             return Task.CompletedTask;

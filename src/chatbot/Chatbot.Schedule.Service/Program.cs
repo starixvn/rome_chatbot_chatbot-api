@@ -1,19 +1,19 @@
 ﻿namespace Chatbot.Schedule.Service
 {
-    using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using System.Threading.Tasks;
-    using Quartz;
-    using Quartz.Impl;
+    using System;
     using System.Collections.Specialized;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Threading.Tasks;
     using Chatbot.Client;
     using Chatbot.Client.Configurations;
     using Chatbot.Schedule.Service.Jobs;
-    using System.Diagnostics;
-    using System.Linq;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Quartz;
+    using Quartz.Impl;
     using Serilog;
-    using System;
 
     public static class Program
     {

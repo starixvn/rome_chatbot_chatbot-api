@@ -38,8 +38,6 @@
 
         [Route("sendByFunction"), HttpPost]
         public async Task<Result> SendByFunction([FromBody]FunctionParam param)
-        {
-            return await functionService.Handle(param.FunctionId, param.UserId);
-        }
+            => await functionService.Handle(param.FunctionId, param.UserId);
     }
 }

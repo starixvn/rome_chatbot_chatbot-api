@@ -52,6 +52,8 @@
                 catch (Exception ex)
                 {
                     LogError(user, messenger, ex);
+
+                    return new Result(1);
                 }
             }
 

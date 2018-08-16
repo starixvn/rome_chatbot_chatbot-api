@@ -26,7 +26,7 @@
             });
         }
 
-        private static ReportService ReportService
+        internal static ReportService ReportService
         {
             get
             {
@@ -36,6 +36,10 @@
                 }
 
                 return reportService;
+            }
+            set
+            {
+                reportService = value;
             }
         }
 
@@ -49,6 +53,6 @@
             => await ReportService.GetBalanceInfoAsync(param.User.CustId);
 
         private static async Task<object> GetYesterdayWinLoss(FunctionParam param)
-          => await ReportService.GetWinLossAsync(param.User.CustId, DateTime.Now.AddDays(-1).Date);
+            => await ReportService.GetWinLossAsync(param.User.CustId, DateTime.Now.AddDays(-1).Date);
     }
 }
