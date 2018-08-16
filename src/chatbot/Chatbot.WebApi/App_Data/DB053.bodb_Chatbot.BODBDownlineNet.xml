@@ -30,5 +30,7 @@
     <Setting Key="Chatbot_GetUsersByFunctions" SpName="Chatbot_GetUsersByFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="userid" />
     </Setting>
+    <Setting Key="GetMessageLastQueryTime" SpName="Chatbot_GetMessageLastQueryTime" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="UpdateMessageLastQueryTime" SpName="Chatbot_UpdateMessageLastQueryTime" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
   </Function>
 </Functions>

@@ -34,6 +34,8 @@
         {
             services.AddMvc();
 
+            services.AddSingleton(_ => Configuration);
+            
             LogManager
                     .SetDefaultLogCategory(Configuration["Fanex.Logging:DefaultCategory"])
                     .Use(new RabbitMQLogging(Configuration["Fanex.Logging:RabbitMQConnectionStrings"]));
@@ -50,8 +52,11 @@
             services.AddSingleton<IFunctionHandler, FunctionHandler>();
             services.AddSingleton(Logger.Log);
             services.AddSingleton<FunctionService, FunctionServiceImpl>();
+            services.AddSingleton<MessageService, MessageServiceImpl>();
             
-            services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate>());
+            services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
+                    { 5, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) }
+            });
             services.AddSingleton<IDictionary<int, IMessengerFormatter>>(
                 new Dictionary<int, IMessengerFormatter>
                 {
@@ -69,7 +74,7 @@
                     { "ko-KR", CultureInfo.CreateSpecificCulture("ko-KR") }
                 });
 
-            services.AddFunctionHandler(new ChatbotConfigs(Configuration));
+            services.AddFunctionHandler();
 
             services.AddSwaggerGen(c =>
             {

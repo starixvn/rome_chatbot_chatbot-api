@@ -43,6 +43,7 @@
             ReturnRawErrorToMessenger = GetValue<bool>("Chatbot:ReturnRawErrorToMessenger");
             SpDirectory = GetValue<string>("Chatbot:SpDirectory");
             YesterdayWinLossFunctionId = GetValue<int>("Chatbot:YesterdayWinLossFunctionId");
+            PersonalMessageFunctionId = GetValue<int>("Chatbot:PersonalMessageFunctionId");
         }
 
         public int MaxAddActionTimes { get; }
@@ -60,6 +61,8 @@
         public int BalanceFunctionId { get; }
 
         public int YesterdayWinLossFunctionId { get; }
+
+        public int PersonalMessageFunctionId { get; }
 
         public bool ReturnRawErrorToMessenger { get; }
 

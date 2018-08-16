@@ -29,10 +29,13 @@
             var functionId = dataMap.GetIntValue(JobDataKey.FunctionId);
             var users = await settingService.GetUsersByFunction(functionId, 0);
 
-            Parallel.ForEach(users, async (user) =>
-            {
-                await messageSender.SendMessageByFunction(user.Id, functionId);
-            });
+            var user = users[0];
+            await messageSender.SendMessageByFunction(user.Id, functionId);
+
+            //Parallel.ForEach(users, async (user) =>
+            //{
+            //    await messageSender.SendMessageByFunction(user.Id, functionId);
+            //});
         }
     }
 }

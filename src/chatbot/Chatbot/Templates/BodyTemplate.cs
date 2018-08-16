@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Globalization;
     using Chatbot.AppResources;
+    using Chatbot.Helpers;
     using Extensions;
 
     public interface IBodyTemplate
@@ -15,7 +16,7 @@
     {
         public string ToString(object data, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
         {
-            var keyValues = Parse<Dictionary<string, object>>(data);
+            var keyValues = DataHelper.Parse<Dictionary<string, object>>(data);
             var textContainer = new List<string>();
 
             foreach (var keyValue in keyValues)
@@ -42,24 +43,6 @@
             }
 
             return value.ToString();
-        }
-
-        private static T Parse<T>(object data)
-            where T : class
-        {
-            if (data == null)
-            {
-                throw new ArgumentNullException(nameof(data));
-            }
-
-            var model = data as T;
-
-            if (model == null)
-            {
-                throw new InvalidOperationException($"Cannot parse {typeof(T)} model");
-            }
-
-            return model;
         }
 
         protected virtual string GetResource(string key, CultureInfo cultureInfo)

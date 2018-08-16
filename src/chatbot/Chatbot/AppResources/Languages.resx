@@ -255,4 +255,7 @@
   <data name="Header_4" xml:space="preserve">
     <value>Yesterday Win Loss</value>
   </data>
+  <data name="Header_5" xml:space="preserve">
+    <value>Personal Message</value>
+  </data>
 </root>
