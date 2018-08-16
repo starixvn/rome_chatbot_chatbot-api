@@ -1,7 +1,9 @@
 ﻿namespace Chatbot.Schedule.Service
 {
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using Chatbot.Schedule.Service.Constants;
     using Chatbot.Schedule.Service.Jobs;
     using Chatbot.Schedule.Service.Models;
     using Microsoft.Extensions.Configuration;
@@ -32,7 +34,11 @@
         {
             logger.LogInformation("Start execution");
 
-            var scheduleFunctions = configuration.GetSection("ScheduleFunctions").Get<ScheduleFunction[]>();
+            var scheduleFunctions = configuration
+                .GetSection(AppSettingKey.ScheduleFunctions)
+                .Get<ScheduleFunction[]>()
+                .Where(f => f.GroupName == FunctionType.Notification);
+
             var scheduler = await schedulerFactory.GetScheduler();
             scheduler.ListenerManager.AddJobListener(jobFailureHandler);
 
@@ -49,7 +55,7 @@
         private static IJobDetail CreateJob(ScheduleFunction scheduleFunction)
             => JobBuilder.Create<NotificationJob>()
                 .WithIdentity(scheduleFunction.Name, scheduleFunction.GroupName)
-                .UsingJobData("functionId", scheduleFunction.Id)
+                .UsingJobData(JobDataKey.FunctionId, scheduleFunction.Id)
                 .Build();
 
         private static ITrigger CreateTrigger(ScheduleFunction scheduleFunction)

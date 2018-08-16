@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using Chatbot.Client.Services;
+    using Chatbot.Schedule.Service.Constants;
     using Chatbot.Schedule.Service.MessageHandler;
     using Quartz;
 
@@ -25,7 +26,7 @@
         public async Task Execute(IJobExecutionContext context)
         {
             var dataMap = context.JobDetail.JobDataMap;
-            var functionId = dataMap.GetIntValue("functionId");
+            var functionId = dataMap.GetIntValue(JobDataKey.FunctionId);
             var users = await settingService.GetUsersByFunction(functionId, 0);
 
             Parallel.ForEach(users, async (user) =>

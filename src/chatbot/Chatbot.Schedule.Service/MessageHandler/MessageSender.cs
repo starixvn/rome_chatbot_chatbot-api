@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Specialized;
     using System.Threading.Tasks;
+    using Chatbot.Schedule.Service.Constants;
     using Chatbot.Schedule.Service.Jobs;
     using Quartz;
     using Quartz.Impl;
@@ -39,8 +40,8 @@
 
             var job = JobBuilder.Create<SendMessageByFunctionJob>()
                         .WithIdentity($"SendMessage_{userId}_{functionId}_{DateTime.UtcNow}", "SendMessage")
-                        .UsingJobData("userId", userId)
-                        .UsingJobData("functionId", functionId)
+                        .UsingJobData(JobDataKey.UserId, userId)
+                        .UsingJobData(JobDataKey.FunctionId, functionId)
                         .Build();
             var trigger = TriggerBuilder
                         .Create()

@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using Chatbot.Client.Services;
+    using Chatbot.Schedule.Service.Constants;
     using Quartz;
 
     public class SendMessageByFunctionJob : IJob
@@ -20,8 +21,8 @@
         public async Task Execute(IJobExecutionContext context)
         {
             var dataMap = context.JobDetail.JobDataMap;
-            var userId = dataMap.GetInt("userId");
-            var functionId = dataMap.GetInt("functionId");
+            var userId = dataMap.GetInt(JobDataKey.UserId);
+            var functionId = dataMap.GetInt(JobDataKey.FunctionId);
 
             var result = await messageService.SendByFunction(functionId, userId);
 
