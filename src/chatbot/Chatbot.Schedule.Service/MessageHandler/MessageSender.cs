@@ -6,7 +6,6 @@
     using Chatbot.Schedule.Service.Jobs;
     using Quartz;
     using Quartz.Impl;
-    using Quartz.Impl.Matchers;
 
     public interface IMessageSender
     {
