@@ -258,4 +258,10 @@
   <data name="Header_5" xml:space="preserve">
     <value>Personal Message</value>
   </data>
+  <data name="Header_6" xml:space="preserve">
+    <value>Special Announcement</value>
+  </data>
+  <data name="Header_7" xml:space="preserve">
+    <value>Normal Announcement</value>
+  </data>
 </root>

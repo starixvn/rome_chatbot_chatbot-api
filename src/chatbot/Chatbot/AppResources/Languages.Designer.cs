@@ -232,6 +232,24 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Special Announcement.
+        /// </summary>
+        public static string Header_6 {
+            get {
+                return ResourceManager.GetString("Header_6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normal Announcement.
+        /// </summary>
+        public static string Header_7 {
+            get {
+                return ResourceManager.GetString("Header_7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your account has been verified, Chatbot is fully functioning..
         /// </summary>
         public static string InformingVerifiedMessage_1 {

@@ -11,9 +11,9 @@
         public string ToString(object data, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
         {
             var messages = DataHelper.Parse<IEnumerable<Message>>(data);
-            var messageContents = messages.Select(message => message.Content).ToList();
+            var messageContents = messages.Select(message => message.Content + messengerFormatter.NewLine()).ToList();
 
-            return string.Join(messengerFormatter.NewLine(), messageContents);
+            return string.Concat(messageContents);
         }
     }
 }

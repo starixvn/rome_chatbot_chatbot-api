@@ -38,6 +38,11 @@
 
             var data = await getDataHanlders[param.Function.Id](param);
 
+            if (data == null)
+            {
+                return new Result(0, "No data");
+            }
+
             var message = messageBuilder.BuildCommandResultMessage(
                  param.User.Language,
                  param.Function.Id,

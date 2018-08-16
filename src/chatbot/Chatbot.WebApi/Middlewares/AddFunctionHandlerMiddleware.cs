@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
@@ -32,7 +33,9 @@
                 { chatbotConfigs.WinlossFunctionId, GetWinLoss },
                 { chatbotConfigs.BalanceFunctionId, GetBalanceInfo },
                 { chatbotConfigs.YesterdayWinLossFunctionId, GetYesterdayWinLoss },
-                { chatbotConfigs.PersonalMessageFunctionId, GetPersonalMessage }
+                { chatbotConfigs.PersonalMessageFunctionId, GetPersonalMessage },
+                { chatbotConfigs.SpecialAnnouncementFunctionId, GetSpecialAnnouncement },
+                { chatbotConfigs.NormalAnnouncementFunctionId, GetNormalAnnouncement }
             });
         }
 
@@ -49,13 +52,22 @@
             => await reportService.GetWinLossAsync(param.User.CustId, DateTime.Now.AddDays(-1).Date);
 
         private static async Task<object> GetPersonalMessage(FunctionParam param)
+            => await GetMessage(param, MessageType.Personal);
+
+        private static async Task<object> GetSpecialAnnouncement(FunctionParam param)
+            => await GetMessage(param, MessageType.Special);
+
+        private static async Task<object> GetNormalAnnouncement(FunctionParam param)
+           => await GetMessage(param, MessageType.Normal);
+
+        private static async Task<IEnumerable<Message>> GetMessage(FunctionParam param, int messageType)
         {
             var now = DateTime.Now;
-            var lastQueryTime = await chatBotMessageService.GetLastQueryTime(param.User.Id, param.Function.Id, MessageType.Personal);
-            var message = await messageService.GetMessagesAsync(param.User.CustId, MessageType.Personal, param.User.Language, lastQueryTime, now);
-            await chatBotMessageService.UpdateLastQueryTime(param.User.Id, param.Function.Id, MessageType.Personal, now);
+            var lastQueryTime = await chatBotMessageService.GetLastQueryTime(param.User.Id, param.Function.Id, messageType);
+            var message = await messageService.GetMessagesAsync(param.User.CustId, messageType, param.User.Language, DateTime.Now.AddDays(-100), now);
+            await chatBotMessageService.UpdateLastQueryTime(param.User.Id, param.Function.Id, messageType, now);
 
-            return message;
+            return message?.Count() > 0 ? message : null;
         }
     }
 }

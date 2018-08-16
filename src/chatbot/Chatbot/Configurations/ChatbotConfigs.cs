@@ -44,6 +44,8 @@
             SpDirectory = GetValue<string>("Chatbot:SpDirectory");
             YesterdayWinLossFunctionId = GetValue<int>("Chatbot:YesterdayWinLossFunctionId");
             PersonalMessageFunctionId = GetValue<int>("Chatbot:PersonalMessageFunctionId");
+            SpecialAnnouncementFunctionId = GetValue<int>("Chatbot:SpecialAnnouncementFunctionId");
+            NormalAnnouncementFunctionId = GetValue<int>("Chatbot:NormalAnnouncementFunctionId");
         }
 
         public int MaxAddActionTimes { get; }
@@ -63,6 +65,10 @@
         public int YesterdayWinLossFunctionId { get; }
 
         public int PersonalMessageFunctionId { get; }
+
+        public int SpecialAnnouncementFunctionId { get; }
+
+        public int NormalAnnouncementFunctionId { get; }
 
         public bool ReturnRawErrorToMessenger { get; }
 
