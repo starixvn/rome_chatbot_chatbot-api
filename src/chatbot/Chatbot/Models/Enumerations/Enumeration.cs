@@ -25,40 +25,23 @@
             _displayName = displayName;
         }
 
-        public string DisplayName
-        {
-            get { return _displayName; }
-        }
+        public string DisplayName => _displayName;
 
-        public byte Value
-        {
-            get { return _value; }
-        }
+        public byte Value => _value;
 
         public static byte AbsoluteDifference(Enumeration firstValue, Enumeration secondValue)
-        {
-            var absoluteDifference = (byte)Math.Abs(firstValue.Value - secondValue.Value);
-            return absoluteDifference;
-        }
+            => (byte)Math.Abs(firstValue.Value - secondValue.Value);
 
         public static T FromDisplayName<T>(string displayName) where T : Enumeration, new()
-        {
-            var matchingItem = Parse<T, string>(displayName, "display name", item => item.DisplayName == displayName);
-            return matchingItem;
-        }
+            => Parse<T, string>(displayName, "display name", item => item.DisplayName == displayName);
 
         public static T FromValue<T>(byte value) where T : Enumeration, new()
-        {
-            var matchingItem = Parse<T, byte>(value, "value", item => item.Value == value);
-            return matchingItem;
-        }
+            => Parse<T, byte>(value, "value", item => item.Value == value);
 
         public static IEnumerable<T> GetAll<T>() where T : Enumeration, new()
         {
             var type = typeof(T);
-            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
-
-            foreach (var info in fields)
+            foreach (var info in type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly))
             {
                 var instance = new T();
                 var locatedValue = info.GetValue(instance) as T;
@@ -72,9 +55,7 @@
 
         public static IEnumerable GetAll(Type type)
         {
-            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
-
-            foreach (var info in fields)
+            foreach (var info in type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly))
             {
                 object instance = Activator.CreateInstance(type);
                 yield return info.GetValue(instance);
@@ -83,28 +64,17 @@
 
         public static bool operator ==(Enumeration left, Enumeration right)
         {
-            if (ReferenceEquals(left, null))
+            if (left is null)
             {
-                if (ReferenceEquals(right, null))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return right is null;
             }
-            else
+
+            if (right is null)
             {
-                if (ReferenceEquals(right, null))
-                {
-                    return false;
-                }
-                else
-                {
-                    return left.Value == right.Value;
-                }
+                return false;
             }
+
+            return left.Value == right.Value;
         }
 
         public static bool operator !=(Enumeration left, Enumeration right)
@@ -170,7 +140,7 @@
         {
             if (obj == null)
             {
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
             }
 
             return Value.CompareTo(((Enumeration)obj).Value);
@@ -178,14 +148,14 @@
 
         private static void ValidateInputArguments(Enumeration left, Enumeration right)
         {
-            if (ReferenceEquals(left, null))
+            if (left is null)
             {
-                throw new ArgumentNullException("left");
+                throw new ArgumentNullException(nameof(left));
             }
 
-            if (ReferenceEquals(right, null))
+            if (right is null)
             {
-                throw new ArgumentNullException("right");
+                throw new ArgumentNullException(nameof(right));
             }
         }
 

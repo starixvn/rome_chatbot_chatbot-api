@@ -20,8 +20,8 @@
         }
 
         [Route("user"), HttpPost]
-        public async Task<AddingUserResult> AddUser([FromBody]UserParam param)
-            => await settingService.AddUser(
+        public Task<AddingUserResult> AddUser([FromBody]UserParam param)
+            => settingService.AddUser(
                 param.CustId,
                 param.SubAccountId,
                 param.CustName,
@@ -29,8 +29,8 @@
                 new Messenger(param.MessengerType, param.MessengerUsername));
 
         [Route("user"), HttpGet]
-        public async Task<User> GetUser(int custId, int subAccountId, string language)
-            => await settingService.GetUser(custId, subAccountId, language);
+        public Task<User> GetUser(int custId, int subAccountId, string language)
+            => settingService.GetUser(custId, subAccountId, language);
 
         [Route("{userId}/function"), HttpPost]
         public async Task<Result> UpdateFunctions(int userId, [FromBody]IEnumerable<Function> functions)
@@ -41,8 +41,8 @@
         }
 
         [Route("{userId}/function/{language}"), HttpGet]
-        public async Task<IEnumerable<Function>> GetFunctions(int userId, string language)
-            => await settingService.GetFunctions(userId, language);
+        public Task<IEnumerable<Function>> GetFunctions(int userId, string language)
+            => settingService.GetFunctions(userId, language);
 
         [Route("{userId}/language/{language}"), HttpPost]
         public async Task<Result> UpdateLanguage(int userId, string language)
@@ -79,11 +79,11 @@
         }
 
         [Route("messenger/{messengerType}/{messengerUsername}"), HttpGet]
-        public async Task<MessengerDto> GetMessenger(int messengerType, string messengerUsername)
-            => await settingService.GetMessenger(messengerType, messengerUsername);
+        public Task<MessengerDto> GetMessenger(int messengerType, string messengerUsername)
+            => settingService.GetMessenger(messengerType, messengerUsername);
 
         [Route("users/function/{functionId}/{environment}"), HttpGet]
-        public async Task<IEnumerable<User>> GetUsersByFunction(int functionId, int environment)
-            => await settingService.GetUsersByFunction(functionId, environment);
+        public Task<IEnumerable<User>> GetUsersByFunction(int functionId, int environment)
+            => settingService.GetUsersByFunction(functionId, environment);
     }
 }

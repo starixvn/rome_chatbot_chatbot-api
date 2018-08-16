@@ -25,9 +25,7 @@
             => string.Format(RootXml, FormatedFunctionXml);
 
         private string FormatedFunctionXml
-            => string.Join(
-                string.Empty,
-                Functions.Select(function => $"<Function UserId=\"{UserId}\" FunctionId=\"{function.Id}\" Command=\"{function.Command}\" Enable=\"{function.Enabled}\"/> "));
+            => string.Concat(Functions.Select(function => $"<Function UserId=\"{UserId}\" FunctionId=\"{function.Id}\" Command=\"{function.Command}\" Enable=\"{function.Enabled}\"/> "));
 
         public override string GetSettingKey() => "UpdateUserFunctions";
 

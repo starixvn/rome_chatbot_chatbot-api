@@ -1,6 +1,4 @@
-﻿
-
-namespace Chatbot.Params.Db.Commands
+﻿namespace Chatbot.Params.Db.Commands
 {
     using System;
     using Fanex.Data.Repository;
@@ -8,9 +6,9 @@ namespace Chatbot.Params.Db.Commands
     public class InsertUserActionCommand : NonQueryCommand
     {
         public InsertUserActionCommand(
-            int userId, 
-            int actionId, 
-            int messengerType, 
+            int userId,
+            int actionId,
+            int messengerType,
             string messengerUsername)
         {
             UserId = userId;

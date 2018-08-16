@@ -71,5 +71,29 @@
 
         private static int GapBetweenTwoLevels(byte uplineLevelValue, byte downlineLevelValue)
             => uplineLevelValue - downlineLevelValue;
+
+        public override bool Equals(object obj)
+            => ReferenceEquals(this, obj);
+
+        public override int GetHashCode()
+            => Value.GetHashCode();
+
+        public static bool operator ==(CustLevel left, CustLevel right)
+            => (left is null) ? right is null : left.Equals(right);
+
+        public static bool operator !=(CustLevel left, CustLevel right)
+            => !(left == right);
+
+        public static bool operator <(CustLevel left, CustLevel right)
+            => left is null ? !(right is null) : left.CompareTo(right) < 0;
+
+        public static bool operator <=(CustLevel left, CustLevel right)
+            => left is null || left.CompareTo(right) <= 0;
+
+        public static bool operator >(CustLevel left, CustLevel right)
+            => !(left is null) && left.CompareTo(right) > 0;
+
+        public static bool operator >=(CustLevel left, CustLevel right)
+            => left is null ? right is null : left.CompareTo(right) >= 0;
     }
 }

@@ -6,9 +6,9 @@
     public class InsertMessengerCommand : NonQueryCommand
     {
         public InsertMessengerCommand(
-            int userId, 
-            int messengerType, 
-            string messengerUsername, 
+            int userId,
+            int messengerType,
+            string messengerUsername,
             string verificationCode)
         {
             UserId = userId;

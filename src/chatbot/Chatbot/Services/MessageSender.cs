@@ -1,12 +1,12 @@
 ﻿namespace Chatbot.Services
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Chatbot.Constants;
     using Chatbot.Models;
-    using System.Linq;
     using Microsoft.Extensions.Logging;
-    using System;
 
     public interface IMessageSender
     {
@@ -75,7 +75,7 @@
 
                 return !profileResult.Item2;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError(ex.ToString());
             }

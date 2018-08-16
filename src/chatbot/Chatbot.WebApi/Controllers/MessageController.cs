@@ -25,8 +25,8 @@
         }
 
         [Route("sendToSpecificMessenger"), HttpPost]
-        public async Task<Result> SendToSpecificMessenger([FromBody]MessageParam param)
-            => await messageSender.SendMessage(param.UserId, new Messenger(param.MessengerType, param.MessengerUsername), param.Message);
+        public Task<Result> SendToSpecificMessenger([FromBody]MessageParam param)
+            => messageSender.SendMessage(param.UserId, new Messenger(param.MessengerType, param.MessengerUsername), param.Message);
 
         [Route("send"), HttpPost]
         public async Task<Result> Send([FromBody]MessageParam param)
@@ -37,7 +37,7 @@
         }
 
         [Route("sendByFunction"), HttpPost]
-        public async Task<Result> SendByFunction([FromBody]FunctionParam param)
+        public Task<Result> SendByFunction([FromBody]FunctionParam param)
             => await functionService.Handle(param.FunctionId, param.UserId);
     }
 }

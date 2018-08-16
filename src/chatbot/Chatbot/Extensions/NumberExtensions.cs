@@ -8,7 +8,7 @@
 
         public static string ToFormattedNumber(this double numberValue)
         {
-            if(numberValue == 0)
+            if (numberValue == 0)
             {
                 return "0";
             }

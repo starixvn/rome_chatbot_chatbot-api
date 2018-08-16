@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using NLog.Web;
-using Microsoft.Extensions.Logging;
 
 namespace Chatbot.WebApi
 {

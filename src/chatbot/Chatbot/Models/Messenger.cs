@@ -9,11 +9,13 @@
 
     public class Messenger
     {
-        public Messenger() { }
+        public Messenger()
+        {
+        }
 
         public Messenger(
-            int type, 
-            string username, 
+            int type,
+            string username,
             bool enabled = false,
             bool isVerifying = false)
         {

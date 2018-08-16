@@ -20,20 +20,20 @@
         }
 
         public async Task LogMessage(
-            int sender, 
-            int receiver, 
-            Messenger messenger, 
-            string message, 
-            int status = 0, 
+            int sender,
+            int receiver,
+            Messenger messenger,
+            string message,
+            int status = 0,
             int functionId = 0)
         {
             var command = new InsertMessageCommand(
-                sender, 
-                receiver, 
-                message, 
-                messenger.Type, 
-                messenger.Username, 
-                status, 
+                sender,
+                receiver,
+                message,
+                messenger.Type,
+                messenger.Username,
+                status,
                 functionId);
 
             await dynamicRepository.ExecuteAsync(command);

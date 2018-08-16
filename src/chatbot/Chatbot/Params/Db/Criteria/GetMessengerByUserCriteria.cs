@@ -5,7 +5,7 @@
     public class GetMessengerByUserCriteria : CriteriaBase
     {
         public GetMessengerByUserCriteria(
-            int userId, 
+            int userId,
             int messengerType = 0,
             string messengerUsername = null)
         {
@@ -13,6 +13,7 @@
             MessengerType = messengerType;
             MessengerUsername = messengerUsername;
         }
+
         public int UserId { get; }
 
         public int MessengerType { get; }

@@ -6,8 +6,8 @@
     public class GetUserActionsCriteria : CriteriaBase
     {
         public GetUserActionsCriteria(
-            int userId, 
-            int actionId, 
+            int userId,
+            int actionId,
             int messengerType,
             string messengerUsername)
         {

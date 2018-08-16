@@ -23,7 +23,7 @@
 
         public override string GetSettingKey() => "GetUser";
 
-        public override bool IsValid() 
+        public override bool IsValid()
             => (CustId > 0 && SubAccountId >= 0)
                 || UserId > 0;
     }

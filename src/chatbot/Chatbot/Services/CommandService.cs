@@ -68,12 +68,11 @@
                                             function => string.Compare(function.Command, command, true) == 0
                                             && function.Enabled);
 
-                var functionId = commandFunction != null ? commandFunction.Id : 0;
+                var functionId = commandFunction?.Id ?? 0;
 
                 await Task.WhenAll(
                     messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command, functionId),
                     RunCommand(command, user, messenger, commandFunction));
-
             }
             catch (Exception ex)
             {

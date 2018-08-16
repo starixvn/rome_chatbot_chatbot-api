@@ -1,7 +1,6 @@
-﻿
-// This file is used by Code Analysis to maintain SuppressMessage 
+﻿// This file is used by Code Analysis to maintain SuppressMessage
 // attributes that are applied to this project.
-// Project-level suppressions either have no target or are given 
+// Project-level suppressions either have no target or are given
 // a specific target and scoped to a namespace, type, member, etc.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "<Pending>", Scope = "member", Target = "~P:Chatbot.Params.Db.Commands.InsertMessengerCommand.GeneratedTime")]
@@ -31,4 +30,3 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S3216:\"ConfigureAwait(false)\" should be used", Justification = "<Pending>", Scope = "member", Target = "~M:Chatbot.Services.SettingServiceImpl.IncreaseUserActionCount(System.Int32,System.Int32,System.Int32,System.String)~System.Threading.Tasks.Task")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S3216:\"ConfigureAwait(false)\" should be used", Justification = "<Pending>", Scope = "member", Target = "~M:Chatbot.Services.SettingServiceImpl.ResetUserActionCount(System.Int32,System.Int32,System.Int32,System.String)~System.Threading.Tasks.Task")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S3216:\"ConfigureAwait(false)\" should be used", Justification = "<Pending>", Scope = "member", Target = "~M:Chatbot.Services.SettingServiceImpl.LogVerificationCodeFailedAction(System.Int32,Chatbot.Models.Messenger,Chatbot.Models.VerificationCodeResult)~System.Threading.Tasks.Task{Chatbot.Models.VerificationCodeResult}")]
-

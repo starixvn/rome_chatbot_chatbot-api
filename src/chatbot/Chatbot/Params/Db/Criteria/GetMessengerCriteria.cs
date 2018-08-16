@@ -5,7 +5,7 @@
     public class GetMessengerCriteria : CriteriaBase
     {
         public GetMessengerCriteria(
-            string messengerUsername, 
+            string messengerUsername,
             int messengerType,
             bool enabled = true)
         {
