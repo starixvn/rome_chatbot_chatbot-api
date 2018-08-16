@@ -367,7 +367,7 @@
         {
             if (await IsMessengerAccountBelongToAnotherUser(userId, messenger))
             {
-                return VerificationCodeResult.CreateWrongVerificationCodeResult();
+                return VerificationCodeResult.CreateMessengerAccountHasBeenRegisteredByAnotherCustomerResult();
             }
 
             var criteria = new GetMessengerByUserCriteria(userId, messenger.Type, messenger.Username);

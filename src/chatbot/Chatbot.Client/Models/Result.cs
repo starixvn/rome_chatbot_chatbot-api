@@ -18,6 +18,7 @@
     {
         private const int VerificationCodeExpiredCode = 3;
         private const int WrongVerificationCode = 4;
+        private const int MessengerAccountHasBeenRegisteredByAnotherCustomer = 5;
 
         public int FailedTimes { get; set; }
 
@@ -26,6 +27,9 @@
 
         public bool IsWrongVerificationCode
             => Code == WrongVerificationCode;
+
+        public bool IsMessengerAccountHasBeenRegisteredByAnotherCustomer
+           => Code == MessengerAccountHasBeenRegisteredByAnotherCustomer;
     }
 
     public class AddingUserResult : Result

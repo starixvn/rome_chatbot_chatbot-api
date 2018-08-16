@@ -24,6 +24,7 @@
     {
         private const int VerificationCodeExpiredCode = 3;
         private const int WrongVerificationCode = 4;
+        private const int MessengerAccountHasBeenRegisteredByAnotherCustomer = 5;
 
         public VerificationCodeResult(int code, string message = "", int failedTimes = 0)
             : base(code, message)
@@ -47,6 +48,9 @@
 
         public static VerificationCodeResult CreateVerificationSuccessfulResult()
             => new VerificationCodeResult(0, string.Empty, 0);
+
+        public static VerificationCodeResult CreateMessengerAccountHasBeenRegisteredByAnotherCustomerResult()
+            => new VerificationCodeResult(MessengerAccountHasBeenRegisteredByAnotherCustomer);
     }
 
     public class AddingUserResult : Result
