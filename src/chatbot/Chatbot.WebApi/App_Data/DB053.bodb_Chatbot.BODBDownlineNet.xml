@@ -12,9 +12,7 @@
       <Mapping ObjectProperty="Username" DataField="messengerusername" />
       <Mapping ObjectProperty="GeneratedVerificationCodeTime" DataField="verificationcodedatetime" />
     </Setting>
-    <Setting Key="GetUser" SpName="Chatbot_GetUser" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
-      <Mapping ObjectProperty="Id" DataField="userid" />
-    </Setting>
+    <Setting Key="GetUser" SpName="Chatbot_GetUser" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="GetUserActions" SpName="Chatbot_GetUserActions" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="GetUserFunctions" SpName="Chatbot_GetUserFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="functionid" />

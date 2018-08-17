@@ -4,6 +4,8 @@
 
     public class User
     {
+        public User() { }
+
         public User(
             int id, 
             int custId, 
@@ -20,16 +22,16 @@
             Functions = functions;
         }
 
-        public int Id { get; }
+        public int Id { get; private set; }
 
-        public int CustId { get; }
+        public int CustId { get; private set; }
 
-        public int SubAccountId { get; }
+        public int SubAccountId { get; private set; }
 
-        public IEnumerable<Messenger> MessengerAccounts { get; }
+        public IEnumerable<Messenger> MessengerAccounts { get; private set; }
 
-        public IEnumerable<Function> Functions { get; }
+        public IEnumerable<Function> Functions { get; private set; }
 
-        public string Language { get; }
+        public string Language { get; private set; }
     }
 }
