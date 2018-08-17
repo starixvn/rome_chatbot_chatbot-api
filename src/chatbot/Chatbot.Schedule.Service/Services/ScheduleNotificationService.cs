@@ -37,7 +37,7 @@
             var scheduleFunctions = configuration
                 .GetSection(AppSettingKey.ScheduleFunctions)
                 .Get<ScheduleFunction[]>()
-                .Where(f => f.GroupName == FunctionType.Notification);
+                .Where(f => f.GroupName == FunctionType.Notification && f.IsActive);
 
             var scheduler = await schedulerFactory.GetScheduler();
             scheduler.ListenerManager.AddJobListener(jobFailureHandler);
