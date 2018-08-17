@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Chatbot.Configurations;
     using Chatbot.Params;
-    using Microsoft.Extensions.Configuration;
 
     public interface IFunctionHandlerFactory
     {
@@ -16,27 +16,23 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageSender messageSender;
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders;
-        private readonly IConfiguration configuration;
+        private readonly IChatbotConfigs chatbotConfigs;
 
         public FunctionHandlerFactory(
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
             IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders,
-            IConfiguration configuration)
+            IChatbotConfigs chatbotConfigs)
         {
             this.messageBuilder = messageBuilder;
             this.messageSender = messageSender;
             this.getDataHanlders = getDataHanlders;
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.chatbotConfigs = chatbotConfigs ?? throw new ArgumentNullException(nameof(chatbotConfigs));
         }
 
         public IFunctionHandler CreateFunctionHandler(int functionId)
         {
-            var messageAndAnnouncementFunctionIds =
-                    configuration.GetSection("Chatbot:MessageAndAnnoucementFunctionIds").Get<List<int>>()
-                    ?? throw new InvalidOperationException($"Missing config for Chatbot:MessageAndAnnoucementFunctionIds");
-
-            if (messageAndAnnouncementFunctionIds.Contains(functionId))
+            if (chatbotConfigs.MessageAndAnnoucementFunctionIds.Contains(functionId))
             {
                 return new MessageAnnouncementFunctionHandler(messageBuilder, messageSender, getDataHanlders);
             }

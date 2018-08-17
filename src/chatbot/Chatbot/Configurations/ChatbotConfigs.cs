@@ -1,6 +1,7 @@
 ﻿namespace Chatbot.Configurations
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using Microsoft.Extensions.Configuration;
 
@@ -22,7 +23,19 @@
 
         bool ReturnRawErrorToMessenger { get; }
 
+        int YesterdayWinLossFunctionId { get; }
+
+        int PersonalMessageFunctionId { get; }
+
+        int SpecialAnnouncementFunctionId { get; }
+
+        int NormalAnnouncementFunctionId { get; }
+
+        int SystemUpdateFunctionId { get; }
+
         string SpDirectory { get; }
+
+        List<int> MessageAndAnnoucementFunctionIds { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -47,6 +60,8 @@
             SpecialAnnouncementFunctionId = GetValue<int>("Chatbot:SpecialAnnouncementFunctionId");
             NormalAnnouncementFunctionId = GetValue<int>("Chatbot:NormalAnnouncementFunctionId");
             SystemUpdateFunctionId = GetValue<int>("Chatbot:SystemUpdateFunctionId");
+            MessageAndAnnoucementFunctionIds = configuration.GetSection("Chatbot:MessageAndAnnoucementFunctionIds").Get<List<int>>()
+                 ?? throw new InvalidOperationException($"Missing config for Chatbot:MessageAndAnnoucementFunctionIds");
         }
 
         public int MaxAddActionTimes { get; }
@@ -76,6 +91,8 @@
         public bool ReturnRawErrorToMessenger { get; }
 
         public string SpDirectory { get; }
+
+        public List<int> MessageAndAnnoucementFunctionIds { get; }
 
         private T GetValue<T>(string key)
         {
