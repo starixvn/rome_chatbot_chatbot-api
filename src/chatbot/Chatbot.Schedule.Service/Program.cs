@@ -8,6 +8,8 @@
     using Chatbot.Client;
     using Chatbot.Client.Configurations;
     using Chatbot.Schedule.Service.Jobs;
+    using Fanex.Logging;
+    using Fanex.Logging.RabbitMQ;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -28,6 +30,10 @@
              })
              .ConfigureServices((hostContext, services) =>
              {
+                 LogManager
+                  .SetDefaultLogCategory(hostContext.Configuration["Fanex.Logging:DefaultCategory"])
+                  .Use(new RabbitMQLogging(hostContext.Configuration["Fanex.Logging:RabbitMQConnectionStrings"]));
+
                  Log.Logger = new LoggerConfiguration()
                    .MinimumLevel.Debug()
                    .WriteTo.File(

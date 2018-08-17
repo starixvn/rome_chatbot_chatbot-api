@@ -13,6 +13,7 @@
     <None Remove="appsettings.json" />
     <None Remove="appsettings.local.json" />
     <None Remove="appsettings.pro.json" />
+    <None Remove="Deployment.ignore" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +28,7 @@
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Deployment.ignore" />
   </ItemGroup>
 
   <ItemGroup>

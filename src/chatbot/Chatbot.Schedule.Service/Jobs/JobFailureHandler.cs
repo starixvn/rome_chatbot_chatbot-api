@@ -3,6 +3,7 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using Fanex.Logging;
     using Quartz;
     using Serilog;
 
@@ -59,11 +60,10 @@
             }
             else
             {
-                Log.Logger.Error(
-                    $"Job with ID and type: {context.JobDetail.Key}, " +
-                    $"{context.JobDetail.JobType} has run {MaxRetries} times and has failed each time.");
-
-                // TODO: Write more log here
+                var message = $"Job with ID and type: {context.JobDetail.Key}, " +
+                            $"{context.JobDetail.JobType} has run {MaxRetries} times and has failed each time.";
+                Log.Logger.Error(message);
+                Logger.Log.Debug(message);
             }
 
             return Task.CompletedTask;
