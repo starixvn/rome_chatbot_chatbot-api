@@ -2,18 +2,26 @@
 {
     public class UserDto
     {
-        public int UserId { get; set; }
+        public UserDto() { }
 
-        public int CustId { get; set; }
+        internal UserDto(
+            int userId,
+            int custId,
+            int subAccountId,
+            string language)
+        {
+            UserId = userId;
+            CustId = custId;
+            SubAccountId = subAccountId;
+            Language = language;
+        }
 
-        public int SubAccountId { get; set; }
+        public int UserId { get; private set; }
 
-        public int MessengerType { get; set; }
+        public int CustId { get; private set; }
 
-        public string MessengerAcc { get; set; }
+        public int SubAccountId { get; private set; }
 
-        public bool Enabled { get; set; }
-
-        public string Language { get; set; }
+        public string Language { get; private set; }
     }
 }

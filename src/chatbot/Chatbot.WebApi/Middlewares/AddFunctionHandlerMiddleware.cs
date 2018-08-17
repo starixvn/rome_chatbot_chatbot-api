@@ -6,7 +6,7 @@
     using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
     using Chatbot.Configurations;
-    using Chatbot.Params;
+    using Chatbot.Modules.Funtions.Params;
     using Fanex.Data.Repository;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +15,7 @@
     {
         private static ReportService reportService;
         private static MessageService messageService;
-        private static Services.MessageService chatBotMessageService;
+        private static Modules.Funtions.MessageService chatBotMessageService;
 
         public static void AddFunctionHandler(this IServiceCollection services)
         {
@@ -23,7 +23,7 @@
             var chatbotConfigs = new ChatbotConfigs(serviceProvider.GetService<IConfiguration>());
             reportService = serviceProvider.GetService<ReportService>() ?? new ReportServiceImpl();
             messageService = serviceProvider.GetService<MessageService>() ?? new MessageServiceImpl();
-            chatBotMessageService = serviceProvider.GetService<Services.MessageService>() ?? new Services.MessageServiceImpl(new DynamicRepository());
+            chatBotMessageService = serviceProvider.GetService<Modules.Funtions.MessageService>() ?? new Modules.Funtions.MessageServiceImpl(new DynamicRepository());
 
             services.AddSingleton<IDictionary<int, Func<FunctionParam, Task<object>>>>(
                 new Dictionary<int, Func<FunctionParam, Task<object>>>

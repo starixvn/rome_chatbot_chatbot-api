@@ -4,7 +4,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Chatbot.Constants;
-    using Chatbot.Services;
+    using Chatbot.Modules.MessageSenders;
     using Fanex.Caching;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;

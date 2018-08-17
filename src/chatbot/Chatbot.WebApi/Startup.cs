@@ -6,9 +6,12 @@
     using System.Linq;
     using Chatbot.Configurations;
     using Chatbot.Constants;
-    using Chatbot.Services;
-    using Chatbot.Services.FunctionHandler;
-    using Chatbot.Templates;
+    using Chatbot.Modules.Funtions;
+    using Chatbot.Modules.Funtions.FunctionHandler;
+    using Chatbot.Modules.MessageBuilders;
+    using Chatbot.Modules.MessageBuilders.Templates;
+    using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.Settings;
     using Chatbot.WebApi.Middlewares;
     using Fanex.Caching;
     using Fanex.Data;
@@ -36,7 +39,7 @@
             services.AddMvc();
 
             services.AddSingleton(_ => Configuration);
-            
+
             LogManager
                     .SetDefaultLogCategory(Configuration["Fanex.Logging:DefaultCategory"])
                     .Use(new RabbitMQLogging(Configuration["Fanex.Logging:RabbitMQConnectionStrings"]));
@@ -53,7 +56,7 @@
             services.AddSingleton<IChatbotConfigs>(new ChatbotConfigs(Configuration));
             services.AddSingleton(Logger.Log);
             services.AddSingleton<MessageService, MessageServiceImpl>();
-            
+
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
                 { 5, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { 6, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },

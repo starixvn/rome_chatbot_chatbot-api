@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
     using Chatbot.Models;
-    using Chatbot.Services;
+    using Chatbot.Modules.MessageSenders;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/letstalk")]

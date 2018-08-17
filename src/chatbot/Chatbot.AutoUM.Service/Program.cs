@@ -1,17 +1,17 @@
 ﻿namespace Chatbot.AutoUM.Service
 {
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
-    using Microsoft.Extensions.Hosting;
+    using Chatbot.Modules.MessageSenders;
+    using Fanex.Caching;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using ONEbook.UM.AspNetCore.Services;
-    using System.IO;
-    using Fanex.Caching;
-    using Chatbot.Services;
     using ONEbook.UM.Core.Configurations;
     using Serilog;
-    using System.Diagnostics;
-    using System.Linq;
 
     public static class Program
     {

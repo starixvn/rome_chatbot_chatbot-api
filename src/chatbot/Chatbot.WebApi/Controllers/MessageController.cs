@@ -2,7 +2,9 @@
 {
     using System.Threading.Tasks;
     using Chatbot.Models;
-    using Chatbot.Services;
+    using Chatbot.Modules.Funtions;
+    using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.Settings;
     using Chatbot.WebApi.Params;
     using Microsoft.AspNetCore.Mvc;
 
