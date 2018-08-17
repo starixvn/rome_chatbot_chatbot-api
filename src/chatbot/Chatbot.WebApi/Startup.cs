@@ -12,6 +12,8 @@
     using Fanex.Caching;
     using Fanex.Data;
     using Fanex.Data.Repository;
+    using Fanex.Logging;
+    using Fanex.Logging.RabbitMQ;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -32,6 +34,10 @@
         {
             services.AddMvc();
 
+            LogManager
+                    .SetDefaultLogCategory(Configuration["Fanex.Logging:DefaultCategory"])
+                    .Use(new RabbitMQLogging(Configuration["Fanex.Logging:RabbitMQConnectionStrings"]));
+
             var chatbotConfigs = new ChatbotConfigs(Configuration);
 
             services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
@@ -45,7 +51,8 @@
             services.AddSingleton(chatbotConfigs);
             services.AddSingleton<IChatbotConfigs>(new ChatbotConfigs(Configuration));
             services.AddSingleton<ICommandHandler, CommandHandler>();
-
+            services.AddSingleton(Logger.Log);
+            
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate>());
             services.AddSingleton<IDictionary<int, IMessengerFormatter>>(
                 new Dictionary<int, IMessengerFormatter>
