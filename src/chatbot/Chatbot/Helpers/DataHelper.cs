@@ -1,12 +1,8 @@
 ﻿namespace Chatbot.Helpers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    public class DataHelper
+    public static class DataHelper
     {
         public static T Parse<T>(object data)
                 where T : class
@@ -24,6 +20,17 @@
             }
 
             return model;
+        }
+
+        public static T TryParse<T>(object data)
+                where T : class
+        {
+            if (data == null)
+            {
+                return null;
+            }
+
+            return Parse<T>(data);
         }
     }
 }

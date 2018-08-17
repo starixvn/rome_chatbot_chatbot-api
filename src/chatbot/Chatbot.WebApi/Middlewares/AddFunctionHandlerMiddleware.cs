@@ -67,7 +67,7 @@
             var message = await messageService.GetMessagesAsync(param.User.CustId, messageType, param.User.Language, lastQueryTime, now);
             await chatBotMessageService.UpdateLastQueryTime(param.User.Id, param.Function.Id, messageType, now);
 
-            return message?.Count() > 0 ? message : null;
+            return message;
         }
     }
 }
