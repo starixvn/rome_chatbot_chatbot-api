@@ -7,6 +7,7 @@
     using Chatbot.Configurations;
     using Chatbot.Constants;
     using Chatbot.Services;
+    using Chatbot.Services.FunctionHandler;
     using Chatbot.Templates;
     using Chatbot.WebApi.Middlewares;
     using Fanex.Caching;
@@ -48,10 +49,9 @@
             services.AddSingleton<IMessageLogger, MessageLogger>();
             services.AddSingleton<IMessageSender, MessageSender>();
             services.AddSingleton<CommandService, CommandServiceImpl>();
+            services.AddSingleton<IFunctionHandler, DefaultFunctionHandler>();
             services.AddSingleton<IChatbotConfigs>(new ChatbotConfigs(Configuration));
-            services.AddSingleton<IFunctionHandler, FunctionHandler>();
             services.AddSingleton(Logger.Log);
-            services.AddSingleton<FunctionService, FunctionServiceImpl>();
             services.AddSingleton<MessageService, MessageServiceImpl>();
             
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
@@ -77,6 +77,8 @@
                 });
 
             services.AddFunctionHandler();
+            services.AddSingleton<IFunctionHandlerFactory, FunctionHandlerFactory>();
+            services.AddSingleton<FunctionService, FunctionServiceImpl>();
 
             services.AddSwaggerGen(c =>
             {

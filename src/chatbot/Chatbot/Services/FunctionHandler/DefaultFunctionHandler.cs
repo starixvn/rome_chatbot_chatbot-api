@@ -1,4 +1,4 @@
-﻿namespace Chatbot.Services
+﻿namespace Chatbot.Services.FunctionHandler
 {
     using System;
     using System.Collections.Generic;
@@ -11,13 +11,13 @@
         Task<Result> Handle(FunctionParam param);
     }
 
-    public class FunctionHandler : IFunctionHandler
+    public class DefaultFunctionHandler : IFunctionHandler
     {
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageSender messageSender;
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders;
 
-        public FunctionHandler(
+        public DefaultFunctionHandler(
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
             IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders = null)
@@ -27,7 +27,7 @@
             this.getDataHanlders = getDataHanlders;
         }
 
-        public async Task<Result> Handle(FunctionParam param)
+        public virtual async Task<Result> Handle(FunctionParam param)
         {
             // Check Params
 
@@ -43,13 +43,18 @@
                 return new Result(0, "No data");
             }
 
+            return await BuildAndSendMessage(param, data);
+        }
+
+        protected Task<Result> BuildAndSendMessage(FunctionParam param, object data)
+        {
             var message = messageBuilder.BuildCommandResultMessage(
                  param.User.Language,
                  param.Function.Id,
                  param.Messenger.Type,
                  data);
 
-            return await messageSender.SendMessage(param.User.Id, param.Messenger, message, param.Function.Id);
+            return messageSender.SendMessage(param.User.Id, param.Messenger, message, param.Function.Id);
         }
     }
 }

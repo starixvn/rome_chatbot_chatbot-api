@@ -64,7 +64,7 @@
         {
             var now = DateTime.Now;
             var lastQueryTime = await chatBotMessageService.GetLastQueryTime(param.User.Id, param.Function.Id, messageType);
-            var message = await messageService.GetMessagesAsync(param.User.CustId, messageType, param.User.Language, DateTime.Now.AddDays(-100), now);
+            var message = await messageService.GetMessagesAsync(param.User.CustId, messageType, param.User.Language, lastQueryTime, now);
             await chatBotMessageService.UpdateLastQueryTime(param.User.Id, param.Function.Id, messageType, now);
 
             return message?.Count() > 0 ? message : null;

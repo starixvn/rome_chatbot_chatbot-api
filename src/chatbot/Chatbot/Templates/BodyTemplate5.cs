@@ -1,8 +1,6 @@
 ﻿namespace Chatbot.Templates
 {
-    using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
     using Alpha.Services.Client.Models;
     using Chatbot.Helpers;
 
@@ -10,10 +8,9 @@
     {
         public string ToString(object data, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
         {
-            var messages = DataHelper.Parse<IEnumerable<Message>>(data);
-            var messageContents = messages.Select(message => message.Content + messengerFormatter.NewLine()).ToList();
+            var message = DataHelper.Parse<Message>(data);
 
-            return string.Concat(messageContents);
+            return message.Content;
         }
     }
 }

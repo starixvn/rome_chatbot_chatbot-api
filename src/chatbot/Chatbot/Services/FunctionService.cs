@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Chatbot.Models;
     using Chatbot.Params;
+    using Chatbot.Services.FunctionHandler;
     using Microsoft.Extensions.Logging;
 
     public interface FunctionService
@@ -16,16 +17,16 @@
     public class FunctionServiceImpl : FunctionService
     {
         private readonly SettingService settingService;
-        private readonly IFunctionHandler functionHandler;
+        private readonly IFunctionHandlerFactory functionHandlerFactory;
         private readonly ILogger<FunctionServiceImpl> logger;
 
         public FunctionServiceImpl(
             SettingService settingService,
-            IFunctionHandler functionHandler,
+           IFunctionHandlerFactory functionHandlerFactory,
             ILogger<FunctionServiceImpl> logger)
         {
             this.settingService = settingService;
-            this.functionHandler = functionHandler;
+            this.functionHandlerFactory = functionHandlerFactory;
             this.logger = logger;
         }
 
@@ -46,8 +47,8 @@
                 try
                 {
                     var param = new FunctionParam(user, function, messenger, null);
-
-                    results.Add(await functionHandler.Handle(param));
+                    var result = await functionHandlerFactory.CreateFunctionHandler(functionId).Handle(param);
+                    results.Add(result);
                 }
                 catch (Exception ex)
                 {

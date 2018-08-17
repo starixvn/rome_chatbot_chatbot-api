@@ -46,6 +46,7 @@
             PersonalMessageFunctionId = GetValue<int>("Chatbot:PersonalMessageFunctionId");
             SpecialAnnouncementFunctionId = GetValue<int>("Chatbot:SpecialAnnouncementFunctionId");
             NormalAnnouncementFunctionId = GetValue<int>("Chatbot:NormalAnnouncementFunctionId");
+            SystemUpdateFunctionId = GetValue<int>("Chatbot:SystemUpdateFunctionId");
         }
 
         public int MaxAddActionTimes { get; }
@@ -69,6 +70,8 @@
         public int SpecialAnnouncementFunctionId { get; }
 
         public int NormalAnnouncementFunctionId { get; }
+
+        public int SystemUpdateFunctionId { get; }
 
         public bool ReturnRawErrorToMessenger { get; }
 

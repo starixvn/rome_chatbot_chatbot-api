@@ -7,6 +7,7 @@
     using Chatbot.Configurations;
     using Chatbot.Constants;
     using Chatbot.Params;
+    using Chatbot.Services.FunctionHandler;
     using Microsoft.Extensions.Logging;
     using Models;
     using Models.Dtos;
