@@ -6,7 +6,7 @@
     {
         public User() { }
 
-        public User(
+        internal User(
             int id, 
             int custId, 
             int subAccountId, 

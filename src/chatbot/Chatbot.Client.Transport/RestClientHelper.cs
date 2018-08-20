@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+    using Chatbot.Client.Models;
     using RestSharp;
 
     public class RestClient : Helpers.IRestClient
@@ -43,7 +44,16 @@
                 return response.Data;
             }
 
-            throw new InvalidOperationException(response.ErrorMessage);
+            if(response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+            {
+                await Task.FromException(new ChatbotClientException(true, response.Content));
+            }
+
+            throw new InvalidOperationException(
+                string.Join(
+                    "\r\n",
+                    $"Content: {response.Content}",
+                    $"ErrorMessage: {response.ErrorMessage}"));
         }
 
         private static void ValidateEndPoint(string endPoint)

@@ -22,6 +22,7 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using ONEbook.UM.AspNetCore.Services;
     using Swashbuckle.AspNetCore.Swagger;
 
     public class Startup
@@ -56,6 +57,7 @@
             services.AddSingleton<IChatbotConfigs>(new ChatbotConfigs(Configuration));
             services.AddSingleton(Logger.Log);
             services.AddSingleton<MessageService, MessageServiceImpl>();
+            services.AddSingleton<IMaintenanceService, MaintenanceService>();
 
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
                 { 5, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
@@ -108,6 +110,8 @@
             });
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+            app.UseMiddleware(typeof(UnderMaintenanceHandlingMiddleware));
+
             app.UseMvc(
                 routes =>
                 {
