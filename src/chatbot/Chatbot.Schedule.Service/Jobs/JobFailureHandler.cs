@@ -3,6 +3,7 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using Chatbot.Schedule.Service.Constants;
     using Fanex.Logging;
     using Quartz;
     using Serilog;
@@ -61,7 +62,10 @@
             else
             {
                 var message = $"Job with ID and type: {context.JobDetail.Key}, " +
-                            $"{context.JobDetail.JobType} has run {MaxRetries} times and has failed each time.";
+                            $"{context.JobDetail.JobType} has run {MaxRetries} times and failed. \n" +
+                            $"UserId: {context.JobDetail.JobDataMap.GetInt(JobDataKey.UserId)} \n" +
+                            $"FunctionId: {context.JobDetail.JobDataMap.GetInt(JobDataKey.FunctionId)} \n";
+
                 Log.Logger.Error(message);
                 Logger.Log.Debug(message);
             }
