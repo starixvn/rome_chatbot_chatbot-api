@@ -500,5 +500,14 @@ namespace Chatbot.AppResources {
                 return ResourceManager.GetString("YesterdayWinLoss", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your account is closed..
+        /// </summary>
+        public static string YourAccountIsClosed {
+            get {
+                return ResourceManager.GetString("YourAccountIsClosed", resourceCulture);
+            }
+        }
     }
 }

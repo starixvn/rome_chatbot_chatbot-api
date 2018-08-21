@@ -10,6 +10,7 @@
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.Settings;
 
     public class MessageAnnouncementFunctionHandler : DefaultFunctionHandler
     {
@@ -18,10 +19,12 @@
         public MessageAnnouncementFunctionHandler(
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
+            CustomerService customerService,
             IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders = null) :
-                base(messageBuilder, messageSender, getDataHanlders)
+                base(messageBuilder, messageSender, customerService, getDataHanlders)
         {
             this.getDataHanlders = getDataHanlders;
+            SendMessageInCaseAccountClosed = false;
         }
 
         public override async Task<Result> Handle(FunctionParam param)
@@ -32,6 +35,11 @@
             if (!getDataHanlders.ContainsKey(param.Function.Id))
             {
                 throw new InvalidOperationException($"Cannot find get data function for function: {param.Function.Id}-{param.Function.Name}");
+            }
+
+            if (await IsCustomerClosed(param.User))
+            {
+                return await BuildAndSendAccountClosedMessage(param);
             }
 
             var data = await getDataHanlders[param.Function.Id](param);

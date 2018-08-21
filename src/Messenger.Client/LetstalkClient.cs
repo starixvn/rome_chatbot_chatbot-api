@@ -88,20 +88,22 @@
             ValidateInputParam(nameof(accountIds), accountIds);
             ValidateInputParam(nameof(payload), payload);
 
+            var accountIdToLowerList = accountIds.Select(accountId => accountId.ToLowerInvariant());
+
             payload.UserId = messengerSettings.BotUserId;
             payload.Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             payload.HashType = AESEncryptionMode;
             payload.From = BusinessAccountType;
             payload.Type = MessageType.Text;
             payload.Id = 100;
-            payload.Receiver = accountIds.ElementAt(0);
+            payload.Receiver = accountIdToLowerList.ElementAt(0);
             payload.HashId = ChatKeyVersion;
 
             return restClientHelper.ExecutePostAsync<Result>(
                 $"bot/push/{botId}",
                 new Dictionary<string, object>
                 {
-                    { "receiver", accountIds },
+                    { "receiver", accountIdToLowerList },
                     { "payload", JsonConvert.SerializeObject(payload, DefaultJsonSerializeSetting) }
                 });
         }

@@ -20,35 +20,41 @@
         private readonly SettingService settingService;
         private readonly IFunctionHandlerFactory functionHandlerFactory;
         private readonly ILogger logger;
+        private readonly CustomerService customerService;
 
         public FunctionServiceImpl(
             SettingService settingService,
             IFunctionHandlerFactory functionHandlerFactory,
-            ILogger logger)
+            ILogger logger,
+            CustomerService customerService)
         {
             this.settingService = settingService;
             this.functionHandlerFactory = functionHandlerFactory;
             this.logger = logger;
+            this.customerService = customerService;
         }
 
         public async Task<Result> Handle(int functionId, int userId)
         {
             var results = new List<Result>();
 
+            var user = await settingService.GetUser(userId)
+                ?? throw new InvalidOperationException($"User cannot be found");
+
             var messengers = await settingService.GetMessengers(userId, true);
 
-            var user = await settingService.GetUser(userId)
-                 ?? throw new InvalidOperationException($"User cannot be found");
-
             var function = (await settingService.GetFunctions(userId)).FirstOrDefault(f => f.Id == functionId)
-                 ?? throw new InvalidOperationException($"Function cannot be found for user {userId}");
+                ?? throw new InvalidOperationException($"Function cannot be found for user {userId}");
 
             foreach (var messenger in messengers)
             {
                 try
                 {
                     var param = new FunctionParam(user, function, messenger, null);
-                    var result = await functionHandlerFactory.CreateFunctionHandler(functionId).Handle(param);
+                    var result = await functionHandlerFactory
+                                        .CreateFunctionHandler(functionId)
+                                        .Handle(param);
+
                     results.Add(result);
                 }
                 catch (Exception ex)

@@ -13,6 +13,8 @@
 
         string BuildNotRecognizedCommandMessage(string language);
 
+        string BuildAccountClosedMessage(string language);
+
         string BuildWelcomeMessage(string language, int messengerType);
 
         string BuildErrorMessage(string language);
@@ -90,5 +92,8 @@
 
         private string GetResource(string key, string language)
             => Languages.ResourceManager.GetString(key, GetCultureInfo(language));
+
+        public string BuildAccountClosedMessage(string language)
+            => GetResource(nameof(Languages.YourAccountIsClosed), language);
     }
 }

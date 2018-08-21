@@ -264,4 +264,7 @@
   <data name="Header_7" xml:space="preserve">
     <value>Normal Announcement</value>
   </data>
+  <data name="YourAccountIsClosed" xml:space="preserve">
+    <value>Your account is closed.</value>
+  </data>
 </root>

@@ -36,7 +36,8 @@
             IMessageBuilder messageBuilder,
             IMessageLogger messageLogger,
             IChatbotConfigs chatbotConfigs,
-            IFunctionHandler commandHandler)
+            IFunctionHandler commandHandler,
+            ILogger logger)
         {
             this.settingService = settingService;
             this.messageSender = messageSender;
@@ -65,22 +66,27 @@
 
             try
             {
-                var userFuntions = await settingService.GetFunctions(messengerDto.UserId);
-                var commandFunction = userFuntions
-                                        .FirstOrDefault(
-                                            function => string.Compare(function.Command, command, true) == 0
-                                            && function.Enabled);
-
-                var functionId = commandFunction?.Id ?? 0;
+                var commandFunction = await GetCommandFunction(messengerDto.UserId, command);
 
                 await Task.WhenAll(
-                    messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command, functionId),
+                    messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command, commandFunction?.Id ?? 0),
                     RunCommand(command, user, messenger, commandFunction));
             }
             catch (Exception ex)
             {
                 await LogError(command, messengerDto, user, ex);
             }
+        }
+
+        private async Task<Function> GetCommandFunction(int userId, string command)
+        {
+            var userFuntions = await settingService.GetFunctions(userId);
+            var commandFunction = userFuntions
+                                    .FirstOrDefault(
+                                        function => string.Compare(function.Command, command, true) == 0
+                                        && function.Enabled);
+
+            return commandFunction;
         }
 
         private async Task RunCommand(

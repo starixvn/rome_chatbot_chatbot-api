@@ -47,7 +47,6 @@
     {
         private const string DefaultLanguage = "en-US";
         private const string functionNameByLanguageCacheKey = "SettingServiceImpl.FunctionNameByLanguageCacheKey.{0}";
-        private readonly CacheItemOptions cacheItemOptions = new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0));
         private readonly IDynamicRepository dynamicRepository;
         private readonly Func<string> randomNumberFunc;
         private readonly Func<DateTime> getCurrentDateTimeFunc;
@@ -178,7 +177,20 @@
         {
             ValidateInputParam(nameof(userId), userId);
 
-            return await dynamicRepository.GetAsync<User>(new GetUserCriteria(userId));
+            var userDto = await dynamicRepository.GetAsync<UserDto>(new GetUserCriteria(userId));
+
+            if(userDto == null)
+            {
+                return default(User);
+            }
+
+            return new User(
+                userDto.UserId,
+                userDto.CustId,
+                userDto.SubAccountId,
+                userDto.Language,
+                Enumerable.Empty<Messenger>(),
+                Enumerable.Empty<Function>());
         }
 
         public async Task<IEnumerable<Function>> GetFunctions(int userId, string language = "")
@@ -203,7 +215,7 @@
             var functionLanguages = await cacheService.GetOrSetAsync(
                         string.Format(functionNameByLanguageCacheKey, functionId),
                         () => GetFunctionLanguage(functionId).Result,
-                        cacheItemOptions);
+                        new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0)));
 
             var functionName = functionLanguages
                 .FirstOrDefault(languageDto => languageDto.LanguageCode == language)
