@@ -39,7 +39,7 @@
         {
             ValidateRequest(id, context, request);
 
-            ExceptionHandler.Handle(new Exception("Logging Information"));
+            ExceptionHandler.Handle(new Exception("Received Webhook Event"), System.Diagnostics.TraceEventType.Information);
 
             if (request.Method == HttpMethod.Post)
             {
