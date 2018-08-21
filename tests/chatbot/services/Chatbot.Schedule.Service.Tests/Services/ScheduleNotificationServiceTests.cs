@@ -7,7 +7,5 @@ namespace Chatbot.Schedule.Service.Tests.Services
 {
     public class ScheduleNotificationServiceTests
     {
-
-        public Task ExecuteAsync_
     }
 }
