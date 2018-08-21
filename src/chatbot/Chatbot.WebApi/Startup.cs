@@ -85,7 +85,6 @@
             services.AddFunctionHandler();
             services.AddSingleton<IFunctionHandlerFactory, FunctionHandlerFactory>();
             services.AddSingleton<FunctionService, FunctionServiceImpl>();
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Chatbot API", Version = "v1" });
@@ -112,6 +111,8 @@
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMiddleware(typeof(UnderMaintenanceHandlingMiddleware));
+
+            ONEbook.UM.Core.Configurations.UMClientConfiguration.InitConfigurationRoot(env.ContentRootPath);
 
             app.UseMvc(
                 routes =>
