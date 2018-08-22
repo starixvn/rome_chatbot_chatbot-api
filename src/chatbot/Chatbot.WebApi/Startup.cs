@@ -12,6 +12,7 @@
     using Chatbot.Modules.MessageBuilders.Templates;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
+    using Chatbot.WebApi.Filters;
     using Chatbot.WebApi.Middlewares;
     using Fanex.Caching;
     using Fanex.Data;
@@ -89,6 +90,8 @@
             {
                 c.SwaggerDoc("v1", new Info { Title = "Chatbot API", Version = "v1" });
             });
+
+            services.AddScoped<AutoReplyUMFilterAttribute>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

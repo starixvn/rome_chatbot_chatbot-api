@@ -267,4 +267,7 @@
   <data name="YourAccountIsClosed" xml:space="preserve">
     <value>Your account is closed.</value>
   </data>
+  <data name="UnderMaintenance" xml:space="preserve">
+    <value>System is under maintenance from {0} to {1}</value>
+  </data>
 </root>

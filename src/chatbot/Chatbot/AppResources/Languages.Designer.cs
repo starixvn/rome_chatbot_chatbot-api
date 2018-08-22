@@ -448,6 +448,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to System is under maintenance from {0} to {1}.
+        /// </summary>
+        public static string UnderMaintenance {
+            get {
+                return ResourceManager.GetString("UnderMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have requested to set up Chatbot for your account {0}. Your verification code is {1}..
         /// </summary>
         public static string VerificationCode_1 {

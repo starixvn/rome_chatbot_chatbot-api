@@ -18,6 +18,8 @@
         string BuildWelcomeMessage(string language, int messengerType);
 
         string BuildErrorMessage(string language);
+
+        string BuildUnderMaintenanceMessage(string from, string to);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -95,5 +97,8 @@
 
         public string BuildAccountClosedMessage(string language)
             => GetResource(nameof(Languages.YourAccountIsClosed), language);
+
+        public string BuildUnderMaintenanceMessage(string from, string to)
+            => string.Format(Languages.UnderMaintenance, from, to);
     }
 }

@@ -10,11 +10,11 @@
 
     public interface IMessageSender
     {
-        Task<Result> SendMessage(Messenger messenger, string message, int functionId = 0);
+        Task<Result> SendMessage(Messenger messenger, string message, int functionId = 0, bool logToDatabase = true);
 
-        Task<Result> SendMessage(int userId, string message, IEnumerable<Messenger> messengers, int functionId = 0);
+        Task<Result> SendMessage(int userId, string message, IEnumerable<Messenger> messengers, int functionId = 0, bool logToDatabase = true);
 
-        Task<Result> SendMessage(int userId, Messenger messenger, string message, int functionId = 0);
+        Task<Result> SendMessage(int userId, Messenger messenger, string message, int functionId = 0, bool logToDatabase = true);
 
         Task<bool> IsMessengerAccountNotExisted(Messenger messenger);
     }
@@ -35,10 +35,10 @@
             this.logger = logger;
         }
 
-        public async Task<Result> SendMessage(Messenger messenger, string message, int functionId = 0)
+        public async Task<Result> SendMessage(Messenger messenger, string message, int functionId = 0, bool logToDatabase = true)
             => await SendMessage(0, messenger, message, functionId);
 
-        public async Task<Result> SendMessage(int userId, Messenger messenger, string message, int functionId = 0)
+        public async Task<Result> SendMessage(int userId, Messenger messenger, string message, int functionId = 0, bool logToDatabase = true)
         {
             var client = messengerFactory.CreateMessengerClient(messenger.Type);
             var result = await client.PushAsync(messenger.Username, message);
@@ -51,13 +51,16 @@
                     $"Code: {result.Status}, Message: {result.Message}"));
             }
 
-            await messageLogger.LogMessage(
-                    CommonId.BotUserId,
-                    userId,
-                    messenger,
-                    message,
-                    result.IsOk ? 1 : 0,
-                    functionId);
+            if (logToDatabase)
+            {
+                await messageLogger.LogMessage(
+                        CommonId.BotUserId,
+                        userId,
+                        messenger,
+                        message,
+                        result.IsOk ? 1 : 0,
+                        functionId);
+            }
 
             return new Result(result.IsOk ? 0 : result.Status, result.Message);
         }
@@ -74,13 +77,13 @@
             return !profileResult.Item2;
         }
 
-        public async Task<Result> SendMessage(int userId, string message, IEnumerable<Messenger> messengers, int functionId = 0)
+        public async Task<Result> SendMessage(int userId, string message, IEnumerable<Messenger> messengers, int functionId = 0, bool logToDatabase = true)
         {
             var results = new List<Result>();
 
             foreach (var messenger in messengers)
             {
-                results.Add(await SendMessage(userId, messenger, message, functionId));
+                results.Add(await SendMessage(userId, messenger, message, functionId, logToDatabase));
             }
 
             return results.All(result => result.IsOk)

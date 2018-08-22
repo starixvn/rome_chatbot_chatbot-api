@@ -24,6 +24,13 @@
 
         public async Task Invoke(HttpContext context)
         {
+            if(context.Request.Path.Value.Contains("/command/run", System.StringComparison.OrdinalIgnoreCase))
+            {
+                await next(context);
+
+                return;
+            }
+
             var umInfo = await maintenanceService.GetUnderMaintenanceTime();
 
             if (umInfo.IsUnderMaintenanceTime)

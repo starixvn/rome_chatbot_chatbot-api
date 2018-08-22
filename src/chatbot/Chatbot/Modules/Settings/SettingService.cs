@@ -142,7 +142,12 @@
             }
 
             var messengerAccounts = await GetMessengers(userDto.UserId);
-            var functions = await GetFunctions(userDto.UserId, language);
+            var functions = Enumerable.Empty<Function>();
+
+            if (messengerAccounts.Any(messenger => messenger.Enabled))
+            {
+                functions = await GetFunctions(userDto.UserId, language);
+            }
 
             return new User(
                 userDto.UserId,

@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using Chatbot.Modules.Funtions;
+    using Chatbot.WebApi.Filters;
     using Chatbot.WebApi.Params;
     using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@
             this.commandService = commandService;
         }
 
+        [ServiceFilter(typeof(AutoReplyUMFilterAttribute))]
         [Route("run"), HttpPost]
         public async Task Run([FromBody]CommandParam param)
         {
