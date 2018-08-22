@@ -448,7 +448,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to System is under maintenance from {0} to {1}.
+        ///   Looks up a localized string similar to Sorry, the system is under maintenance from {0} to {1} GMT+8. Please come back later..
         /// </summary>
         public static string UnderMaintenance {
             get {
