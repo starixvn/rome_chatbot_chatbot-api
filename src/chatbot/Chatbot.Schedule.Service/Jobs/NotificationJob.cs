@@ -1,5 +1,6 @@
 ﻿namespace Chatbot.Schedule.Service.Jobs
 {
+    using System.Linq;
     using System.Threading.Tasks;
     using Chatbot.Client.Services;
     using Chatbot.Schedule.Service.Constants;

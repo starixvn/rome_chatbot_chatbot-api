@@ -64,7 +64,8 @@
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
                 { 5, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { 6, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
-                { 7, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) }
+                { 7, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
+                { 8, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) }
             });
             services.AddSingleton<IDictionary<int, IMessengerFormatter>>(
                 new Dictionary<int, IMessengerFormatter>

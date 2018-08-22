@@ -47,17 +47,20 @@
 
             if (messages == null || messages.Count == 0)
             {
-                return new Result(0, "No data");
+                return Result.CreateSuccessfulResult("No data");
             }
 
             foreach (var message in messages)
             {
-                results.Add(await BuildAndSendMessage(param, message));
+                if (!string.IsNullOrEmpty(message.Content))
+                {
+                    results.Add(await BuildAndSendMessage(param, message));
+                }
             }
 
             return results.All(result => result.IsOk)
                 ? Result.CreateSuccessfulResult()
-                : new Result(1);
+                : Result.CreateErrorResult();
         }
     }
 }

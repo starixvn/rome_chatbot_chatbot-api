@@ -23,15 +23,11 @@
             this.cacheService = cacheService;
         }
 
-        public async Task<bool> IsAccountClosed(int custId, int subAccountId)
-        {
-            var isClosed = await cacheService.GetOrSetAsync(
+        public Task<bool> IsAccountClosed(int custId, int subAccountId)
+            => cacheService.GetOrSetAsync(
                 string.Format(customerClosedCacheKey, custId, subAccountId),
                 () => !IsAccountActive(custId, subAccountId),
                 new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(0, 0, 30)));
-
-            return isClosed;
-        }
 
         private bool IsAccountActive(int custId, int subAccountId)
         {

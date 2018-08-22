@@ -126,8 +126,8 @@
         private static DateTime GetCurrentDateTime()
             => DateTime.Now;
 
-        public async Task<IEnumerable<Function>> GetAllFunctions()
-            => await dynamicRepository.FetchAsync<Function>(new GetAllFunctionsCriteria());
+        public Task<IEnumerable<Function>> GetAllFunctions()
+            => dynamicRepository.FetchAsync<Function>(new GetAllFunctionsCriteria());
 
         public async Task<User> GetUser(int custId, int subAccountId, string language)
         {
@@ -184,7 +184,7 @@
 
             var userDto = await dynamicRepository.GetAsync<UserDto>(new GetUserCriteria(userId));
 
-            if(userDto == null)
+            if (userDto == null)
             {
                 return default(User);
             }
@@ -236,8 +236,8 @@
             return functionName;
         }
 
-        private async Task<IEnumerable<FunctionLanguageDto>> GetFunctionLanguage(int functionId)
-            => await dynamicRepository.FetchAsync<FunctionLanguageDto>(new GetFunctionNameCriteria(functionId));
+        private Task<IEnumerable<FunctionLanguageDto>> GetFunctionLanguage(int functionId)
+            => dynamicRepository.FetchAsync<FunctionLanguageDto>(new GetFunctionNameCriteria(functionId));
 
         public async Task UpdateFunctions(int userId, IEnumerable<Function> functions)
         {
@@ -435,7 +435,7 @@
             return new VerificationCodeResult(
                 result.Code,
                 result.Message,
-                (await GetFailedCount(userId, messenger)));
+                await GetFailedCount(userId, messenger));
         }
 
         private async Task<int> GetFailedCount(int userId, Messenger messenger)
@@ -447,9 +447,7 @@
 
             var failedAction = (await GetUserAction(userId, messenger.Type, messenger.Username, chatbotConfigs.WrongVerificationCodeActionId)).FirstOrDefault();
 
-            return failedAction != null
-                    ? failedAction.CountTimes
-                    : 0;
+            return failedAction?.CountTimes ?? 0;
         }
 
         private async Task IncreaseUserActionCount(

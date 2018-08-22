@@ -58,7 +58,7 @@
 
             if (data == null)
             {
-                return new Result(0, "No data");
+                return Result.CreateSuccessfulResult("No data");
             }
 
             return await BuildAndSendMessage(param, data);
