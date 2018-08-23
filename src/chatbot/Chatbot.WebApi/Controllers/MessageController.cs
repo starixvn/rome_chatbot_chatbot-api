@@ -1,5 +1,6 @@
 ﻿namespace Chatbot.WebApi.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Chatbot.Models;
     using Chatbot.Modules.Funtions;
@@ -15,15 +16,18 @@
         private readonly IMessageSender messageSender;
         private readonly SettingService settingService;
         private readonly FunctionService functionService;
+        private readonly IMessageLogger messageLogger;
 
         public MessageController(
             IMessageSender messageSender,
             SettingService settingService,
-            FunctionService functionService)
+            FunctionService functionService,
+            IMessageLogger messageLogger)
         {
             this.messageSender = messageSender;
             this.settingService = settingService;
             this.functionService = functionService;
+            this.messageLogger = messageLogger;
         }
 
         [Route("sendToSpecificMessenger"), HttpPost]
@@ -41,5 +45,10 @@
         [Route("sendByFunction"), HttpPost]
         public Task<Result> SendByFunction([FromBody]FunctionParam param)
             => functionService.Handle(param.FunctionId, param.UserId);
+
+
+        [Route("getMessageLogs"), HttpPost]
+        public Task<IEnumerable<Message>> GetMessageLogs(MessageLogParam param)
+            => messageLogger.GetMessageLogs(param.UserId, param.FromDate, param.ToDate, param.FunctionId, param.MessengerType);
     }
 }

@@ -4,14 +4,12 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
     using Chatbot.Helpers;
     using Chatbot.Models;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
-    using Chatbot.Modules.Settings;
 
     public class MessageAnnouncementFunctionHandler : DefaultFunctionHandler
     {
@@ -44,7 +42,7 @@
             }
 
             var data = await getDataHanlders[param.Function.Id](param);
-            var messages = DataHelper.TryParse<IList<Message>>(data);
+            var messages = DataHelper.TryParse<IList<Alpha.Services.Client.Models.Message>>(data);
 
             if (messages == null || messages.Count == 0)
             {

@@ -25,7 +25,10 @@
     <Setting Key="UpdateUserFunctions" SpName="Chatbot_UpdateUserFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="UpdateUserLanguage" SpName="Chatbot_UpdateUserLanguage" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="ResetUserActionCount" SpName="Chatbot_ResetUserActionCount" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="Chatbot_GetMessageLog" SpName="Chatbot_GetMessageLog" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_GetMessageLog" SpName="Chatbot_GetMessageLog" DbName="DB053.bodb_Chatbot.BODBDownlineNet" >
+      <Mapping ObjectProperty="Id" DataField="logid" />
+      <Mapping ObjectProperty="Content" DataField="message" />
+    </Setting>
     <Setting Key="Chatbot_GetUsersByFunctions" SpName="Chatbot_GetUsersByFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="userid" />
     </Setting>

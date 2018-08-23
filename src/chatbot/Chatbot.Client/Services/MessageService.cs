@@ -1,5 +1,7 @@
 ﻿namespace Chatbot.Client.Services
 {
+    using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Chatbot.Client.Helpers;
     using Chatbot.Client.Models;
@@ -9,6 +11,8 @@
         Task<Result> SendMessage(int userId, string message, int functionId = 0);
 
         Task<Result> SendByFunction(int functionId, int userId);
+
+        Task<IEnumerable<Message>> GetMessageLogs(int userId, DateTime fromDate, DateTime toDate, int functionId = 0, int messengerType = 0);
     }
 
     public class MessageServiceImpl : ServiceBase, MessageService
@@ -50,6 +54,29 @@
                {
                    userId,
                    functionId
+               });
+        }
+
+        public Task<IEnumerable<Message>> GetMessageLogs(
+            int userId, 
+            DateTime fromDate, 
+            DateTime toDate, 
+            int functionId = 0, 
+            int messengerType = 0)
+        {
+            ValidateInputParam(nameof(userId), userId);
+            ValidateInputParam(nameof(fromDate), fromDate);
+            ValidateInputParam(nameof(toDate), toDate);
+
+            return restClient.ExecutePostAsync<IEnumerable<Message>>(
+               $"message/getMessageLogs",
+               new
+               {
+                   userId,
+                   fromDate,
+                   toDate,
+                   functionId,
+                   messengerType
                });
         }
     }

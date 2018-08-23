@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Chatbot.Configurations;
+    using Chatbot.Helpers;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.MessageBuilders;
@@ -78,10 +79,10 @@
 
         public async Task GenerateVerificationCode(int userId, string custName, Messenger messenger)
         {
-            ValidateInputParam(nameof(userId), userId);
-            ValidateInputParam(nameof(messenger), messenger);
-            ValidateInputParam("Messenger Username", messenger.Username);
-            ValidateInputParam("Messenger Type", messenger.Type);
+            InputValidator.Validate(nameof(userId), userId);
+            InputValidator.Validate(nameof(messenger), messenger);
+            InputValidator.Validate("Messenger Username", messenger.Username);
+            InputValidator.Validate("Messenger Type", messenger.Type);
 
             var verificationCode = RandomSixDigitsNumber();
             var user = await GetUser(userId);
@@ -131,8 +132,8 @@
 
         public async Task<User> GetUser(int custId, int subAccountId, string language)
         {
-            ValidateInputParam(nameof(custId), custId);
-            ValidateInputParam(nameof(language), language);
+            InputValidator.Validate(nameof(custId), custId);
+            InputValidator.Validate(nameof(language), language);
 
             var userDto = await dynamicRepository.GetAsync<UserDto>(new GetUserCriteria(custId, subAccountId));
 
@@ -180,7 +181,7 @@
 
         public async Task<User> GetUser(int userId)
         {
-            ValidateInputParam(nameof(userId), userId);
+            InputValidator.Validate(nameof(userId), userId);
 
             var userDto = await dynamicRepository.GetAsync<UserDto>(new GetUserCriteria(userId));
 
@@ -200,7 +201,7 @@
 
         public async Task<IEnumerable<Function>> GetFunctions(int userId, string language = "")
         {
-            ValidateInputParam(nameof(userId), userId);
+            InputValidator.Validate(nameof(userId), userId);
 
             var functions = await dynamicRepository.FetchAsync<Function>(new GetUserFunctionsCriteria(userId));
 
@@ -241,8 +242,8 @@
 
         public async Task UpdateFunctions(int userId, IEnumerable<Function> functions)
         {
-            ValidateInputParam(nameof(userId), userId);
-            ValidateInputParam(nameof(functions), functions);
+            InputValidator.Validate(nameof(userId), userId);
+            InputValidator.Validate(nameof(functions), functions);
 
             var command = new UpdateUserFunctionsCommand(userId, functions);
 
@@ -251,8 +252,8 @@
 
         public async Task UpdateLanguage(int userId, string language)
         {
-            ValidateInputParam(nameof(userId), userId);
-            ValidateInputParam(nameof(language), language);
+            InputValidator.Validate(nameof(userId), userId);
+            InputValidator.Validate(nameof(language), language);
 
             var command = new UpdateUserLanguageCommand(userId, language);
 
@@ -264,11 +265,11 @@
         /// </summary>
         public async Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, Messenger messenger)
         {
-            ValidateInputParam(nameof(custId), custId);
-            ValidateInputParam(nameof(language), language);
-            ValidateInputParam(nameof(messenger), messenger);
-            ValidateInputParam("Messenger Username", messenger.Username);
-            ValidateInputParam("Messenger Type", messenger.Type);
+            InputValidator.Validate(nameof(custId), custId);
+            InputValidator.Validate(nameof(language), language);
+            InputValidator.Validate(nameof(messenger), messenger);
+            InputValidator.Validate("Messenger Username", messenger.Username);
+            InputValidator.Validate("Messenger Type", messenger.Type);
 
             var userId = await InsertUser(custId, subAccountId, language, messenger);
 
@@ -305,10 +306,10 @@
 
         private async Task<bool> IsMessengerAccountBelongToAnotherUser(int userId, Messenger messenger)
         {
-            ValidateInputParam(nameof(userId), userId);
-            ValidateInputParam(nameof(messenger), messenger);
-            ValidateInputParam("Messenger Username", messenger.Username);
-            ValidateInputParam("Messenger Type", messenger.Type);
+            InputValidator.Validate(nameof(userId), userId);
+            InputValidator.Validate(nameof(messenger), messenger);
+            InputValidator.Validate("Messenger Username", messenger.Username);
+            InputValidator.Validate("Messenger Type", messenger.Type);
 
             var messengerDto = await GetMessenger(messenger.Type, messenger.Username);
 
@@ -355,8 +356,8 @@
             string messengerUsername,
             bool enabled)
         {
-            ValidateInputParam(nameof(userId), userId);
-            ValidateInputParam(nameof(messengerType), messengerType);
+            InputValidator.Validate(nameof(userId), userId);
+            InputValidator.Validate(nameof(messengerType), messengerType);
 
             var command = new UpdateMessengerStatusCommand(userId, messengerType, messengerUsername, enabled);
 
@@ -365,11 +366,11 @@
 
         public async Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger)
         {
-            ValidateInputParam(nameof(userId), userId);
-            ValidateInputParam(nameof(verificationCode), verificationCode);
-            ValidateInputParam(nameof(messenger), messenger);
-            ValidateInputParam("Messenger Username", messenger.Username);
-            ValidateInputParam("Messenger Type", messenger.Type);
+            InputValidator.Validate(nameof(userId), userId);
+            InputValidator.Validate(nameof(verificationCode), verificationCode);
+            InputValidator.Validate(nameof(messenger), messenger);
+            InputValidator.Validate("Messenger Username", messenger.Username);
+            InputValidator.Validate("Messenger Type", messenger.Type);
 
             var verificationResult = await CheckVerificationCode(userId, verificationCode, messenger);
 
@@ -472,35 +473,7 @@
             await dynamicRepository.ExecuteAsync(command);
         }
 
-        private static void ValidateInputParam(string paramName, object paramValue)
-        {
-            if (paramValue == null
-                || (paramValue is string && string.IsNullOrWhiteSpace(paramValue as string)))
-            {
-                throw new ArgumentNullException(paramName);
-            }
-        }
-
-        private static void ValidateInputParam(string paramName, int paramValue)
-        {
-            if (paramValue <= 0)
-            {
-                throw new ArgumentOutOfRangeException(paramName);
-            }
-        }
-
-        private static void ValidateInputParam<T>(string paramName, IEnumerable<T> paramValue)
-        {
-            if (paramValue == null)
-            {
-                throw new ArgumentNullException(paramName);
-            }
-
-            if (!paramValue.Any())
-            {
-                throw new ArgumentOutOfRangeException($"{paramName} does not contain any item");
-            }
-        }
+        
 
         public async Task<MessengerDto> GetMessenger(int messengerType, string messengerUsername)
         {

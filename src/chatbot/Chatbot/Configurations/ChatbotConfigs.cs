@@ -38,6 +38,8 @@
         List<int> MessageAndAnnoucementFunctionIds { get; }
 
         int NotRecognizedCommandFunctionId { get; }
+
+        int MaxGetMessageLogDays { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -65,6 +67,7 @@
             MessageAndAnnoucementFunctionIds = configuration.GetSection("Chatbot:MessageAndAnnoucementFunctionIds").Get<List<int>>()
                  ?? throw new InvalidOperationException($"Missing config for Chatbot:MessageAndAnnoucementFunctionIds");
             NotRecognizedCommandFunctionId = GetValue<int>("Chatbot:NotRecognizedCommandFunctionId");
+            MaxGetMessageLogDays = GetValue<int>("Chatbot:MaxGetMessageLogDays");
         }
 
         public int MaxAddActionTimes { get; }
@@ -98,6 +101,8 @@
         public List<int> MessageAndAnnoucementFunctionIds { get; }
 
         public int NotRecognizedCommandFunctionId { get; }
+
+        public int MaxGetMessageLogDays { get; }
 
         private T GetValue<T>(string key)
         {
