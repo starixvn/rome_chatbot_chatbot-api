@@ -46,7 +46,7 @@
 
             if (await IsCustomerClosed(param.User))
             {
-                return await BuildAndSendAccountClosedMessage(param);
+                return Result.CreateSuccessfulResult("Customer is closed");
             }
 
             return await RunHandler(param);
@@ -66,18 +66,6 @@
 
         protected Task<bool> IsCustomerClosed(User user)
             => customerService.IsAccountClosed(user.CustId, user.SubAccountId);
-
-        protected virtual Task<Result> BuildAndSendAccountClosedMessage(FunctionParam param)
-        {
-            if (SendMessageInCaseAccountClosed)
-            {
-                var message = messageBuilder.BuildAccountClosedMessage(param.User.Language);
-
-                return messageSender.SendMessage(param.User.Id, param.Messenger, message, param.Function.Id);
-            }
-
-            return Task.FromResult(Result.CreateSuccessfulResult());
-        }
 
         protected Task<Result> BuildAndSendMessage(FunctionParam param, object data)
         {

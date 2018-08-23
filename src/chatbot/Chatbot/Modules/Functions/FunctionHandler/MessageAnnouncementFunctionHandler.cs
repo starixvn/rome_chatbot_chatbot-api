@@ -40,7 +40,7 @@
 
             if (await IsCustomerClosed(param.User))
             {
-                return await BuildAndSendAccountClosedMessage(param);
+                return Result.CreateSuccessfulResult("Customer is closed");
             }
 
             var data = await getDataHanlders[param.Function.Id](param);
