@@ -47,8 +47,5 @@
     <None Update="App_Data\DB053.bodb_Chatbot.BODBDownlineNet.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="App_Data\DB053.bodb02.BODBDownlineNet.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>

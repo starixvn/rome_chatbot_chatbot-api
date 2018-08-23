@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Functions>
-  <Function Name="Alpha.Auth">
-    <Setting Key="Age_CustomerStatusSel" SpName="Age_CustomerStatusSel" DbName="DB053.bodb02.BODBDownlineNet" Plain="0" />
-  </Function>
-</Functions>

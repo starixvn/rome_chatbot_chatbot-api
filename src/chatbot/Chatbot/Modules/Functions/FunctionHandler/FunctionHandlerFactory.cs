@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Alpha.Services.Client.Services;
     using Chatbot.Configurations;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;

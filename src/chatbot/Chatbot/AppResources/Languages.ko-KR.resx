@@ -163,4 +163,37 @@
   <data name="GivenCredit" xml:space="preserve">
     <value>주어진 크레딧</value>
   </data>
+  <data name="Header_6" xml:space="preserve">
+    <value>특별 공지사항</value>
+  </data>
+  <data name="Header_7" xml:space="preserve">
+    <value>일반 공지 사항</value>
+  </data>
+  <data name="Header_4" xml:space="preserve">
+    <value>어제의 승리/패배</value>
+  </data>
+  <data name="Header_5" xml:space="preserve">
+    <value>개인 메세지</value>
+  </data>
+  <data name="MasterTotalCredit" xml:space="preserve">
+    <value>마스터 크레딧</value>
+  </data>
+  <data name="AgentTotalCredit" xml:space="preserve">
+    <value>에이전트 크레딧</value>
+  </data>
+  <data name="Header_2" xml:space="preserve">
+    <value>오늘의 승리/패배</value>
+  </data>
+  <data name="MemberNetWinLoss.Total" xml:space="preserve">
+    <value>회원 총계</value>
+  </data>
+  <data name="MasterNetWinLoss.Comm" xml:space="preserve">
+    <value>마스터 수수료</value>
+  </data>
+  <data name="AgentNetWinLoss.Comm" xml:space="preserve">
+    <value>에이전트 수수료</value>
+  </data>
+  <data name="MemberNetWinLoss.Comm" xml:space="preserve">
+    <value>회원 수수료</value>
+  </data>
 </root>

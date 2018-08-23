@@ -145,4 +145,37 @@
   <data name="GivenCredit" xml:space="preserve">
     <value>Hạn mức được cấp</value>
   </data>
+  <data name="Header_6" xml:space="preserve">
+    <value>Thông báo đăc biệt</value>
+  </data>
+  <data name="Header_7" xml:space="preserve">
+    <value>Thông báo chung</value>
+  </data>
+  <data name="Header_4" xml:space="preserve">
+    <value>Thắng thua hôm qua</value>
+  </data>
+  <data name="Header_5" xml:space="preserve">
+    <value>Tin nhắn cá nhân</value>
+  </data>
+  <data name="MasterTotalCredit" xml:space="preserve">
+    <value>Hạn mức tín dụng của Master</value>
+  </data>
+  <data name="AgentTotalCredit" xml:space="preserve">
+    <value>Hạn mức tín dụng của Agent</value>
+  </data>
+  <data name="Header_2" xml:space="preserve">
+    <value>Thắng thua trong ngày</value>
+  </data>
+  <data name="MemberNetWinLoss.Total" xml:space="preserve">
+    <value>Tổng số tiền giao dịch của Member</value>
+  </data>
+  <data name="MasterNetWinLoss.Comm" xml:space="preserve">
+    <value>Hoa hồng của Master </value>
+  </data>
+  <data name="AgentNetWinLoss.Comm" xml:space="preserve">
+    <value>Hoa hồng của Agent</value>
+  </data>
+  <data name="MemberNetWinLoss.Comm" xml:space="preserve">
+    <value>Hoa hồng của Member</value>
+  </data>
 </root>

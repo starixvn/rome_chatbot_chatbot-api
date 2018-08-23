@@ -59,7 +59,7 @@
             services.AddSingleton(Logger.Log);
             services.AddSingleton<MessageService, MessageServiceImpl>();
             services.AddSingleton<IMaintenanceService, MaintenanceService>();
-            services.AddSingleton<CustomerService, CustomerServiceImpl>();
+            services.AddSingleton<Alpha.Services.Client.Services.CustomerService, Alpha.Services.Client.Services.CustomerServiceImpl>();
 
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
                 { 5, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },

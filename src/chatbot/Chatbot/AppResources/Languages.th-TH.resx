@@ -163,4 +163,37 @@
   <data name="GivenCredit" xml:space="preserve">
     <value>เครดิตทั้งหมด</value>
   </data>
+  <data name="Header_6" xml:space="preserve">
+    <value>ข้อความ เฉพาะ</value>
+  </data>
+  <data name="Header_7" xml:space="preserve">
+    <value>ประกาศธรรมดา</value>
+  </data>
+  <data name="Header_4" xml:space="preserve">
+    <value>ยอดได้เสียเมื่อวาน</value>
+  </data>
+  <data name="Header_5" xml:space="preserve">
+    <value>ข้อความส่วนตัว</value>
+  </data>
+  <data name="MasterTotalCredit" xml:space="preserve">
+    <value>เงิน Credit ของ Master</value>
+  </data>
+  <data name="AgentTotalCredit" xml:space="preserve">
+    <value>เครดิตเอเย่นต์</value>
+  </data>
+  <data name="Header_2" xml:space="preserve">
+    <value>ยอดได้เสียวันนี้</value>
+  </data>
+  <data name="MemberNetWinLoss.Total" xml:space="preserve">
+    <value>จำนวนทั้งหมดของสมาชิก</value>
+  </data>
+  <data name="MasterNetWinLoss.Comm" xml:space="preserve">
+    <value>คอมมิชชั่นของ Master</value>
+  </data>
+  <data name="AgentNetWinLoss.Comm" xml:space="preserve">
+    <value>คอมมิชชั่นของ Agent</value>
+  </data>
+  <data name="MemberNetWinLoss.Comm" xml:space="preserve">
+    <value>คอมมิชชั่นของสมาชิก</value>
+  </data>
 </root>

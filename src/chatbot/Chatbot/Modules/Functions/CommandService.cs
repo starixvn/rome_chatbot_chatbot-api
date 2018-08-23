@@ -22,6 +22,7 @@
 
     public class CommandServiceImpl : CommandService
     {
+        private const int NotRecognizedCommandFunctionId = 1000000;
         private readonly SettingService settingService;
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
@@ -142,7 +143,7 @@
         {
             var message = messageBuilder.BuildNotRecognizedCommandMessage(user.Language);
 
-            await messageSender.SendMessage(user.Id, messenger, message);
+            await messageSender.SendMessage(user.Id, messenger, message, chatbotConfigs.NotRecognizedCommandFunctionId);
         }
 
         protected async Task SendErrorMessage(User user, Messenger messenger)

@@ -36,6 +36,8 @@
         string SpDirectory { get; }
 
         List<int> MessageAndAnnoucementFunctionIds { get; }
+
+        int NotRecognizedCommandFunctionId { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -62,6 +64,7 @@
             SystemUpdateFunctionId = GetValue<int>("Chatbot:SystemUpdateFunctionId");
             MessageAndAnnoucementFunctionIds = configuration.GetSection("Chatbot:MessageAndAnnoucementFunctionIds").Get<List<int>>()
                  ?? throw new InvalidOperationException($"Missing config for Chatbot:MessageAndAnnoucementFunctionIds");
+            NotRecognizedCommandFunctionId = GetValue<int>("Chatbot:NotRecognizedCommandFunctionId");
         }
 
         public int MaxAddActionTimes { get; }
@@ -93,6 +96,8 @@
         public string SpDirectory { get; }
 
         public List<int> MessageAndAnnoucementFunctionIds { get; }
+
+        public int NotRecognizedCommandFunctionId { get; }
 
         private T GetValue<T>(string key)
         {

@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Models;
+    using Alpha.Services.Client.Services;
     using Chatbot.Helpers;
     using Chatbot.Models;
     using Chatbot.Modules.Funtions.Params;

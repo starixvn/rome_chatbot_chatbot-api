@@ -186,4 +186,37 @@
   <data name="GivenCredit" xml:space="preserve">
     <value>信用额度</value>
   </data>
+  <data name="Header_6" xml:space="preserve">
+    <value>特殊公告</value>
+  </data>
+  <data name="Header_7" xml:space="preserve">
+    <value>一般公告</value>
+  </data>
+  <data name="Header_4" xml:space="preserve">
+    <value>昨日输赢</value>
+  </data>
+  <data name="Header_5" xml:space="preserve">
+    <value>个人讯息</value>
+  </data>
+  <data name="MasterTotalCredit" xml:space="preserve">
+    <value>总代理信用额</value>
+  </data>
+  <data name="AgentTotalCredit" xml:space="preserve">
+    <value>代理信用额</value>
+  </data>
+  <data name="Header_2" xml:space="preserve">
+    <value>今日输赢</value>
+  </data>
+  <data name="MemberNetWinLoss.Total" xml:space="preserve">
+    <value>会员总数</value>
+  </data>
+  <data name="MasterNetWinLoss.Comm" xml:space="preserve">
+    <value>总代理佣金</value>
+  </data>
+  <data name="AgentNetWinLoss.Comm" xml:space="preserve">
+    <value>代理佣金</value>
+  </data>
+  <data name="MemberNetWinLoss.Comm" xml:space="preserve">
+    <value>会员佣金</value>
+  </data>
 </root>
