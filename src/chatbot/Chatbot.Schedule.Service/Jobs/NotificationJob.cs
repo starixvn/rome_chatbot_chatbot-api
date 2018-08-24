@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using System.Threading.Tasks;
+    using Chatbot.Client.Models;
     using Chatbot.Client.Services;
     using Chatbot.Schedule.Service.Constants;
     using Chatbot.Schedule.Service.MessageHandler;
@@ -26,14 +27,24 @@
 
         public async Task Execute(IJobExecutionContext context)
         {
-            var dataMap = context.JobDetail.JobDataMap;
-            var functionId = dataMap.GetIntValue(JobDataKey.FunctionId);
-            var users = await settingService.GetUsersByFunction(functionId, 0);
-
-            Parallel.ForEach(users, async (user) =>
+            try
             {
-                await messageSender.SendMessageByFunction(user.Id, functionId);
-            });
+                var dataMap = context.JobDetail.JobDataMap;
+                var functionId = dataMap.GetIntValue(JobDataKey.FunctionId);
+                var users = await settingService.GetUsersByFunction(functionId, 0);
+
+                Parallel.ForEach(users, async (user) =>
+                {
+                    await messageSender.SendMessageByFunction(user.Id, functionId);
+                });
+            }
+            catch (ChatbotClientException ex)
+            {
+                if (!ex.IsServiceNotAvailable)
+                {
+                    throw new JobExecutionException(ex.Message);
+                }
+            }
         }
     }
 }
