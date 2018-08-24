@@ -7,7 +7,7 @@
     using Chatbot.Schedule.Service.MessageHandler;
     using Quartz;
 
-    internal class NotificationJob : IJob
+    public class NotificationJob : IJob
     {
         private readonly IMessageSender messageSender;
         private readonly SettingService settingService;

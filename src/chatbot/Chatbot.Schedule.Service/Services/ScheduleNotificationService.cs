@@ -11,7 +11,7 @@
     using Microsoft.Extensions.Logging;
     using Quartz;
 
-    internal class ScheduleNotificationService : BackgroundService
+    public class ScheduleNotificationService : BackgroundService
     {
         private readonly ISchedulerFactory schedulerFactory;
         private readonly IConfiguration configuration;
