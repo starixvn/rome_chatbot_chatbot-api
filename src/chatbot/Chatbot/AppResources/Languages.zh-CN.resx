@@ -120,9 +120,6 @@
   <data name="Outstanding" xml:space="preserve">
     <value>未完成交易</value>
   </data>
-  <data name="TodayWinLoss" xml:space="preserve">
-    <value>Today Win Loss zh-CN</value>
-  </data>
   <data name="Header_1" xml:space="preserve">
     <value>未完成交易</value>
   </data>

@@ -1,6 +1,7 @@
 ﻿namespace Chatbot.Modules.MessageBuilders.Templates
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.Globalization;
     using Chatbot.AppResources;
@@ -18,6 +19,11 @@
         {
             var keyValues = DataHelper.Parse<Dictionary<string, object>>(data);
             var textContainer = new List<string>();
+
+            if(!keyValues.Keys.Any())
+            {
+                return GetResource(nameof(Languages.NoData), cultureInfo);
+            }
 
             foreach (var keyValue in keyValues)
             {

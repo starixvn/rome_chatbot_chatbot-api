@@ -1,8 +1,6 @@
 ﻿namespace Chatbot.Client.Services
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using Chatbot.Client.Helpers;
     using Chatbot.Client.Models;
