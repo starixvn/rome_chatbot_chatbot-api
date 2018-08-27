@@ -250,7 +250,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to System Update.
+        ///   Looks up a localized string similar to System Announcement.
         /// </summary>
         public static string Header_8 {
             get {

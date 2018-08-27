@@ -271,6 +271,6 @@
     <value>Sorry, the system is under maintenance from {0} to {1} GMT+8. Please come back later.</value>
   </data>
   <data name="Header_8" xml:space="preserve">
-    <value>System Update</value>
+    <value>System Announcement</value>
   </data>
 </root>
