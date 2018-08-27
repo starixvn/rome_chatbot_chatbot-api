@@ -5,10 +5,10 @@
     using System.Threading.Tasks;
     using Alpha.Services.Client.Services;
     using Chatbot.Configurations;
+    using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
-    using Chatbot.Modules.Settings;
 
     public interface IFunctionHandlerFactory
     {
@@ -42,6 +42,11 @@
             if (chatbotConfigs.MessageAndAnnoucementFunctionIds.Contains(functionId))
             {
                 return new MessageAnnouncementFunctionHandler(messageBuilder, messageSender, customerService, getDataHanlders);
+            }
+
+            if (chatbotConfigs.ScheduleFunctionIds.Contains(functionId))
+            {
+                return new ScheduleFunctionHandler(messageBuilder, messageSender, customerService, getDataHanlders);
             }
 
             return new DefaultFunctionHandler(messageBuilder, messageSender, customerService, getDataHanlders);
