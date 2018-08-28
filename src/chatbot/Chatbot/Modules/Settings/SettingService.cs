@@ -10,6 +10,7 @@
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.MessageServices;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
     using Fanex.Caching;
@@ -80,11 +81,12 @@
         public async Task GenerateVerificationCode(int userId, string custName, Messenger messenger)
         {
             InputValidator.Validate(nameof(userId), userId);
+            InputValidator.Validate(nameof(custName), custName);
             InputValidator.Validate(nameof(messenger), messenger);
             InputValidator.Validate("Messenger Username", messenger.Username);
             InputValidator.Validate("Messenger Type", messenger.Type);
 
-            var verificationCode = RandomSixDigitsNumber();
+            var verificationCode = randomNumberFunc();
             var user = await GetUser(userId);
 
             await Task.WhenAll(

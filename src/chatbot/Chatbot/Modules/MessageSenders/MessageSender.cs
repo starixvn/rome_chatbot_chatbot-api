@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Chatbot.Constants;
     using Chatbot.Models;
+    using Chatbot.Modules.MessageServices;
     using Fanex.Logging;
 
     public interface IMessageSender

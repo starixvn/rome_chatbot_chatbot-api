@@ -4,7 +4,7 @@
     {
         public UserDto() { }
 
-        internal UserDto(
+        public UserDto(
             int userId,
             int custId,
             int subAccountId,

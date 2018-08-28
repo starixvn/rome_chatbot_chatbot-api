@@ -1,4 +1,4 @@
-﻿namespace Chatbot.Modules.MessageSenders
+﻿namespace Chatbot.Modules.MessageServices
 {
     using System;
     using System.Collections.Generic;

@@ -10,6 +10,7 @@
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.MessageServices;
     using Chatbot.Modules.Settings;
     using Fanex.Logging;
     using Models;

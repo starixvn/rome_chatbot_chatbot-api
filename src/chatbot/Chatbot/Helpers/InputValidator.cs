@@ -8,10 +8,18 @@
     {
         public static void Validate(string paramName, object paramValue)
         {
-            if (paramValue == null
-                || (paramValue is string && string.IsNullOrWhiteSpace(paramValue as string)))
+            if (paramValue == null)
             {
                 throw new ArgumentNullException(paramName);
+            }
+        }
+
+        public static void Validate(string paramName, string paramValue)
+        {
+            if (paramValue == null
+                || string.IsNullOrWhiteSpace(paramValue))
+            {
+                throw new ArgumentOutOfRangeException(paramName);
             }
         }
 

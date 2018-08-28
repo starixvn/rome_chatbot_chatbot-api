@@ -11,6 +11,7 @@
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageBuilders.Templates;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.MessageServices;
     using Chatbot.Modules.Settings;
     using Chatbot.WebApi.Filters;
     using Chatbot.WebApi.Middlewares;
