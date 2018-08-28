@@ -12,7 +12,7 @@
 
         Task<Result> SendByFunction(int functionId, int userId);
 
-        Task<IEnumerable<Message>> GetMessageLogs(int userId, DateTime fromDate, DateTime toDate, int functionId = 0, int messengerType = 0);
+        Task<List<Message>> GetMessageLogs(int userId, DateTime fromDate, DateTime toDate, int functionId = 0, int messengerType = 0);
     }
 
     public class MessageServiceImpl : ServiceBase, MessageService
@@ -57,7 +57,7 @@
                });
         }
 
-        public Task<IEnumerable<Message>> GetMessageLogs(
+        public Task<List<Message>> GetMessageLogs(
             int userId, 
             DateTime fromDate, 
             DateTime toDate, 
@@ -68,7 +68,7 @@
             ValidateInputParam(nameof(fromDate), fromDate);
             ValidateInputParam(nameof(toDate), toDate);
 
-            return restClient.ExecutePostAsync<IEnumerable<Message>>(
+            return restClient.ExecutePostAsync<List<Message>>(
                $"message/getMessageLogs",
                new
                {

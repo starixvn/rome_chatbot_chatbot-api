@@ -4,7 +4,7 @@
     {
         public FunctionLanguageDto() { }
 
-        internal FunctionLanguageDto(
+        public FunctionLanguageDto(
             int functionId,
             string functionName,
             string resourceType,

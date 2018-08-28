@@ -6,7 +6,7 @@
     {
         public MessengerDto() { }
 
-        internal MessengerDto(
+        public MessengerDto(
             int userId,
             int type,
             string username,

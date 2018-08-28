@@ -194,7 +194,6 @@
         [Fact]
         public void GetMessengers_WhenMessengerIsVerifying_ReturnNumberOfWrongVerificationCode()
         {
-            var isGetEnabledMessage = true;
             var userId = 23343;
 
             dynamicRepository
@@ -217,12 +216,239 @@
             Assert.Equal(100, actualMessengers.ElementAt(1).InputWrongVerificationCodeTimes);
         }
 
+        [Fact]
         public void GetFunctions_Always_ReturnFunctionList()
         {
+            var userId = 23343;
+            dynamicRepository
+                .FetchAsync<Function>(Arg.Is<GetUserFunctionsCriteria>(criteria => criteria.UserId == userId))
+                .Returns(Task.FromResult(new List<Function>
+                {
+                    new Function
+                    {
+                        Id = 1,
+                        Command = "/os",
+                        Name = "name"
+                    }
+                } as IEnumerable<Function>));
 
+            var actualFunctions = settingService.GetFunctions(userId).GetAwaiter().GetResult();
+
+            var firstFunction = actualFunctions.ElementAt(0);
+            Assert.Equal(1, actualFunctions.Count());
+            Assert.Equal(1, firstFunction.Id);
+            Assert.Equal("/os", firstFunction.Command);
+            Assert.Equal("name", firstFunction.Name);
         }
 
+        [Fact]
+        public void GetFunctions_AlwaysGetByLanguage_ReturnFunctionListWithName()
+        {
+            var userId = 23343;
+            dynamicRepository
+                .FetchAsync<Function>(Arg.Is<GetUserFunctionsCriteria>(criteria => criteria.UserId == userId))
+                .Returns(Task.FromResult(new List<Function>
+                {
+                    new Function
+                    {
+                        Id = 1,
+                        Command = "/os",
+                        Name = "name"
+                    }
+                } as IEnumerable<Function>));
 
+            cacheService.GetOrSetAsync(
+                "SettingServiceImpl.FunctionNameByLanguageCacheKey.1",
+                Arg.Any<Func<IEnumerable<FunctionLanguageDto>>>(),
+                Arg.Any<CacheItemOptions>())
+                .Returns(Task.FromResult(new List<FunctionLanguageDto>
+                {
+                    new FunctionLanguageDto(1, "name-en-us", "function", "en-US")
+                } as IEnumerable<FunctionLanguageDto>));
+
+            var actualFunctions = settingService.GetFunctions(userId, "en-US").GetAwaiter().GetResult();
+
+            Assert.Equal(1, actualFunctions.Count());
+            Assert.Equal("name-en-us", actualFunctions.ElementAt(0).Name);
+        }
+
+        [Fact]
+        public void UpdateFunctions_Always_ExecuteUpdateCommand()
+        {
+            var userId = 23343;
+            var functions = new List<Function>
+            {
+                new Function
+                {
+                    Id = 1,
+                    Command = "/os",
+                    Name = "name"
+                }
+            };
+
+            settingService.UpdateFunctions(userId, functions).GetAwaiter().GetResult();
+
+            dynamicRepository.Received().ExecuteAsync(Arg.Is<UpdateUserFunctionsCommand>(
+                command => command.UserId == userId
+                        && command.Functions.Count() == 1
+                        && command.Functions.ElementAt(0).Id == 1));
+        }
+
+        [Fact]
+        public void UpdateLanguage_Always_ExecuteUpdateCommand()
+        {
+            var userId = 23343;
+            var language = "en-US";
+
+            settingService.UpdateLanguage(userId, language).GetAwaiter().GetResult();
+
+            dynamicRepository.Received().ExecuteAsync(Arg.Is<UpdateUserLanguageCommand>(
+                command => command.UserId == userId
+                        && command.Language == language));
+        }
+
+        [Fact]
+        public void UpdateMessengerStatus__Always_ExecuteUpdateCommand()
+        {
+            var userId = 23343;
+            var messengerType = 1;
+            var messengerUsername = "username";
+            var enabled = true;
+
+            settingService.UpdateMessengerStatus(userId, messengerType, messengerUsername, enabled).GetAwaiter().GetResult();
+
+            dynamicRepository.Received().ExecuteAsync(Arg.Is<UpdateMessengerStatusCommand>(
+                command => command.UserId == userId
+                        && command.MessengerType == messengerType
+                        && command.MessengerUsername == messengerUsername
+                        && command.Enabled == enabled));
+        }
+
+        [Fact]
+        public void VerifyVerificationCode_MessengerIsBelongedToAnotherCustomer_ReturnFailedResult()
+        {
+            var userId = 2323;
+            var messenger = new MessengerDto(4554, 1222, "messengername111", true, false, "434", DateTime.Now);
+
+            dynamicRepository
+                .GetAsync<MessengerDto>(Arg.Is<GetMessengerCriteria>(criteria
+                    => criteria.MessengerType == messenger.Type
+                        && criteria.MessengerUsername == messenger.Username))
+                        .Returns(Task.FromResult(messenger));
+            var expectedResult = VerificationCodeResult.CreateMessengerAccountHasBeenRegisteredByAnotherCustomerResult();
+
+            var result = settingService
+                .VerifyVerificationCode(userId, "3434", new Messenger(messenger.Type, messenger.Username))
+                .GetAwaiter()
+                .GetResult();
+
+            Assert.Equal(result.Code, expectedResult.Code);
+        }
+
+        [Fact]
+        public void VerifyVerificationCode_WrongMessengerName_ReturnFailedResult()
+        {
+            var userId = 2323;
+            var messenger = new MessengerDto(userId, 1222, "messengername111", true, false, "434", DateTime.Now);
+
+            dynamicRepository
+                .GetAsync<MessengerDto>(Arg.Is<GetMessengerByUserCriteria>(criteria
+                    => criteria.MessengerType == messenger.Type
+                        && criteria.MessengerUsername == messenger.Username
+                        && criteria.UserId == userId))
+                        .Returns(Task.FromResult(messenger));
+            var expectedResult = VerificationCodeResult.CreateWrongVerificationCodeResult();
+
+            var result = settingService
+                .VerifyVerificationCode(userId, "3434", new Messenger(messenger.Type, "wrongname"))
+                .GetAwaiter()
+                .GetResult();
+
+            Assert.Equal(result.Code, expectedResult.Code);
+        }
+
+        [Fact]
+        public void VerifyVerificationCode_VerificationCodeExpired_ReturnFailedResult()
+        {
+            var userId = 2323;
+            var generatedVerificationCodeTime = new DateTime(1989, 5, 28, 10, 10, 0);
+            var messenger = new MessengerDto(userId, 1222, "messengername111", true, false, "434", generatedVerificationCodeTime);
+
+            chatbotConfigs.VerificationCodeExpiredTimeInMinutes.Returns(3);
+            getCurrentDateTimeFunc.Invoke().Returns(generatedVerificationCodeTime.AddMinutes(4));
+
+            dynamicRepository
+                .GetAsync<MessengerDto>(Arg.Is<GetMessengerByUserCriteria>(criteria
+                    => criteria.MessengerType == messenger.Type
+                        && criteria.MessengerUsername == messenger.Username
+                        && criteria.UserId == userId))
+                        .Returns(Task.FromResult(messenger));
+            var expectedResult = VerificationCodeResult.CreateVerificationCodeExpiredResult();
+
+            var result = settingService
+                .VerifyVerificationCode(userId, "3434", new Messenger(messenger.Type, messenger.Username))
+                .GetAwaiter()
+                .GetResult();
+
+            Assert.Equal(result.Code, expectedResult.Code);
+        }
+
+        [Fact]
+        public void VerifyVerificationCode_WrongVerificationCode_ReturnFailedResultAndLogFailedAction()
+        {
+            var userId = 2323;
+            var messenger = new MessengerDto(userId, 1222, "messengername111", true, false, "434", DateTime.Now);
+
+            chatbotConfigs.VerificationCodeExpiredTimeInMinutes.Returns(3);
+            chatbotConfigs.WrongVerificationCodeActionId.Returns(601);
+
+            dynamicRepository
+                .GetAsync<MessengerDto>(Arg.Is<GetMessengerByUserCriteria>(criteria
+                    => criteria.MessengerType == messenger.Type
+                        && criteria.MessengerUsername == messenger.Username
+                        && criteria.UserId == userId))
+                        .Returns(Task.FromResult(messenger));
+            var expectedResult = VerificationCodeResult.CreateWrongVerificationCodeResult();
+
+            var result = settingService
+                .VerifyVerificationCode(userId, "3434", new Messenger(messenger.Type, messenger.Username))
+                .GetAwaiter()
+                .GetResult();
+
+            Assert.Equal(result.Code, expectedResult.Code);
+            dynamicRepository.Received().ExecuteAsync(Arg.Is<InsertUserActionCommand>(
+                command => command.UserId == userId
+                        && command.MessengerType == messenger.Type
+                        && command.MessengerUsername == messenger.Username
+                        && command.ActionId == 601));
+        }
+
+        [Fact]
+        public void VerifyVerificationCode_VerifySuccessful_UpdateMessengerStatus()
+        {
+            var userId = 2323;
+            var messenger = new MessengerDto(userId, 1222, "messengername111", true, false, "434", DateTime.Now);
+
+            chatbotConfigs.VerificationCodeExpiredTimeInMinutes.Returns(3);
+
+            dynamicRepository
+                .GetAsync<MessengerDto>(Arg.Is<GetMessengerByUserCriteria>(criteria
+                    => criteria.MessengerType == messenger.Type
+                        && criteria.MessengerUsername == messenger.Username
+                        && criteria.UserId == userId))
+                        .Returns(Task.FromResult(messenger));
+
+            var result = settingService
+                .VerifyVerificationCode(userId, messenger.VerificationCode, new Messenger(messenger.Type, messenger.Username))
+                .GetAwaiter()
+                .GetResult();
+
+            dynamicRepository.Received().ExecuteAsync(Arg.Is<UpdateMessengerStatusCommand>(
+                command => command.UserId == userId
+                        && command.MessengerType == messenger.Type
+                        && command.MessengerUsername == messenger.Username
+                        && command.Enabled));
+        }
 
         private IEnumerable<Messenger> StubMessengers()
             => new List<Messenger>
