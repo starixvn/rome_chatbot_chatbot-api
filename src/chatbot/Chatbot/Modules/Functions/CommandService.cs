@@ -71,7 +71,7 @@
                 var commandFunction = await GetCommandFunction(messengerDto.UserId, command);
 
                 await Task.WhenAll(
-                    messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command, commandFunction?.Id ?? 0),
+                    messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command, functionId: commandFunction?.Id ?? 0),
                     RunCommand(command, user, messenger, commandFunction));
             }
             catch (Exception ex)

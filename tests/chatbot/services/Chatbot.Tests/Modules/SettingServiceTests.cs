@@ -191,6 +191,37 @@
                 && secondMessenger.Username == "Messenger31");
         }
 
+        [Fact]
+        public void GetMessengers_WhenMessengerIsVerifying_ReturnNumberOfWrongVerificationCode()
+        {
+            var isGetEnabledMessage = true;
+            var userId = 23343;
+
+            dynamicRepository
+                .FetchAsync<Messenger>(Arg.Is<GetMessengerByUserCriteria>(criteria => criteria.UserId == userId))
+                .Returns(Task.FromResult(StubMessengers()));
+
+            var wrongVerificationCodeActionId = 121212;
+            chatbotConfigs.WrongVerificationCodeActionId.Returns(wrongVerificationCodeActionId);
+
+            dynamicRepository.FetchAsync<UserActionDto>(Arg.Is<GetUserActionsCriteria>(criteria 
+                => criteria.UserId == userId
+                && criteria.ActionId == wrongVerificationCodeActionId
+                && criteria.MessengerType == 2
+                && criteria.MessengerUsername == "Messenger2"))
+                .Returns(Task.FromResult(new List<UserActionDto> { new UserActionDto(userId, 2, "Messenger2", wrongVerificationCodeActionId, 100, DateTime.Now) } as IEnumerable<UserActionDto>));
+
+            var actualMessengers = settingService.GetMessengers(userId, false).GetAwaiter().GetResult();
+
+            Assert.Equal(5, actualMessengers.Count());
+            Assert.Equal(100, actualMessengers.ElementAt(1).InputWrongVerificationCodeTimes);
+        }
+
+        public void GetFunctions_Always_ReturnFunctionList()
+        {
+
+        }
+
 
 
         private IEnumerable<Messenger> StubMessengers()
