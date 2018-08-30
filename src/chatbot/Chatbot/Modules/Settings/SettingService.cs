@@ -8,7 +8,6 @@
     using Chatbot.Helpers;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
-    using Chatbot.Modules.Funtions;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageServices;
@@ -58,7 +57,6 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageLogger messageLogger;
         private readonly IChatbotConfigs chatbotConfigs;
-        private readonly MessageService messageService;
 
         public SettingServiceImpl(
             IDynamicRepository dynamicRepository,
@@ -67,7 +65,6 @@
             ICacheService cacheService,
             IMessageLogger messageLogger,
             IChatbotConfigs chatbotConfigs,
-            MessageService messageService,
             Func<string> randomNumberFunc = null,
             Func<DateTime> getCurrentDateTimeFunc = null)
         {
@@ -79,7 +76,6 @@
             this.messageBuilder = messageBuilder;
             this.messageLogger = messageLogger;
             this.chatbotConfigs = chatbotConfigs;
-            this.messageService = messageService;
         }
 
         public async Task GenerateVerificationCode(int userId, string custName, Messenger messenger)

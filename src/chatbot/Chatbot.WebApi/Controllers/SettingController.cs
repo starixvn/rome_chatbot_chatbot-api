@@ -1,9 +1,11 @@
 ﻿namespace Chatbot.WebApi.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
+    using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Settings;
     using Chatbot.WebApi.Params;
     using Microsoft.AspNetCore.Mvc;
@@ -13,10 +15,12 @@
     public class SettingController : ControllerBase
     {
         private readonly SettingService settingService;
+        private readonly MessageService messageService;
 
-        public SettingController(SettingService settingService)
+        public SettingController(SettingService settingService, MessageService messageService)
         {
             this.settingService = settingService;
+            this.messageService = messageService;
         }
 
         [Route("user"), HttpPost]
@@ -36,6 +40,14 @@
         public async Task<Result> UpdateFunctions(int userId, [FromBody]IEnumerable<Function> functions)
         {
             await settingService.UpdateFunctions(userId, functions);
+
+            foreach (var function in functions)
+            {
+                if (function.Enabled)
+                {
+                    await messageService.UpdateLastQueryTime(userId, function.Id, 0, DateTime.Now);
+                }
+            }
 
             return Result.CreateSuccessfulResult();
         }

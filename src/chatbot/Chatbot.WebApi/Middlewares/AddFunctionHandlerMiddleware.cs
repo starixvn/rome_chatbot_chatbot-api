@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
@@ -66,20 +67,28 @@
         {
             var now = DateTime.Now;
             var lastQueryTime = await chatBotMessageService.GetLastQueryTime(param.User.Id, param.Function.Id, MessageType.System);
-            var message = announcementService.GetAnnouncements(param.User.CustId, param.User.Language, lastQueryTime, now);
-            await chatBotMessageService.UpdateLastQueryTime(param.User.Id, param.Function.Id, MessageType.System, now);
+            var messages = announcementService.GetAnnouncements(param.User.CustId, param.User.Language, lastQueryTime, now);
 
-            return message;
+            if (messages?.Any() == true)
+            {
+                await chatBotMessageService.UpdateLastQueryTime(param.User.Id, param.Function.Id, MessageType.System, now);
+            }
+
+            return messages;
         }
 
         private static async Task<IEnumerable<Message>> GetMessage(FunctionParam param, int messageType)
         {
             var now = DateTime.Now;
             var lastQueryTime = await chatBotMessageService.GetLastQueryTime(param.User.Id, param.Function.Id, messageType);
-            var message = await messageService.GetMessagesAsync(param.User.CustId, messageType, param.User.Language, lastQueryTime, now);
-            await chatBotMessageService.UpdateLastQueryTime(param.User.Id, param.Function.Id, messageType, now);
+            var messages = await messageService.GetMessagesAsync(param.User.CustId, messageType, param.User.Language, lastQueryTime, now);
 
-            return message;
+            if (messages?.Any() == true)
+            {
+                await chatBotMessageService.UpdateLastQueryTime(param.User.Id, param.Function.Id, messageType, now);
+            }
+
+            return messages;
         }
     }
 }
