@@ -23,7 +23,6 @@
 
     public class CommandServiceImpl : CommandService
     {
-        private const int NotRecognizedCommandFunctionId = 1000000;
         private readonly SettingService settingService;
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
@@ -71,7 +70,7 @@
                 var commandFunction = await GetCommandFunction(messengerDto.UserId, command);
 
                 await Task.WhenAll(
-                    messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command, functionId: commandFunction?.Id ?? 0),
+                    messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command, functionId: commandFunction?.Id ?? chatbotConfigs.NotRecognizedCommandFunctionId),
                     RunCommand(command, user, messenger, commandFunction));
             }
             catch (Exception ex)

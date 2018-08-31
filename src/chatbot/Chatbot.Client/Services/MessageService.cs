@@ -1,4 +1,6 @@
-﻿namespace Chatbot.Client.Services
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Chatbot.Tests")]
+
+namespace Chatbot.Client.Services
 {
     using System;
     using System.Collections.Generic;
@@ -58,10 +60,10 @@
         }
 
         public Task<List<Message>> GetMessageLogs(
-            int userId, 
-            DateTime fromDate, 
-            DateTime toDate, 
-            int functionId = 0, 
+            int userId,
+            DateTime fromDate,
+            DateTime toDate,
+            int functionId = 0,
             int messengerType = 0)
         {
             ValidateInputParam(nameof(userId), userId);

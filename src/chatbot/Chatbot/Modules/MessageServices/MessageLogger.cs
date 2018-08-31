@@ -1,4 +1,6 @@
-﻿namespace Chatbot.Modules.MessageServices
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Chatbot.Tests")]
+
+namespace Chatbot.Modules.MessageServices
 {
     using System;
     using System.Collections.Generic;
@@ -46,7 +48,9 @@
 
             var criteria = new GetMessageLogCriteria(userId, fromDate, toDate, functionId, messengerType);
 
-            return await dynamicRepository.FetchAsync<Message>(criteria);
+            var messages = await dynamicRepository.FetchAsync<Message>(criteria);
+
+            return messages;
         }
 
         public async Task LogMessage(

@@ -308,7 +308,7 @@
         }
 
         [Fact]
-        public void UpdateMessengerStatus__Always_ExecuteUpdateCommand()
+        public void UpdateMessengerStatus_Always_ExecuteUpdateCommand()
         {
             var userId = 23343;
             var messengerType = 1;
@@ -429,14 +429,7 @@
             var userId = 2323;
             var messenger = new MessengerDto(userId, 1222, "messengername111", true, false, "434", DateTime.Now);
 
-            chatbotConfigs.VerificationCodeExpiredTimeInMinutes.Returns(3);
-
-            dynamicRepository
-                .GetAsync<MessengerDto>(Arg.Is<GetMessengerByUserCriteria>(criteria
-                    => criteria.MessengerType == messenger.Type
-                        && criteria.MessengerUsername == messenger.Username
-                        && criteria.UserId == userId))
-                        .Returns(Task.FromResult(messenger));
+            SetupVerificationCodeSuccessful(userId, messenger);
 
             var result = settingService
                 .VerifyVerificationCode(userId, messenger.VerificationCode, new Messenger(messenger.Type, messenger.Username))
@@ -448,6 +441,209 @@
                         && command.MessengerType == messenger.Type
                         && command.MessengerUsername == messenger.Username
                         && command.Enabled));
+        }
+
+        [Fact]
+        public void VerifyVerificationCode_VerifySuccessful_ResetFailedVerificationCodeCount()
+        {
+            var userId = 2323;
+            var messenger = new MessengerDto(userId, 1222, "messengername111", true, false, "434", DateTime.Now);
+
+            SetupVerificationCodeSuccessful(userId, messenger);
+
+            chatbotConfigs.WrongVerificationCodeActionId.Returns(1515);
+
+            var result = settingService
+                .VerifyVerificationCode(userId, messenger.VerificationCode, new Messenger(messenger.Type, messenger.Username))
+                .GetAwaiter()
+                .GetResult();
+
+            dynamicRepository.Received().ExecuteAsync(Arg.Is<ResetActionCountTimesCommand>(
+                command => command.UserId == userId
+                        && command.MessengerType == messenger.Type
+                        && command.MessengerUsername == messenger.Username
+                        && command.ActionId == 1515));
+        }
+
+        [Fact]
+        public void VerifyVerificationCode_VerifySuccessful_SendWelcomeMessage()
+        {
+            var userId = 2323;
+            var messengerDto = new MessengerDto(userId, 1222, "messengername111", true, false, "434", DateTime.Now);
+
+            SetupVerificationCodeSuccessful(userId, messengerDto);
+
+            messageBuilder.BuildWelcomeMessage("en-us", messengerDto.Type).Returns("Welcome Message!");
+
+            var messenger = new Messenger(messengerDto.Type, messengerDto.Username);
+
+            var result = settingService
+                .VerifyVerificationCode(userId, messengerDto.VerificationCode, messenger)
+                .GetAwaiter()
+                .GetResult();
+
+            messageSender.Received().SendMessage(userId, messenger, "Welcome Message!");
+        }
+
+        [Fact]
+        public void AddUser_Always_ExecuteInsertUserCommand()
+        {
+            // Arrange
+            var custId = 1323;
+            var subAccountId = 232;
+            var custName = "cust name";
+            var language = "en-US";
+            var userId = 434;
+            var messenger = new Messenger(1, "messenger type", true);
+            var userDto = new UserDto(userId, custId, subAccountId, "en-us");
+            SetupAddUserSuccessful(custId, subAccountId, language, userId, userDto);
+
+            // Act
+            settingService.AddUser(custId, subAccountId, custName, language, messenger).GetAwaiter().GetResult();
+
+            // Assert
+            dynamicRepository.Received().ExecuteAsync(Arg.Is<InsertUserCommand>(
+                command => command.CustId == custId
+                            && command.SubAccountId == subAccountId
+                            && command.Language == language));
+        }
+
+        [Fact]
+        public void AddUser_OverMaxCreateAccountTime_ReturnFailedresult()
+        {
+            // Arrange
+            var custId = 1323;
+            var subAccountId = 232;
+            var custName = "cust name";
+            var language = "en-US";
+            var userId = 434;
+            var messenger = new Messenger(1, "messenger type", true);
+            var userDto = new UserDto(userId, custId, subAccountId, "en-us");
+            SetupAddUserSuccessful(custId, subAccountId, language, userId, userDto);
+            var addAccountActionId = 34;
+            chatbotConfigs.AddAccountActionId.Returns(addAccountActionId);
+            chatbotConfigs.MaxAddActionTimes.Returns(29);
+
+            dynamicRepository.FetchAsync<UserActionDto>(
+                Arg.Is<GetUserActionsCriteria>(criteria
+                => criteria.UserId == userId
+                && criteria.ActionId == addAccountActionId))
+                .Returns(Task.FromResult(
+                    new List<UserActionDto>
+                    {
+                        new UserActionDto(userId, 1, "messenger type", addAccountActionId, 10, DateTime.Now),
+                        new UserActionDto(userId, 1, "messenger type2", addAccountActionId, 20, DateTime.Now)
+                    } as IEnumerable<UserActionDto>));
+
+            // Act
+            var result = settingService.AddUser(custId, subAccountId, custName, language, messenger).GetAwaiter().GetResult();
+
+            // Assert
+            var expectedResult = AddingUserResult.CreateIsOverMaxAddAccountTimesResult();
+
+            Assert.Equal(expectedResult.Code, result.Code);
+        }
+
+        [Fact]
+        public void AddUser_MessengerAccountDoesNotExist_ReturnFailedresult()
+        {
+            // Arrange
+            var custId = 1323;
+            var subAccountId = 232;
+            var custName = "cust name";
+            var language = "en-US";
+            var userId = 434;
+            var messenger = new Messenger(1, "messenger type", true);
+            var userDto = new UserDto(userId, custId, subAccountId, "en-us");
+            SetupAddUserSuccessful(custId, subAccountId, language, userId, userDto);
+
+            messageSender.IsMessengerAccountNotExisted(messenger).Returns(Task.FromResult(true));
+
+            // Act
+            var result = settingService.AddUser(custId, subAccountId, custName, language, messenger).GetAwaiter().GetResult();
+
+            // Assert
+            var expectedResult = AddingUserResult.CreateAccountDoesNotExistResult();
+
+            Assert.Equal(expectedResult.Code, result.Code);
+        }
+
+        [Fact]
+        public void AddUser_MessengerAccountIsBelongToAnotherCustomer_ReturnFailedresult()
+        {
+            // Arrange
+            var custId = 1323;
+            var subAccountId = 232;
+            var custName = "cust name";
+            var language = "en-US";
+            var userId = 434;
+            var messenger = new Messenger(1, "messenger type", true);
+            var userDto = new UserDto(userId, custId, subAccountId, "en-us");
+            SetupAddUserSuccessful(custId, subAccountId, language, userId, userDto);
+
+            dynamicRepository
+                .GetAsync<MessengerDto>(Arg.Is<GetMessengerCriteria>(criteria
+                    => criteria.MessengerType == messenger.Type
+                        && criteria.MessengerUsername == messenger.Username))
+                        .Returns(Task.FromResult(new MessengerDto(34342, messenger.Type, messenger.Username, true, false, string.Empty, DateTime.Now)));
+            // Act
+            var result = settingService.AddUser(custId, subAccountId, custName, language, messenger).GetAwaiter().GetResult();
+
+            // Assert
+            var expectedResult = AddingUserResult.CreateMessengerAccountHasBeenRegisteredByAnotherCustomerResult();
+
+            Assert.Equal(expectedResult.Code, result.Code);
+        }
+
+        [Fact]
+        public void AddUser_Aways_SendVerificationCode()
+        {
+            // Arrange
+            var custId = 1323;
+            var subAccountId = 232;
+            var custName = "cust name";
+            var language = "en-US";
+            var userId = 434;
+            var messenger = new Messenger(1, "messenger type", true);
+            var userDto = new UserDto(userId, custId, subAccountId, "en-us");
+            SetupAddUserSuccessful(custId, subAccountId, language, userId, userDto);
+
+            // Act
+            settingService.AddUser(custId, subAccountId, custName, language, messenger).GetAwaiter().GetResult();
+
+            // Assert
+            messageSender.Received().SendMessage(userId, messenger, Arg.Any<string>());
+        }
+
+        private void SetupAddUserSuccessful(int custId, int subAccountId, string language, int userId, UserDto userDto)
+        {
+            dynamicRepository.ExecuteAsync(
+                                Arg.Is<InsertUserCommand>(
+                                    command => command.CustId == custId
+                                        && command.SubAccountId == subAccountId
+                                        && command.Language == language)).Returns(parameters =>
+                                        {
+                                            ((InsertUserCommand)parameters[0]).UserId = userId;
+                                            return Task.FromResult(1);
+                                        });
+
+            dynamicRepository.GetAsync<UserDto>(Arg.Any<GetUserCriteria>()).Returns(userDto);
+        }
+
+        private void SetupVerificationCodeSuccessful(int userId, MessengerDto messenger)
+        {
+            chatbotConfigs.VerificationCodeExpiredTimeInMinutes.Returns(3);
+
+            dynamicRepository
+                .GetAsync<MessengerDto>(Arg.Is<GetMessengerByUserCriteria>(criteria
+                    => criteria.MessengerType == messenger.Type
+                        && criteria.MessengerUsername == messenger.Username
+                        && criteria.UserId == userId))
+                        .Returns(Task.FromResult(messenger));
+
+            dynamicRepository
+                .GetAsync<UserDto>(Arg.Is<GetUserCriteria>(criteria => criteria.UserId == userId))
+                .Returns(Task.FromResult(new UserDto(userId, 2, 3, "en-us")));
         }
 
         private IEnumerable<Messenger> StubMessengers()
