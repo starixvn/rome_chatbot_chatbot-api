@@ -1,5 +1,6 @@
 ﻿namespace Chatbot.WebApi.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Chatbot.Models;
@@ -50,6 +51,11 @@
 
         [Route("getMessageLogs"), HttpPost]
         public Task<IEnumerable<Message>> GetMessageLogs(MessageLogParam param)
-            => messageLogger.GetMessageLogs(param.UserId, param.FromDate, param.ToDate, param.FunctionId, param.MessengerType);
+            => messageLogger.GetMessageLogs(
+                param.UserId,
+                DateTimeOffset.FromUnixTimeMilliseconds(param.FromDate).DateTime.ToLocalTime(),
+                DateTimeOffset.FromUnixTimeMilliseconds(param.ToDate).DateTime.ToLocalTime(), 
+                param.FunctionId, 
+                param.MessengerType);
     }
 }

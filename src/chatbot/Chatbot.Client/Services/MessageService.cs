@@ -14,7 +14,7 @@ namespace Chatbot.Client.Services
 
         Task<Result> SendByFunction(int functionId, int userId);
 
-        Task<List<Message>> GetMessageLogs(int userId, DateTime fromDate, DateTime toDate, int functionId = 0, int messengerType = 0);
+        Task<List<Message>> GetMessageLogs(int userId, DateTimeOffset fromDate, DateTimeOffset toDate, int functionId = 0, int messengerType = 0);
     }
 
     public class MessageServiceImpl : ServiceBase, MessageService
@@ -61,8 +61,8 @@ namespace Chatbot.Client.Services
 
         public Task<List<Message>> GetMessageLogs(
             int userId,
-            DateTime fromDate,
-            DateTime toDate,
+            DateTimeOffset fromDate,
+            DateTimeOffset toDate,
             int functionId = 0,
             int messengerType = 0)
         {
@@ -75,8 +75,8 @@ namespace Chatbot.Client.Services
                new
                {
                    userId,
-                   fromDate,
-                   toDate,
+                   fromDate = fromDate.ToUnixTimeMilliseconds(),
+                   toDate = toDate.ToUnixTimeMilliseconds(),
                    functionId,
                    messengerType
                });

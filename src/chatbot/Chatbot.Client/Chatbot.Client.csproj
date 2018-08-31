@@ -2,7 +2,7 @@
 
   <PropertyGroup>
      <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
-     <Version>1.0.0-beta8-74</Version>
+     <Version>1.0.0-beta8-75</Version>
      <Authors>_</Authors>
      <Company>_</Company>
      <Description>Chatbot Client for working with Chatbot Services

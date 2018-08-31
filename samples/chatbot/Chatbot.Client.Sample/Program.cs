@@ -26,7 +26,7 @@ namespace Chatbot.Client.Sample
             try
             {
                 //var user = settingService.GetUser(31718515, 0, "en-US").GetAwaiter().GetResult();
-                var messages = messageService.GetMessageLogs(407, DateTime.Now.AddDays(-1), DateTime.Now).Result;
+                var messages = messageService.GetMessageLogs(411, DateTime.Now.AddDays(-1), DateTime.Now).Result;
             }
             catch(ChatbotClientException ex)
             {
