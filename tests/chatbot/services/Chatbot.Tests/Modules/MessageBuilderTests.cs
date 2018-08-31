@@ -39,7 +39,6 @@
         [Fact]
         public void BuildVerificationCodeMessage_Always_ReturnMessage()
         {
-            var custName = "cust name";
             var language = "en-US";
             var messengerType = 1;
             var verificationCode = "422134";

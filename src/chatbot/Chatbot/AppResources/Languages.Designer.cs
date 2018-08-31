@@ -475,7 +475,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The code will be expired in {0} minutes. To secure your information, please delete this message after completing verification..
+        ///   Looks up a localized string similar to The code will be expired in {0} minutes..
         /// </summary>
         public static string VerificationCode_2 {
             get {

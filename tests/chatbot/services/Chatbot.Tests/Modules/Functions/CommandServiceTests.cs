@@ -101,13 +101,7 @@
             var messenger = new Messenger(1, "messengerName");
             var user = StubUser(userId);
 
-            settingService.GetFunctions(userId).Returns(Task.FromResult(StubFunctions()));
-            settingService
-                .GetMessenger(messenger.Type, messenger.Username)
-                .Returns(Task.FromResult(new MessengerDto(userId, 1, "name", true, false, "code", DateTime.Now)));
-            settingService.GetUser(userId).Returns(user);
-            chatbotConfigs.NotRecognizedCommandFunctionId.Returns(100);
-            messageBuilder.BuildNotRecognizedCommandMessage(user.Language).Returns("NotRecognizedCommandMessage");
+            SetupNotRecognizedCommand(userId, messenger, user);
 
             commandService
                     .Execute("cm", messenger.Type, messenger.Username)
@@ -123,6 +117,67 @@
                         && msg.Username == messenger.Username),
                 "NotRecognizedCommandMessage",
                 100);
+        }
+
+        [Fact]
+        public void Execute_FunctionIsDisabled_ExecuteSendNotRecognizedCommandMessage1()
+        {
+            var userId = 190;
+            var messenger = new Messenger(1, "messengerName");
+            var user = StubUser(userId);
+
+            SetupNotRecognizedCommand(userId, messenger, user);
+
+            commandService
+                    .Execute("cm2", messenger.Type, messenger.Username)
+                    .GetAwaiter()
+                    .GetResult();
+
+            messageSender
+                .Received()
+                .SendMessage(
+                userId,
+                Arg.Is<Messenger>(
+                    msg => msg.Type == messenger.Type
+                        && msg.Username == messenger.Username),
+                "NotRecognizedCommandMessage",
+                100);
+        }
+
+        [Fact]
+        public void Execute_FunctionIsDisabled_ExecuteSendNotRecognizedCommandMessage()
+        {
+            var userId = 190;
+            var messenger = new Messenger(1, "messengerName");
+            var user = StubUser(userId);
+
+            SetupNotRecognizedCommand(userId, messenger, user);
+
+            commandService
+                    .Execute("cm2", messenger.Type, messenger.Username)
+                    .GetAwaiter()
+                    .GetResult();
+
+            messageSender
+                .Received()
+                .SendMessage(
+                userId,
+                Arg.Is<Messenger>(
+                    msg => msg.Type == messenger.Type
+                        && msg.Username == messenger.Username),
+                "NotRecognizedCommandMessage",
+                100);
+        }
+
+        private void SetupNotRecognizedCommand(int userId, Messenger messenger, User user)
+        {
+            settingService.GetFunctions(userId).Returns(Task.FromResult(StubFunctions()));
+            settingService
+                .GetMessenger(messenger.Type, messenger.Username)
+                .Returns(Task.FromResult(new MessengerDto(userId, 1, "name", true, false, "code", DateTime.Now)));
+            settingService.GetUser(userId).Returns(user);
+            chatbotConfigs.NotRecognizedCommandFunctionId.Returns(100);
+            messageBuilder.BuildNotRecognizedCommandMessage(user.Language).Returns("NotRecognizedCommandMessage");
         }
 
         private User StubUser(int userId)
