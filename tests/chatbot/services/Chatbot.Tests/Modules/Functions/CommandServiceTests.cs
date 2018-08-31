@@ -145,7 +145,7 @@
         }
 
         [Fact]
-        public void Execute_FunctionIsDisabled_ExecuteSendNotRecognizedCommandMessage()
+        public void Execute_Always_LogMessage()
         {
             var userId = 190;
             var messenger = new Messenger(1, "messengerName");

@@ -259,7 +259,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your account has been verified, Chatbot is fully functioning..
+        ///   Looks up a localized string similar to Your Letstalk ID has been verified, Chatbot is fully functioning..
         /// </summary>
         public static string InformingVerifiedMessage_1 {
             get {

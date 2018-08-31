@@ -130,7 +130,7 @@
     <value>Your command is not recognized.</value>
   </data>
   <data name="InformingVerifiedMessage_1" xml:space="preserve">
-    <value>Your account has been verified, Chatbot is fully functioning.</value>
+    <value>Your Letstalk ID has been verified, Chatbot is fully functioning.</value>
   </data>
   <data name="Turnover" xml:space="preserve">
     <value>Turnover</value>
