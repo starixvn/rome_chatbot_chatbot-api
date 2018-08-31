@@ -69,7 +69,6 @@
         {
             await settingService.GenerateVerificationCode(
                                 userId,
-                                param.CustName,
                                 new Messenger(param.MessengerType, param.MessengerUsername));
 
             return Result.CreateSuccessfulResult();

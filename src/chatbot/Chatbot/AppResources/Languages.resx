@@ -196,7 +196,7 @@
     <value>Outstanding</value>
   </data>
   <data name="VerificationCode_1" xml:space="preserve">
-    <value>You have requested to set up Chatbot for your account {0}. Your verification code is {1}.</value>
+    <value>You have requested to set up Chatbot. Your verification code is {0}.</value>
   </data>
   <data name="VerificationCode_2" xml:space="preserve">
     <value>The code will be expired in {0} minutes. To secure your information, please delete this message after completing verification.</value>

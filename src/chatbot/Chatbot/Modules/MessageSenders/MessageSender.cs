@@ -46,10 +46,11 @@
 
             if (result.IsNotOk)
             {
-                this.logger.Error(string.Join(
+                var errorMessage = string.Join(
                     "\r\n",
                     $"Deliver message failed: {message}",
-                    $"Code: {result.Status}, Message: {result.Message}"));
+                    $"Code: {result.Status}, Message: {result.Message}");
+                logger.Error(errorMessage);
             }
 
             if (logToDatabase)

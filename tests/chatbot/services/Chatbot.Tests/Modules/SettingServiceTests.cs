@@ -98,16 +98,7 @@
         [InlineData(0)]
         public void GenerateVerificationCode_UserIdIsNegativeOrZero_ThrowArgumentOutOfRangeException(int userId)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => settingService.GenerateVerificationCode(userId, "Name", default(Messenger)).GetAwaiter().GetResult());
-        }
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        public void GenerateVerificationCode_CustNameIsEmptyOrNull_ThrowArgumentOutOfRangeException(string custName)
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() => settingService.GenerateVerificationCode(1, custName, default(Messenger)).GetAwaiter().GetResult());
+            Assert.Throws<ArgumentOutOfRangeException>(() => settingService.GenerateVerificationCode(userId, default(Messenger)).GetAwaiter().GetResult());
         }
 
         [Fact]
@@ -115,7 +106,6 @@
         {
             // Arrange
             var userId = 100;
-            var custName = "custName";
             var messenger = new Messenger(1, "messenger-name");
 
             dynamicRepository
@@ -126,7 +116,7 @@
             randomNumberFunc.Invoke().Returns(verificationCode);
 
             // Act
-            settingService.GenerateVerificationCode(userId, custName, messenger).GetAwaiter().GetResult();
+            settingService.GenerateVerificationCode(userId, messenger).GetAwaiter().GetResult();
 
             // Assert
 
@@ -143,7 +133,6 @@
         {
             // Arrange
             var userId = 100;
-            var custName = "custName";
             var messenger = new Messenger(1, "messenger-name");
 
             dynamicRepository
@@ -156,7 +145,6 @@
             chatbotConfigs.VerificationCodeExpiredTimeInMinutes.Returns(10);
 
             messageBuilder.BuildVerificationCodeMessage(
-                custName, 
                 "en-us", 
                 messenger.Type, 
                 verificationCode, 
@@ -164,7 +152,7 @@
                 .Returns("Messsage");
 
             // Act
-            settingService.GenerateVerificationCode(userId, custName, messenger).GetAwaiter().GetResult();
+            settingService.GenerateVerificationCode(userId, messenger).GetAwaiter().GetResult();
 
             // Assert
             messageSender.Received().SendMessage(userId, messenger, "Messsage");

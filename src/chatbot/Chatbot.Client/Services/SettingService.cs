@@ -13,11 +13,11 @@
 
         Task<Result> UpdateLanguage(int userId, string language);
 
-        Task<Result> GenerateVerificationCode(int userId, string custName, string messengerUsername, int messengerType = MessengerType.Letstalk);
+        Task<Result> GenerateVerificationCode(int userId, string messengerUsername, int messengerType = MessengerType.Letstalk);
 
         Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, string messengerUsername, int messengerType = MessengerType.Letstalk);
 
-        Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, string messengerUsername, int messengerType = MessengerType.Letstalk);
+        Task<AddingUserResult> AddUser(int custId, int subAccountId, string language, string messengerUsername, int messengerType = MessengerType.Letstalk);
 
         Task<User> GetUser(int custId, int subAccountId, string language);
 
@@ -64,27 +64,24 @@
             return restClient.ExecutePostAsync<Result>($"setting/{userId}/language/{language}");
         }
 
-        public Task<Result> GenerateVerificationCode(int userId, string custName, string messengerUsername, int messengerType = 1)
+        public Task<Result> GenerateVerificationCode(int userId, string messengerUsername, int messengerType = 1)
         {
             ValidateInputParam(nameof(messengerUsername), messengerUsername);
-            ValidateInputParam(nameof(custName), custName);
             ValidateInputParam(nameof(messengerType), messengerType);
 
             return restClient.ExecutePostAsync<Result>(
                 $"setting/{userId}/generateVerificationCode",
                 new
                 {
-                    custName,
                     messengerUsername,
                     messengerType
                 });
         }
 
-        public Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, string messengerUsername, int messengerType = 1)
+        public Task<AddingUserResult> AddUser(int custId, int subAccountId, string language, string messengerUsername, int messengerType = 1)
         {
             ValidateInputParam(nameof(custId), custId);
             ValidateInputParam(nameof(messengerUsername), messengerUsername);
-            ValidateInputParam(nameof(custName), custName);
             ValidateInputParam(nameof(messengerType), messengerType);
             ValidateInputParam(nameof(language), language);
 
@@ -93,7 +90,6 @@
                 new
                 {
                     custId,
-                    custName,
                     subAccountId,
                     language,
                     messengerUsername,

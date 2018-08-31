@@ -24,7 +24,7 @@
 
         Task UpdateLanguage(int userId, string language);
 
-        Task GenerateVerificationCode(int userId, string custName, Messenger messenger);
+        Task GenerateVerificationCode(int userId, Messenger messenger);
 
         Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger);
 
@@ -78,10 +78,9 @@
             this.chatbotConfigs = chatbotConfigs;
         }
 
-        public async Task GenerateVerificationCode(int userId, string custName, Messenger messenger)
+        public async Task GenerateVerificationCode(int userId, Messenger messenger)
         {
             InputValidator.Validate(nameof(userId), userId);
-            InputValidator.Validate(nameof(custName), custName);
             InputValidator.Validate(nameof(messenger), messenger);
             InputValidator.Validate("Messenger Username", messenger.Username);
             InputValidator.Validate("Messenger Type", messenger.Type);
@@ -91,13 +90,12 @@
 
             await Task.WhenAll(
                 InsertMessengerWithVerificationCode(userId, messenger, verificationCode),
-                SendVerificationCode(user, custName, messenger, verificationCode));
+                SendVerificationCode(user, messenger, verificationCode));
         }
 
-        private async Task SendVerificationCode(User user, string custName, Messenger messenger, string verificationCode)
+        private async Task SendVerificationCode(User user, Messenger messenger, string verificationCode)
         {
             var message = messageBuilder.BuildVerificationCodeMessage(
-                custName,
                 user.Language,
                 messenger.Type,
                 verificationCode,
@@ -281,7 +279,7 @@
                 return result;
             }
 
-            await GenerateVerificationCode(userId, custName, messenger);
+            await GenerateVerificationCode(userId, messenger);
 
             return AddingUserResult.CreateSuccessfulAddingUserResult(userId);
         }

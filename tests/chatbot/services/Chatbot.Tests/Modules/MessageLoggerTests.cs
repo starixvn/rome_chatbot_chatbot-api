@@ -11,6 +11,7 @@
     using Chatbot.Models;
     using Chatbot.Modules.MessageServices;
     using Chatbot.Modules.MessageServices.Params.Db;
+    using Chatbot.Modules.Settings.Params.Db.Commands;
     using Fanex.Data.Repository;
     using NSubstitute;
     using Xunit;
@@ -97,6 +98,15 @@
             var status = 1;
             var functionid = 2;
 
+            messageLogger.LogMessage(sender, receiver, messenger, message, status, functionid);
+
+            dynamicRepository.ExecuteAsync(Arg.Is<InsertMessageCommand>(
+                command => command.Sender == sender
+                            && command.Receiver == receiver
+                            && command.MessengerType == messenger.Type
+                            && command.MessengerUsername == messenger.Username
+                            && command.Status == status
+                            && command.FunctionId == functionid));
         }
     }
 }

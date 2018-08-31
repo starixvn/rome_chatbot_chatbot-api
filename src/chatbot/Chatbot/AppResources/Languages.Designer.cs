@@ -466,7 +466,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You have requested to set up Chatbot for your account {0}. Your verification code is {1}..
+        ///   Looks up a localized string similar to You have requested to set up Chatbot. Your verification code is {0}..
         /// </summary>
         public static string VerificationCode_1 {
             get {

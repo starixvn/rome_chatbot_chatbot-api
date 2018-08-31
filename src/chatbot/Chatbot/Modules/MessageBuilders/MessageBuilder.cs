@@ -7,7 +7,7 @@
 
     public interface IMessageBuilder
     {
-        string BuildVerificationCodeMessage(string custName, string language, int messengerType, string verificationCode, int expiredVerificationCodeInMinutes);
+        string BuildVerificationCodeMessage(string language, int messengerType, string verificationCode, int expiredVerificationCodeInMinutes);
 
         string BuildCommandResultMessage(string language, int functionId, int messengerType, object data);
 
@@ -69,10 +69,10 @@
                             ? cultureInfoList[language]
                             : defaultCultureInfo;
 
-        public string BuildVerificationCodeMessage(string custName, string language, int messengerType, string verificationCode, int expiredVerificationCodeInMinutes)
+        public string BuildVerificationCodeMessage(string language, int messengerType, string verificationCode, int expiredVerificationCodeInMinutes)
             => string.Join(
                 GetMessengerFormatter(messengerType).NewLine(),
-                string.Format(Languages.VerificationCode_1, custName, verificationCode),
+                string.Format(Languages.VerificationCode_1, verificationCode),
                 string.Format(Languages.VerificationCode_2, expiredVerificationCodeInMinutes));
 
         private IMessageTemplate GetTemplate(int functionId)

@@ -37,7 +37,7 @@
             IMessageBuilder messageBuilder,
             IMessageLogger messageLogger,
             IChatbotConfigs chatbotConfigs,
-            IFunctionHandler commandHandler,
+            IFunctionHandler functionHandler,
             ILogger logger)
         {
             this.settingService = settingService;
@@ -45,7 +45,7 @@
             this.messageBuilder = messageBuilder;
             this.logger = logger;
             this.chatbotConfigs = chatbotConfigs;
-            this.functionHandler = commandHandler;
+            this.functionHandler = functionHandler;
             this.messageLogger = messageLogger;
         }
 
