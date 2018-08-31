@@ -199,7 +199,7 @@
     <value>You have requested to set up Chatbot. Your verification code is {0}.</value>
   </data>
   <data name="VerificationCode_2" xml:space="preserve">
-    <value>The code will be expired in {0} minutes.</value>
+    <value>The code will expire in {0} minutes.</value>
   </data>
   <data name="CurrencyName" xml:space="preserve">
     <value>Currency</value>

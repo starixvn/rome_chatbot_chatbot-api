@@ -6,6 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Chatbot.Configurations;
+    using Chatbot.Constants;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.Funtions;
@@ -154,19 +155,20 @@
             SetupNotRecognizedCommand(userId, messenger, user);
 
             commandService
-                    .Execute("cm2", messenger.Type, messenger.Username)
+                    .Execute("cm1", messenger.Type, messenger.Username)
                     .GetAwaiter()
                     .GetResult();
 
-            messageSender
+            messageLogger
                 .Received()
-                .SendMessage(
-                userId,
+                .LogMessage(
+                user.Id, 
+                CommonId.BotUserId, 
                 Arg.Is<Messenger>(
                     msg => msg.Type == messenger.Type
-                        && msg.Username == messenger.Username),
-                "NotRecognizedCommandMessage",
-                100);
+                        && msg.Username == messenger.Username), 
+                "cm1", 
+                1);
         }
 
         private void SetupNotRecognizedCommand(int userId, Messenger messenger, User user)
