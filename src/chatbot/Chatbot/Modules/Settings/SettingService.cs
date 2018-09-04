@@ -8,6 +8,7 @@
     using Chatbot.Helpers;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
+    using Chatbot.Modules.Funtions;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageServices;
@@ -57,6 +58,7 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageLogger messageLogger;
         private readonly IChatbotConfigs chatbotConfigs;
+        private readonly MessageService messageService;
 
         public SettingServiceImpl(
             IDynamicRepository dynamicRepository,
@@ -65,6 +67,7 @@
             ICacheService cacheService,
             IMessageLogger messageLogger,
             IChatbotConfigs chatbotConfigs,
+            MessageService messageService,
             Func<string> randomNumberFunc = null,
             Func<DateTime> getCurrentDateTimeFunc = null)
         {
@@ -76,6 +79,7 @@
             this.messageBuilder = messageBuilder;
             this.messageLogger = messageLogger;
             this.chatbotConfigs = chatbotConfigs;
+            this.messageService = messageService;
         }
 
         public async Task GenerateVerificationCode(int userId, Messenger messenger)
@@ -247,6 +251,8 @@
             InputValidator.Validate(nameof(userId), userId);
             InputValidator.Validate(nameof(functions), functions);
 
+            await UpdateLastQueryTime(userId, functions);
+
             var command = new UpdateUserFunctionsCommand(userId, functions);
 
             await dynamicRepository.ExecuteAsync(command);
@@ -387,7 +393,8 @@
             await Task.WhenAll(
                 UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true),
                 ResetUserActionCount(userId, chatbotConfigs.WrongVerificationCodeActionId, messenger.Type, messenger.Username),
-                SendWelcomeMessage(user, messenger));
+                SendWelcomeMessage(user, messenger),
+                UpdateLastQueryTime(userId, null));
 
             return VerificationCodeResult.CreateVerificationSuccessfulResult();
         }
@@ -492,6 +499,19 @@
             var users = await dynamicRepository.FetchAsync<User>(criteria);
 
             return users;
+        }
+
+        private async Task UpdateLastQueryTime(int userId, IEnumerable<Function> functions)
+        {
+            var userFunctions = functions ?? (await GetFunctions(userId));
+
+            foreach (var function in userFunctions)
+            {
+                if (function.Enabled && chatbotConfigs.MessageAndAnnoucementFunctionIds.Contains(function.Id))
+                {
+                    await messageService.UpdateLastQueryTime(userId, function.Id, 0, DateTime.Now);
+                }
+            }
         }
     }
 }

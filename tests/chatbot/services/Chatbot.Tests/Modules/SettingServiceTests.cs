@@ -7,6 +7,7 @@
     using Chatbot.Configurations;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
+    using Chatbot.Modules.Funtions;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageServices;
@@ -28,6 +29,7 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageLogger messageLogger;
         private readonly IChatbotConfigs chatbotConfigs;
+        private readonly MessageService messageService;
 
         private readonly SettingService settingService;
 
@@ -41,6 +43,7 @@
             messageBuilder = Substitute.For<IMessageBuilder>();
             messageLogger = Substitute.For<IMessageLogger>();
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
+            messageService = Substitute.For<MessageService>();
 
             settingService = new SettingServiceImpl(
                 dynamicRepository,
@@ -49,6 +52,7 @@
                 cacheService,
                 messageLogger,
                 chatbotConfigs,
+                messageService,
                 randomNumberFunc,
                 getCurrentDateTimeFunc);
         }
@@ -145,9 +149,9 @@
             chatbotConfigs.VerificationCodeExpiredTimeInMinutes.Returns(10);
 
             messageBuilder.BuildVerificationCodeMessage(
-                "en-us", 
-                messenger.Type, 
-                verificationCode, 
+                "en-us",
+                messenger.Type,
+                verificationCode,
                 chatbotConfigs.VerificationCodeExpiredTimeInMinutes)
                 .Returns("Messsage");
 
@@ -191,7 +195,7 @@
             var wrongVerificationCodeActionId = 121212;
             chatbotConfigs.WrongVerificationCodeActionId.Returns(wrongVerificationCodeActionId);
 
-            dynamicRepository.FetchAsync<UserActionDto>(Arg.Is<GetUserActionsCriteria>(criteria 
+            dynamicRepository.FetchAsync<UserActionDto>(Arg.Is<GetUserActionsCriteria>(criteria
                 => criteria.UserId == userId
                 && criteria.ActionId == wrongVerificationCodeActionId
                 && criteria.MessengerType == 2
