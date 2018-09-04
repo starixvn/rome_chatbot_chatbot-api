@@ -11,11 +11,11 @@ GO
 
 ----------[Function]
 INSERT INTO dbo.[Function] (FunctionId, FunctionName, Type, DefaultCommand, Status)
-SELECT 1, 'Outstanding', 1, 'os', 0
+SELECT 1, 'Outstanding', 1, '/os', 0
 UNION ALL
-SELECT 2, 'Today Win Loss', 1, 'wl', 0
+SELECT 2, 'Today Win Loss', 1, '/wl', 0
 UNION ALL
-SELECT 3, 'Balance Info', 1, 'bal', 0
+SELECT 3, 'Balance Info', 1, '/bal', 0
 UNION ALL
 SELECT 4, 'Yesterday Win Loss', 2, NULL, 0
 UNION ALL
