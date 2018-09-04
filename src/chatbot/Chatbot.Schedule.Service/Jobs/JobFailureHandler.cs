@@ -40,16 +40,19 @@
             }
 
             var numberRetries = context.JobDetail.JobDataMap.GetIntValue(NumberOfRetriesKey);
+            var cronSchedule = context.JobDetail.JobDataMap.GetString(JobDataKey.CronSchedule);
 
             if (numberRetries <= MaxRetries)
             {
-                var trigger = TriggerBuilder
-                  .Create()
-                  .WithIdentity(context.Trigger.Key)
-                  .StartAt(DateTime.Now.AddSeconds(RetryInterval * numberRetries))
-                  .WithSimpleSchedule(x => x.WithRepeatCount(0))
-                  .ForJob(context.JobDetail)
-                  .Build();
+                var triggerBuilder = TriggerBuilder
+                    .Create()
+                    .WithIdentity(context.Trigger.Key)
+                    .StartAt(DateTime.Now.AddSeconds(RetryInterval * numberRetries))
+                    .ForJob(context.JobDetail);
+
+                var trigger = !string.IsNullOrEmpty(cronSchedule) ?
+                    triggerBuilder.WithCronSchedule(cronSchedule).Build() :
+                    triggerBuilder.WithSimpleSchedule(x => x.WithRepeatCount(0)).Build();
 
                 context.JobDetail.JobDataMap.Put(NumberOfRetriesKey, numberRetries);
 

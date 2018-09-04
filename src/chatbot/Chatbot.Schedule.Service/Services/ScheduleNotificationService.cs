@@ -56,6 +56,7 @@
             => JobBuilder.Create<NotificationJob>()
                 .WithIdentity(scheduleFunction.Name, scheduleFunction.GroupName)
                 .UsingJobData(JobDataKey.FunctionId, scheduleFunction.Id)
+                .UsingJobData(JobDataKey.CronSchedule, scheduleFunction.CronExpression)
                 .Build();
 
         private static ITrigger CreateTrigger(ScheduleFunction scheduleFunction)

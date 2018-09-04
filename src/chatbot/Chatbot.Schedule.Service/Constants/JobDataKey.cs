@@ -4,5 +4,6 @@
     {
         public const string FunctionId = "functionId";
         public const string UserId = "userId";
+        public const string CronSchedule = "cronSchedule";
     }
 }
