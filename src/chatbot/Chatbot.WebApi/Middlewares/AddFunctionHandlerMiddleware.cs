@@ -43,16 +43,16 @@
         }
 
         private static async Task<object> GetOutstanding(FunctionParam param)
-           => await reportService.GetOutstandingAsync(param.User.CustId);
+           => await reportService.GetOutstandingAsync(param.User.CustId, (byte)param.User.CustLevel);
 
         private static async Task<object> GetWinLoss(FunctionParam param)
-            => await reportService.GetWinLossAsync(param.User.CustId, DateTime.Now.Date);
+            => await reportService.GetWinLossAsync(param.User.CustId, (byte)param.User.CustLevel, DateTime.Now.Date);
 
         private static async Task<object> GetBalanceInfo(FunctionParam param)
             => await reportService.GetBalanceInfoAsync(param.User.CustId);
 
         private static async Task<object> GetYesterdayWinLoss(FunctionParam param)
-            => await reportService.GetWinLossAsync(param.User.CustId, DateTime.Now.AddDays(-1).Date);
+            => await reportService.GetWinLossAsync(param.User.CustId, (byte)param.User.CustLevel, DateTime.Now.AddDays(-1).Date);
 
         private static async Task<object> GetPersonalMessage(FunctionParam param)
             => await GetMessage(param, MessageType.Personal);
@@ -81,7 +81,7 @@
         {
             var now = DateTime.Now;
             var lastQueryTime = await chatBotMessageService.GetLastQueryTime(param.User.Id, param.Function.Id, messageType);
-            var messages = await messageService.GetMessagesAsync(param.User.CustId, messageType, param.User.Language, lastQueryTime, now);
+            var messages = await messageService.GetMessagesAsync(param.User.CustId, (byte)param.User.CustLevel, messageType, param.User.Language, lastQueryTime, now);
 
             if (messages?.Any() == true)
             {
