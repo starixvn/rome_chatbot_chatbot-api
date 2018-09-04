@@ -25,8 +25,11 @@ namespace Chatbot.Client.Sample
             //var addUserResult = settingService.AddUser(1176083, 0, "aaa", "en-US", "starix_test4");
             try
             {
+                //var addUserResult = settingService.AddUser(1176084, 2, 5445, "en-US", "starix_test43").GetAwaiter().GetResult();
+
+                var user = settingService.GetUser(1176084, 5445, "en-US").GetAwaiter().GetResult();
                 //var user = settingService.GetUser(31718515, 0, "en-US").GetAwaiter().GetResult();
-                var messages = messageService.GetMessageLogs(411, DateTime.Now.AddDays(-1), DateTime.Now).Result;
+                //var messages = messageService.GetMessageLogs(411, DateTime.Now.AddDays(-1), DateTime.Now).Result;
             }
             catch(ChatbotClientException ex)
             {

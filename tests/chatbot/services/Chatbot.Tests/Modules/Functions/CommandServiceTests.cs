@@ -186,6 +186,7 @@
             => new User(
                 userId, 
                 userId + 1, 
+                3,
                 userId + 100, 
                 "en-US", 
                 Enumerable.Empty<Messenger>(), 

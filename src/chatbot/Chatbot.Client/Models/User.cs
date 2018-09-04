@@ -11,6 +11,8 @@
 
         public int SubAccountId { get; set; }
 
+        public int CustLevel { get; set; }
+
         public List<Messenger> MessengerAccounts { get; set; }
 
         public List<Function> Functions { get; set; }

@@ -30,7 +30,8 @@
                 param.SubAccountId,
                 param.CustName,
                 param.Language,
-                new Messenger(param.MessengerType, param.MessengerUsername));
+                new Messenger(param.MessengerType, param.MessengerUsername),
+                param.CustLevel);
 
         [Route("user"), HttpGet]
         public Task<User> GetUser(int custId, int subAccountId, string language)

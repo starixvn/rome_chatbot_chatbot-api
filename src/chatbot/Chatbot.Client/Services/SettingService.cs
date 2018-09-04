@@ -17,7 +17,7 @@
 
         Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, string messengerUsername, int messengerType = MessengerType.Letstalk);
 
-        Task<AddingUserResult> AddUser(int custId, int subAccountId, string language, string messengerUsername, int messengerType = MessengerType.Letstalk);
+        Task<AddingUserResult> AddUser(int custId, int custLevel, int subAccountId, string language, string messengerUsername, int messengerType = MessengerType.Letstalk);
 
         Task<User> GetUser(int custId, int subAccountId, string language);
 
@@ -78,7 +78,13 @@
                 });
         }
 
-        public Task<AddingUserResult> AddUser(int custId, int subAccountId, string language, string messengerUsername, int messengerType = 1)
+        public Task<AddingUserResult> AddUser(
+            int custId, 
+            int custLevel,
+            int subAccountId, 
+            string language, 
+            string messengerUsername, 
+            int messengerType = 1)
         {
             ValidateInputParam(nameof(custId), custId);
             ValidateInputParam(nameof(messengerUsername), messengerUsername);
@@ -90,6 +96,7 @@
                 new
                 {
                     custId,
+                    custLevel,
                     subAccountId,
                     language,
                     messengerUsername,

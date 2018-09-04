@@ -13,5 +13,7 @@
         public string CustName { get; set; }
 
         public string MessengerUsername { get; set; }
+
+        public int CustLevel { get; set; }
     }
 }

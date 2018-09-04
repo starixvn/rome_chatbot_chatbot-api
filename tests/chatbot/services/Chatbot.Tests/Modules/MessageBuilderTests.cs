@@ -52,8 +52,7 @@
 
             Assert.Equal(
                 "You have requested to set up Chatbot. "
-                + "Your verification code is 422134._newline_The code will be expired in 10 minutes. "
-                + "To secure your information, please delete this message after completing verification.", 
+                + "Your verification code is 422134._newline_The code will expire in 10 minutes.", 
                 verificationCodeMessage);
         }
 
@@ -77,7 +76,7 @@
             var message = messageBuilder.BuildWelcomeMessage(language, 1);
 
             Assert.Equal(
-                "Your account has been verified, Chatbot is fully functioning._newline_You can turn off any feature via the Chatbot configuration page on your agency site.",
+                "Your Letstalk ID has been verified, Chatbot is fully functioning._newline_You can turn off any feature via the Chatbot configuration page on your agency site.",
                 message);
         }
 

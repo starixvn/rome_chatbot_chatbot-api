@@ -28,7 +28,7 @@
 
         Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger);
 
-        Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, Messenger messenger);
+        Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, Messenger messenger, int custLevel);
 
         Task<IEnumerable<Function>> GetAllFunctions();
 
@@ -135,26 +135,27 @@
             InputValidator.Validate(nameof(custId), custId);
             InputValidator.Validate(nameof(language), language);
 
-            var userDto = await dynamicRepository.GetAsync<UserDto>(new GetUserCriteria(custId, subAccountId));
+            var user = await dynamicRepository.GetAsync<User>(new GetUserCriteria(custId, subAccountId));
 
-            if (userDto == null)
+            if (user == null)
             {
                 return null;
             }
 
-            var messengerAccounts = await GetMessengers(userDto.UserId);
+            var messengerAccounts = await GetMessengers(user.Id);
             var functions = Enumerable.Empty<Function>();
 
             if (messengerAccounts.Any(messenger => messenger.Enabled))
             {
-                functions = await GetFunctions(userDto.UserId, language);
+                functions = await GetFunctions(user.Id, language);
             }
 
             return new User(
-                userDto.UserId,
-                userDto.CustId,
-                userDto.SubAccountId,
-                userDto.Language,
+                user.Id,
+                user.CustId,
+                user.CustLevel,
+                user.SubAccountId,
+                user.Language,
                 messengerAccounts,
                 functions);
         }
@@ -183,18 +184,19 @@
         {
             InputValidator.Validate(nameof(userId), userId);
 
-            var userDto = await dynamicRepository.GetAsync<UserDto>(new GetUserCriteria(userId));
+            var user = await dynamicRepository.GetAsync<User>(new GetUserCriteria(userId));
 
-            if (userDto == null)
+            if (user == null)
             {
                 return default(User);
             }
 
             return new User(
-                userDto.UserId,
-                userDto.CustId,
-                userDto.SubAccountId,
-                userDto.Language,
+                user.Id,
+                user.CustId,
+                user.CustLevel,
+                user.SubAccountId,
+                user.Language,
                 Enumerable.Empty<Messenger>(),
                 Enumerable.Empty<Function>());
         }
@@ -263,15 +265,16 @@
         /// <summary>
         /// Need more refactor here
         /// </summary>
-        public async Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, Messenger messenger)
+        public async Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, Messenger messenger, int custLevel)
         {
             InputValidator.Validate(nameof(custId), custId);
+            InputValidator.Validate(nameof(custLevel), custLevel);
             InputValidator.Validate(nameof(language), language);
             InputValidator.Validate(nameof(messenger), messenger);
             InputValidator.Validate("Messenger Username", messenger.Username);
             InputValidator.Validate("Messenger Type", messenger.Type);
 
-            var userId = await InsertUser(custId, subAccountId, language, messenger);
+            var userId = await InsertUser(custId, subAccountId, language, messenger, custLevel);
 
             var result = await VerifyMessengerAccount(userId, messenger);
             if (result.IsNotOk)
@@ -317,9 +320,9 @@
                 && messengerDto.UserId != userId;
         }
 
-        private async Task<int> InsertUser(int custId, int subAccountId, string language, Messenger messenger)
+        private async Task<int> InsertUser(int custId, int subAccountId, string language, Messenger messenger, int custLevel)
         {
-            var command = new InsertUserCommand(custId, subAccountId, language);
+            var command = new InsertUserCommand(custId, subAccountId, language, custLevel);
 
             await dynamicRepository.ExecuteAsync(command);
             await IncreaseUserActionCount(command.UserId, chatbotConfigs.AddAccountActionId, messenger.Type, messenger.Username);

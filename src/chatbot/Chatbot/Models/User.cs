@@ -1,14 +1,33 @@
 ﻿namespace Chatbot.Models
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     public class User
     {
         public User() { }
 
         internal User(
+            int id,
+            int custId,
+            int custLevel,
+            int subAccountId,
+            string language) 
+            : this(
+                  id, 
+                  custId, 
+                  custLevel, 
+                  subAccountId,
+                  language,
+                  Enumerable.Empty<Messenger>(),
+                  Enumerable.Empty<Function>())
+        {
+        }
+
+        internal User(
             int id, 
             int custId, 
+            int custLevel,
             int subAccountId, 
             string language,
             IEnumerable<Messenger> messengerAccounts,
@@ -20,6 +39,7 @@
             Language = language;
             MessengerAccounts = messengerAccounts;
             Functions = functions;
+            CustLevel = custLevel;
         }
 
         public int Id { get; private set; }
@@ -33,5 +53,7 @@
         public IEnumerable<Function> Functions { get; private set; }
 
         public string Language { get; private set; }
+
+        public int CustLevel { get; }
     }
 }
