@@ -25,7 +25,7 @@ SELECT 6, 'Special Announcement', 2, NULL, 0
 UNION ALL				  
 SELECT 7, 'Normal Announcement', 2, NULL, 0
 UNION ALL				  
-SELECT 8, 'System Update', 2, NULL, 0
+SELECT 8, 'System Announcement', 2, NULL, 0
 
 ----------Resource
 INSERT INTO dbo.Resource ( [Key], Type, LanguageCode, Value)
