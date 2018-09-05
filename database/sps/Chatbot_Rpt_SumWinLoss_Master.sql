@@ -50,8 +50,8 @@ BEGIN
 
 	SELECT SUM(Turnover) AS Turnover
 		,SUM(GrossComm) AS GrossCom
-		,SUM(MAgTotal) AS MAgTotal
-		,SUM(SAgWinLoss) AS SAgWinLoss
-		,SUM(SAgComm) AS SAgComm
+		,SUM(MAgTotal) AS MasterTotal
+		,SUM(SAgWinLoss) AS SuperWinLoss
+		,SUM(SAgComm) AS SuperComm
 	FROM #SuperWinLoss
 END;

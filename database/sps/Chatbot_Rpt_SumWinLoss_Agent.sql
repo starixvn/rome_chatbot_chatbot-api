@@ -50,8 +50,8 @@ BEGIN
 
 	SELECT SUM(Turnover) AS Turnover
 		,SUM(GrossComm) AS GrossCom
-		,SUM(AgTotal) AS AgTotal
-		,SUM(MAgWinLoss) AS MAgWinLoss
-		,SUM(MAgComm) AS MAgComm
+		,SUM(AgTotal) AS AgentTotal
+		,SUM(MAgWinLoss) AS MasterWinLoss
+		,SUM(MAgComm) AS MasterComm
 	FROM #MasterWinLoss
 END;

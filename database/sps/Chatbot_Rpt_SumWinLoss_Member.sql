@@ -53,7 +53,7 @@ BEGIN
 		,SUM(GrossComm) AS GrossCom
 		,SUM(MemberWinLoss) AS MemberWinLoss
 		,SUM(MemberComm) AS MemberComm
-		,SUM(AgWinLoss) AS AgWinLoss
-		,SUM(AgComm) AS AgComm
+		,SUM(AgWinLoss) AS AgentWinLoss
+		,SUM(AgComm) AS AgentComm
 	FROM #AgentWinLoss
 END;
