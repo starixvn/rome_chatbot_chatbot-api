@@ -23,7 +23,8 @@
         public static RestSharp.IRestClient CreateDefaultClient()
            => new RestSharp.RestClient
            {
-               BaseUrl = new Uri(ChatbotClientManager.BotClientConfigs.ApiBaseUrl)
+               BaseUrl = new Uri(ChatbotClientManager.BotClientConfigs.ApiBaseUrl),
+               Authenticator = new HmacAuthenticator(ChatbotClientManager.BotClientConfigs.ApiKey)
            };
 
         private async Task<T> ExecuteSync<T>(string endPoint, Method method, object data)
