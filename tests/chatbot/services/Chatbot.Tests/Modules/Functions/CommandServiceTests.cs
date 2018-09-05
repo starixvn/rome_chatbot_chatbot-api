@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using Chatbot.Configurations;
     using Chatbot.Constants;
@@ -11,6 +10,7 @@
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.FunctionHandler;
+    using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageServices;
@@ -42,12 +42,12 @@
             logger = Substitute.For<ILogger>();
 
             commandService = new CommandServiceImpl(
-                settingService, 
-                messageSender, 
-                messageBuilder, 
-                messageLogger, 
-                chatbotConfigs, 
-                functionHandler, 
+                settingService,
+                messageSender,
+                messageBuilder,
+                messageLogger,
+                chatbotConfigs,
+                functionHandler,
                 logger);
         }
 
@@ -102,7 +102,7 @@
             var messenger = new Messenger(1, "messengerName");
             var user = StubUser(userId);
 
-            SetupNotRecognizedCommand(userId, messenger, user);
+            SetupSendCommand(userId, messenger, user);
 
             commandService
                     .Execute("cm", messenger.Type, messenger.Username)
@@ -112,9 +112,9 @@
             messageSender
                 .Received()
                 .SendMessage(
-                userId, 
+                userId,
                 Arg.Is<Messenger>(
-                    msg => msg.Type == messenger.Type 
+                    msg => msg.Type == messenger.Type
                         && msg.Username == messenger.Username),
                 "NotRecognizedCommandMessage",
                 100);
@@ -127,7 +127,7 @@
             var messenger = new Messenger(1, "messengerName");
             var user = StubUser(userId);
 
-            SetupNotRecognizedCommand(userId, messenger, user);
+            SetupSendCommand(userId, messenger, user);
 
             commandService
                     .Execute("cm2", messenger.Type, messenger.Username)
@@ -152,7 +152,7 @@
             var messenger = new Messenger(1, "messengerName");
             var user = StubUser(userId);
 
-            SetupNotRecognizedCommand(userId, messenger, user);
+            SetupSendCommand(userId, messenger, user);
 
             commandService
                     .Execute("cm1", messenger.Type, messenger.Username)
@@ -162,16 +162,41 @@
             messageLogger
                 .Received()
                 .LogMessage(
-                user.Id, 
-                CommonId.BotUserId, 
+                user.Id,
+                CommonId.BotUserId,
                 Arg.Is<Messenger>(
                     msg => msg.Type == messenger.Type
-                        && msg.Username == messenger.Username), 
-                "cm1", 
+                        && msg.Username == messenger.Username),
+                "cm1",
+                0,
                 1);
         }
 
-        private void SetupNotRecognizedCommand(int userId, Messenger messenger, User user)
+        [Fact]
+        public void Execute_Always_ExecuteHandleFunction()
+        {
+            var userId = 190;
+            var messenger = new Messenger(1, "messengerName");
+            var user = StubUser(userId);
+
+            SetupSendCommand(userId, messenger, user);
+
+            commandService
+                    .Execute("cm1", messenger.Type, messenger.Username)
+                    .GetAwaiter()
+                    .GetResult();
+
+            functionHandler
+                .Received()
+                .Handle(
+                    Arg.Is<FunctionParam>(function => 
+                        function.User.Id == userId
+                        && function.Function.Id == 1
+                        && function.Messenger.Username == messenger.Username
+                        && function.Others["command"] == "cm1"));
+        }
+
+        private void SetupSendCommand(int userId, Messenger messenger, User user)
         {
             settingService.GetFunctions(userId).Returns(Task.FromResult(StubFunctions()));
             settingService
@@ -184,14 +209,13 @@
 
         private User StubUser(int userId)
             => new User(
-                userId, 
-                userId + 1, 
+                userId,
+                userId + 1,
                 3,
-                userId + 100, 
-                "en-US", 
-                Enumerable.Empty<Messenger>(), 
+                userId + 100,
+                "en-US",
+                Enumerable.Empty<Messenger>(),
                 Enumerable.Empty<Function>());
-
 
         private IEnumerable<Function> StubFunctions()
             => new List<Function>
