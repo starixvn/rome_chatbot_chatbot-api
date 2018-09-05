@@ -13,16 +13,16 @@
 
     public class MessageAnnouncementFunctionHandler : DefaultFunctionHandler
     {
-        private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders;
+        private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers;
 
         public MessageAnnouncementFunctionHandler(
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
             CustomerService customerService,
-            IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders = null) :
-                base(messageBuilder, messageSender, customerService, getDataHanlders)
+            IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers = null) :
+                base(messageBuilder, messageSender, customerService, getDataHandlers)
         {
-            this.getDataHanlders = getDataHanlders;
+            this.getDataHandlers = getDataHandlers;
             SendMessageInCaseAccountClosed = false;
         }
 
@@ -31,7 +31,7 @@
             // Check Params
             var results = new List<Result>();
 
-            if (!getDataHanlders.ContainsKey(param.Function.Id))
+            if (!getDataHandlers.ContainsKey(param.Function.Id))
             {
                 throw new InvalidOperationException($"Cannot find get data function for function: {param.Function.Id}-{param.Function.Name}");
             }
@@ -41,7 +41,7 @@
                 return Result.CreateSuccessfulResult("Customer is closed");
             }
 
-            var data = await getDataHanlders[param.Function.Id](param);
+            var data = await getDataHandlers[param.Function.Id](param);
             var messages = DataHelper.TryParse<IList<Alpha.Services.Client.Models.Message>>(data);
 
             if (messages == null || messages.Count == 0)

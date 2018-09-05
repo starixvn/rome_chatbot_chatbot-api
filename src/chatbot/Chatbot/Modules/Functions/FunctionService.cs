@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Alpha.Services.Client.Services;
     using Chatbot.Models;
     using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
@@ -21,18 +20,15 @@
         private readonly SettingService settingService;
         private readonly IFunctionHandlerFactory functionHandlerFactory;
         private readonly ILogger logger;
-        private readonly CustomerService customerService;
 
         public FunctionServiceImpl(
             SettingService settingService,
             IFunctionHandlerFactory functionHandlerFactory,
-            ILogger logger,
-            CustomerService customerService)
+            ILogger logger)
         {
             this.settingService = settingService;
             this.functionHandlerFactory = functionHandlerFactory;
             this.logger = logger;
-            this.customerService = customerService;
         }
 
         public async Task<Result> Handle(int functionId, int userId)
@@ -62,13 +58,13 @@
                 {
                     LogError(user, messenger, ex);
 
-                    return new Result(1);
+                    return Result.CreateErrorResult();
                 }
             }
 
             return results.All(result => result.IsOk)
                ? Result.CreateSuccessfulResult()
-               : new Result(1);
+               : Result.CreateErrorResult();
         }
 
         private void LogError(User user, Messenger messenger, Exception ex)
