@@ -31,6 +31,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatbot.Schedule.Service", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatbot.Schedule.Service.Tests", "tests\chatbot\services\Chatbot.Schedule.Service.Tests\Chatbot.Schedule.Service.Tests.csproj", "{569D9939-FB03-4703-9FF5-F4B8D33940E1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{EC27A3F2-BE50-4C26-A9DF-0C95E71AB52F}"
+	ProjectSection(SolutionItems) = preProject
+		.sonarlint\Alpha-ChatbotCSharp.ruleset = .sonarlint\Alpha-ChatbotCSharp.ruleset
+		.sonarlint\Chatbot.slconfig = .sonarlint\Chatbot.slconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
