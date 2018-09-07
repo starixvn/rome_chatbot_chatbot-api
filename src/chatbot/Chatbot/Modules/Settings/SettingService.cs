@@ -56,7 +56,6 @@
         private readonly ICacheService cacheService;
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
-        private readonly IMessageLogger messageLogger;
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly MessageService messageService;
 
@@ -66,7 +65,6 @@
             IMessageSender messageSender,
             IMessageBuilder messageBuilder,
             ICacheService cacheService,
-            IMessageLogger messageLogger,
             IChatbotConfigs chatbotConfigs,
             MessageService messageService,
             Func<string> randomNumberFunc = null,
@@ -79,7 +77,6 @@
             this.getCurrentDateTimeFunc = getCurrentDateTimeFunc ?? GetCurrentDateTime;
             this.messageSender = messageSender;
             this.messageBuilder = messageBuilder;
-            this.messageLogger = messageLogger;
             this.chatbotConfigs = chatbotConfigs;
             this.messageService = messageService;
         }

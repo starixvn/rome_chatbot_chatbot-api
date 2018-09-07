@@ -1,16 +1,12 @@
-﻿namespace Chatbot.Client.Services
+﻿namespace Chatbot.Client.Helpers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-#pragma warning disable S1694 // An abstract class should have both abstract and concrete methods
-    public abstract class ServiceBase
-#pragma warning restore S1694 // An abstract class should have both abstract and concrete methods
+    public static class InputValidator
     {
-        protected static void ValidateInputParam(string paramName, object paramValue)
+        public static void ValidateInputParam(string paramName, object paramValue)
         {
             if (paramValue == null
                 || (paramValue is string && string.IsNullOrWhiteSpace(paramValue as string)))
@@ -19,7 +15,7 @@
             }
         }
 
-        protected static void ValidateInputParam<T>(string paramName, IEnumerable<T> paramValue)
+        public static void ValidateInputParam<T>(string paramName, IEnumerable<T> paramValue)
         {
             if (paramValue == null)
             {

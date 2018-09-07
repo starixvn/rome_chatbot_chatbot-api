@@ -9,7 +9,7 @@
         Task<Result> Run(string command, int messengerType, string messengerUsername);
     }
 
-    public class CommandServiceImpl : ServiceBase, CommandService
+    public class CommandServiceImpl : CommandService
     {
         private readonly IRestClient restClient;
 
@@ -24,9 +24,9 @@
 
         public Task<Result> Run(string command, int messengerType, string messengerUsername)
         {
-            ValidateInputParam(nameof(command), command);
-            ValidateInputParam(nameof(messengerUsername), messengerUsername);
-            ValidateInputParam(nameof(messengerType), messengerType);
+            InputValidator.ValidateInputParam(nameof(command), command);
+            InputValidator.ValidateInputParam(nameof(messengerUsername), messengerUsername);
+            InputValidator.ValidateInputParam(nameof(messengerType), messengerType);
 
             return restClient.ExecutePostAsync<Result>(
                 $"command/run",

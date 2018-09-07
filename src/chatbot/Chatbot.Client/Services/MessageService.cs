@@ -17,7 +17,7 @@ namespace Chatbot.Client.Services
         Task<List<Message>> GetMessageLogs(int userId, DateTimeOffset fromDate, DateTimeOffset toDate, int functionId = 0, int messengerType = 0);
     }
 
-    public class MessageServiceImpl : ServiceBase, MessageService
+    public class MessageServiceImpl : MessageService
     {
         private readonly IRestClient restClient;
 
@@ -32,8 +32,8 @@ namespace Chatbot.Client.Services
 
         public Task<Result> SendMessage(int userId, string message, int functionId = 0)
         {
-            ValidateInputParam(nameof(userId), userId);
-            ValidateInputParam(nameof(message), message);
+            InputValidator.ValidateInputParam(nameof(userId), userId);
+            InputValidator.ValidateInputParam(nameof(message), message);
 
             return restClient.ExecutePostAsync<Result>(
                 $"message/send",
@@ -47,8 +47,8 @@ namespace Chatbot.Client.Services
 
         public Task<Result> SendByFunction(int functionId, int userId)
         {
-            ValidateInputParam(nameof(userId), userId);
-            ValidateInputParam(nameof(functionId), functionId);
+            InputValidator.ValidateInputParam(nameof(userId), userId);
+            InputValidator.ValidateInputParam(nameof(functionId), functionId);
 
             return restClient.ExecutePostAsync<Result>(
                $"message/sendByFunction",
@@ -66,9 +66,9 @@ namespace Chatbot.Client.Services
             int functionId = 0,
             int messengerType = 0)
         {
-            ValidateInputParam(nameof(userId), userId);
-            ValidateInputParam(nameof(fromDate), fromDate);
-            ValidateInputParam(nameof(toDate), toDate);
+            InputValidator.ValidateInputParam(nameof(userId), userId);
+            InputValidator.ValidateInputParam(nameof(fromDate), fromDate);
+            InputValidator.ValidateInputParam(nameof(toDate), toDate);
 
             return restClient.ExecutePostAsync<List<Message>>(
                $"message/getMessageLogs",

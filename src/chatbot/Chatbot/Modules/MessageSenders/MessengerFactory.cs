@@ -16,7 +16,9 @@
         /// </summary>
         public IMessengerClient CreateMessengerClient(int messengerType)
         {
+#pragma warning disable S1301 // "switch" statements should have at least 3 "case" clauses
             switch (messengerType)
+#pragma warning restore S1301 // "switch" statements should have at least 3 "case" clauses
             {
                 case MessengerType.Skype:
                     return new SkypeClient(AppSettings.Messenger);

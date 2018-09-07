@@ -41,7 +41,6 @@
             cacheService = Substitute.For<ICacheService>();
             messageSender = Substitute.For<IMessageSender>();
             messageBuilder = Substitute.For<IMessageBuilder>();
-            messageLogger = Substitute.For<IMessageLogger>();
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
             messageService = Substitute.For<MessageService>();
 
@@ -50,7 +49,6 @@
                 messageSender,
                 messageBuilder,
                 cacheService,
-                messageLogger,
                 chatbotConfigs,
                 messageService,
                 randomNumberFunc,
