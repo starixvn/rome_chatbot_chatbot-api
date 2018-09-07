@@ -399,7 +399,7 @@
                 return verificationResult;
             }
 
-            var user = await GetUser(userId);
+            var user = await GetUser(userId).ConfigureAwait(false);
 
             await Task.WhenAll(
                 UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true),

@@ -47,7 +47,7 @@
 
             if(response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
             {
-                await Task.FromException(new ChatbotClientException(true, response.Content));
+                await Task.FromException(new ChatbotClientException(true, response.Content)).ConfigureAwait(false);
             }
 
             throw new InvalidOperationException(

@@ -44,9 +44,9 @@ namespace Chatbot.Modules.MessageServices
             InputValidator.Validate(nameof(toDate), toDate);
 
             var minDate = getNow().AddDays(-chatbotConfigs.MaxGetMessageLogDays);
-            fromDate = minDate > fromDate ? minDate : fromDate;
+            var actualFromDate = minDate > fromDate ? minDate : fromDate;
 
-            var criteria = new GetMessageLogCriteria(userId, fromDate, toDate, functionId, messengerType);
+            var criteria = new GetMessageLogCriteria(userId, actualFromDate, toDate, functionId, messengerType);
 
             var messages = await dynamicRepository.FetchAsync<Message>(criteria).ConfigureAwait(false);
 

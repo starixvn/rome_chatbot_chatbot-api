@@ -68,7 +68,7 @@
 
             try
             {
-                var commandFunction = await GetCommandFunction(messengerDto.UserId, command);
+                var commandFunction = await GetCommandFunction(messengerDto.UserId, command).ConfigureAwait(false);
 
                 await Task.WhenAll(
                     messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command, functionId: commandFunction?.Id ?? chatbotConfigs.NotRecognizedCommandFunctionId),

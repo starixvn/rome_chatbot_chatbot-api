@@ -15,6 +15,7 @@
             ActionId = actionId;
             MessengerType = messengerType;
             MessengerUsername = messengerUsername;
+            Date = DateTime.Now.Date;
         }
 
         public int UserId { get; }
@@ -25,8 +26,8 @@
 
         public string MessengerUsername { get; }
 
-        public DateTime Date => DateTime.Now.Date;
-
+        public DateTime Date { get; }
+    
         public override string GetSettingKey() => "ResetUserActionCount";
 
         public override bool IsValid()

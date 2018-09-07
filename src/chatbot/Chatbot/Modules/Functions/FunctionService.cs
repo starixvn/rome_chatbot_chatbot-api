@@ -35,12 +35,12 @@
         {
             var results = new List<Result>();
 
-            var user = await settingService.GetUser(userId)
+            var user = await settingService.GetUser(userId).ConfigureAwait(false)
                 ?? throw new InvalidOperationException($"User cannot be found");
 
-            var messengers = await settingService.GetMessengers(userId, true);
+            var messengers = await settingService.GetMessengers(userId, true).ConfigureAwait(false);
 
-            var function = (await settingService.GetFunctions(userId)).FirstOrDefault(f => f.Id == functionId)
+            var function = (await settingService.GetFunctions(userId).ConfigureAwait(false)).FirstOrDefault(f => f.Id == functionId)
                 ?? throw new InvalidOperationException($"Function cannot be found for user {userId}");
 
             foreach (var messenger in messengers)

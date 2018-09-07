@@ -6,9 +6,11 @@
     using System.Text;
     using System.Threading.Tasks;
 
+#pragma warning disable S1694 // An abstract class should have both abstract and concrete methods
     public abstract class ServiceBase
+#pragma warning restore S1694 // An abstract class should have both abstract and concrete methods
     {
-        protected void ValidateInputParam(string paramName, object paramValue)
+        protected static void ValidateInputParam(string paramName, object paramValue)
         {
             if (paramValue == null
                 || (paramValue is string && string.IsNullOrWhiteSpace(paramValue as string)))
@@ -17,7 +19,7 @@
             }
         }
 
-        protected void ValidateInputParam<T>(string paramName, IEnumerable<T> paramValue)
+        protected static void ValidateInputParam<T>(string paramName, IEnumerable<T> paramValue)
         {
             if (paramValue == null)
             {
