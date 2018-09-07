@@ -35,6 +35,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "unittests", "unittests", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integration-tests", "integration-tests", "{66B7E98D-C877-4130-A2B9-0AE68516A2B1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "client", "client", "{DCE8E949-9274-4E1B-8A09-5F99EAE33B79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatbot.Client.Tests", "tests\chatbot\client\Chatbot.Client.Tests\Chatbot.Client.Tests.csproj", "{C7CBAFF2-9086-43B2-85C4-F20C3F03398B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +77,10 @@ Global
 		{569D9939-FB03-4703-9FF5-F4B8D33940E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{569D9939-FB03-4703-9FF5-F4B8D33940E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{569D9939-FB03-4703-9FF5-F4B8D33940E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7CBAFF2-9086-43B2-85C4-F20C3F03398B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7CBAFF2-9086-43B2-85C4-F20C3F03398B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7CBAFF2-9086-43B2-85C4-F20C3F03398B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7CBAFF2-9086-43B2-85C4-F20C3F03398B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +99,8 @@ Global
 		{569D9939-FB03-4703-9FF5-F4B8D33940E1} = {D99DFB30-B5BE-4C9F-89A2-BFF6CAC9CF3D}
 		{455C9C9C-9F10-4213-8E64-959BD3C1F162} = {1453C8FB-EE1C-4353-9394-C4DE05F25190}
 		{66B7E98D-C877-4130-A2B9-0AE68516A2B1} = {1453C8FB-EE1C-4353-9394-C4DE05F25190}
+		{DCE8E949-9274-4E1B-8A09-5F99EAE33B79} = {455C9C9C-9F10-4213-8E64-959BD3C1F162}
+		{C7CBAFF2-9086-43B2-85C4-F20C3F03398B} = {DCE8E949-9274-4E1B-8A09-5F99EAE33B79}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {713C7940-2634-4C55-A6AF-9A4779CBFCEF}

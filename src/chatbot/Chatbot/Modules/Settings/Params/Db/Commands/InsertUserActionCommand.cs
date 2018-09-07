@@ -15,7 +15,9 @@
             ActionId = actionId;
             MessengerType = messengerType;
             MessengerUsername = messengerUsername;
-            Date = DateTime.Now.Date;
+            Date = DateTime
+                .Now
+                .Date;
         }
 
         public int UserId { get; }
@@ -26,7 +28,10 @@
 
         public string MessengerUsername { get; }
 
-        public DateTime Date { get; }
+        public DateTime Date
+        {
+            get;
+        }
 
         public override string GetSettingKey() => "InsertUserAction";
 
