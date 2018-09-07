@@ -50,7 +50,8 @@
                     var param = new FunctionParam(user, function, messenger, null);
                     var result = await functionHandlerFactory
                                         .CreateFunctionHandler(functionId)
-                                        .Handle(param);
+                                        .Handle(param)
+                                        .ConfigureAwait(false);
 
                     results.Add(result);
                 }

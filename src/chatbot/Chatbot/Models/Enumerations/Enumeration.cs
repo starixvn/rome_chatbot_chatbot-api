@@ -10,7 +10,7 @@
     /// <see cref="https://github.com/HeadspringLabs/Tarantino/blob/master/src/Tarantino.Core/Commons/Model/Enumerations/Enumeration.cs"/>
     /// </summary>
     [Serializable]
-    public abstract class Enumeration : IComparable
+    public class Enumeration : IComparable
     {
         private readonly string _displayName;
         private readonly byte _value;

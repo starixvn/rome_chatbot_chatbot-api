@@ -44,24 +44,24 @@
                 throw new InvalidOperationException($"Cannot find get data function for function: {param.Function.Id}-{param.Function.Name}");
             }
 
-            if (await IsCustomerClosed(param.User))
+            if (await IsCustomerClosed(param.User).ConfigureAwait(false))
             {
-                return await BuildAndSendAccountClosedMessage(param);
+                return await BuildAndSendAccountClosedMessage(param).ConfigureAwait(false);
             }
 
-            return await RunHandler(param);
+            return await RunHandler(param).ConfigureAwait(false);
         }
 
         private async Task<Result> RunHandler(FunctionParam param)
         {
-            var data = await getDataHanlders[param.Function.Id](param);
+            var data = await getDataHanlders[param.Function.Id](param).ConfigureAwait(false);
 
             if (data == null)
             {
                 return Result.CreateSuccessfulResult("No data");
             }
 
-            return await BuildAndSendMessage(param, data);
+            return await BuildAndSendMessage(param, data).ConfigureAwait(false);
         }
 
         protected Task<bool> IsCustomerClosed(User user)

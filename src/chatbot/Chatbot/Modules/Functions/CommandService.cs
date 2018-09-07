@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
     using Chatbot.Configurations;
@@ -51,7 +52,7 @@
 
         public async Task Execute(string command, int messengerType, string messengerUsername)
         {
-            var messengerDto = await settingService.GetMessenger(messengerType, messengerUsername);
+            var messengerDto = await settingService.GetMessenger(messengerType, messengerUsername).ConfigureAwait(false);
 
             if (messengerDto == null
                 || !messengerDto.Enabled
@@ -60,7 +61,7 @@
                 throw new InvalidOperationException($"messenger {messengerUsername} is not verified or enabled");
             }
 
-            var user = await settingService.GetUser(messengerDto.UserId)
+            var user = await settingService.GetUser(messengerDto.UserId).ConfigureAwait(false)
                 ?? throw new InvalidOperationException($"user cannot be found for messenger {messengerUsername}");
 
             var messenger = new Messenger(messengerType, messengerUsername);
@@ -71,20 +72,20 @@
 
                 await Task.WhenAll(
                     messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command, functionId: commandFunction?.Id ?? chatbotConfigs.NotRecognizedCommandFunctionId),
-                    RunCommand(command, user, messenger, commandFunction));
+                    RunCommand(command, user, messenger, commandFunction)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                await LogError(command, messengerDto, user, ex);
+                await LogError(command, messengerDto, user, ex).ConfigureAwait(false);
             }
         }
 
         private async Task<Function> GetCommandFunction(int userId, string command)
         {
-            var userFuntions = await settingService.GetFunctions(userId);
+            var userFuntions = await settingService.GetFunctions(userId).ConfigureAwait(false);
             var commandFunction = userFuntions
                                     .FirstOrDefault(
-                                        function => string.Compare(function.Command, command, true) == 0
+                                        function => string.Compare(function.Command, command, true, CultureInfo.InvariantCulture) == 0
                                         && function.Enabled);
 
             return commandFunction;
@@ -107,11 +108,11 @@
                             { "command", command }
                         });
 
-                await functionHandler.Handle(functionParam);
+                await functionHandler.Handle(functionParam).ConfigureAwait(false);
             }
             else
             {
-                await SendNotRecognizedCommandMessage(user, messenger);
+                await SendNotRecognizedCommandMessage(user, messenger).ConfigureAwait(false);
             }
         }
 
@@ -131,11 +132,11 @@
 
             if (chatbotConfigs.ReturnRawErrorToMessenger)
             {
-                await messageSender.SendMessage(user.Id, messenger, logMessage.Replace("\r\n", string.Empty));
+                await messageSender.SendMessage(user.Id, messenger, logMessage.Replace("\r\n", string.Empty)).ConfigureAwait(false);
             }
             else
             {
-                await SendErrorMessage(user, messenger);
+                await SendErrorMessage(user, messenger).ConfigureAwait(false);
             }
         }
 
@@ -143,14 +144,14 @@
         {
             var message = messageBuilder.BuildNotRecognizedCommandMessage(user.Language);
 
-            await messageSender.SendMessage(user.Id, messenger, message, chatbotConfigs.NotRecognizedCommandFunctionId);
+            await messageSender.SendMessage(user.Id, messenger, message, chatbotConfigs.NotRecognizedCommandFunctionId).ConfigureAwait(false);
         }
 
         protected async Task SendErrorMessage(User user, Messenger messenger)
         {
             var message = messageBuilder.BuildErrorMessage(user.Language);
 
-            await messageSender.SendMessage(user.Id, messenger, message);
+            await messageSender.SendMessage(user.Id, messenger, message).ConfigureAwait(false);
         }
     }
 }

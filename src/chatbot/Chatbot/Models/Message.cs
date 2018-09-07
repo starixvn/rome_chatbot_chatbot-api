@@ -8,6 +8,7 @@
         {
         }
 
+#pragma warning disable S107 // Methods should not have too many parameters
         internal Message(
             int id,
             int sender,
@@ -18,6 +19,7 @@
             string content,
             DateTime sentDate,
             int status)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             Id = id;
             Sender = sender;

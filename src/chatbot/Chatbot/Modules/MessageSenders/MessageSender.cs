@@ -37,12 +37,12 @@
         }
 
         public async Task<Result> SendMessage(Messenger messenger, string message, int functionId = 0, bool logToDatabase = true)
-            => await SendMessage(0, messenger, message, functionId);
+            => await SendMessage(0, messenger, message, functionId).ConfigureAwait(false);
 
         public async Task<Result> SendMessage(int userId, Messenger messenger, string message, int functionId = 0, bool logToDatabase = true)
         {
             var client = messengerFactory.CreateMessengerClient(messenger.Type);
-            var result = await client.PushAsync(messenger.Username, message);
+            var result = await client.PushAsync(messenger.Username, message).ConfigureAwait(false);
 
             if (result.IsNotOk)
             {
@@ -61,7 +61,7 @@
                         messenger,
                         message,
                         result.IsOk ? 1 : 0,
-                        functionId);
+                        functionId).ConfigureAwait(false);
             }
 
             return new Result(result.IsOk ? 0 : result.Status, result.Message);
@@ -74,7 +74,7 @@
         {
             var client = messengerFactory.CreateMessengerClient(messenger.Type);
 
-            var profileResult = await client.GetProfileAsync(messenger.Username);
+            var profileResult = await client.GetProfileAsync(messenger.Username).ConfigureAwait(false);
 
             return !profileResult.Item2;
         }
@@ -85,7 +85,7 @@
 
             foreach (var messenger in messengers)
             {
-                results.Add(await SendMessage(userId, messenger, message, functionId, logToDatabase));
+                results.Add(await SendMessage(userId, messenger, message, functionId, logToDatabase).ConfigureAwait(false));
             }
 
             return results.All(result => result.IsOk)

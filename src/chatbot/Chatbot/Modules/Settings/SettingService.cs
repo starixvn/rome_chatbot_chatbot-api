@@ -60,6 +60,7 @@
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly MessageService messageService;
 
+#pragma warning disable S107 // Methods should not have too many parameters
         public SettingServiceImpl(
             IDynamicRepository dynamicRepository,
             IMessageSender messageSender,
@@ -70,6 +71,7 @@
             MessageService messageService,
             Func<string> randomNumberFunc = null,
             Func<DateTime> getCurrentDateTimeFunc = null)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.dynamicRepository = dynamicRepository;
             this.randomNumberFunc = randomNumberFunc ?? RandomSixDigitsNumber;
@@ -90,11 +92,11 @@
             InputValidator.Validate("Messenger Type", messenger.Type);
 
             var verificationCode = randomNumberFunc();
-            var user = await GetUser(userId);
+            var user = await GetUser(userId).ConfigureAwait(false);
 
             await Task.WhenAll(
                 InsertMessengerWithVerificationCode(userId, messenger, verificationCode),
-                SendVerificationCode(user, messenger, verificationCode));
+                SendVerificationCode(user, messenger, verificationCode)).ConfigureAwait(false);
         }
 
         private async Task SendVerificationCode(User user, Messenger messenger, string verificationCode)
@@ -105,14 +107,14 @@
                 verificationCode,
                 chatbotConfigs.VerificationCodeExpiredTimeInMinutes);
 
-            await messageSender.SendMessage(user.Id, messenger, message);
+            await messageSender.SendMessage(user.Id, messenger, message).ConfigureAwait(false);
         }
 
         private async Task SendWelcomeMessage(User user, Messenger messenger)
         {
             var message = messageBuilder.BuildWelcomeMessage(user.Language, messenger.Type);
 
-            await messageSender.SendMessage(user.Id, messenger, message);
+            await messageSender.SendMessage(user.Id, messenger, message).ConfigureAwait(false);
         }
 
         private async Task InsertMessengerWithVerificationCode(
@@ -122,7 +124,7 @@
         {
             var command = new InsertMessengerCommand(userId, messenger.Type, messenger.Username, verificationCode);
 
-            await dynamicRepository.ExecuteAsync(command);
+            await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
         }
 
         private static string RandomSixDigitsNumber()
@@ -139,19 +141,21 @@
             InputValidator.Validate(nameof(custId), custId);
             InputValidator.Validate(nameof(language), language);
 
-            var user = await dynamicRepository.GetAsync<User>(new GetUserCriteria(custId, subAccountId));
+            var user = await dynamicRepository
+                .GetAsync<User>(new GetUserCriteria(custId, subAccountId))
+                .ConfigureAwait(false);
 
             if (user == null)
             {
                 return null;
             }
 
-            var messengerAccounts = await GetMessengers(user.Id);
+            var messengerAccounts = await GetMessengers(user.Id).ConfigureAwait(false);
             var functions = Enumerable.Empty<Function>();
 
             if (messengerAccounts.Any(messenger => messenger.Enabled))
             {
-                functions = await GetFunctions(user.Id, language);
+                functions = await GetFunctions(user.Id, language).ConfigureAwait(false);
             }
 
             return new User(
@@ -166,7 +170,9 @@
 
         public async Task<IEnumerable<Messenger>> GetMessengers(int userId, bool isEnabledOnly = false)
         {
-            var messengers = await dynamicRepository.FetchAsync<Messenger>(new GetMessengerByUserCriteria(userId));
+            var messengers = await dynamicRepository
+                .FetchAsync<Messenger>(new GetMessengerByUserCriteria(userId))
+                .ConfigureAwait(false);
 
             if (isEnabledOnly)
             {
@@ -177,7 +183,7 @@
             {
                 if (messenger.IsVerifying)
                 {
-                    messenger.InputWrongVerificationCodeTimes = await GetFailedCount(userId, messenger);
+                    messenger.InputWrongVerificationCodeTimes = await GetFailedCount(userId, messenger).ConfigureAwait(false);
                 }
             }
 
@@ -188,7 +194,9 @@
         {
             InputValidator.Validate(nameof(userId), userId);
 
-            var user = await dynamicRepository.GetAsync<User>(new GetUserCriteria(userId));
+            var user = await dynamicRepository
+                .GetAsync<User>(new GetUserCriteria(userId))
+                .ConfigureAwait(false);
 
             if (user == null)
             {
@@ -209,13 +217,15 @@
         {
             InputValidator.Validate(nameof(userId), userId);
 
-            var functions = await dynamicRepository.FetchAsync<Function>(new GetUserFunctionsCriteria(userId));
+            var functions = await dynamicRepository
+                .FetchAsync<Function>(new GetUserFunctionsCriteria(userId))
+                .ConfigureAwait(false);
 
             if (!string.IsNullOrWhiteSpace(language))
             {
                 foreach (var function in functions)
                 {
-                    function.Name = await GetFunctionName(function.Id, language);
+                    function.Name = await GetFunctionName(function.Id, language).ConfigureAwait(false);
                 }
             }
 
@@ -227,7 +237,8 @@
             var functionLanguages = await cacheService.GetOrSetAsync(
                         string.Format(functionNameByLanguageCacheKey, functionId),
                         () => GetFunctionLanguage(functionId).Result,
-                        new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0)));
+                        new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0)))
+                        .ConfigureAwait(false);
 
             var functionName = functionLanguages
                 .FirstOrDefault(languageDto => languageDto.LanguageCode == language)
@@ -251,11 +262,11 @@
             InputValidator.Validate(nameof(userId), userId);
             InputValidator.Validate(nameof(functions), functions);
 
-            await UpdateLastQueryTime(userId, functions);
+            await UpdateLastQueryTime(userId, functions).ConfigureAwait(false);
 
             var command = new UpdateUserFunctionsCommand(userId, functions);
 
-            await dynamicRepository.ExecuteAsync(command);
+            await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
         }
 
         public async Task UpdateLanguage(int userId, string language)
@@ -265,7 +276,7 @@
 
             var command = new UpdateUserLanguageCommand(userId, language);
 
-            await dynamicRepository.ExecuteAsync(command);
+            await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -280,32 +291,32 @@
             InputValidator.Validate("Messenger Username", messenger.Username);
             InputValidator.Validate("Messenger Type", messenger.Type);
 
-            var userId = await InsertUser(custId, subAccountId, language, messenger, custLevel);
+            var userId = await InsertUser(custId, subAccountId, language, messenger, custLevel).ConfigureAwait(false);
 
-            var result = await VerifyMessengerAccount(userId, messenger);
+            var result = await VerifyMessengerAccount(userId, messenger).ConfigureAwait(false);
             if (result.IsNotOk)
             {
                 return result;
             }
 
-            await GenerateVerificationCode(userId, messenger);
+            await GenerateVerificationCode(userId, messenger).ConfigureAwait(false);
 
             return AddingUserResult.CreateSuccessfulAddingUserResult(userId);
         }
 
         private async Task<AddingUserResult> VerifyMessengerAccount(int userId, Messenger messenger)
         {
-            if (await IsUserAddAccountOverMaxTimeInDay(userId, messenger.Type))
+            if (await IsUserAddAccountOverMaxTimeInDay(userId, messenger.Type).ConfigureAwait(false))
             {
                 return AddingUserResult.CreateIsOverMaxAddAccountTimesResult();
             }
 
-            if (await messageSender.IsMessengerAccountNotExisted(messenger))
+            if (await messageSender.IsMessengerAccountNotExisted(messenger).ConfigureAwait(false))
             {
                 return AddingUserResult.CreateAccountDoesNotExistResult();
             }
 
-            if (await IsMessengerAccountBelongToAnotherUser(userId, messenger))
+            if (await IsMessengerAccountBelongToAnotherUser(userId, messenger).ConfigureAwait(false))
             {
                 return AddingUserResult.CreateMessengerAccountHasBeenRegisteredByAnotherCustomerResult();
             }
@@ -320,7 +331,7 @@
             InputValidator.Validate("Messenger Username", messenger.Username);
             InputValidator.Validate("Messenger Type", messenger.Type);
 
-            var messengerDto = await GetMessenger(messenger.Type, messenger.Username);
+            var messengerDto = await GetMessenger(messenger.Type, messenger.Username).ConfigureAwait(false);
 
             return messengerDto != null
                 && messengerDto.UserId != userId;
@@ -330,8 +341,8 @@
         {
             var command = new InsertUserCommand(custId, subAccountId, language, custLevel);
 
-            await dynamicRepository.ExecuteAsync(command);
-            await IncreaseUserActionCount(command.UserId, chatbotConfigs.AddAccountActionId, messenger.Type, messenger.Username);
+            await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
+            await IncreaseUserActionCount(command.UserId, chatbotConfigs.AddAccountActionId, messenger.Type, messenger.Username).ConfigureAwait(false);
 
             return command.UserId;
         }
@@ -340,7 +351,7 @@
             int userId,
             int messengerType)
         {
-            var addUserLogActions = await GetUserAction(userId, messengerType, string.Empty, chatbotConfigs.AddAccountActionId);
+            var addUserLogActions = await GetUserAction(userId, messengerType, string.Empty, chatbotConfigs.AddAccountActionId).ConfigureAwait(false);
             var numOfAddTime = addUserLogActions.Sum(action => action.CountTimes);
 
             return numOfAddTime > chatbotConfigs.MaxAddActionTimes;
@@ -354,7 +365,7 @@
         {
             var criteria = new GetUserActionsCriteria(userId, actionId, messengerType, messengerUsername);
 
-            var userAction = await dynamicRepository.FetchAsync<UserActionDto>(criteria);
+            var userAction = await dynamicRepository.FetchAsync<UserActionDto>(criteria).ConfigureAwait(false);
 
             return userAction;
         }
@@ -370,7 +381,7 @@
 
             var command = new UpdateMessengerStatusCommand(userId, messengerType, messengerUsername, enabled);
 
-            await dynamicRepository.ExecuteAsync(command);
+            await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
         }
 
         public async Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger)
@@ -381,7 +392,7 @@
             InputValidator.Validate("Messenger Username", messenger.Username);
             InputValidator.Validate("Messenger Type", messenger.Type);
 
-            var verificationResult = await CheckVerificationCode(userId, verificationCode, messenger);
+            var verificationResult = await CheckVerificationCode(userId, verificationCode, messenger).ConfigureAwait(false);
 
             if (verificationResult.IsNotOk)
             {
@@ -394,21 +405,22 @@
                 UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true),
                 ResetUserActionCount(userId, chatbotConfigs.WrongVerificationCodeActionId, messenger.Type, messenger.Username),
                 SendWelcomeMessage(user, messenger),
-                UpdateLastQueryTime(userId, null));
+                UpdateLastQueryTime(userId, null))
+                .ConfigureAwait(false);
 
             return VerificationCodeResult.CreateVerificationSuccessfulResult();
         }
 
         private async Task<VerificationCodeResult> CheckVerificationCode(int userId, string verificationCode, Messenger messenger)
         {
-            if (await IsMessengerAccountBelongToAnotherUser(userId, messenger))
+            if (await IsMessengerAccountBelongToAnotherUser(userId, messenger).ConfigureAwait(false))
             {
                 return VerificationCodeResult.CreateMessengerAccountHasBeenRegisteredByAnotherCustomerResult();
             }
 
             var criteria = new GetMessengerByUserCriteria(userId, messenger.Type, messenger.Username);
-            var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(criteria);
-            var result = VerificationCodeResult.CreateVerificationSuccessfulResult();
+            var messengerDto = await dynamicRepository.GetAsync<MessengerDto>(criteria).ConfigureAwait(false);
+            VerificationCodeResult result;
 
             if (messengerDto == null
                 || messengerDto.Username != messenger.Username)
@@ -423,10 +435,14 @@
             {
                 result = VerificationCodeResult.CreateWrongVerificationCodeResult();
             }
+            else
+            {
+                result = VerificationCodeResult.CreateVerificationSuccessfulResult();
+            }
 
             if (result.IsNotOk)
             {
-                result = await LogVerificationCodeFailedAction(userId, messenger, result);
+                result = await LogVerificationCodeFailedAction(userId, messenger, result).ConfigureAwait(false);
             }
 
             return result;
@@ -441,12 +457,13 @@
                                     userId,
                                     chatbotConfigs.WrongVerificationCodeActionId,
                                     messenger.Type,
-                                    messenger.Username);
+                                    messenger.Username)
+                                    .ConfigureAwait(false);
 
             return new VerificationCodeResult(
                 result.Code,
                 result.Message,
-                await GetFailedCount(userId, messenger));
+                await GetFailedCount(userId, messenger).ConfigureAwait(false));
         }
 
         private async Task<int> GetFailedCount(int userId, Messenger messenger)
@@ -456,7 +473,8 @@
                 return 0;
             }
 
-            var failedAction = (await GetUserAction(userId, messenger.Type, messenger.Username, chatbotConfigs.WrongVerificationCodeActionId)).FirstOrDefault();
+            var failedAction = (await GetUserAction(userId, messenger.Type, messenger.Username, chatbotConfigs.WrongVerificationCodeActionId).ConfigureAwait(false))
+                .FirstOrDefault();
 
             return failedAction?.CountTimes ?? 0;
         }
@@ -469,7 +487,7 @@
         {
             var command = new InsertUserActionCommand(userId, actionId, messengerType, messengerUsername);
 
-            await dynamicRepository.ExecuteAsync(command);
+            await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
         }
 
         private async Task ResetUserActionCount(
@@ -480,14 +498,14 @@
         {
             var command = new ResetActionCountTimesCommand(userId, actionId, messengerType, messengerUsername);
 
-            await dynamicRepository.ExecuteAsync(command);
+            await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
         }
 
         public async Task<MessengerDto> GetMessenger(int messengerType, string messengerUsername)
         {
             var criteria = new GetMessengerCriteria(messengerUsername, messengerType);
 
-            var messenger = await dynamicRepository.GetAsync<MessengerDto>(criteria);
+            var messenger = await dynamicRepository.GetAsync<MessengerDto>(criteria).ConfigureAwait(false);
 
             return messenger;
         }
@@ -496,20 +514,20 @@
         {
             var criteria = new GetUsersByFunctionCriteria(functionId, environment);
 
-            var users = await dynamicRepository.FetchAsync<User>(criteria);
+            var users = await dynamicRepository.FetchAsync<User>(criteria).ConfigureAwait(false);
 
             return users;
         }
 
         private async Task UpdateLastQueryTime(int userId, IEnumerable<Function> functions)
         {
-            var userFunctions = functions ?? (await GetFunctions(userId));
+            var userFunctions = functions ?? (await GetFunctions(userId).ConfigureAwait(false));
 
             foreach (var function in userFunctions)
             {
                 if (function.Enabled && chatbotConfigs.MessageAndAnnoucementFunctionIds.Contains(function.Id))
                 {
-                    await messageService.UpdateLastQueryTime(userId, function.Id, 0, DateTime.Now);
+                    await messageService.UpdateLastQueryTime(userId, function.Id, 0, DateTime.Now).ConfigureAwait(false);
                 }
             }
         }

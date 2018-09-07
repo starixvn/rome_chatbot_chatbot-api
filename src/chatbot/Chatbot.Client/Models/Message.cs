@@ -4,8 +4,6 @@
 
     public class Message
     {
-        public Message() { }
-
         public int Id { get; set; }
 
         public int Sender { get; set; }

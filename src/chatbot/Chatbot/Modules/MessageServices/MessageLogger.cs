@@ -48,7 +48,7 @@ namespace Chatbot.Modules.MessageServices
 
             var criteria = new GetMessageLogCriteria(userId, fromDate, toDate, functionId, messengerType);
 
-            var messages = await dynamicRepository.FetchAsync<Message>(criteria);
+            var messages = await dynamicRepository.FetchAsync<Message>(criteria).ConfigureAwait(false);
 
             return messages;
         }
@@ -70,7 +70,7 @@ namespace Chatbot.Modules.MessageServices
                 status,
                 functionId);
 
-            await dynamicRepository.ExecuteAsync(command);
+            await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
         }
     }
 }

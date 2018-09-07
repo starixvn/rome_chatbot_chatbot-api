@@ -17,7 +17,9 @@
         }
 
         [Route("setwebhook/{webhookurl}"), HttpPost]
+#pragma warning disable S3994 // URI Parameters should not be strings
         public async Task<Result> SetWebhook(string webhookUrl)
+#pragma warning restore S3994 // URI Parameters should not be strings
         {
             var messengerClient = messengerFactory.CreateMessengerClient(MessengerType.Letstalk);
 

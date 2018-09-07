@@ -26,7 +26,7 @@
         {
             var criteria = new GetMessageLastQueryTimeCriteria(userId, functionId, messageType);
 
-            var result = await dynamicRepository.GetAsync<DateTime>(criteria);
+            var result = await dynamicRepository.GetAsync<DateTime>(criteria).ConfigureAwait(false);
 
             if (result == DateTime.MinValue)
             {

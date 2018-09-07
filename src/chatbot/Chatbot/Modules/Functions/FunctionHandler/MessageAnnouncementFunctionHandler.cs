@@ -36,12 +36,12 @@
                 throw new InvalidOperationException($"Cannot find get data function for function: {param.Function.Id}-{param.Function.Name}");
             }
 
-            if (await IsCustomerClosed(param.User))
+            if (await IsCustomerClosed(param.User).ConfigureAwait(false))
             {
                 return Result.CreateSuccessfulResult("Customer is closed");
             }
 
-            var data = await getDataHandlers[param.Function.Id](param);
+            var data = await getDataHandlers[param.Function.Id](param).ConfigureAwait(false);
             var messages = DataHelper.TryParse<IList<Alpha.Services.Client.Models.Message>>(data);
 
             if (messages == null || messages.Count == 0)
@@ -53,7 +53,7 @@
             {
                 if (!string.IsNullOrEmpty(message.Content))
                 {
-                    results.Add(await BuildAndSendMessage(param, message));
+                    results.Add(await BuildAndSendMessage(param, message).ConfigureAwait(false));
                 }
             }
 
