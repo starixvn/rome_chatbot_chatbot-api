@@ -28,6 +28,8 @@
         public override string GetSettingKey() => "UpdateMessageLastQueryTime";
 
         public override bool IsValid()
-            => UserId > 0 && FunctionId > 0 && MessageType > -1;
+            => UserId > 0 
+            && FunctionId > 0 
+            && MessageType > -1;
     }
 }
