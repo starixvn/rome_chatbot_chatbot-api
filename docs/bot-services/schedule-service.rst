@@ -11,7 +11,7 @@ Overview
 
 Schedule services are services do scheduled jobs, such as sending report daily, collecting all SMA messages and push it to Letstalk service
 
-.. image:: assets/Notification_Services_Overview.png
+.. image:: assets/Notification_Services_Overview_New.png
 
 Yesterday Win Loss
 =============================================
