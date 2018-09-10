@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>Chatbot.Client.Sample.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- Exclude the project from analysis -->
+    <SonarQubeExclude>true</SonarQubeExclude>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Chatbot.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Chatbot.Client.1.0.0-beta8-82\lib\net461\Chatbot.Client.dll</HintPath>

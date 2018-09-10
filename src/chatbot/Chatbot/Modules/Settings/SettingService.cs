@@ -11,7 +11,6 @@
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
-    using Chatbot.Modules.MessageServices;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
     using Fanex.Caching;
@@ -60,6 +59,7 @@
         private readonly MessageService messageService;
 
 #pragma warning disable S107 // Methods should not have too many parameters
+
         public SettingServiceImpl(
             IDynamicRepository dynamicRepository,
             IMessageSender messageSender,

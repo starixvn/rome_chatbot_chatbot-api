@@ -1,4 +1,6 @@
-﻿namespace Chatbot.Client.Services
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Chatbot.Client.Tests")]
+
+namespace Chatbot.Client.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -137,7 +139,7 @@
             InputValidator.ValidateInputParam(nameof(messengerType), messengerType);
             InputValidator.ValidateInputParam(nameof(messengerUsername), messengerUsername);
 
-            return restClient.ExecutePostAsync<Messenger>($"setting/messenger/{messengerType}/{messengerUsername}");
+            return restClient.ExecuteGetAsync<Messenger>($"setting/messenger/{messengerType}/{messengerUsername}");
         }
 
         public Task<List<User>> GetUsersByFunction(int functionId, int environment)
