@@ -26,17 +26,15 @@ GO
 		- Notes
 */
 
-CREATE PROCEDURE [dbo].[Chatbot_GetMessageLastQueryTime]
-				@UserId			INT
-				,@FunctionId	INT
-				,@MessageType		INT	
+ALTER PROCEDURE [dbo].[Chatbot_GetMessageLastQueryTime]
+				@FunctionId	INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
 	SELECT TOP(1) [LastQueryTime]
 	FROM LastQueryUserMessage AS A WITH (NOLOCK)
-	WHERE A.UserId = @UserId AND A.FunctionId = @FunctionId AND A.MessageType = @MessageType
+	WHERE A.FunctionId = @FunctionId
 			
 END
 

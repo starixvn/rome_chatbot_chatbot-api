@@ -8,6 +8,7 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Fanex.Logging;
     using NSubstitute;
     using Xunit;
 
@@ -16,6 +17,7 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
         private readonly IMessageBuilder subMessageBuilder;
         private readonly IMessageSender subMessageSender;
         private readonly CustomerService subCustomerService;
+        private readonly ILogger subLogger;
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders;
 
         public DefaultFunctionHandlerTests()
@@ -23,6 +25,7 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
             subMessageBuilder = Substitute.For<IMessageBuilder>();
             subMessageSender = Substitute.For<IMessageSender>();
             subCustomerService = Substitute.For<CustomerService>();
+            subLogger = Substitute.For<ILogger>();
             getDataHanlders = new Dictionary<int, Func<FunctionParam, Task<object>>>();
         }
 
@@ -32,6 +35,7 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
                 subMessageBuilder,
                 subMessageSender,
                 subCustomerService,
+                subLogger,
                 getDataHanlders);
         }
 

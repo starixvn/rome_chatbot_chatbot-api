@@ -18,9 +18,9 @@ namespace Chatbot.Tests.Modules.Functions
             subDynamicRepository = Substitute.For<IDynamicRepository>();
         }
 
-        private MessageServiceImpl CreateMessageServiceImpl()
+        private NotificationServiceImpl CreateMessageServiceImpl()
         {
-            return new MessageServiceImpl(subDynamicRepository);
+            return new NotificationServiceImpl(subDynamicRepository);
         }
 
         [Fact]
@@ -29,12 +29,12 @@ namespace Chatbot.Tests.Modules.Functions
             // Arrange
             var lastQueryTime = new DateTime(2018, 2, 20);
             subDynamicRepository
-                .GetAsync<DateTime>(Arg.Is<GetMessageLastQueryTimeCriteria>(c => c.UserId == 1 && c.FunctionId == 2 && c.MessageType == 3))
+                .GetAsync<DateTime>(Arg.Is<GetMessageLastQueryTimeCriteria>(c => c.FunctionId == 2))
                 .Returns(lastQueryTime);
             var service = CreateMessageServiceImpl();
 
             // Act
-            var actualLastQueryTime = await service.GetLastQueryTime(1, 2, 3);
+            var actualLastQueryTime = await service.GetLastQueryTime(2);
 
             // Assert
             Assert.Equal(lastQueryTime, actualLastQueryTime);
@@ -48,12 +48,12 @@ namespace Chatbot.Tests.Modules.Functions
             var lastQueryTime = new DateTime(2018, 2, 20);
 
             // Act
-            await service.UpdateLastQueryTime(1, 2, 3, lastQueryTime);
+            await service.UpdateLastQueryTime(2, lastQueryTime);
 
             // Assert
             await subDynamicRepository.Received().ExecuteAsync(
                 Arg.Is<UpdateMessageLastQueryTimeCommand>(
-                    c => c.UserId == 1 && c.FunctionId == 2 && c.MessageType == 3 && c.LastQueryTime == lastQueryTime));
+                    c => c.FunctionId == 2 && c.LastQueryTime == lastQueryTime));
         }
     }
 }

@@ -10,56 +10,63 @@
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.Settings;
+    using Fanex.Logging;
 
     public class MessageAnnouncementFunctionHandler : DefaultFunctionHandler
     {
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers;
+        private readonly SettingService settingService;
 
         public MessageAnnouncementFunctionHandler(
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
             CustomerService customerService,
+            ILogger logger,
+            SettingService settingService,
             IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers = null) :
-                base(messageBuilder, messageSender, customerService, getDataHandlers)
+                base(messageBuilder, messageSender, customerService, logger, getDataHandlers)
         {
             this.getDataHandlers = getDataHandlers;
             SendMessageInCaseAccountClosed = false;
+            this.settingService = settingService;
         }
 
-        public override async Task<Result> Handle(FunctionParam param)
+        public override async Task<IEnumerable<FunctionMessage>> BuildFunctionMessages(FunctionParam param)
         {
-            // Check Params
-            var results = new List<Result>();
+            var functionMessages = new List<FunctionMessage>();
 
-            if (!getDataHandlers.ContainsKey(param.Function.Id))
+            var data = await getDataHandlers[param.Function.Id](param);
+            var announcements = DataHelper.TryParse<IList<Alpha.Services.Client.Models.Message>>(data);
+
+            if (announcements == null || announcements.Count == 0)
             {
-                throw new InvalidOperationException($"Cannot find get data function for function: {param.Function.Id}-{param.Function.Name}");
+                return new List<FunctionMessage>();
             }
 
-            if (await IsCustomerClosed(param.User).ConfigureAwait(false))
+            foreach (var announcement in announcements)
             {
-                return Result.CreateSuccessfulResult("Customer is closed");
-            }
-
-            var data = await getDataHandlers[param.Function.Id](param).ConfigureAwait(false);
-            var messages = DataHelper.TryParse<IList<Alpha.Services.Client.Models.Message>>(data);
-
-            if (messages == null || messages.Count == 0)
-            {
-                return Result.CreateSuccessfulResult("No data");
-            }
-
-            foreach (var message in messages)
-            {
-                if (!string.IsNullOrEmpty(message.Content))
+                if (!string.IsNullOrEmpty(announcement.Content))
                 {
-                    results.Add(await BuildAndSendMessage(param, message).ConfigureAwait(false));
+                    var user = param.Users.FirstOrDefault(u => u.CustId == announcement.CustId);
+
+                    if (await IsCustomerClosed(user))
+                    {
+                        continue;
+                    }
+
+                    var messengers = await settingService.GetMessengers(user.Id, true);
+
+                    foreach (var messenger in messengers)
+                    {
+                        var message = BuildMessage(user.Language, param.Function.Id, messenger.Type, announcement);
+
+                        functionMessages.Add(new FunctionMessage(user.Id, message));
+                    }
                 }
             }
 
-            return results.All(result => result.IsOk)
-                ? Result.CreateSuccessfulResult()
-                : Result.CreateErrorResult();
+            return functionMessages;
         }
     }
 }

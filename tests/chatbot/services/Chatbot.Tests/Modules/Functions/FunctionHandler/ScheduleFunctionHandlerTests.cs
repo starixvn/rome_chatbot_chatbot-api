@@ -9,6 +9,8 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.Settings;
+    using Fanex.Logging;
     using NSubstitute;
     using Xunit;
 
@@ -17,6 +19,8 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
         private readonly IMessageBuilder subMessageBuilder;
         private readonly IMessageSender subMessageSender;
         private readonly CustomerService subCustomerService;
+        private readonly SettingService subSettingService;
+        private readonly ILogger subLogger;
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers;
 
         public ScheduleFunctionHandlerTests()
@@ -24,15 +28,19 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
             subMessageBuilder = Substitute.For<IMessageBuilder>();
             subMessageSender = Substitute.For<IMessageSender>();
             subCustomerService = Substitute.For<CustomerService>();
+            subSettingService = Substitute.For<SettingService>();
+            subLogger = Substitute.For<ILogger>();
             getDataHandlers = new Dictionary<int, Func<FunctionParam, Task<object>>>();
         }
 
-        private ScheduleFunctionHandler CreateScheduleFunctionHandler()
+        private YesterdayWinLossFunctionHandler CreateScheduleFunctionHandler()
         {
-            return new ScheduleFunctionHandler(
+            return new YesterdayWinLossFunctionHandler(
                 subMessageBuilder,
                 subMessageSender,
                 subCustomerService,
+                subSettingService,
+                subLogger,
                 getDataHandlers);
         }
 

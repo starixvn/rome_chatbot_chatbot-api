@@ -10,7 +10,7 @@
 
     public interface IMessageSender
     {
-        Task SendMessageByFunction(int userId, int functionId);
+        Task SendMessageToUser(int userId, int functionId, string message);
     }
 
     public class MessageSender : IMessageSender
@@ -33,15 +33,16 @@
             this.jobFailureHandler = jobFailureHandler ?? new JobFailureHandler();
         }
 
-        public async Task SendMessageByFunction(int userId, int functionId)
+        public async Task SendMessageToUser(int userId, int functionId, string message)
         {
             var scheduler = await schedulerFactory.GetScheduler();
             scheduler.ListenerManager.AddJobListener(jobFailureHandler);
 
-            var job = JobBuilder.Create<SendMessageByFunctionJob>()
-                        .WithIdentity($"SendMessage_{userId}_{functionId}_{DateTime.UtcNow}", "SendMessage")
+            var job = JobBuilder.Create<SendMessageToUserJob>()
+                        .WithIdentity($"SendMessage_{userId}_{functionId}_{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds()}_{message}", "SendMessage")
                         .UsingJobData(JobDataKey.UserId, userId)
                         .UsingJobData(JobDataKey.FunctionId, functionId)
+                        .UsingJobData(JobDataKey.Message, message)
                         .Build();
             var trigger = TriggerBuilder
                         .Create()

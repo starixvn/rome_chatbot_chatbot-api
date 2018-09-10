@@ -29,7 +29,7 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageLogger messageLogger;
         private readonly IChatbotConfigs chatbotConfigs;
-        private readonly MessageService messageService;
+        private readonly NotificationService messageService;
 
         private readonly SettingService settingService;
 
@@ -42,7 +42,7 @@
             messageSender = Substitute.For<IMessageSender>();
             messageBuilder = Substitute.For<IMessageBuilder>();
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
-            messageService = Substitute.For<MessageService>();
+            messageService = Substitute.For<NotificationService>();
 
             settingService = new SettingServiceImpl(
                 dynamicRepository,

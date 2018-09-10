@@ -47,29 +47,6 @@
         }
 
         [Fact]
-        public void SendByFunction_Alway_ExecuteExecutePostAsync()
-        {
-            var userId = 1;
-            var functionId = 2;
-
-            messageService.SendByFunction(functionId, userId).GetAwaiter().GetResult();
-
-            Func<object, bool> assert = data =>
-            {
-                var type = data.GetType();
-                var actualUserId = (int)type.GetProperty("userId").GetValue(data);
-                var actualFunctionId = (int)type.GetProperty("functionId").GetValue(data);
-
-                return actualUserId == userId
-                    && actualFunctionId == functionId;
-            };
-
-            restClient.Received().ExecutePostAsync<Result>(
-                "message/sendByFunction",
-                Arg.Is<object>(data => assert(data)));
-        }
-
-        [Fact]
         public void GetMessageLogs_Alway_ExecuteExecutePostAsync()
         {
             var userId = 1;

@@ -56,7 +56,7 @@
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
         private readonly IChatbotConfigs chatbotConfigs;
-        private readonly MessageService messageService;
+        private readonly NotificationService messageService;
 
 #pragma warning disable S107 // Methods should not have too many parameters
 
@@ -66,7 +66,7 @@
             IMessageBuilder messageBuilder,
             ICacheService cacheService,
             IChatbotConfigs chatbotConfigs,
-            MessageService messageService,
+            NotificationService messageService,
             Func<string> randomNumberFunc = null,
             Func<DateTime> getCurrentDateTimeFunc = null)
 #pragma warning restore S107 // Methods should not have too many parameters
@@ -524,7 +524,7 @@
             {
                 if (function.Enabled && chatbotConfigs.MessageAndAnnoucementFunctionIds.Contains(function.Id))
                 {
-                    await messageService.UpdateLastQueryTime(userId, function.Id, 0, DateTime.Now).ConfigureAwait(false);
+                    await messageService.UpdateLastQueryTime(function.Id, DateTime.Now);
                 }
             }
         }

@@ -5,15 +5,15 @@
     using Chatbot.Schedule.Service.Constants;
     using Quartz;
 
-    public class SendMessageByFunctionJob : IJob
+    public class SendMessageToUserJob : IJob
     {
         private readonly MessageService messageService;
 
-        public SendMessageByFunctionJob() : this(null)
+        public SendMessageToUserJob() : this(null)
         {
         }
 
-        public SendMessageByFunctionJob(MessageService messageService)
+        public SendMessageToUserJob(MessageService messageService)
         {
             this.messageService = messageService ?? new MessageServiceImpl();
         }
@@ -23,8 +23,9 @@
             var dataMap = context.JobDetail.JobDataMap;
             var userId = dataMap.GetInt(JobDataKey.UserId);
             var functionId = dataMap.GetInt(JobDataKey.FunctionId);
+            var message = dataMap.GetString(JobDataKey.Message);
 
-            var result = await messageService.SendByFunction(functionId, userId);
+            var result = await messageService.SendMessage(userId, message, functionId);
 
             if (result.IsNotOk)
             {

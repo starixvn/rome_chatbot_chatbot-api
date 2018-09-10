@@ -1,6 +1,5 @@
 ﻿namespace Chatbot.Schedule.Service.Jobs
 {
-    using System.Linq;
     using System.Threading.Tasks;
     using Chatbot.Client.Models;
     using Chatbot.Client.Services;
@@ -11,7 +10,7 @@
     public class NotificationJob : IJob
     {
         private readonly IMessageSender messageSender;
-        private readonly SettingService settingService;
+        private readonly MessageService messageService;
 
         public NotificationJob() : this(null, null)
         {
@@ -19,10 +18,10 @@
 
         public NotificationJob(
             IMessageSender messageSender,
-            SettingService settingService)
+            MessageService messageService)
         {
             this.messageSender = messageSender ?? new MessageSender();
-            this.settingService = settingService ?? new SettingServiceImpl();
+            this.messageService = messageService ?? new MessageServiceImpl();
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -31,11 +30,11 @@
             {
                 var dataMap = context.JobDetail.JobDataMap;
                 var functionId = dataMap.GetIntValue(JobDataKey.FunctionId);
-                var users = await settingService.GetUsersByFunction(functionId, 0);
+                var functionMessages = await messageService.GetFunctionMessages(functionId);
 
-                Parallel.ForEach(users, async (user) =>
+                Parallel.ForEach(functionMessages, async (functionMessage) =>
                 {
-                    await messageSender.SendMessageByFunction(user.Id, functionId);
+                    await messageSender.SendMessageToUser(functionMessage.UserId, functionId, functionMessage.Message);
                 });
             }
             catch (ChatbotClientException ex)

@@ -27,9 +27,7 @@ GO
 */
 
 ALTER PROCEDURE [dbo].[Chatbot_UpdateMessageLastQueryTime]
-				@UserId			INT
-				,@FunctionId	INT
-				,@MessageType		INT
+				@FunctionId	INT
 				,@LastQueryTime DATETIME
 AS
 BEGIN
@@ -39,18 +37,15 @@ BEGIN
 		IF NOT EXISTS (
 			SELECT TOP(1) [LastQueryTime]
 			FROM LastQueryUserMessage AS A WITH (NOLOCK)
-			WHERE A.UserId = @UserId AND (A.FunctionId = @FunctionId OR A.MessageType = @MessageType))
+			WHERE A.FunctionId = @FunctionId)
 		BEGIN
 			INSERT INTO LastQueryUserMessage
-			VALUES (@UserId, @FunctionId, @MessageType, @LastQueryTime)
+			VALUES (0, @FunctionId, 0, @LastQueryTime)
 		END
 		ELSE
 			UPDATE LastQueryUserMessage WITH (ROWLOCK, UPDLOCK)
 			SET [LastQueryTime] = @LastQueryTime
-			WHERE 
-				[UserId] = @UserId 
-				AND ([FunctionId] = @FunctionId
-				OR [MessageType] = @MessageType)
+			WHERE [FunctionId] = @FunctionId
 		END
  			
 END

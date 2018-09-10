@@ -46,18 +46,17 @@ namespace Chatbot.WebApi.Controllers
             return await messageSender.SendMessage(param.UserId, param.Message, messengers, param.FunctionId);
         }
 
-        [Route("sendByFunction"), HttpPost]
-        public Task<Result> SendByFunction([FromBody]FunctionParam param)
-            => functionService.Handle(param.FunctionId, param.UserId);
-
+        [Route("getFunctionMessages"), HttpGet]
+        public Task<IEnumerable<FunctionMessage>> GetFunctionMessages([FromQuery]int functionId)
+            => functionService.GetFunctionMessages(functionId);
 
         [Route("getMessageLogs"), HttpPost]
         public Task<IEnumerable<Message>> GetMessageLogs(MessageLogParam param)
             => messageLogger.GetMessageLogs(
                 param.UserId,
                 DateTimeOffset.FromUnixTimeMilliseconds(param.FromDate).DateTime.ToLocalTime(),
-                DateTimeOffset.FromUnixTimeMilliseconds(param.ToDate).DateTime.ToLocalTime(), 
-                param.FunctionId, 
+                DateTimeOffset.FromUnixTimeMilliseconds(param.ToDate).DateTime.ToLocalTime(),
+                param.FunctionId,
                 param.MessengerType);
     }
 }

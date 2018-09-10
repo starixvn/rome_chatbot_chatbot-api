@@ -12,9 +12,9 @@ namespace Chatbot.Client.Services
     {
         Task<Result> SendMessage(int userId, string message, int functionId = 0);
 
-        Task<Result> SendByFunction(int functionId, int userId);
-
         Task<List<Message>> GetMessageLogs(int userId, DateTimeOffset fromDate, DateTimeOffset toDate, int functionId = 0, int messengerType = 0);
+
+        Task<IEnumerable<FunctionMessage>> GetFunctionMessages(int functionId);
     }
 
     public class MessageServiceImpl : MessageService
@@ -45,20 +45,6 @@ namespace Chatbot.Client.Services
                 });
         }
 
-        public Task<Result> SendByFunction(int functionId, int userId)
-        {
-            InputValidator.ValidateInputParam(nameof(userId), userId);
-            InputValidator.ValidateInputParam(nameof(functionId), functionId);
-
-            return restClient.ExecutePostAsync<Result>(
-               $"message/sendByFunction",
-               new
-               {
-                   userId,
-                   functionId
-               });
-        }
-
         public Task<List<Message>> GetMessageLogs(
             int userId,
             DateTimeOffset fromDate,
@@ -80,6 +66,14 @@ namespace Chatbot.Client.Services
                    functionId,
                    messengerType
                });
+        }
+
+        public Task<IEnumerable<FunctionMessage>> GetFunctionMessages(int functionId)
+        {
+            InputValidator.ValidateInputParam(nameof(functionId), functionId);
+
+            return restClient.ExecuteGetAsync<IEnumerable<FunctionMessage>>(
+               $"message/getFunctionMessages?functionId={functionId}");
         }
     }
 }

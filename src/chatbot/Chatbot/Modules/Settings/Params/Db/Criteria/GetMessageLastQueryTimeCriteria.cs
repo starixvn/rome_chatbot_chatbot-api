@@ -4,24 +4,15 @@
 
     public class GetMessageLastQueryTimeCriteria : CriteriaBase
     {
-        public GetMessageLastQueryTimeCriteria(
-           int userId,
-           int functionId,
-           int messageType)
+        public GetMessageLastQueryTimeCriteria(int functionId)
         {
-            UserId = userId;
             FunctionId = functionId;
-            MessageType = messageType;
         }
-
-        public int UserId { get; }
 
         public int FunctionId { get; }
 
-        public int MessageType { get; }
-
         public override string GetSettingKey() => "GetMessageLastQueryTime";
 
-        public override bool IsValid() => UserId > 0 && FunctionId > 0 && MessageType > -1;
+        public override bool IsValid() => FunctionId > 0;
     }
 }

@@ -26,7 +26,7 @@
             var scheduler = await schedulerFactory.GetScheduler();
 
             // Act
-            await messageSender.SendMessageByFunction(1, 1);
+            await messageSender.SendMessageToUser(1, 2, "message");
 
             // Assert
             scheduler.ListenerManager.Received().AddJobListener(jobListener);
@@ -39,12 +39,12 @@
             var scheduler = await schedulerFactory.GetScheduler();
 
             // Act
-            await messageSender.SendMessageByFunction(1, 1);
+            await messageSender.SendMessageToUser(1, 2, "message");
 
             // Assert
             await scheduler.Received(1).ScheduleJob(
               Arg.Is<IJobDetail>(j =>
-                  j.JobDataMap.GetIntValue("functionId") == 1
+                  j.JobDataMap.GetString("message") == "message"
                   && j.JobDataMap.GetIntValue("userId") == 1),
               Arg.Any<ITrigger>());
         }

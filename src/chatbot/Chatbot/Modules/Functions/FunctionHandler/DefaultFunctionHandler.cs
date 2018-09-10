@@ -8,10 +8,13 @@
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Fanex.Logging;
 
     public interface IFunctionHandler
     {
         Task<Result> Handle(FunctionParam param);
+
+        Task<IEnumerable<FunctionMessage>> BuildFunctionMessages(FunctionParam param);
     }
 
     public class DefaultFunctionHandler : IFunctionHandler
@@ -20,6 +23,7 @@
         private readonly IMessageSender messageSender;
         private readonly CustomerService customerService;
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders;
+        private readonly ILogger logger;
 
         protected bool SendMessageInCaseAccountClosed = true;
 
@@ -27,12 +31,14 @@
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
             CustomerService customerService,
+            ILogger logger,
             IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders = null)
         {
             this.messageBuilder = messageBuilder;
             this.messageSender = messageSender;
             this.getDataHanlders = getDataHanlders;
             this.customerService = customerService;
+            this.logger = logger;
         }
 
         public virtual async Task<Result> Handle(FunctionParam param)
@@ -81,13 +87,31 @@
 
         protected Task<Result> BuildAndSendMessage(FunctionParam param, object data)
         {
-            var message = messageBuilder.BuildCommandResultMessage(
-                 param.User.Language,
-                 param.Function.Id,
-                 param.Messenger.Type,
-                 data);
+            string message = BuildMessage(param.User.Language, param.Function.Id, param.Messenger.Type, data);
 
             return messageSender.SendMessage(param.User.Id, param.Messenger, message, param.Function.Id);
+        }
+
+        protected string BuildMessage(string language, int functionId, int messengerType, object data)
+            => messageBuilder.BuildCommandResultMessage(
+                    language,
+                    functionId,
+                    messengerType,
+                    data);
+
+        public virtual Task<IEnumerable<FunctionMessage>> BuildFunctionMessages(FunctionParam param)
+            => Task.FromResult<IEnumerable<FunctionMessage>>(new List<FunctionMessage>());
+
+        protected void LogError(User user, Messenger messenger, Exception ex)
+        {
+            var logMessage = string.Join(
+                                    "\n",
+                                    "Function Handler Exception",
+                                    $"User: {user.Id}, CustId: {user.CustId}, SubAccId: {user.SubAccountId}, Language: {user.Language}",
+                                    $"Messenger: {messenger.Username}, Type: {messenger.Type}",
+                                    ex.ToString());
+
+            logger.Error(logMessage);
         }
     }
 }

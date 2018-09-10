@@ -11,12 +11,14 @@ namespace Chatbot.Modules.Funtions.Params
             User user,
             Function function,
             Messenger messenger,
-            IDictionary<string, object> others)
+            IDictionary<string, object> others,
+            IEnumerable<User> users = null)
         {
             User = user;
             Function = function;
             Messenger = messenger;
             Others = others;
+            Users = users;
         }
 
         public User User { get; }
@@ -26,5 +28,7 @@ namespace Chatbot.Modules.Funtions.Params
         public Messenger Messenger { get; }
 
         public IDictionary<string, object> Others { get; }
+
+        public IEnumerable<User> Users { get; }
     }
 }

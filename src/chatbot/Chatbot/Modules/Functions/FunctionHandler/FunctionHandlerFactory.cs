@@ -11,6 +11,8 @@ namespace Chatbot.Modules.Funtions.FunctionHandler
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.Settings;
+    using Fanex.Logging;
 
     public interface IFunctionHandlerFactory
     {
@@ -24,18 +26,24 @@ namespace Chatbot.Modules.Funtions.FunctionHandler
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders;
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly CustomerService customerService;
+        private readonly SettingService settingService;
+        private readonly ILogger logger;
 
         public FunctionHandlerFactory(
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
             IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders,
             IChatbotConfigs chatbotConfigs,
-            CustomerService customerService)
+            CustomerService customerService,
+            SettingService settingService,
+            ILogger logger)
         {
             this.messageBuilder = messageBuilder;
             this.messageSender = messageSender;
             this.getDataHanlders = getDataHanlders;
             this.customerService = customerService;
+            this.settingService = settingService;
+            this.logger = logger;
             this.chatbotConfigs = chatbotConfigs ?? throw new ArgumentNullException(nameof(chatbotConfigs));
         }
 
@@ -43,15 +51,15 @@ namespace Chatbot.Modules.Funtions.FunctionHandler
         {
             if (chatbotConfigs.MessageAndAnnoucementFunctionIds.Contains(functionId))
             {
-                return new MessageAnnouncementFunctionHandler(messageBuilder, messageSender, customerService, getDataHanlders);
+                return new MessageAnnouncementFunctionHandler(messageBuilder, messageSender, customerService, logger, settingService, getDataHanlders);
             }
 
-            if (chatbotConfigs.ScheduleFunctionIds.Contains(functionId))
+            if (functionId == chatbotConfigs.YesterdayWinLossFunctionId)
             {
-                return new ScheduleFunctionHandler(messageBuilder, messageSender, customerService, getDataHanlders);
+                return new YesterdayWinLossFunctionHandler(messageBuilder, messageSender, customerService, settingService, logger, getDataHanlders);
             }
 
-            return new DefaultFunctionHandler(messageBuilder, messageSender, customerService, getDataHanlders);
+            return new DefaultFunctionHandler(messageBuilder, messageSender, customerService, logger, getDataHanlders);
         }
     }
 }

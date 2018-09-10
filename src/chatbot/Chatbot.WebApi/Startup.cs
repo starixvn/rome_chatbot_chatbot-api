@@ -59,7 +59,7 @@ namespace Chatbot.WebApi
             services.AddSingleton<IFunctionHandler, DefaultFunctionHandler>();
             services.AddSingleton<IChatbotConfigs>(new ChatbotConfigs(Configuration));
             services.AddSingleton(Logger.Log);
-            services.AddSingleton<MessageService, MessageServiceImpl>();
+            services.AddSingleton<NotificationService, NotificationServiceImpl>();
             services.AddSingleton<IMaintenanceService, MaintenanceService>();
             services.AddSingleton<Alpha.Services.Client.Services.CustomerService, Alpha.Services.Client.Services.CustomerServiceImpl>();
 
