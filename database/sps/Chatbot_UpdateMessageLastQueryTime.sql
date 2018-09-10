@@ -3,7 +3,7 @@
 USE [bodb_ChatBot]
 GO
 
-/****** Object:  StoredProcedure [dbo].[Chatbot_UpdateMessageLastQueryTime]    Script Date: 8/16/2018 3:46:44 PM ******/
+/****** Object:  StoredProcedure [dbo].[Chatbot_UpdateMessageLastQueryTime]     Script Date: 8/16/2018 3:46:44 PM ******/
 SET ANSI_NULLS ON
 GO
 

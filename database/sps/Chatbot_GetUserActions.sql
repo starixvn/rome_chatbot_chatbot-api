@@ -2,7 +2,7 @@
 
 USE [bodb_ChatBot]
 GO
-/****** Object:  StoredProcedure [dbo].[GetUserActions]    Script Date: 7/27/2018 4:18:54 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetUserActions]     Script Date: 7/27/2018 4:18:54 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
