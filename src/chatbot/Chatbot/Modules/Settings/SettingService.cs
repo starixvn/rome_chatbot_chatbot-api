@@ -259,8 +259,6 @@
             InputValidator.Validate(nameof(userId), userId);
             InputValidator.Validate(nameof(functions), functions);
 
-            await UpdateLastQueryTime(userId, functions).ConfigureAwait(false);
-
             var command = new UpdateUserFunctionsCommand(userId, functions);
 
             await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
@@ -401,8 +399,7 @@
             await Task.WhenAll(
                 UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true),
                 ResetUserActionCount(userId, chatbotConfigs.WrongVerificationCodeActionId, messenger.Type, messenger.Username),
-                SendWelcomeMessage(user, messenger),
-                UpdateLastQueryTime(userId, null))
+                SendWelcomeMessage(user, messenger))
                 .ConfigureAwait(false);
 
             return VerificationCodeResult.CreateVerificationSuccessfulResult();
@@ -514,19 +511,6 @@
             var users = await dynamicRepository.FetchAsync<User>(criteria).ConfigureAwait(false);
 
             return users;
-        }
-
-        private async Task UpdateLastQueryTime(int userId, IEnumerable<Function> functions)
-        {
-            var userFunctions = functions ?? (await GetFunctions(userId).ConfigureAwait(false));
-
-            foreach (var function in userFunctions)
-            {
-                if (function.Enabled && chatbotConfigs.MessageAndAnnoucementFunctionIds.Contains(function.Id))
-                {
-                    await messageService.UpdateLastQueryTime(function.Id, DateTime.Now);
-                }
-            }
         }
     }
 }
