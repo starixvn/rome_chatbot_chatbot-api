@@ -34,7 +34,7 @@
 
             return await functionHandlerFactory
                             .CreateFunctionHandler(functionId)
-                            .BuildFunctionMessages(param)
+                            .GetFunctionMessages(param)
                             .ConfigureAwait(false);
         }
     }

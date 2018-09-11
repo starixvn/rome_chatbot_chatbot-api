@@ -2,6 +2,7 @@ namespace Chatbot.Tests.Modules.Functions
 {
     using System;
     using System.Threading.Tasks;
+    using Chatbot.Configurations;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
@@ -12,15 +13,17 @@ namespace Chatbot.Tests.Modules.Functions
     public class MessageServiceImplTests
     {
         private readonly IDynamicRepository subDynamicRepository;
+        private readonly IChatbotConfigs subChatbotConfigs;
 
         public MessageServiceImplTests()
         {
             subDynamicRepository = Substitute.For<IDynamicRepository>();
+            subChatbotConfigs = Substitute.For<IChatbotConfigs>();
         }
 
         private NotificationServiceImpl CreateMessageServiceImpl()
         {
-            return new NotificationServiceImpl(subDynamicRepository);
+            return new NotificationServiceImpl(subDynamicRepository, subChatbotConfigs);
         }
 
         [Fact]
@@ -29,7 +32,7 @@ namespace Chatbot.Tests.Modules.Functions
             // Arrange
             var lastQueryTime = new DateTime(2018, 2, 20);
             subDynamicRepository
-                .GetAsync<DateTime>(Arg.Is<GetMessageLastQueryTimeCriteria>(c => c.FunctionId == 2))
+                .GetAsync<DateTime>(Arg.Is<GetSettingCriteria>(c => c.SettingName == "SettingName"))
                 .Returns(lastQueryTime);
             var service = CreateMessageServiceImpl();
 
@@ -52,8 +55,8 @@ namespace Chatbot.Tests.Modules.Functions
 
             // Assert
             await subDynamicRepository.Received().ExecuteAsync(
-                Arg.Is<UpdateMessageLastQueryTimeCommand>(
-                    c => c.FunctionId == 2 && c.LastQueryTime == lastQueryTime));
+                Arg.Is<UpdateSettingCommand>(
+                    c => c.SettingName == "SettingName" && c.Value == lastQueryTime.ToString()));
         }
     }
 }

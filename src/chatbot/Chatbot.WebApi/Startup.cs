@@ -5,6 +5,7 @@ namespace Chatbot.WebApi
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using Alpha.Services.Client.Services;
     using Chatbot.Configurations;
     using Chatbot.Constants;
     using Chatbot.Modules.Funtions;
@@ -43,10 +44,12 @@ namespace Chatbot.WebApi
             services.AddMvc();
 
             services.AddSingleton(_ => Configuration);
+            var chatbotConfigs = new ChatbotConfigs(Configuration);
 
             LogManager
                     .SetDefaultLogCategory(Configuration["Fanex.Logging:DefaultCategory"])
                     .Use(new RabbitMQLogging(Configuration["Fanex.Logging:RabbitMQConnectionStrings"]));
+            services.AddSingleton(Logger.Log);
 
             services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
             services.AddSingleton<SettingService, SettingServiceImpl>();
@@ -57,17 +60,20 @@ namespace Chatbot.WebApi
             services.AddSingleton<IMessageSender, MessageSender>();
             services.AddSingleton<CommandService, CommandServiceImpl>();
             services.AddSingleton<IFunctionHandler, DefaultFunctionHandler>();
-            services.AddSingleton<IChatbotConfigs>(new ChatbotConfigs(Configuration));
-            services.AddSingleton(Logger.Log);
+            services.AddSingleton<IChatbotConfigs>(chatbotConfigs);
             services.AddSingleton<NotificationService, NotificationServiceImpl>();
             services.AddSingleton<IMaintenanceService, MaintenanceService>();
-            services.AddSingleton<Alpha.Services.Client.Services.CustomerService, Alpha.Services.Client.Services.CustomerServiceImpl>();
-
+            services.AddSingleton<AnnouncementService, AnnouncementServiceImpl>();
+            services.AddSingleton<CustomerService, CustomerServiceImpl>();
+            services.AddSingleton<IFunctionHandlerFactory, FunctionHandlerFactory>();
+            services.AddSingleton<FunctionService, FunctionServiceImpl>();
+            services.AddSingleton<MessageService, MessageServiceImpl>();
+            services.AddSingleton<ReportService, ReportServiceImpl>();
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
-                { 5, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
-                { 6, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
-                { 7, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
-                { 8, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) }
+                { chatbotConfigs.PersonalMessageFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
+                { chatbotConfigs.SpecialAnnouncementFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
+                { chatbotConfigs.NormalAnnouncementFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
+                { chatbotConfigs.SystemUpdateFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) }
             });
             services.AddSingleton<IDictionary<int, IMessengerFormatter>>(
                 new Dictionary<int, IMessengerFormatter>
@@ -85,10 +91,7 @@ namespace Chatbot.WebApi
                     { "ja-JP", CultureInfo.CreateSpecificCulture("ja-JP") },
                     { "ko-KR", CultureInfo.CreateSpecificCulture("ko-KR") }
                 });
-
             services.AddFunctionHandler();
-            services.AddSingleton<IFunctionHandlerFactory, FunctionHandlerFactory>();
-            services.AddSingleton<FunctionService, FunctionServiceImpl>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Chatbot API", Version = "v1" });

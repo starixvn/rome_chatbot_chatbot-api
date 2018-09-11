@@ -30,6 +30,7 @@
             {
                 var dataMap = context.JobDetail.JobDataMap;
                 var functionId = dataMap.GetIntValue(JobDataKey.FunctionId);
+
                 var functionMessages = await messageService.GetFunctionMessages(functionId);
 
                 Parallel.ForEach(functionMessages, async (functionMessage) =>

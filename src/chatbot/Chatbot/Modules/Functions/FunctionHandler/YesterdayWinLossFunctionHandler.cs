@@ -37,33 +37,49 @@
         protected override Task<Result> BuildAndSendAccountClosedMessage(FunctionParam param)
             => Task.FromResult(Result.CreateSuccessfulResult("Account is closed"));
 
-        public override async Task<IEnumerable<FunctionMessage>> BuildFunctionMessages(FunctionParam param)
+        public override async Task<IEnumerable<FunctionMessage>> GetFunctionMessages(FunctionParam param)
         {
             var functionMessages = new List<FunctionMessage>();
 
             foreach (var user in param.Users)
             {
-                if (await IsCustomerClosed(user))
+                try
                 {
-                    continue;
-                }
-
-                var messengers = await settingService.GetMessengers(user.Id, true);
-
-                foreach (var messenger in messengers)
-                {
-                    var data = await getDataHanlders[param.Function.Id](new FunctionParam(user, param.Function, messenger, null));
-
-                    if (data != null)
+                    if (await IsCustomerClosed(user).ConfigureAwait(false))
                     {
-                        var message = BuildMessage(user.Language, param.Function.Id, messenger.Type, data);
-
-                        functionMessages.Add(new FunctionMessage(user.Id, message));
+                        continue;
                     }
+
+                    var messengers = await settingService.GetMessengers(user.Id, true).ConfigureAwait(false);
+                    await BuildFunctionMessages(param, functionMessages, user, messengers).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    LogError(user, ex);
                 }
             }
 
             return functionMessages;
+        }
+
+        private async Task BuildFunctionMessages(
+            FunctionParam param,
+            List<FunctionMessage> functionMessages,
+            User user,
+            IEnumerable<Messenger> messengers)
+        {
+            foreach (var messenger in messengers)
+            {
+                var data = await getDataHanlders[param.Function.Id](new FunctionParam(user, param.Function, messenger, null))
+                    .ConfigureAwait(false);
+
+                if (data != null)
+                {
+                    var message = BuildMessage(user.Language, param.Function.Id, messenger.Type, data);
+
+                    functionMessages.Add(new FunctionMessage(user.Id, message));
+                }
+            }
         }
     }
 }

@@ -3,7 +3,7 @@
 USE [bodb_ChatBot]
 GO
 
-/****** Object:  StoredProcedure [dbo].[Chatbot_GetMessageLastQueryTime]     Script Date: 8/16/2018 3:46:10 PM ******/
+/****** Object:  StoredProcedure [dbo].[Chatbot_GetSetting]     Script Date: 8/16/2018 3:46:10 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -20,21 +20,20 @@ GO
 		- 20180816@Harrison.Nguyen:	Initial
 		
 	Parameter's Explaination:
-		- @Example:			NULL		- Explaination [DEFAULT]
+		- @SettingName:			SettingName		- Explaination [DEFAULT]
 		
 	Developer's Notes:
 		- Notes
 */
-
-ALTER PROCEDURE [dbo].[Chatbot_GetMessageLastQueryTime]
-				@FunctionId	INT
+CREATE PROCEDURE [dbo].[Chatbot_GetSetting]
+				@SettingName varchar(50)
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT TOP(1) [LastQueryTime]
-	FROM LastQueryUserMessage AS A WITH (NOLOCK)
-	WHERE A.FunctionId = @FunctionId
+	SELECT TOP(1) [Value]
+	FROM [dbo].[Setting] WITH (NOLOCK)
+	WHERE SettingName = @SettingName
 			
 END
 

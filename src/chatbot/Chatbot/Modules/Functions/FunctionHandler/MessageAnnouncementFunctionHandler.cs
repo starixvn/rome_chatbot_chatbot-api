@@ -32,30 +32,47 @@
             this.settingService = settingService;
         }
 
-        public override async Task<IEnumerable<FunctionMessage>> BuildFunctionMessages(FunctionParam param)
+        public override async Task<IEnumerable<FunctionMessage>> GetFunctionMessages(FunctionParam param)
         {
             var functionMessages = new List<FunctionMessage>();
 
-            var data = await getDataHandlers[param.Function.Id](param);
-            var announcements = DataHelper.TryParse<IList<Alpha.Services.Client.Models.Message>>(data);
-
-            if (announcements == null || announcements.Count == 0)
+            try
             {
-                return new List<FunctionMessage>();
+                var data = await getDataHandlers[param.Function.Id](param).ConfigureAwait(false);
+                var announcements = DataHelper.TryParse<IList<Alpha.Services.Client.Models.Message>>(data);
+
+                if (announcements == null || announcements.Count == 0)
+                {
+                    return new List<FunctionMessage>();
+                }
+
+                await BuildFunctionMessages(param, functionMessages, announcements).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
 
+            return functionMessages;
+        }
+
+        private async Task BuildFunctionMessages(
+            FunctionParam param,
+            List<FunctionMessage> functionMessages,
+            IList<Alpha.Services.Client.Models.Message> announcements)
+        {
             foreach (var announcement in announcements)
             {
                 if (!string.IsNullOrEmpty(announcement.Content))
                 {
                     var user = param.Users.FirstOrDefault(u => u.CustId == announcement.CustId);
 
-                    if (await IsCustomerClosed(user))
+                    if (await IsCustomerClosed(user).ConfigureAwait(false))
                     {
                         continue;
                     }
 
-                    var messengers = await settingService.GetMessengers(user.Id, true);
+                    var messengers = await settingService.GetMessengers(user.Id, true).ConfigureAwait(false);
 
                     foreach (var messenger in messengers)
                     {
@@ -65,8 +82,6 @@
                     }
                 }
             }
-
-            return functionMessages;
         }
     }
 }

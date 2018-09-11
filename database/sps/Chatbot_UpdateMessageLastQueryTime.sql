@@ -3,7 +3,7 @@
 USE [bodb_ChatBot]
 GO
 
-/****** Object:  StoredProcedure [dbo].[Chatbot_UpdateMessageLastQueryTime]     Script Date: 8/16/2018 3:46:44 PM ******/
+/****** Object:  StoredProcedure [dbo].[Chatbot_UpdateSetting]     Script Date: 8/16/2018 3:46:44 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -26,28 +26,17 @@ GO
 		- Notes
 */
 
-ALTER PROCEDURE [dbo].[Chatbot_UpdateMessageLastQueryTime]
-				@FunctionId	INT
-				,@LastQueryTime DATETIME
+CREATE PROCEDURE [dbo].[Chatbot_UpdateSetting]
+				@SettingName	VARCHAR(50),
+				@Value VARCHAR(200)
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	BEGIN 
-		IF NOT EXISTS (
-			SELECT TOP(1) [LastQueryTime]
-			FROM LastQueryUserMessage AS A WITH (NOLOCK)
-			WHERE A.FunctionId = @FunctionId)
-		BEGIN
-			INSERT INTO LastQueryUserMessage
-			VALUES (0, @FunctionId, 0, @LastQueryTime)
-		END
-		ELSE
-			UPDATE LastQueryUserMessage WITH (ROWLOCK, UPDLOCK)
-			SET [LastQueryTime] = @LastQueryTime
-			WHERE [FunctionId] = @FunctionId
-		END
- 			
+	UPDATE [dbo].[Setting] WITH (ROWLOCK, UPDLOCK)
+	SET [Value] = CONVERT(VARCHAR(200), @Value, 21)
+	WHERE [SettingName] = @SettingName
+
 END
 
 GO

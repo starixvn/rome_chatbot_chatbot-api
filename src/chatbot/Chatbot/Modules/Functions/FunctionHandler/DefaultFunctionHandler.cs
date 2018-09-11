@@ -14,7 +14,7 @@
     {
         Task<Result> Handle(FunctionParam param);
 
-        Task<IEnumerable<FunctionMessage>> BuildFunctionMessages(FunctionParam param);
+        Task<IEnumerable<FunctionMessage>> GetFunctionMessages(FunctionParam param);
     }
 
     public class DefaultFunctionHandler : IFunctionHandler
@@ -99,16 +99,25 @@
                     messengerType,
                     data);
 
-        public virtual Task<IEnumerable<FunctionMessage>> BuildFunctionMessages(FunctionParam param)
+        public virtual Task<IEnumerable<FunctionMessage>> GetFunctionMessages(FunctionParam param)
             => Task.FromResult<IEnumerable<FunctionMessage>>(new List<FunctionMessage>());
 
-        protected void LogError(User user, Messenger messenger, Exception ex)
+        protected void LogError(User user, Exception ex)
         {
             var logMessage = string.Join(
                                     "\n",
                                     "Function Handler Exception",
                                     $"User: {user.Id}, CustId: {user.CustId}, SubAccId: {user.SubAccountId}, Language: {user.Language}",
-                                    $"Messenger: {messenger.Username}, Type: {messenger.Type}",
+                                    ex.ToString());
+
+            logger.Error(logMessage);
+        }
+
+        protected void LogError(Exception ex)
+        {
+            var logMessage = string.Join(
+                                    "\n",
+                                    "Function Handler Exception",
                                     ex.ToString());
 
             logger.Error(logMessage);

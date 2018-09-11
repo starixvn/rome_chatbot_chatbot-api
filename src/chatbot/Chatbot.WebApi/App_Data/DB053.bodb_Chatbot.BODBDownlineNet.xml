@@ -12,7 +12,7 @@
       <Mapping ObjectProperty="Username" DataField="messengerusername" />
       <Mapping ObjectProperty="GeneratedVerificationCodeTime" DataField="verificationcodedatetime" />
     </Setting>
-    <Setting Key="GetUser" SpName="Chatbot_GetUser" DbName="DB053.bodb_Chatbot.BODBDownlineNet" >
+    <Setting Key="GetUser" SpName="Chatbot_GetUser" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="userid" />
     </Setting>
     <Setting Key="GetUserActions" SpName="Chatbot_GetUserActions" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
@@ -27,14 +27,14 @@
     <Setting Key="UpdateUserFunctions" SpName="Chatbot_UpdateUserFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="UpdateUserLanguage" SpName="Chatbot_UpdateUserLanguage" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="ResetUserActionCount" SpName="Chatbot_ResetUserActionCount" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="Chatbot_GetMessageLog" SpName="Chatbot_GetMessageLog" DbName="DB053.bodb_Chatbot.BODBDownlineNet" >
+    <Setting Key="Chatbot_GetMessageLog" SpName="Chatbot_GetMessageLog" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="logid" />
       <Mapping ObjectProperty="Content" DataField="message" />
     </Setting>
     <Setting Key="Chatbot_GetUsersByFunctions" SpName="Chatbot_GetUsersByFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="userid" />
     </Setting>
-    <Setting Key="GetMessageLastQueryTime" SpName="Chatbot_GetMessageLastQueryTime" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="UpdateMessageLastQueryTime" SpName="Chatbot_UpdateMessageLastQueryTime" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="GetSetting" SpName="Chatbot_GetSetting" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="UpdateSetting" SpName="Chatbot_UpdateSetting" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
   </Function>
 </Functions>

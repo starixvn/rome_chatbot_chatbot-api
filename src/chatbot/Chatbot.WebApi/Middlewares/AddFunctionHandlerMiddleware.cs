@@ -9,9 +9,8 @@ namespace Chatbot.WebApi.Middlewares
     using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
     using Chatbot.Configurations;
+    using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.Params;
-    using Fanex.Data.Repository;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     public static class AddFunctionHandlerMiddleware
@@ -19,16 +18,16 @@ namespace Chatbot.WebApi.Middlewares
         private static ReportService reportService;
         private static MessageService messageService;
         private static AnnouncementService announcementService;
-        private static Modules.Funtions.NotificationService chatBotMessageService;
+        private static NotificationService chatBotMessageService;
 
         public static void AddFunctionHandler(this IServiceCollection services)
         {
             var serviceProvider = services.BuildServiceProvider();
-            var chatbotConfigs = new ChatbotConfigs(serviceProvider.GetService<IConfiguration>());
-            reportService = serviceProvider.GetService<ReportService>() ?? new ReportServiceImpl();
-            messageService = serviceProvider.GetService<MessageService>() ?? new MessageServiceImpl();
-            chatBotMessageService = serviceProvider.GetService<Modules.Funtions.NotificationService>() ?? new Modules.Funtions.NotificationServiceImpl(new DynamicRepository());
-            announcementService = serviceProvider.GetService<AnnouncementService>() ?? new AnnouncementServiceImpl();
+            var chatbotConfigs = serviceProvider.GetService<IChatbotConfigs>();
+            reportService = serviceProvider.GetService<ReportService>();
+            messageService = serviceProvider.GetService<MessageService>();
+            chatBotMessageService = serviceProvider.GetService<NotificationService>();
+            announcementService = serviceProvider.GetService<AnnouncementService>();
 
             services.AddSingleton<IDictionary<int, Func<FunctionParam, Task<object>>>>(
                 new Dictionary<int, Func<FunctionParam, Task<object>>>
@@ -99,7 +98,7 @@ namespace Chatbot.WebApi.Middlewares
                 RoleId = (byte)user.CustLevel
             });
 
-            var messages = await messageService.GetMessagesAsync(messageType, DateTime.Now.AddDays(-3), now, customers);
+            var messages = await messageService.GetMessagesAsync(messageType, lastQueryTime, now, customers);
 
             if (messages?.Any() == true)
             {
