@@ -53,16 +53,7 @@ namespace Chatbot.WebApi.Middlewares
             => await reportService.GetBalanceInfoAsync(param.User.CustId);
 
         private static async Task<object> GetYesterdayWinLoss(FunctionParam param)
-        {
-            var message = await reportService.GetWinLossAsync(param.User.CustId, (byte)param.User.CustLevel, DateTime.Now.AddDays(-1).Date);
-
-            if (message?.Any() != true)
-            {
-                return null;
-            }
-
-            return message;
-        }
+            => await reportService.GetWinLossAsync(param.User.CustId, (byte)param.User.CustLevel, DateTime.Now.AddDays(-1).Date);
 
         private static async Task<object> GetPersonalMessage(FunctionParam param)
             => await GetMessage(param, MessageType.Personal);
@@ -77,7 +68,8 @@ namespace Chatbot.WebApi.Middlewares
         {
             var now = DateTime.Now;
             var lastQueryTime = await chatBotMessageService.GetLastQueryTime(param.Function.Id);
-            var messages = announcementService.GetAnnouncements(param.User.CustId, param.User.Language, lastQueryTime, now);
+            var customers = GetCustomers(param);
+            var messages = announcementService.GetAnnouncements(lastQueryTime, now, customers);
 
             if (messages?.Any() == true)
             {
@@ -91,12 +83,7 @@ namespace Chatbot.WebApi.Middlewares
         {
             var now = DateTime.Now;
             var lastQueryTime = await chatBotMessageService.GetLastQueryTime(param.Function.Id);
-            var customers = param.Users.Select(user => new Customer
-            {
-                CustId = user.CustId,
-                Language = user.Language,
-                RoleId = (byte)user.CustLevel
-            });
+            var customers = GetCustomers(param);
 
             var messages = await messageService.GetMessagesAsync(messageType, lastQueryTime, now, customers);
 
@@ -107,5 +94,13 @@ namespace Chatbot.WebApi.Middlewares
 
             return messages;
         }
+
+        private static IEnumerable<Customer> GetCustomers(FunctionParam param)
+            => param.Users.Select(user => new Customer
+            {
+                CustId = user.CustId,
+                Language = user.Language,
+                RoleId = (byte)user.CustLevel
+            });
     }
 }
