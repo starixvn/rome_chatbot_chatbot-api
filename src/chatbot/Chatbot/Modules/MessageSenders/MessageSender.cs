@@ -1,6 +1,5 @@
 ﻿namespace Chatbot.Modules.MessageSenders
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -10,7 +9,6 @@
     using Chatbot.Modules.MessageServices;
     using Fanex.Logging;
     using MessengerClient = Messenger.Client;
-
 
     public interface IMessageSender
     {
@@ -49,9 +47,16 @@
         {
             MessengerClient.Models.Result result;
 
-            if(chatbotConfigs.DisabledSendToMessenger)
+            if (chatbotConfigs.DisabledSendToMessenger)
             {
                 result = new MessengerClient.Models.Result { Status = 1 };
+                var logMessage = string.Join(
+                    "\r\n",
+                    $"UserId: {userId}",
+                    $"Messenger Username: {messenger.Username}",
+                    $"Message: {message}");
+
+                logger.Info(logMessage);
             }
             else
             {
