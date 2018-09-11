@@ -97,3 +97,13 @@ UNION ALL
 SELECT 2, 'Function', 'zh-TW', N'今日輸贏'
 UNION ALL			  
 SELECT 1, 'Function', 'zh-TW', N'未完成交易'
+
+INSERT INTO Setting (SettingName, Value)
+SELECT 'LastQueryPersonalMessage', CONVERT(VARCHAR(200), GETDATE(),21)
+UNION ALL
+SELECT 'LastQuerySpecialAnnouncement', CONVERT(VARCHAR(200), GETDATE(),21)
+UNION ALL
+SELECT 'LastQueryNormalAnnouncement', CONVERT(VARCHAR(200), GETDATE(),21)
+UNION ALL
+SELECT 'LastQuerySystemAnnouncement', CONVERT(VARCHAR(200), GETDATE(),21)
+

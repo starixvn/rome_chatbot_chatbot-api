@@ -172,6 +172,15 @@ CREATE TABLE UserLogAction(
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [DATA]
 ) ON [DATA]
 
+CREATE TABLE Setting(
+	SettingName VARCHAR(50) NOT NULL,
+	Value VARCHAR(200) NULL
+ CONSTRAINT [PK_Setting] PRIMARY KEY CLUSTERED 
+(
+	SettingName ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [DATA]
+) ON [DATA]
+
 GO
 /****** Object:  User [bodbDownlineNet]    Script Date: 9/4/2018 9:43:49 AM ******/
 CREATE USER [bodbDownlineNet] FOR LOGIN [bodbDownlineNet] WITH DEFAULT_SCHEMA=[bodbDownlineNet]
@@ -180,3 +189,4 @@ GO
 /****** Object:  User [bodbDownlineNetView]    Script Date: 9/4/2018 9:43:49 AM ******/
 CREATE USER [bodbDownlineNetView] FOR LOGIN [bodbDownlineNetView] WITH DEFAULT_SCHEMA=[bodbDownlineNetView]
 GO
+
