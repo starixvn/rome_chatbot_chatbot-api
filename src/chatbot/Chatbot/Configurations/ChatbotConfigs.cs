@@ -42,6 +42,8 @@
         int NotRecognizedCommandFunctionId { get; }
 
         int MaxGetMessageLogDays { get; }
+
+        bool DisabledSendToMessenger { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -72,6 +74,7 @@
             MaxGetMessageLogDays = GetValue<int>("Chatbot:MaxGetMessageLogDays");
             ScheduleFunctionIds = configuration.GetSection("Chatbot:ScheduleFunctionIds").Get<List<int>>()
                 ?? throw new InvalidOperationException($"Missing config for Chatbot:ScheduleFunctionIds");
+            DisabledSendToMessenger = GetValue<bool>("Chatbot:DisabledSendToMessenger");
         }
 
         public int MaxAddActionTimes { get; }
@@ -109,6 +112,8 @@
         public int NotRecognizedCommandFunctionId { get; }
 
         public int MaxGetMessageLogDays { get; }
+
+        public bool DisabledSendToMessenger { get; }
 
         private T GetValue<T>(string key)
         {

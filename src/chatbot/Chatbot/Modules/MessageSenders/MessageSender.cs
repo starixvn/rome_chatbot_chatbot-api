@@ -4,10 +4,13 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Chatbot.Configurations;
     using Chatbot.Constants;
     using Chatbot.Models;
     using Chatbot.Modules.MessageServices;
     using Fanex.Logging;
+    using MessengerClient = Messenger.Client;
+
 
     public interface IMessageSender
     {
@@ -25,15 +28,18 @@
         private readonly MessengerFactory messengerFactory;
         private readonly IMessageLogger messageLogger;
         private readonly ILogger logger;
+        private readonly IChatbotConfigs chatbotConfigs;
 
         public MessageSender(
             MessengerFactory messengerFactory,
             ILogger logger,
-            IMessageLogger messageLogger)
+            IMessageLogger messageLogger,
+            IChatbotConfigs chatbotConfigs)
         {
             this.messengerFactory = messengerFactory;
             this.messageLogger = messageLogger;
             this.logger = logger;
+            this.chatbotConfigs = chatbotConfigs;
         }
 
         public async Task<Result> SendMessage(Messenger messenger, string message, int functionId = 0, bool logToDatabase = true)
@@ -41,8 +47,17 @@
 
         public async Task<Result> SendMessage(int userId, Messenger messenger, string message, int functionId = 0, bool logToDatabase = true)
         {
-            var client = messengerFactory.CreateMessengerClient(messenger.Type);
-            var result = await client.PushAsync(messenger.Username, message).ConfigureAwait(false);
+            MessengerClient.Models.Result result;
+
+            if(chatbotConfigs.DisabledSendToMessenger)
+            {
+                result = new MessengerClient.Models.Result { Status = 1 };
+            }
+            else
+            {
+                var client = messengerFactory.CreateMessengerClient(messenger.Type);
+                result = await client.PushAsync(messenger.Username, message).ConfigureAwait(false);
+            }
 
             if (result.IsNotOk)
             {

@@ -10,6 +10,7 @@
     using Xunit;
     using Messenger.Client;
     using Chatbot.Constants;
+    using Chatbot.Configurations;
 
     public class MessageSenderTests
     {
@@ -18,6 +19,7 @@
         private readonly ILogger logger;
         private readonly MessageSender messageSender;
         private readonly IMessengerClient messengerClient;
+        private readonly IChatbotConfigs chatbotConfigs;
 
         public MessageSenderTests()
         {
@@ -25,8 +27,9 @@
             messageLogger = Substitute.For<IMessageLogger>();
             logger = Substitute.For<ILogger>();
             messengerClient = Substitute.For<IMessengerClient>();
+            chatbotConfigs = Substitute.For<IChatbotConfigs>();
 
-            messageSender = new MessageSender(messengerFactory, logger, messageLogger);
+            messageSender = new MessageSender(messengerFactory, logger, messageLogger, chatbotConfigs);
         }
 
         [Fact]
