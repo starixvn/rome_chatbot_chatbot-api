@@ -10,12 +10,12 @@
 
     public class ChatbotConfigsTests
     {
-        [Fact]
-        public void Ctor_Always_ReadConfigs()
-        {
-            var configuration = Substitute.For<IConfiguration>();
+        ////[Fact]
+        ////public void Ctor_Always_ReadConfigs()
+        ////{
+        ////    var configuration = Substitute.For<IConfiguration>();
 
-            var config = new ChatbotConfigs(configuration);
-        }
+        ////    var config = new ChatbotConfigs(configuration);
+        ////}
     }
 }

@@ -83,17 +83,5 @@
             Assert.Equal("application/json", context.Response.ContentType);
             Assert.Equal((int)HttpStatusCode.ServiceUnavailable, context.Response.StatusCode);
         }
-
-        private void StubActionExecutingContext()
-            => new ActionExecutingContext(
-                new ActionContext
-                {
-                    HttpContext = httpContext,
-                    RouteData = new RouteData(),
-                    ActionDescriptor = new ActionDescriptor(),
-                },
-                new List<IFilterMetadata>(),
-                new Dictionary<string, object>(),
-                controller);
     }
 }
