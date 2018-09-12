@@ -8,6 +8,7 @@ namespace Chatbot.WebApi
     using Alpha.Services.Client.Services;
     using Chatbot.Configurations;
     using Chatbot.Constants;
+    using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.MessageBuilders;

@@ -1,4 +1,4 @@
-﻿namespace Chatbot.Modules.Funtions.FunctionHandler
+﻿namespace Chatbot.Modules.Functions.FunctionHandler
 {
     using System;
     using System.Collections.Generic;

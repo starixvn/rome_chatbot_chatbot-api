@@ -5,12 +5,13 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
     using System.Threading.Tasks;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
-    using Chatbot.Modules.Funtions.FunctionHandler;
+    using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
     using Fanex.Logging;
+    using KellermanSoftware.CompareNetObjects;
     using NSubstitute;
     using Xunit;
 
@@ -22,6 +23,7 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
         private readonly SettingService subSettingService;
         private readonly ILogger subLogger;
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers;
+        private readonly CompareLogic compareLogic;
 
         public MessageAnnouncementFunctionHandlerTests()
         {
@@ -30,7 +32,11 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
             subCustomerService = Substitute.For<CustomerService>();
             subSettingService = Substitute.For<SettingService>();
             subLogger = Substitute.For<ILogger>();
-            getDataHandlers = new Dictionary<int, Func<FunctionParam, Task<object>>>();
+            getDataHandlers = new Dictionary<int, Func<FunctionParam, Task<object>>>()
+            {
+                {4, GetMessage}
+            };
+            compareLogic = new CompareLogic();
         }
 
         private MessageAnnouncementFunctionHandler CreateMessageAnnouncementFunctionHandler()
@@ -45,73 +51,46 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
         }
 
         [Fact]
-        public void Handle_GetDataHandlerDoesNotContainKey_ThrowException()
+        public async Task GetFunctionMessages_AccountIsNotClosed_BuildFunctionMessages()
         {
             // Arrange
-            var param = new FunctionParam(new Models.User(1, 2, 3, 4, "en-US"), new Models.Function { Id = 1 }, new Models.Messenger(), null);
-            var handler = CreateMessageAnnouncementFunctionHandler();
-
-            // Act & Assert
-            Assert.Throws<InvalidOperationException>(() => handler.Handle(param).GetAwaiter().GetResult());
-        }
-
-        [Fact]
-        public async Task Handle_IsCustomerClosed_GetResult()
-        {
-            // Arrange
-            var param = new FunctionParam(new User(1, custId: 2, custLevel: 4, subAccountId: 3, language: "en-US"),
-                new Function { Id = 2 }, new Models.Messenger(), null);
-            getDataHandlers.Add(2, null);
-            subCustomerService.IsAccountClosed(2, 3).Returns(true);
+            subSettingService.GetMessengers(2, true).Returns(new List<Messenger> { new Messenger(2, "userName") });
+            subMessageBuilder.BuildCommandResultMessage("en-US", 4, 2, Arg.Any<object>()).Returns("Message");
             var handler = CreateMessageAnnouncementFunctionHandler();
 
             // Act
-            var result = await handler.Handle(param);
+            var functionMessages = await handler.GetFunctionMessages(
+                new FunctionParam(null, new Function { Id = 4 }, null, null, new List<User> { new User(2, 1, 1, 1, "en-US") }));
 
             // Assert
-            Assert.Equal("Customer is closed", result.Message);
+            var expectedFunctionMessages = new List<FunctionMessage> { new FunctionMessage(2, "Message") };
+            Assert.True(compareLogic.Compare(expectedFunctionMessages, functionMessages).AreEqual);
         }
 
         [Fact]
-        public async Task Handle_MessageListHasNoItem_ReturnResultNoData()
+        public async Task GetFunctionMessagesAccountIsClosed_NotBuildFunctionMessages()
         {
             // Arrange
-            var param = new FunctionParam(new User(1, custId: 2, custLevel: 4, subAccountId: 3, language: "en-US"),
-                new Function { Id = 2 }, new Models.Messenger(1, "sa"), null);
-            getDataHandlers.Add(2, async (_) => await Task.FromResult(new List<Alpha.Services.Client.Models.Message>()));
-            subCustomerService.IsAccountClosed(2, 3).Returns(false);
-            subMessageBuilder.BuildCommandResultMessage("en-US", 2, 1, "Message").Returns("Message");
+            subSettingService.GetMessengers(2, true).Returns(new List<Messenger> { new Messenger(2, "userName") });
+            subMessageBuilder.BuildCommandResultMessage("en-US", 4, 2, Arg.Any<object>()).Returns("Message");
+            subCustomerService.IsAccountClosed(1, 1).Returns(true);
             var handler = CreateMessageAnnouncementFunctionHandler();
 
             // Act
-            var result = await handler.Handle(param);
+            var functionMessages = await handler.GetFunctionMessages(
+                new FunctionParam(null, new Function { Id = 4 }, null, null, new List<User> { new User(2, 1, 1, 1, "en-US") }));
 
             // Assert
-            Assert.Equal("No data", result.Message);
+            var expectedFunctionMessages = new List<FunctionMessage>();
+            Assert.True(compareLogic.Compare(expectedFunctionMessages, functionMessages).AreEqual);
         }
 
-        [Fact]
-        public async Task Handle_MessageListHasData_BuildAndSendMessage()
+        private async Task<object> GetMessage(FunctionParam param)
         {
-            // Arrange
-            var param = new FunctionParam(new User(1, custId: 2, custLevel: 4, subAccountId: 3, language: "en-US"),
-                new Function { Id = 2 }, new Models.Messenger(1, "sa"), null);
-            getDataHandlers.Add(2, async (_) => await Task.FromResult(
-                new List<Alpha.Services.Client.Models.Message> {
-                    new Alpha.Services.Client.Models.Message { Content = "Test Message" },
-                    new Alpha.Services.Client.Models.Message { Content = "" }
-                }));
-            subCustomerService.IsAccountClosed(2, 3).Returns(false);
-            subMessageBuilder.BuildCommandResultMessage("en-US", 2, 1, Arg.Any<object>()).Returns("Test Message");
-            subMessageSender.SendMessage(1, param.Messenger, "Test Message", 2).Returns(Result.CreateSuccessfulResult());
-            var handler = CreateMessageAnnouncementFunctionHandler();
-
-            // Act
-            var result = await handler.Handle(param);
-
-            // Assert
-            await subMessageSender.Received().SendMessage(1, param.Messenger, "Test Message", 2);
-            Assert.True(result.IsOk);
+            return new List<Alpha.Services.Client.Models.Message>
+            {
+                new Alpha.Services.Client.Models.Message{ Content = "Message", CustId = 1}
+            };
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Services;
-    using Chatbot.Modules.Funtions.FunctionHandler;
+    using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;

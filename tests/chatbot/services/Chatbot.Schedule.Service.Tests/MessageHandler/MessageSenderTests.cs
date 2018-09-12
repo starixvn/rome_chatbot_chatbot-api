@@ -45,7 +45,8 @@
             await scheduler.Received(1).ScheduleJob(
               Arg.Is<IJobDetail>(j =>
                   j.JobDataMap.GetString("message") == "message"
-                  && j.JobDataMap.GetIntValue("userId") == 1),
+                  && j.JobDataMap.GetIntValue("userId") == 1
+                  && j.JobDataMap.GetIntValue("functionId") == 2),
               Arg.Any<ITrigger>());
         }
     }

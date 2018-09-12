@@ -8,8 +8,8 @@
     using Chatbot.Constants;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
+    using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions;
-    using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
@@ -189,7 +189,7 @@
             functionHandler
                 .Received()
                 .Handle(
-                    Arg.Is<FunctionParam>(function => 
+                    Arg.Is<FunctionParam>(function =>
                         function.User.Id == userId
                         && function.Function.Id == 1
                         && function.Messenger.Username == messenger.Username

@@ -39,8 +39,6 @@ namespace Chatbot.Configurations
 
         List<int> MessageAndAnnoucementFunctionIds { get; }
 
-        List<int> ScheduleFunctionIds { get; }
-
         int NotRecognizedCommandFunctionId { get; }
 
         int MaxGetMessageLogDays { get; }
@@ -74,8 +72,6 @@ namespace Chatbot.Configurations
                  ?? throw new InvalidOperationException($"Missing config for Chatbot:MessageAndAnnoucementFunctionIds");
             NotRecognizedCommandFunctionId = GetValue<int>("Chatbot:NotRecognizedCommandFunctionId");
             MaxGetMessageLogDays = GetValue<int>("Chatbot:MaxGetMessageLogDays");
-            ScheduleFunctionIds = configuration.GetSection("Chatbot:ScheduleFunctionIds").Get<List<int>>()
-                ?? throw new InvalidOperationException($"Missing config for Chatbot:ScheduleFunctionIds");
             DisabledSendToMessenger = GetValue<bool>("Chatbot:DisabledSendToMessenger");
         }
 
@@ -108,8 +104,6 @@ namespace Chatbot.Configurations
         public string SpDirectory { get; }
 
         public List<int> MessageAndAnnoucementFunctionIds { get; }
-
-        public List<int> ScheduleFunctionIds { get; }
 
         public int NotRecognizedCommandFunctionId { get; }
 

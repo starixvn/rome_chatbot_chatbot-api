@@ -6,7 +6,6 @@
     using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.Settings;
-    using Fanex.Logging;
 
     public interface FunctionService
     {

@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using Chatbot.Configurations;
     using Chatbot.Constants;
-    using Chatbot.Modules.Funtions.FunctionHandler;
+    using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
