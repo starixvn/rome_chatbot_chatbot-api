@@ -14,7 +14,7 @@
         {
             UserId = userId;
             FromDate = fromDate.Date;
-            ToDate = toDate.Date.AddDays(1).AddTicks(-1);
+            ToDate = toDate.Date.AddDays(1).AddSeconds(-1);
             FunctionId = functionId;
             MessengerType = messengerType;
         }
