@@ -70,11 +70,7 @@ namespace Chatbot.WebApi.Middlewares
             var lastQueryTime = await chatBotMessageService.GetLastQueryTime(param.Function.Id);
             var customers = GetCustomers(param);
             var messages = announcementService.GetAnnouncements(lastQueryTime, now, customers);
-
-            if (messages?.Any() == true)
-            {
-                await chatBotMessageService.UpdateLastQueryTime(param.Function.Id, now);
-            }
+            await chatBotMessageService.UpdateLastQueryTime(param.Function.Id, now);
 
             return messages;
         }
@@ -84,13 +80,8 @@ namespace Chatbot.WebApi.Middlewares
             var now = DateTime.Now;
             var lastQueryTime = await chatBotMessageService.GetLastQueryTime(param.Function.Id);
             var customers = GetCustomers(param);
-
             var messages = await messageService.GetMessagesAsync(messageType, lastQueryTime, now, customers);
-
-            if (messages?.Any() == true)
-            {
-                await chatBotMessageService.UpdateLastQueryTime(param.Function.Id, now);
-            }
+            await chatBotMessageService.UpdateLastQueryTime(param.Function.Id, now);
 
             return messages;
         }
