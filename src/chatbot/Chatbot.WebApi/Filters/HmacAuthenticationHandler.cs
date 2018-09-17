@@ -81,7 +81,9 @@ namespace Chatbot.WebApi.Filters
         private bool IsValidRequest(HttpRequest request, string appId, string incomingBase64Signature, string nonce,
             string requestTimeStamp)
         {
-            string requestUri = HttpUtility.UrlEncode(request.Scheme + "://" + request.Host + request.PathBase + request.Path).ToLowerInvariant();
+            string requestUri = HttpUtility.UrlEncode(request.Scheme + "://" + request.Host + request.PathBase + request.Path + request.QueryString)
+                .ToLowerInvariant();
+
             string requestHttpMethod = request.Method;
 
             if (IsReplayRequest(nonce, requestTimeStamp))
