@@ -35,6 +35,7 @@
     </Content>
     <Content Include="appsettings.uat.json">
       <DependentUpon>appsettings.json</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="appsettings.pro.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
