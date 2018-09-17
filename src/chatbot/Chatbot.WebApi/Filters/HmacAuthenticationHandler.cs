@@ -81,7 +81,7 @@ namespace Chatbot.WebApi.Filters
         private bool IsValidRequest(HttpRequest request, string appId, string incomingBase64Signature, string nonce,
             string requestTimeStamp)
         {
-            string requestUri = HttpUtility.UrlEncode(request.Scheme + "://" + request.Host + request.Path).ToLowerInvariant();
+            string requestUri = HttpUtility.UrlEncode(request.Scheme + "://" + request.Host + request.PathBase + request.Path).ToLowerInvariant();
             string requestHttpMethod = request.Method;
 
             if (IsReplayRequest(nonce, requestTimeStamp))
@@ -91,7 +91,7 @@ namespace Chatbot.WebApi.Filters
 
             var signatureRawData = $"{appId}{requestHttpMethod}{requestUri}{requestTimeStamp}{nonce}";
 
-            var sharedKey = "vvVAsk+7swmv0F1Zstz73B54B6Qeroksvt2l2TIqy98=";
+            var sharedKey = "8p0orNx8QsyUSrrZKIdKe2EUiwSnCwI3";
             var secretKeyByteArray = Convert.FromBase64String(sharedKey);
 
             byte[] signature = Encoding.UTF8.GetBytes(signatureRawData);

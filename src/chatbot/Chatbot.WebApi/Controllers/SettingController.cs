@@ -2,18 +2,18 @@
 // TODO: Temporart fixing sonarqube for CAB
 namespace Chatbot.WebApi.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
-    using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Settings;
     using Chatbot.WebApi.Params;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/setting")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "HMAC")]
     public class SettingController : ControllerBase
     {
         private readonly SettingService settingService;
