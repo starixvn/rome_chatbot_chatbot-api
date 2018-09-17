@@ -72,7 +72,7 @@ namespace Chatbot.Schedule.Service.Jobs
                             $"FunctionId: {context.JobDetail.JobDataMap.GetInt(JobDataKey.FunctionId)} \n";
 
                 Log.Logger.Error(message);
-                Logger.Log.Debug(message);
+                Logger.Log.Error(message);
             }
 
             return Task.CompletedTask;
