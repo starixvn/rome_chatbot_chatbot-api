@@ -417,7 +417,7 @@
             VerificationCodeResult result;
 
             if (messengerDto == null
-                || messengerDto.Username != messenger.Username)
+                || messengerDto.Username.ToLowerInvariant() != messenger.Username.ToLowerInvariant())
             {
                 result = VerificationCodeResult.CreateWrongVerificationCodeResult();
             }
