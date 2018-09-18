@@ -6,12 +6,11 @@ namespace Chatbot.WebApi.Controllers
     using Chatbot.Modules.Funtions;
     using Chatbot.WebApi.Filters;
     using Chatbot.WebApi.Params;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/command")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "HMAC")]
+    //[Authorize(AuthenticationSchemes = "HMAC")]
     public class CommandController : ControllerBase
     {
         private readonly CommandService commandService;

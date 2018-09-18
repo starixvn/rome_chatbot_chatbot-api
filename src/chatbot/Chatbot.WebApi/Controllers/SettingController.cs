@@ -8,12 +8,11 @@ namespace Chatbot.WebApi.Controllers
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.Settings;
     using Chatbot.WebApi.Params;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/setting")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "HMAC")]
+    //[Authorize(AuthenticationSchemes = "HMAC")]
     public class SettingController : ControllerBase
     {
         private readonly SettingService settingService;

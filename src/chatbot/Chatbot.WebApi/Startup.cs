@@ -100,10 +100,10 @@ namespace Chatbot.WebApi
 
             services.AddScoped<AutoReplyUMFilterAttribute>();
 
-            services.AddAuthentication(options =>
-            {
-                options.AddScheme("HMAC", auth => auth.HandlerType = typeof(HmacAuthenticationHandler));
-            });
+            //services.AddAuthentication(options =>
+            //{
+            //    options.AddScheme("HMAC", auth => auth.HandlerType = typeof(HmacAuthenticationHandler));
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

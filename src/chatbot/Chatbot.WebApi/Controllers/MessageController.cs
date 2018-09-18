@@ -11,12 +11,11 @@ namespace Chatbot.WebApi.Controllers
     using Chatbot.Modules.MessageServices;
     using Chatbot.Modules.Settings;
     using Chatbot.WebApi.Params;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/message")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "HMAC")]
+    //[Authorize(AuthenticationSchemes = "HMAC")]
     public class MessageController : ControllerBase
     {
         private readonly IMessageSender messageSender;
