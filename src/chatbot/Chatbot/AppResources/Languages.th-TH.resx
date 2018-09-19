@@ -176,10 +176,10 @@
     <value>ข้อความส่วนตัว</value>
   </data>
   <data name="MasterTotalCredit" xml:space="preserve">
-    <value>เงิน Credit ของ Master</value>
+    <value>เครดิตมาสเตอร์</value>
   </data>
   <data name="AgentTotalCredit" xml:space="preserve">
-    <value>เครดิตเอเย่นต์</value>
+    <value>เครดิตเอเย่น</value>
   </data>
   <data name="Header_2" xml:space="preserve">
     <value>ยอดได้เสียวันนี้</value>
@@ -195,5 +195,59 @@
   </data>
   <data name="MemberNetWinLoss.Comm" xml:space="preserve">
     <value>คอมมิชชั่นของสมาชิก</value>
+  </data>
+  <data name="InformingVerifiedMessage_1" xml:space="preserve">
+    <value>Letstalk ID ของท่านได้ผ่านการยืนยันแล้ว, Atomสามารถใช้งานได้อย่างสมบูรณ์</value>
+  </data>
+  <data name="TodayWinLoss" xml:space="preserve">
+    <value>ยอดได้เสียวันนี้</value>
+  </data>
+  <data name="SuperNetWinLoss.WinLoss" xml:space="preserve">
+    <value>การได้เสียสูงสุด</value>
+  </data>
+  <data name="MasterNetWinLoss.WinLoss" xml:space="preserve">
+    <value>ตัวแทนหลัก ชนะ แพ้</value>
+  </data>
+  <data name="AgentNetWinLoss.WinLoss" xml:space="preserve">
+    <value>เอเจนต์ ได้เสีย</value>
+  </data>
+  <data name="MemberNetWinLoss.WinLoss" xml:space="preserve">
+    <value>สมาชิก (ชนะ แพ้)</value>
+  </data>
+  <data name="SuperNetWinLoss.Comm" xml:space="preserve">
+    <value>คอมมิชั่นของซุปเปอร์</value>
+  </data>
+  <data name="SuperNetWinLoss.Total" xml:space="preserve">
+    <value>ซุปเปอร์ทั้งหมด</value>
+  </data>
+  <data name="VerificationCode_1" xml:space="preserve">
+    <value>คุณได้ให้ตั้งค่า Atom, รหัสยืนยันของคุณคือ {0}</value>
+  </data>
+  <data name="VerificationCode_2" xml:space="preserve">
+    <value>โค้ดจะหมดอายุภายใน {0} นาที</value>
+  </data>
+  <data name="YesterdayTotalBalance" xml:space="preserve">
+    <value>ยอดคงเหลือเมื่อวาน</value>
+  </data>
+  <data name="YesterdayWinLoss" xml:space="preserve">
+    <value>ยอดได้เสียเมื่อวาน</value>
+  </data>
+  <data name="MemberTotalCredit" xml:space="preserve">
+    <value>เครดิตเมมเบอร์</value>
+  </data>
+  <data name="InformingVerifiedMessage_2" xml:space="preserve">
+    <value>ท่านสามารถเปิด/ปิดการแสดงผลใดๆก็ได้ผ่านทางหน้าการกำหนดค่า Chatbot ในเว็บไซต์เอเย่นต์ของท่าน</value>
+  </data>
+  <data name="SuperTotalCredit" xml:space="preserve">
+    <value>เครดิตซุปเปอร์</value>
+  </data>
+  <data name="YourAccountIsClosed" xml:space="preserve">
+    <value>บัญชีของคุณถูกปิด</value>
+  </data>
+  <data name="Header_8" xml:space="preserve">
+    <value>ประกาศระบบ</value>
+  </data>
+  <data name="CommandIsNotRecognized" xml:space="preserve">
+    <value>คำสั่งไม่ถูกต้อง</value>
   </data>
 </root>

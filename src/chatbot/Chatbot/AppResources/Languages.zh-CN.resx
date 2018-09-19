@@ -196,10 +196,10 @@
     <value>个人讯息</value>
   </data>
   <data name="MasterTotalCredit" xml:space="preserve">
-    <value>总代理信用额</value>
+    <value>总代理信用额度</value>
   </data>
   <data name="AgentTotalCredit" xml:space="preserve">
-    <value>代理信用额</value>
+    <value>代理信用额度</value>
   </data>
   <data name="Header_2" xml:space="preserve">
     <value>今日输赢</value>
@@ -215,5 +215,59 @@
   </data>
   <data name="MemberNetWinLoss.Comm" xml:space="preserve">
     <value>会员佣金</value>
+  </data>
+  <data name="InformingVerifiedMessage_1" xml:space="preserve">
+    <value>您的 Letstalk ID 已被验证，Atom 现已完全启用。</value>
+  </data>
+  <data name="TodayWinLoss" xml:space="preserve">
+    <value>今日输赢</value>
+  </data>
+  <data name="SuperNetWinLoss.WinLoss" xml:space="preserve">
+    <value>超级总代输赢</value>
+  </data>
+  <data name="MasterNetWinLoss.WinLoss" xml:space="preserve">
+    <value>总代理输赢</value>
+  </data>
+  <data name="AgentNetWinLoss.WinLoss" xml:space="preserve">
+    <value>代理输赢</value>
+  </data>
+  <data name="MemberNetWinLoss.WinLoss" xml:space="preserve">
+    <value>会员输赢</value>
+  </data>
+  <data name="SuperNetWinLoss.Comm" xml:space="preserve">
+    <value>超级总代理佣金</value>
+  </data>
+  <data name="SuperNetWinLoss.Total" xml:space="preserve">
+    <value>超级总代理的总数</value>
+  </data>
+  <data name="VerificationCode_1" xml:space="preserve">
+    <value>您要求设置 Atom，您的验证码是 {0}。</value>
+  </data>
+  <data name="VerificationCode_2" xml:space="preserve">
+    <value>您的代码将在{0}分钟内终止。</value>
+  </data>
+  <data name="YesterdayTotalBalance" xml:space="preserve">
+    <value>昨天餘額</value>
+  </data>
+  <data name="YesterdayWinLoss" xml:space="preserve">
+    <value>昨日输赢</value>
+  </data>
+  <data name="MemberTotalCredit" xml:space="preserve">
+    <value>会员信用额度</value>
+  </data>
+  <data name="InformingVerifiedMessage_2" xml:space="preserve">
+    <value>您可以通过代理网内的 Chatbot 配置页面启用或关闭任何功能。</value>
+  </data>
+  <data name="SuperTotalCredit" xml:space="preserve">
+    <value>超级总代理信用额度</value>
+  </data>
+  <data name="YourAccountIsClosed" xml:space="preserve">
+    <value>您的账号已关闭。</value>
+  </data>
+  <data name="Header_8" xml:space="preserve">
+    <value>系统公告</value>
+  </data>
+  <data name="CommandIsNotRecognized" xml:space="preserve">
+    <value>指令无效。</value>
   </data>
 </root>

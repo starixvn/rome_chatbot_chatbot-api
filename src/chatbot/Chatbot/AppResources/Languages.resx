@@ -127,10 +127,10 @@
     <value>Oops...you are here because of a system error, please notify the administrators</value>
   </data>
   <data name="CommandIsNotRecognized" xml:space="preserve">
-    <value>Your command is not recognized.</value>
+    <value>Invalid command.</value>
   </data>
   <data name="InformingVerifiedMessage_1" xml:space="preserve">
-    <value>Your Letstalk ID has been verified, Chatbot is fully functioning.</value>
+    <value>Your Letstalk ID has been verified, Atom is fully functioning.</value>
   </data>
   <data name="Turnover" xml:space="preserve">
     <value>Turnover</value>
