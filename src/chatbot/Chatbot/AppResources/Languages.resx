@@ -196,7 +196,7 @@
     <value>Outstanding</value>
   </data>
   <data name="VerificationCode_1" xml:space="preserve">
-    <value>You have requested to set up Chatbot. Your verification code is {0}.</value>
+    <value>You have requested to set up Atom. Your verification code is {0}.</value>
   </data>
   <data name="VerificationCode_2" xml:space="preserve">
     <value>The code will expire in {0} minutes.</value>
