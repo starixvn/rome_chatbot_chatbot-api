@@ -72,8 +72,8 @@
         public string BuildVerificationCodeMessage(string language, int messengerType, string verificationCode, int expiredVerificationCodeInMinutes)
             => string.Join(
                 GetMessengerFormatter(messengerType).NewLine(),
-                string.Format(Languages.VerificationCode_1, verificationCode),
-                string.Format(Languages.VerificationCode_2, expiredVerificationCodeInMinutes));
+                string.Format(GetResource(nameof(Languages.VerificationCode_1), language), verificationCode),
+                string.Format(GetResource(nameof(Languages.VerificationCode_2), language), expiredVerificationCodeInMinutes));
 
         private IMessageTemplate GetTemplate(int functionId)
             => messageTemplates.ContainsKey(functionId)
