@@ -15,6 +15,8 @@
         [InlineData(-1.254, "-1.25")]
         [InlineData(1.255, "1.26")]
         [InlineData(1.254, "1.25")]
+        [InlineData(-0.001, "0.00")]
+        [InlineData(0.001, "0.00")]
         public void ToFormattedNumber_Always_ReturnFormattedNumber(double number, string expected)
         {
             var actual = number.ToFormattedNumber();

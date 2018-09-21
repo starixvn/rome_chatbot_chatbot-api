@@ -1,7 +1,5 @@
 ﻿namespace Chatbot.Extensions
 {
-    using System;
-
     public static class NumberExtensions
     {
         private const string NumberFormat = "#,##0.00";
@@ -10,9 +8,7 @@
         {
             var result = numberValue.ToString(NumberFormat);
 
-            return numberValue < 0 && !result.StartsWith("-", StringComparison.OrdinalIgnoreCase)
-                ? $"-{result}"
-                : result;
+            return result;
         }
     }
 }
