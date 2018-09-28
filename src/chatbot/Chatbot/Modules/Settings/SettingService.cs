@@ -311,7 +311,8 @@
                 return AddingUserResult.CreateAccountDoesNotExistResult();
             }
 
-            if (await IsMessengerAccountBelongToAnotherUser(userId, messenger).ConfigureAwait(false))
+            if (await IsMessengerAccountBelongToAnotherUser(userId, messenger).ConfigureAwait(false)
+                || await IsUserAlreadySettingUpAccount(userId).ConfigureAwait(false))
             {
                 return AddingUserResult.CreateMessengerAccountHasBeenRegisteredByAnotherCustomerResult();
             }
@@ -329,6 +330,15 @@
             var messengerDto = await GetMessenger(messenger.Type, messenger.Username).ConfigureAwait(false);
 
             return messengerDto != null && messengerDto.UserId > 0;
+        }
+
+        private async Task<bool> IsUserAlreadySettingUpAccount(int userId)
+        {
+            InputValidator.Validate(nameof(userId), userId);
+
+            var messengerDto = await GetMessengers(userId, true).ConfigureAwait(false);
+
+            return messengerDto.Any();
         }
 
         private async Task<int> InsertUser(int custId, int subAccountId, string language, Messenger messenger, int custLevel)
