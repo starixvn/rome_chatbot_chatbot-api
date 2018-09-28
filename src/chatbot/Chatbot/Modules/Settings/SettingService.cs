@@ -328,8 +328,7 @@
 
             var messengerDto = await GetMessenger(messenger.Type, messenger.Username).ConfigureAwait(false);
 
-            return messengerDto != null
-                && messengerDto.UserId != userId;
+            return messengerDto != null && messengerDto.UserId > 0;
         }
 
         private async Task<int> InsertUser(int custId, int subAccountId, string language, Messenger messenger, int custLevel)
