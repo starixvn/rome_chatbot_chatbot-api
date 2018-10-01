@@ -178,4 +178,58 @@
   <data name="MemberNetWinLoss.Comm" xml:space="preserve">
     <value>Hoa hồng của Member</value>
   </data>
+  <data name="InformingVerifiedMessage_1" xml:space="preserve">
+    <value>Tài khoản Letstalk của bạn đã được xác nhận, Atom chính thức hoạt động.</value>
+  </data>
+  <data name="InformingVerifiedMessage_2" xml:space="preserve">
+    <value>Bạn có thể bật/tắt bất kỳ tính năng nào thông qua trang cấu hình Chatbot trên trang web agency.</value>
+  </data>
+  <data name="SuperNetWinLoss.WinLoss" xml:space="preserve">
+    <value>Thắng thua của Super</value>
+  </data>
+  <data name="MasterNetWinLoss.WinLoss" xml:space="preserve">
+    <value>Thắng thua của Master</value>
+  </data>
+  <data name="AgentNetWinLoss.WinLoss" xml:space="preserve">
+    <value>Thắng thua của Agent</value>
+  </data>
+  <data name="MemberNetWinLoss.WinLoss" xml:space="preserve">
+    <value>Thắng thua của Member</value>
+  </data>
+  <data name="SuperNetWinLoss.Comm" xml:space="preserve">
+    <value>Hoa hồng của Super</value>
+  </data>
+  <data name="SuperNetWinLoss.Total" xml:space="preserve">
+    <value>Tổng giao dịch của Super</value>
+  </data>
+  <data name="SuperTotalCredit" xml:space="preserve">
+    <value>Hạn mức tín dụng của Super</value>
+  </data>
+  <data name="YourAccountIsClosed" xml:space="preserve">
+    <value>Tài khoản của bạn đã bị khóa.</value>
+  </data>
+  <data name="Header_8" xml:space="preserve">
+    <value>Thông báo hệ thống</value>
+  </data>
+  <data name="MemberTotalCredit" xml:space="preserve">
+    <value>Mức tín dụng của Member</value>
+  </data>
+  <data name="YesterdayWinLoss" xml:space="preserve">
+    <value>Thắng thua hôm qua</value>
+  </data>
+  <data name="YesterdayTotalBalance" xml:space="preserve">
+    <value>Giao dịch đến hết hôm qua</value>
+  </data>
+  <data name="VerificationCode_1" xml:space="preserve">
+    <value>Bạn đã yêu cầu liên kết với Atom. Mã xác thực của bạn là {0}.</value>
+  </data>
+  <data name="VerificationCode_2" xml:space="preserve">
+    <value>Mã có hiệu lực trong {0} phút.</value>
+  </data>
+  <data name="TodayWinLoss" xml:space="preserve">
+    <value>Thắng thua trong ngày</value>
+  </data>
+  <data name="CommandIsNotRecognized" xml:space="preserve">
+    <value>Câu lệnh không hợp lệ.</value>
+  </data>
 </root>
