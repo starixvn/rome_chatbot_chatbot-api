@@ -49,7 +49,7 @@
                                     && criteria.MessengerType == messengerType
                                     && criteria.FunctionId == functionId
                                     && criteria.FromDate == fromDate.Date
-                                    && criteria.ToDate == toDate.Date.AddDays(1).AddTicks(-1);
+                                    && criteria.ToDate == toDate.Date.AddDays(1).AddSeconds(-1);
 
             dynamicRepository.FetchAsync<Message>(Arg.Is(isArgFunction))
                 .Returns(Task.FromResult(stubMessages as IEnumerable<Message>));

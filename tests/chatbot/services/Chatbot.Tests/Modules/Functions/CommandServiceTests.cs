@@ -52,13 +52,14 @@
         }
 
         [Fact]
-        public void Execute_MessengerDoesExist_ThrowInvalidOperationException()
+        public void Execute_MessengerDoesExist_CallLogInfo()
         {
-            Assert.Throws<InvalidOperationException>(
-                () => commandService
+            commandService
                     .Execute("cm", 1, "username")
                     .GetAwaiter()
-                    .GetResult());
+                    .GetResult();
+
+            logger.Received().Info($"messenger username is not verified or enabled");
         }
 
         [Fact]
@@ -71,15 +72,16 @@
                 .GetMessenger(messengerType, messengerUsername)
                 .Returns(Task.FromResult(new MessengerDto(1, 1, "name", false, false, "code", DateTime.Now)));
 
-            Assert.Throws<InvalidOperationException>(
-                () => commandService
+            commandService
                     .Execute("cm", messengerType, messengerUsername)
                     .GetAwaiter()
-                    .GetResult());
+                    .GetResult();
+
+            logger.Received().Info($"messenger mess_name is not verified or enabled");
         }
 
         [Fact]
-        public void Execute_MessengerIsBeingVerify_ThrowInvalidOperationException()
+        public void Execute_MessengerIsBeingVerify_CallLogInfo()
         {
             var messengerType = 1;
             var messengerUsername = "mess_name";
@@ -88,11 +90,12 @@
                 .GetMessenger(messengerType, messengerUsername)
                 .Returns(Task.FromResult(new MessengerDto(1, 1, "name", false, true, "code", DateTime.Now)));
 
-            Assert.Throws<InvalidOperationException>(
-                () => commandService
-                    .Execute("cm", messengerType, messengerUsername)
-                    .GetAwaiter()
-                    .GetResult());
+            commandService
+                   .Execute("cm", messengerType, messengerUsername)
+                   .GetAwaiter()
+                   .GetResult();
+
+            logger.Received().Info($"messenger mess_name is not verified or enabled");
         }
 
         [Fact]
