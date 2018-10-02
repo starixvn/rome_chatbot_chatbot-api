@@ -273,4 +273,7 @@
   <data name="Header_8" xml:space="preserve">
     <value>System Announcement</value>
   </data>
+  <data name="ServiceNotAvailable" xml:space="preserve">
+    <value>Sorry, service is unavailable.</value>
+  </data>
 </root>

@@ -20,6 +20,8 @@
         string BuildErrorMessage(string language);
 
         string BuildUnderMaintenanceMessage(string from, string to);
+
+        string BuildServiceIsUnavailableMessage();
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -100,5 +102,8 @@
 
         public string BuildUnderMaintenanceMessage(string from, string to)
             => string.Format(Languages.UnderMaintenance, from, to);
+
+        public string BuildServiceIsUnavailableMessage()
+            => Languages.ServiceNotAvailable;
     }
 }

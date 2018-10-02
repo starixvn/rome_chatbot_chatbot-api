@@ -58,7 +58,9 @@
                 || !messengerDto.Enabled
                 || messengerDto.IsVerifying)
             {
-                throw new InvalidOperationException($"messenger {messengerUsername} is not verified or enabled");
+                await SendServiceUnavailableMessage(messengerType, messengerUsername).ConfigureAwait(false);
+                logger.Info($"messenger {messengerUsername} is not verified or enabled");
+                return;
             }
 
             var user = await settingService.GetUser(messengerDto.UserId).ConfigureAwait(false)
@@ -140,18 +142,25 @@
             }
         }
 
-        protected async Task SendNotRecognizedCommandMessage(User user, Messenger messenger)
+        private async Task SendNotRecognizedCommandMessage(User user, Messenger messenger)
         {
             var message = messageBuilder.BuildNotRecognizedCommandMessage(user.Language);
 
             await messageSender.SendMessage(user.Id, messenger, message, chatbotConfigs.NotRecognizedCommandFunctionId).ConfigureAwait(false);
         }
 
-        protected async Task SendErrorMessage(User user, Messenger messenger)
+        private async Task SendErrorMessage(User user, Messenger messenger)
         {
             var message = messageBuilder.BuildErrorMessage(user.Language);
 
             await messageSender.SendMessage(user.Id, messenger, message).ConfigureAwait(false);
+        }
+
+        private async Task SendServiceUnavailableMessage(int messengerType, string messengerName)
+        {
+            var message = messageBuilder.BuildServiceIsUnavailableMessage();
+
+            await messageSender.SendMessage(new Messenger(messengerType, messengerName), message, logToDatabase: false).ConfigureAwait(false);
         }
     }
 }

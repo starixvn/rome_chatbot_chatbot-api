@@ -385,6 +385,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, service is unavailable..
+        /// </summary>
+        public static string ServiceNotAvailable {
+            get {
+                return ResourceManager.GetString("ServiceNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Super.
         /// </summary>
         public static string Super {
