@@ -8,7 +8,7 @@
     using Chatbot.WebApi.Params;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Filters;
-    using ONEbook.UM.AspNetCore.Services;
+    using ONEbook.UM.Services;
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class AutoReplyUMFilterAttribute : ActionFilterAttribute

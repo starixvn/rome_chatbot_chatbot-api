@@ -1,8 +1,6 @@
 ﻿namespace Chatbot.WebApi.Tests.Filters
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
@@ -14,8 +12,8 @@
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.AspNetCore.Routing;
     using NSubstitute;
-    using ONEbook.UM.AspNetCore.Services;
-    using ONEbook.UM.Core.Models;
+    using ONEbook.UM.Models;
+    using ONEbook.UM.Services;
     using Xunit;
 
     public class AutoReplyUMFilterAttributeTests
@@ -44,7 +42,7 @@
             var actionExecutingContext = StubActionExecutingContext(new Dictionary<string, object>());
 
             autoReplyUMFilterAttribute.OnActionExecutionAsync(
-                actionExecutingContext, 
+                actionExecutingContext,
                 Substitute.For<ActionExecutionDelegate>()).GetAwaiter().GetResult();
 
             maintenanceService.DidNotReceive().GetUnderMaintenanceTime();

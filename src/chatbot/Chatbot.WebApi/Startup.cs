@@ -25,9 +25,14 @@ namespace Chatbot.WebApi
     using Fanex.Logging.RabbitMQ;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using ONEbook.UM.AspNetCore.Services;
+    using ONEbook.UM;
+    using ONEbook.UM.AspNetCore.Configuration;
+    using ONEbook.UM.Helpers;
+    using ONEbook.UM.Services;
+    using ONEbook.UM.Transport;
     using Swashbuckle.AspNetCore.Swagger;
 
     public class Startup
@@ -81,6 +86,7 @@ namespace Chatbot.WebApi
                 {
                     { MessengerType.Letstalk, new LetstalkFormatter() }
                 });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IDictionary<string, CultureInfo>>(
                 new Dictionary<string, CultureInfo>
                 {
@@ -127,7 +133,12 @@ namespace Chatbot.WebApi
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMiddleware(typeof(UnderMaintenanceHandlingMiddleware));
 
-            ONEbook.UM.Core.Configurations.UMClientConfiguration.InitConfigurationRoot(env.ContentRootPath);
+            var umConfig = new UMClientConfiguration(Configuration);
+
+            UMClientManager
+                .UseConfig(umConfig)
+                .UseRestClient(new RestClient(umConfig))
+                .UseHttpContext(new HttpContextHelper(app.ApplicationServices.GetService<IHttpContextAccessor>()));
 
             app.UseMvc(
                 routes =>

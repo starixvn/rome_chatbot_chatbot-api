@@ -1,17 +1,13 @@
 ﻿namespace Chatbot.WebApi.Tests.Middlewares
 {
-    using System.Collections.Generic;
     using System.Net;
     using System.Threading.Tasks;
     using Chatbot.WebApi.Middlewares;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Abstractions;
-    using Microsoft.AspNetCore.Mvc.Filters;
-    using Microsoft.AspNetCore.Routing;
     using NSubstitute;
-    using ONEbook.UM.AspNetCore.Services;
-    using ONEbook.UM.Core.Models;
+    using ONEbook.UM.Models;
+    using ONEbook.UM.Services;
     using Xunit;
 
     public class UnderMaintenanceHandlingMiddlewareTests

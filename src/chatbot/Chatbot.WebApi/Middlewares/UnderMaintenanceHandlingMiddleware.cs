@@ -4,8 +4,8 @@
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Newtonsoft.Json;
-    using ONEbook.UM.AspNetCore.Services;
-    using ONEbook.UM.Core.Models;
+    using ONEbook.UM.Models;
+    using ONEbook.UM.Services;
 
     public class UnderMaintenanceHandlingMiddleware
     {
@@ -24,7 +24,7 @@
 
         public async Task Invoke(HttpContext context)
         {
-            if(context.Request.Path.Value.Contains("/command/run", System.StringComparison.OrdinalIgnoreCase))
+            if (context.Request.Path.Value.Contains("/command/run", System.StringComparison.OrdinalIgnoreCase))
             {
                 await next(context);
 
