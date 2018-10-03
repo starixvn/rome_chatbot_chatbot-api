@@ -232,4 +232,7 @@
   <data name="CommandIsNotRecognized" xml:space="preserve">
     <value>Câu lệnh không hợp lệ.</value>
   </data>
+  <data name="ServiceNotAvailable" xml:space="preserve">
+    <value>Xin lỗi, bạn chưa đăng ký dịch vụ chatbot này!</value>
+  </data>
 </root>

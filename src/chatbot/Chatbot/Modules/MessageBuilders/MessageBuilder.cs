@@ -31,7 +31,7 @@
         {
             "en-US",
             "zh-CN",
-            "cn-TW",
+            "zh-TW",
             "vi-VN"
         };
         private static readonly CultureInfo defaultCultureInfo = CultureInfo.CreateSpecificCulture("en-US");
