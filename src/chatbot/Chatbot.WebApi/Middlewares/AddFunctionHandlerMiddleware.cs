@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
@@ -19,11 +20,12 @@
         private static MessageService messageService;
         private static AnnouncementService announcementService;
         private static NotificationService chatBotMessageService;
+        private static IChatbotConfigs chatbotConfigs;
 
         public static void AddFunctionHandler(this IServiceCollection services)
         {
             var serviceProvider = services.BuildServiceProvider();
-            var chatbotConfigs = serviceProvider.GetService<IChatbotConfigs>();
+            chatbotConfigs = serviceProvider.GetService<IChatbotConfigs>();
             reportService = serviceProvider.GetService<ReportService>();
             messageService = serviceProvider.GetService<MessageService>();
             chatBotMessageService = serviceProvider.GetService<NotificationService>();
@@ -70,14 +72,13 @@
             var lastQueryTime = await chatBotMessageService.GetLastQueryTime(param.Function.Id);
             var customers = GetCustomers(param);
             var messages = announcementService.GetAnnouncements(lastQueryTime.AddSeconds(1), now, customers);
-            await chatBotMessageService.UpdateLastQueryTime(param.Function.Id, now);
 
-            if (messages.Any())
+            if (chatbotConfigs.IsProduction)
             {
-                Log.Logger.Information(
-                    $"Customer list before sending: {string.Join(";", customers.Select(c => c.CustId).ToList())} \n" +
-                    $"Message list received: {JsonConvert.SerializeObject(messages)} ");
+                await chatBotMessageService.UpdateLastQueryTime(param.Function.Id, now);
             }
+
+            WriteLogWhenHaveMessage(customers, messages);
 
             return messages;
         }
@@ -88,14 +89,13 @@
             var lastQueryTime = await chatBotMessageService.GetLastQueryTime(param.Function.Id);
             var customers = GetCustomers(param);
             var messages = await messageService.GetMessagesAsync(messageType, lastQueryTime.AddSeconds(1), now, customers);
-            await chatBotMessageService.UpdateLastQueryTime(param.Function.Id, now);
 
-            if (messages.Any())
+            if (chatbotConfigs.IsProduction)
             {
-                Log.Logger.Information(
-                    $"Customer list before sending: {string.Join(";", customers.Select(c => c.CustId).ToList())} \n" +
-                    $"Message list received: {JsonConvert.SerializeObject(messages)} ");
+                await chatBotMessageService.UpdateLastQueryTime(param.Function.Id, now);
             }
+
+            WriteLogWhenHaveMessage(customers, messages);
 
             return messages;
         }
@@ -107,5 +107,22 @@
                 Language = user.Language,
                 RoleId = (byte)user.CustLevel
             });
+
+        private static void WriteLogWhenHaveMessage(IEnumerable<Customer> customers, IEnumerable<Message> messages)
+        {
+            if (messages.Any())
+            {
+                var messageLog = new StringBuilder();
+
+                foreach (var message in messages)
+                {
+                    messageLog.Append($"CustId: {message.CustId}; Content: {message.Content}\n");
+                }
+
+                Log.Information(
+                    $"Customer list before sending: {string.Join(";", customers.Select(c => c.CustId).ToList())} \n" +
+                    $"Message list received: {messageLog} ");
+            }
+        }
     }
 }

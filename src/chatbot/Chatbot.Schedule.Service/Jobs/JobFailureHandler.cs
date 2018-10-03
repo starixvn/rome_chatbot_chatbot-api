@@ -56,7 +56,7 @@
 
                 context.JobDetail.JobDataMap.Put(NumberOfRetriesKey, numberRetries);
 
-                Log.Logger.Error($"Job with ID and type: {context.JobDetail.Key}, {context.JobDetail.JobType}" +
+                Log.Error($"Job with ID and type: {context.JobDetail.Key}, {context.JobDetail.JobType}" +
                     $" has thrown the exception: {jobException}. Running again in {RetryInterval * numberRetries} seconds.");
 
                 context.Scheduler.UnscheduleJob(context.Trigger.Key);
@@ -69,7 +69,7 @@
                             $"UserId: {context.JobDetail.JobDataMap.GetInt(JobDataKey.UserId)} \n" +
                             $"FunctionId: {context.JobDetail.JobDataMap.GetInt(JobDataKey.FunctionId)} \n";
 
-                Log.Logger.Error(message);
+                Log.Error(message);
                 Logger.Log.Error(message);
             }
 

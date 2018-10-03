@@ -13,12 +13,12 @@ namespace Chatbot.WebApi
         {
             try
             {
-                Log.Logger.Debug("init main");
+                Log.Debug("init main");
                 BuildWebHost(args).Run();
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, "Stopped program because of exception");
+                Log.Error(ex, "Stopped program because of exception");
                 throw;
             }
         }

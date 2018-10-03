@@ -44,6 +44,8 @@ namespace Chatbot.Configurations
         int MaxGetMessageLogDays { get; }
 
         bool DisabledSendToMessenger { get; }
+
+        bool IsProduction { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -73,6 +75,7 @@ namespace Chatbot.Configurations
             NotRecognizedCommandFunctionId = GetValue<int>("Chatbot:NotRecognizedCommandFunctionId");
             MaxGetMessageLogDays = GetValue<int>("Chatbot:MaxGetMessageLogDays");
             DisabledSendToMessenger = GetValue<bool>("Chatbot:DisabledSendToMessenger");
+            IsProduction = GetValue<bool>("Chatbot:IsProduction");
         }
 
         public int MaxAddActionTimes { get; }
@@ -110,6 +113,8 @@ namespace Chatbot.Configurations
         public int MaxGetMessageLogDays { get; }
 
         public bool DisabledSendToMessenger { get; }
+
+        public bool IsProduction { get; }
 
         private T GetValue<T>(string key)
         {

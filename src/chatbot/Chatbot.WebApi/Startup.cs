@@ -57,7 +57,7 @@ namespace Chatbot.WebApi
                     .SetDefaultLogCategory(Configuration["Fanex.Logging:DefaultCategory"])
                     .Use(new RabbitMQLogging(Configuration["Fanex.Logging:RabbitMQConnectionStrings"]));
             services.AddSingleton(Logger.Log);
-
+            services.AddLogging();
             services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
             services.AddSingleton<SettingService, SettingServiceImpl>();
             services.AddSingleton<IDynamicRepository, DynamicRepository>();
@@ -133,7 +133,6 @@ namespace Chatbot.WebApi
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMiddleware(typeof(UnderMaintenanceHandlingMiddleware));
-
             var umConfig = new UMClientConfiguration(Configuration);
 
             UMClientManager
@@ -161,7 +160,7 @@ namespace Chatbot.WebApi
               .Run();
 
             Log.Logger = new LoggerConfiguration()
-                 .MinimumLevel.Debug()
+                 .MinimumLevel.Information()
                  .WriteTo.File(
                        $"{env.ContentRootPath}\\Log\\log.txt",
                        rollingInterval: RollingInterval.Day)
