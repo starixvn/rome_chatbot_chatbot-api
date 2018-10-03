@@ -123,11 +123,12 @@
             foreach (var langCode in underMaintenanceLanguageCodes)
             {
                 var message = string.Format(GetResource(nameof(Languages.UnderMaintenance), langCode), from, to);
-                stringBuilder.Append(message);
-                stringBuilder.Append(GetMessengerFormatter(messengerType).NewLine());
+                stringBuilder
+                    .Append(message)
+                    .Append(GetMessengerFormatter(messengerType).NewLine());
             }
 
-            return stringBuilder.ToString();
+            return stringBuilder.ToString().TrimEnd();
         }
 
         public string BuildServiceIsUnavailableMessage(int messengerType)
@@ -136,8 +137,9 @@
 
             foreach (var langCode in unavailableLanguageCodes)
             {
-                stringBuilder.Append(GetResource(nameof(Languages.ServiceNotAvailable), langCode));
-                stringBuilder.Append(GetMessengerFormatter(messengerType).NewLine());
+                stringBuilder
+                    .Append(GetResource(nameof(Languages.ServiceNotAvailable), langCode))
+                    .Append(GetMessengerFormatter(messengerType).NewLine());
             }
 
             return stringBuilder.ToString();
