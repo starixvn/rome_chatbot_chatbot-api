@@ -161,7 +161,7 @@ namespace Chatbot.WebApi
               .Run();
 
             Log.Logger = new LoggerConfiguration()
-                 .MinimumLevel.Information()
+                 .MinimumLevel.Debug()
                  .WriteTo.File(
                        $"{env.ContentRootPath}\\Log\\log.txt",
                        rollingInterval: RollingInterval.Day)
