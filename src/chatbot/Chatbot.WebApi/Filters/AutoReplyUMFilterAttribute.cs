@@ -41,7 +41,7 @@
 
                     if (umInfo.IsUnderMaintenanceTime)
                     {
-                        var umMessage = messageBuilder.BuildUnderMaintenanceMessage(umInfo.From, umInfo.To);
+                        var umMessage = messageBuilder.BuildUnderMaintenanceMessage(command.MessengerType, umInfo.From, umInfo.To);
                         await messageSender.SendMessage(
                             new Models.Messenger(
                                 command.MessengerType,

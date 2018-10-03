@@ -253,4 +253,7 @@
   <data name="ServiceNotAvailable" xml:space="preserve">
     <value>對不起，您尚未註冊Chatbot服務!</value>
   </data>
+  <data name="UnderMaintenance" xml:space="preserve">
+    <value>很抱歉，伺服器正在進行維護，維護時間從{0}至{1} (GMT+8)。請稍候再試。</value>
+  </data>
 </root>

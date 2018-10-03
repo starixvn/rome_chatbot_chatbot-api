@@ -72,7 +72,7 @@
             maintenanceService
                 .GetUnderMaintenanceTime()
                 .Returns(Task.FromResult(unInfo));
-            messageBuilder.BuildUnderMaintenanceMessage(unInfo.From, unInfo.To).Returns("UM Message");
+            messageBuilder.BuildUnderMaintenanceMessage(1, unInfo.From, unInfo.To).Returns("UM Message");
 
             // Act
             autoReplyUMFilterAttribute.OnActionExecutionAsync(

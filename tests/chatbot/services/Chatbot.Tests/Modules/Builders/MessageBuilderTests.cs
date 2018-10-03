@@ -95,10 +95,10 @@
         [Fact]
         public void BuildUnderMaintenanceMessage_Always_ReturnMessage()
         {
-            var message = messageBuilder.BuildUnderMaintenanceMessage("2:00", "3:00");
+            var message = messageBuilder.BuildUnderMaintenanceMessage(1, "2:00", "3:00");
 
             Assert.Equal(
-                "Sorry, the system is under maintenance from 2:00 to 3:00 GMT+8. Please come back later.",
+                "Sorry, the system is under maintenance from 2:00 to 3:00 GMT+8. Please come back later._newline_很抱歉，服务器正在维护中，维护时间从{0}至{1} (GMT+8)。请稍后访问。_newline_很抱歉，伺服器正在進行維護，維護時間從{0}至{1} (GMT+8)。請稍候再試。",
                 message);
         }
 
