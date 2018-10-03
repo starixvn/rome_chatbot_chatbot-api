@@ -30,6 +30,7 @@ namespace Chatbot.WebApi
     using Microsoft.Extensions.DependencyInjection;
     using ONEbook.UM;
     using ONEbook.UM.AspNetCore.Configuration;
+    using Serilog;
     using ONEbook.UM.Helpers;
     using ONEbook.UM.Services;
     using ONEbook.UM.Transport;
@@ -158,6 +159,13 @@ namespace Chatbot.WebApi
               .UseConnectionStrings(connections)
               .UseDefaultDbSettingProvider("~/App_Data")
               .Run();
+
+            Log.Logger = new LoggerConfiguration()
+                 .MinimumLevel.Information()
+                 .WriteTo.File(
+                       $"{env.ContentRootPath}\\Log\\log.txt",
+                       rollingInterval: RollingInterval.Day)
+                 .CreateLogger();
         }
     }
 }

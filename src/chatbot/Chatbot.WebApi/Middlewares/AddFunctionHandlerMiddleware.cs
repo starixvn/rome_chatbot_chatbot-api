@@ -10,6 +10,8 @@
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.Params;
     using Microsoft.Extensions.DependencyInjection;
+    using Newtonsoft.Json;
+    using Serilog;
 
     public static class AddFunctionHandlerMiddleware
     {
@@ -70,6 +72,13 @@
             var messages = announcementService.GetAnnouncements(lastQueryTime.AddSeconds(1), now, customers);
             await chatBotMessageService.UpdateLastQueryTime(param.Function.Id, now);
 
+            if (messages.Any())
+            {
+                Log.Logger.Information(
+                    $"Customer list before sending: {string.Join(";", customers.Select(c => c.CustId).ToList())} \n" +
+                    $"Message list received: {JsonConvert.SerializeObject(messages)} ");
+            }
+
             return messages;
         }
 
@@ -80,6 +89,13 @@
             var customers = GetCustomers(param);
             var messages = await messageService.GetMessagesAsync(messageType, lastQueryTime.AddSeconds(1), now, customers);
             await chatBotMessageService.UpdateLastQueryTime(param.Function.Id, now);
+
+            if (messages.Any())
+            {
+                Log.Logger.Information(
+                    $"Customer list before sending: {string.Join(";", customers.Select(c => c.CustId).ToList())} \n" +
+                    $"Message list received: {JsonConvert.SerializeObject(messages)} ");
+            }
 
             return messages;
         }
