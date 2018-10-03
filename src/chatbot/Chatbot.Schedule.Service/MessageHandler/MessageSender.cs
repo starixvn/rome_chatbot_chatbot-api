@@ -39,7 +39,7 @@
             scheduler.ListenerManager.AddJobListener(jobFailureHandler);
 
             var job = JobBuilder.Create<SendMessageToUserJob>()
-                        .WithIdentity($"SendMessage_{userId}_{functionId}_{Guid.NewGuid()}", "SendMessage")
+                        .WithIdentity($"SendMessage_UserId:{userId}_FunctionId:{functionId}_Message:{message}_{Guid.NewGuid()}", "SendMessage")
                         .UsingJobData(JobDataKey.UserId, userId)
                         .UsingJobData(JobDataKey.FunctionId, functionId)
                         .UsingJobData(JobDataKey.Message, message)
