@@ -37,11 +37,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integration-tests", "integr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "client", "client", "{DCE8E949-9274-4E1B-8A09-5F99EAE33B79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatbot.Client.Tests", "tests\chatbot\client\Chatbot.Client.Tests\Chatbot.Client.Tests.csproj", "{C7CBAFF2-9086-43B2-85C4-F20C3F03398B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatbot.Client.Tests", "tests\chatbot\client\Chatbot.Client.Tests\Chatbot.Client.Tests.csproj", "{C7CBAFF2-9086-43B2-85C4-F20C3F03398B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatbot.Client.Transport.Tests", "tests\chatbot\client\Chatbot.Client.Transport.Tests\Chatbot.Client.Transport.Tests.csproj", "{01457B49-884E-457E-9F0A-980E1493213F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatbot.Client.Transport.Tests", "tests\chatbot\client\Chatbot.Client.Transport.Tests\Chatbot.Client.Transport.Tests.csproj", "{01457B49-884E-457E-9F0A-980E1493213F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatbot.WebApi.Tests", "tests\chatbot\services\Chatbot.WebApi.Tests\Chatbot.WebApi.Tests.csproj", "{41858EC5-61EA-4D38-9281-6F031EC88ACE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatbot.WebApi.Tests", "tests\chatbot\services\Chatbot.WebApi.Tests\Chatbot.WebApi.Tests.csproj", "{41858EC5-61EA-4D38-9281-6F031EC88ACE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -271,6 +271,6 @@
     <value>指令无效。</value>
   </data>
   <data name="ServiceNotAvailable" xml:space="preserve">
-    <value>对不起，您尚未注册Chatbot服务。</value>
+    <value>对不起，您尚未注册Chatbot服务!</value>
   </data>
 </root>
