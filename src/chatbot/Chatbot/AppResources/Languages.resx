@@ -274,6 +274,6 @@
     <value>System Announcement</value>
   </data>
   <data name="ServiceNotAvailable" xml:space="preserve">
-    <value>Sorry, service is unavailable.</value>
+    <value>Sorry, you haven't registered for this chatbot service yet!</value>
   </data>
 </root>

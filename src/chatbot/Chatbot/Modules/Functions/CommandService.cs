@@ -52,6 +52,13 @@
 
         public async Task Execute(string command, int messengerType, string messengerUsername)
         {
+            if(string.IsNullOrWhiteSpace(command))
+            {
+                return;
+            }
+
+            command = System.Net.WebUtility.HtmlEncode(command);
+
             var messengerDto = await settingService.GetMessenger(messengerType, messengerUsername).ConfigureAwait(false);
 
             if (messengerDto == null
@@ -158,7 +165,7 @@
 
         private async Task SendServiceUnavailableMessage(int messengerType, string messengerName)
         {
-            var message = messageBuilder.BuildServiceIsUnavailableMessage();
+            var message = messageBuilder.BuildServiceIsUnavailableMessage(messengerType);
 
             await messageSender.SendMessage(new Messenger(messengerType, messengerName), message, logToDatabase: false).ConfigureAwait(false);
         }

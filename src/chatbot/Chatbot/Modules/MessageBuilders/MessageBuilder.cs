@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Text;
     using Chatbot.AppResources;
     using Chatbot.Modules.MessageBuilders.Templates;
 
@@ -21,11 +22,18 @@
 
         string BuildUnderMaintenanceMessage(string from, string to);
 
-        string BuildServiceIsUnavailableMessage();
+        string BuildServiceIsUnavailableMessage(int messengerType);
     }
 
     public class MessageBuilder : IMessageBuilder
     {
+        private static readonly IEnumerable<string> unavailableLanguageCodes = new List<string>
+        {
+            "en-US",
+            "zh-CN",
+            "cn-TW",
+            "vi-VN"
+        };
         private static readonly CultureInfo defaultCultureInfo = CultureInfo.CreateSpecificCulture("en-US");
         private static readonly IMessageTemplate defaultTemplate = new MessageTemplate(new HeaderTemplate(), new BodyTemplate());
 
@@ -103,7 +111,17 @@
         public string BuildUnderMaintenanceMessage(string from, string to)
             => string.Format(Languages.UnderMaintenance, from, to);
 
-        public string BuildServiceIsUnavailableMessage()
-            => Languages.ServiceNotAvailable;
+        public string BuildServiceIsUnavailableMessage(int messengerType)
+        {
+            var stringBuilder = new StringBuilder();
+
+            foreach (var langCode in unavailableLanguageCodes)
+            {
+                stringBuilder.Append(GetResource(nameof(Languages.ServiceNotAvailable), langCode));
+                stringBuilder.Append(GetMessengerFormatter(messengerType).NewLine());
+            }
+
+            return stringBuilder.ToString();
+        }
     }
 }

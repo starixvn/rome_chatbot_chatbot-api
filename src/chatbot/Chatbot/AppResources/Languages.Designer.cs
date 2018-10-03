@@ -385,7 +385,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, service is unavailable..
+        ///   Looks up a localized string similar to Sorry, you haven&apos;t registered for this chatbot service yet!.
         /// </summary>
         public static string ServiceNotAvailable {
             get {
