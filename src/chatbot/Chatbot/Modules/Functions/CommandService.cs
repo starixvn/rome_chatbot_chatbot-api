@@ -57,7 +57,7 @@
                 return;
             }
 
-            command = System.Net.WebUtility.HtmlEncode(command);
+            var encodedCommand = System.Net.WebUtility.HtmlEncode(command);
 
             var messengerDto = await settingService.GetMessenger(messengerType, messengerUsername).ConfigureAwait(false);
 
@@ -77,15 +77,15 @@
 
             try
             {
-                var commandFunction = await GetCommandFunction(messengerDto.UserId, command).ConfigureAwait(false);
+                var commandFunction = await GetCommandFunction(messengerDto.UserId, encodedCommand).ConfigureAwait(false);
 
                 await Task.WhenAll(
-                    messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, command, functionId: commandFunction?.Id ?? chatbotConfigs.NotRecognizedCommandFunctionId),
-                    RunCommand(command, user, messenger, commandFunction)).ConfigureAwait(false);
+                    messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, encodedCommand, functionId: commandFunction?.Id ?? chatbotConfigs.NotRecognizedCommandFunctionId),
+                    RunCommand(encodedCommand, user, messenger, commandFunction)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                await LogError(command, messengerDto, user, ex).ConfigureAwait(false);
+                await LogError(encodedCommand, messengerDto, user, ex).ConfigureAwait(false);
             }
         }
 
