@@ -1,0 +1,75 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
+    <TieredCompilation>true</TieredCompilation>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <RuntimeFrameworkVersion>2.1.0</RuntimeFrameworkVersion>
+    <StartupObject />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet>Chatbot.Schedule.Service.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>Chatbot.Schedule.Service.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+    <None Remove="appsettings.local.json" />
+    <None Remove="appsettings.local1.json" />
+    <None Remove="appsettings.pro.json" />
+    <None Remove="appsettings.uat.json" />
+    <None Remove="Deployment.ignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.local1.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.uat.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.pro.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+    <Content Include="appsettings.local.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Deployment.ignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Chatbot.Client" Version="1.0.0-beta8-82" />
+    <PackageReference Include="Chatbot.Client.Transport" Version="1.0.0-beta3" />
+    <PackageReference Include="Fanex.Logging.RabbitMQ" Version="1.0.0-beta8" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.0" />
+    <PackageReference Include="Quartz" Version="3.0.6" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chatbot.Client.Transport\Chatbot.Client.Transport.csproj" />
+    <ProjectReference Include="..\Chatbot.Client\Chatbot.Client.csproj" />
+  </ItemGroup>
+</Project>

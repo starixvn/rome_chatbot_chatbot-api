@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+    using Chatbot.Client.Models;
     using RestSharp;
 
     public class RestClient : Helpers.IRestClient
@@ -22,7 +23,8 @@
         public static RestSharp.IRestClient CreateDefaultClient()
            => new RestSharp.RestClient
            {
-               BaseUrl = new Uri(ChatbotClientManager.BotClientConfigs.ApiBaseUrl)
+               BaseUrl = new Uri(ChatbotClientManager.BotClientConfigs.ApiBaseUrl),
+               Authenticator = new HmacAuthenticator(ChatbotClientManager.BotClientConfigs.ApiKey)
            };
 
         private async Task<T> ExecuteSync<T>(string endPoint, Method method, object data)
@@ -43,7 +45,16 @@
                 return response.Data;
             }
 
-            throw new InvalidOperationException(response.ErrorMessage);
+            if(response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+            {
+                await Task.FromException(new ChatbotClientException(true, response.Content)).ConfigureAwait(false);
+            }
+
+            throw new InvalidOperationException(
+                string.Join(
+                    "\r\n",
+                    $"Content: {response.Content}",
+                    $"ErrorMessage: {response.ErrorMessage}"));
         }
 
         private static void ValidateEndPoint(string endPoint)

@@ -163,4 +163,97 @@
   <data name="GivenCredit" xml:space="preserve">
     <value>信用額度</value>
   </data>
+  <data name="Header_6" xml:space="preserve">
+    <value>特殊公告</value>
+  </data>
+  <data name="Header_7" xml:space="preserve">
+    <value>一般公告</value>
+  </data>
+  <data name="Header_4" xml:space="preserve">
+    <value>昨日輸贏</value>
+  </data>
+  <data name="Header_5" xml:space="preserve">
+    <value>個人訊息</value>
+  </data>
+  <data name="MasterTotalCredit" xml:space="preserve">
+    <value>總代理信用額度</value>
+  </data>
+  <data name="AgentTotalCredit" xml:space="preserve">
+    <value>代理信用額度 </value>
+  </data>
+  <data name="Header_2" xml:space="preserve">
+    <value>今日輸贏</value>
+  </data>
+  <data name="MemberNetWinLoss.Total" xml:space="preserve">
+    <value>會員總數</value>
+  </data>
+  <data name="MasterNetWinLoss.Comm" xml:space="preserve">
+    <value>總代理佣金</value>
+  </data>
+  <data name="AgentNetWinLoss.Comm" xml:space="preserve">
+    <value>代理佣金</value>
+  </data>
+  <data name="MemberNetWinLoss.Comm" xml:space="preserve">
+    <value>會員佣金</value>
+  </data>
+  <data name="InformingVerifiedMessage_1" xml:space="preserve">
+    <value>您的 Letstalk ID 已被驗證，Atom 現已完全啟用。</value>
+  </data>
+  <data name="TodayWinLoss" xml:space="preserve">
+    <value>今日輸贏</value>
+  </data>
+  <data name="SuperNetWinLoss.WinLoss" xml:space="preserve">
+    <value>超級總代輸贏</value>
+  </data>
+  <data name="MasterNetWinLoss.WinLoss" xml:space="preserve">
+    <value>總代理輸贏</value>
+  </data>
+  <data name="AgentNetWinLoss.WinLoss" xml:space="preserve">
+    <value>代理輸贏</value>
+  </data>
+  <data name="MemberNetWinLoss.WinLoss" xml:space="preserve">
+    <value>會員輸贏</value>
+  </data>
+  <data name="SuperNetWinLoss.Comm" xml:space="preserve">
+    <value>超級總代理佣金</value>
+  </data>
+  <data name="SuperNetWinLoss.Total" xml:space="preserve">
+    <value>超級總代理的總數</value>
+  </data>
+  <data name="VerificationCode_1" xml:space="preserve">
+    <value>您要求設置 Atom，您的驗證碼是 {0}。</value>
+  </data>
+  <data name="VerificationCode_2" xml:space="preserve">
+    <value>您的代碼將在{0}分鐘內終止。</value>
+  </data>
+  <data name="YesterdayTotalBalance" xml:space="preserve">
+    <value>昨天餘額</value>
+  </data>
+  <data name="YesterdayWinLoss" xml:space="preserve">
+    <value>昨日輸贏</value>
+  </data>
+  <data name="MemberTotalCredit" xml:space="preserve">
+    <value>會員信用額度</value>
+  </data>
+  <data name="InformingVerifiedMessage_2" xml:space="preserve">
+    <value>您可以通過代理網內的 Chatbot 配置頁面啟用或關閉任何功能。</value>
+  </data>
+  <data name="SuperTotalCredit" xml:space="preserve">
+    <value>超級總代理信用額度</value>
+  </data>
+  <data name="YourAccountIsClosed" xml:space="preserve">
+    <value>您的賬號已關閉</value>
+  </data>
+  <data name="Header_8" xml:space="preserve">
+    <value>系統公告</value>
+  </data>
+  <data name="CommandIsNotRecognized" xml:space="preserve">
+    <value>指令無效。</value>
+  </data>
+  <data name="ServiceNotAvailable" xml:space="preserve">
+    <value>對不起，您尚未註冊Chatbot服務!</value>
+  </data>
+  <data name="UnderMaintenance" xml:space="preserve">
+    <value>很抱歉，伺服器正在進行維護，維護時間從{0}至{1} (GMT+8)。請稍候再試。</value>
+  </data>
 </root>

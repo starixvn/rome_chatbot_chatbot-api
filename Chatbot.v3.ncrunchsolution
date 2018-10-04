@@ -1,0 +1,12 @@
+﻿<SolutionConfiguration>
+  <Settings>
+    <AllowParallelTestExecution>True</AllowParallelTestExecution>
+    <MetricsExclusionList>
+      <Value>Program.cs:src\chatbot\Chatbot.Schedule.Service\Chatbot.Schedule.Service.csproj</Value>
+      <Value>ServiceBaseLifetime.cs:src\chatbot\Chatbot.Schedule.Service\Chatbot.Schedule.Service.csproj</Value>
+      <Value>ServiceBaseLifetimeHostExtension.cs:src\chatbot\Chatbot.Schedule.Service\Chatbot.Schedule.Service.csproj</Value>
+      <Value>Jobs\JobFailureHandler.cs:src\chatbot\Chatbot.Schedule.Service\Chatbot.Schedule.Service.csproj</Value>
+    </MetricsExclusionList>
+    <SolutionConfigured>True</SolutionConfigured>
+  </Settings>
+</SolutionConfiguration>

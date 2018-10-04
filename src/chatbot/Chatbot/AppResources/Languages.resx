@@ -127,10 +127,10 @@
     <value>Oops...you are here because of a system error, please notify the administrators</value>
   </data>
   <data name="CommandIsNotRecognized" xml:space="preserve">
-    <value>Your command is not recognized.</value>
+    <value>Invalid command.</value>
   </data>
   <data name="InformingVerifiedMessage_1" xml:space="preserve">
-    <value>Your account has been verified, Chatbot is fully functioning.</value>
+    <value>Your Letstalk ID has been verified, Atom is fully functioning.</value>
   </data>
   <data name="Turnover" xml:space="preserve">
     <value>Turnover</value>
@@ -196,10 +196,10 @@
     <value>Outstanding</value>
   </data>
   <data name="VerificationCode_1" xml:space="preserve">
-    <value>You have requested to set up Chatbot for your account {0}. Your verification code is {1}.</value>
+    <value>You have requested to set up Atom. Your verification code is {0}.</value>
   </data>
   <data name="VerificationCode_2" xml:space="preserve">
-    <value>The code will be expired in {0} minutes. To secure your information, please delete this message after completing verification.</value>
+    <value>The code will expire in {0} minutes.</value>
   </data>
   <data name="CurrencyName" xml:space="preserve">
     <value>Currency</value>
@@ -251,5 +251,29 @@
   </data>
   <data name="SuperTotalCredit" xml:space="preserve">
     <value>Super Credit</value>
+  </data>
+  <data name="Header_4" xml:space="preserve">
+    <value>Yesterday Win Loss</value>
+  </data>
+  <data name="Header_5" xml:space="preserve">
+    <value>Personal Message</value>
+  </data>
+  <data name="Header_6" xml:space="preserve">
+    <value>Special Announcement</value>
+  </data>
+  <data name="Header_7" xml:space="preserve">
+    <value>Normal Announcement</value>
+  </data>
+  <data name="YourAccountIsClosed" xml:space="preserve">
+    <value>Your account is closed.</value>
+  </data>
+  <data name="UnderMaintenance" xml:space="preserve">
+    <value>Sorry, the system is under maintenance from {0} to {1} GMT+8. Please come back later.</value>
+  </data>
+  <data name="Header_8" xml:space="preserve">
+    <value>System Announcement</value>
+  </data>
+  <data name="ServiceNotAvailable" xml:space="preserve">
+    <value>Sorry, you haven't registered for this chatbot service yet!</value>
   </data>
 </root>

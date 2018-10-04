@@ -8,11 +8,11 @@ Message Services
 
 Get Messages
 ------------
-Gets personal messages, normal/special announcements for customer.
+Gets personal messages, normal/special announcements for customers.
 
   **Http Request:**
 
-  ``GET: /api/message/{custId}/messages/{messageType}/{language}/{fromTime}/{toTime}``
+  ``POST: /api/message``
 
   **Request Headers:**
 
@@ -22,21 +22,36 @@ Gets personal messages, normal/special announcements for customer.
    Authorization    Bearer ``<token>``             
   ===============  ============================
 
-  **Query Paramaters:**
+  **Request Body:**
 
-  ============  =======  ===========================================================================
-  Paramater     Type     Description
-  ============  =======  ===========================================================================
-  custId        int      customer id
-  ------------  -------  ---------------------------------------------------------------------------
-  messageType   int      Message Type (0: normal message, 1: personal message, 2: special message )
-  ------------  -------  ---------------------------------------------------------------------------
-  language      string   language code (en-US, zh-TW, zh-CN, ja-JP, th-TH, ko-KR, vi-VN)
-  ------------  -------  ---------------------------------------------------------------------------
-  fromTime      long     Start time to query messages in milliseconds.
-  ------------  -------  ---------------------------------------------------------------------------
-  toTime        long     End time to query messages in milliseconds.
-  ============  =======  ===========================================================================
+  ============  ==========================  ===========================================================================
+  Paramater     Type                        Description
+  ============  ==========================  ===========================================================================
+  messageType   int                         Message Type (0: normal message, 1: personal message, 2: special message )
+  ------------  --------------------------  ---------------------------------------------------------------------------
+  fromTime      long                        Start time to query messages in milliseconds.
+  ------------  --------------------------  ---------------------------------------------------------------------------
+  toTime        long                        End time to query messages in milliseconds.
+  ------------  --------------------------  ---------------------------------------------------------------------------
+  customers     Array of customer object    List of customer need to query messages
+  ============  ==========================  ===========================================================================
+
+  Request body sample in JSON format:
+
+  .. code-block:: json
+
+    {
+        "messageType": 1,
+        "fromTime": 1537770486857,
+        "toTime": 1537770500450,
+        "customers": [
+            {
+            "custId": 1,
+            "roleId": 2,
+            "language": "en-US"
+            }
+        ]
+    }
 
   **Response:**
 
@@ -48,11 +63,11 @@ Gets personal messages, normal/special announcements for customer.
 
     [
         { 
-            "messageid": 1073779205, 
+            "custid": 1, 
             "content" : "Testing message" 
         },
         { 
-            "messageid": 1073779206, 
+            "custid": 1, 
             "content" : "Testing message" 
         }
     ]

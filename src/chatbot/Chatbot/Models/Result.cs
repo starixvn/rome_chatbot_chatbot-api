@@ -16,8 +16,11 @@
 
         public string Message { get; }
 
-        public static Result CreateSuccessfulResult()
-            => new Result(0);
+        public static Result CreateSuccessfulResult(string message = "")
+            => new Result(0, message);
+
+        public static Result CreateErrorResult(string message = "")
+            => new Result(1, message);
     }
 
     public class VerificationCodeResult : Result

@@ -2,12 +2,26 @@
 {
     public class FunctionLanguageDto
     {
-        public int FunctionId { get; set; }
+        public FunctionLanguageDto() { }
 
-        public string FunctionName { get; set; }
+        public FunctionLanguageDto(
+            int functionId,
+            string functionName,
+            string resourceType,
+            string languageCode)
+        {
+            FunctionId = functionId;
+            FunctionName = functionName;
+            ResourceType = resourceType;
+            LanguageCode = languageCode;
+        }
 
-        public string ResourceType { get; set; }
+        public int FunctionId { get; private set; }
 
-        public string LanguageCode { get; set; }
+        public string FunctionName { get; private set; }
+
+        public string ResourceType { get; private set; }
+
+        public string LanguageCode { get; private set; }
     }
 }

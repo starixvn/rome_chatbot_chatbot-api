@@ -1,0 +1,79 @@
+﻿namespace Chatbot.Schedule.Service.Jobs
+{
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Chatbot.Schedule.Service.Constants;
+    using Fanex.Logging;
+    using Quartz;
+    using Serilog;
+
+    internal class JobFailureHandler : IJobListener
+    {
+        private const string NumberOfRetriesKey = "NumberOfRetries";
+        private const int MaxRetries = 5;
+        private const int RetryInterval = 60;
+
+        public string Name => "FailJobListener";
+
+        public Task JobExecutionVetoed(IJobExecutionContext context, CancellationToken cancellationToken = default)
+            => Task.CompletedTask;
+
+        public Task JobToBeExecuted(IJobExecutionContext context, CancellationToken cancellationToken = default)
+        {
+            if (!context.JobDetail.JobDataMap.Contains(NumberOfRetriesKey))
+            {
+                context.JobDetail.JobDataMap.Put(NumberOfRetriesKey, 0);
+            }
+
+            var numberRetries = context.JobDetail.JobDataMap.GetIntValue(NumberOfRetriesKey);
+            context.JobDetail.JobDataMap.Put(NumberOfRetriesKey, ++numberRetries);
+
+            return Task.CompletedTask;
+        }
+
+        public Task JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException, CancellationToken cancellationToken = default)
+        {
+            if (jobException == null)
+            {
+                return Task.CompletedTask;
+            }
+
+            var numberRetries = context.JobDetail.JobDataMap.GetIntValue(NumberOfRetriesKey);
+            var cronSchedule = context.JobDetail.JobDataMap.GetString(JobDataKey.CronSchedule);
+
+            if (numberRetries <= MaxRetries)
+            {
+                var triggerBuilder = TriggerBuilder
+                    .Create()
+                    .WithIdentity(context.Trigger.Key)
+                    .StartAt(DateTime.Now.AddSeconds(RetryInterval * numberRetries))
+                    .ForJob(context.JobDetail);
+
+                var trigger = !string.IsNullOrEmpty(cronSchedule) ?
+                    triggerBuilder.WithCronSchedule(cronSchedule).Build() :
+                    triggerBuilder.WithSimpleSchedule(x => x.WithRepeatCount(0)).Build();
+
+                context.JobDetail.JobDataMap.Put(NumberOfRetriesKey, numberRetries);
+
+                Log.Error($"Job with ID and type: {context.JobDetail.Key}, {context.JobDetail.JobType}" +
+                    $" has thrown the exception: {jobException}. Running again in {RetryInterval * numberRetries} seconds.");
+
+                context.Scheduler.UnscheduleJob(context.Trigger.Key);
+                context.Scheduler.ScheduleJob(context.JobDetail, trigger);
+            }
+            else
+            {
+                var message = $"Job with ID and type: {context.JobDetail.Key}, " +
+                            $"{context.JobDetail.JobType} has run {MaxRetries} times and failed. \n" +
+                            $"UserId: {context.JobDetail.JobDataMap.GetInt(JobDataKey.UserId)} \n" +
+                            $"FunctionId: {context.JobDetail.JobDataMap.GetInt(JobDataKey.FunctionId)} \n";
+
+                Log.Error(message);
+                Logger.Log.Error(message);
+            }
+
+            return Task.CompletedTask;
+        }
+    }
+}

@@ -130,4 +130,10 @@
   <data name="GivenCredit" xml:space="preserve">
     <value>貸付金額</value>
   </data>
+  <data name="MasterTotalCredit" xml:space="preserve">
+    <value>マスター貸付</value>
+  </data>
+  <data name="AgentTotalCredit" xml:space="preserve">
+    <value>エージェント貸付</value>
+  </data>
 </root>

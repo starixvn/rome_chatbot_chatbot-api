@@ -1,0 +1,126 @@
+﻿namespace Chatbot.Modules.Functions.FunctionHandler
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Alpha.Services.Client.Services;
+    using Chatbot.Models;
+    using Chatbot.Modules.Funtions.Params;
+    using Chatbot.Modules.MessageBuilders;
+    using Chatbot.Modules.MessageSenders;
+    using Fanex.Logging;
+
+    public interface IFunctionHandler
+    {
+        Task<Result> Handle(FunctionParam param);
+
+        Task<IEnumerable<FunctionMessage>> GetFunctionMessages(FunctionParam param);
+    }
+
+    public class DefaultFunctionHandler : IFunctionHandler
+    {
+        private readonly IMessageBuilder messageBuilder;
+        private readonly IMessageSender messageSender;
+        private readonly CustomerService customerService;
+        private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders;
+        private readonly ILogger logger;
+
+        protected bool SendMessageInCaseAccountClosed = true;
+
+        public DefaultFunctionHandler(
+            IMessageBuilder messageBuilder,
+            IMessageSender messageSender,
+            CustomerService customerService,
+            ILogger logger,
+            IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders = null)
+        {
+            this.messageBuilder = messageBuilder;
+            this.messageSender = messageSender;
+            this.getDataHanlders = getDataHanlders;
+            this.customerService = customerService;
+            this.logger = logger;
+        }
+
+        public virtual async Task<Result> Handle(FunctionParam param)
+        {
+            // Check Params
+
+            if (!getDataHanlders.ContainsKey(param.Function.Id))
+            {
+                throw new InvalidOperationException($"Cannot find get data function for function: {param.Function.Id}-{param.Function.Name}");
+            }
+
+            if (await IsCustomerClosed(param.User).ConfigureAwait(false))
+            {
+                return await BuildAndSendAccountClosedMessage(param).ConfigureAwait(false);
+            }
+
+            return await RunHandler(param).ConfigureAwait(false);
+        }
+
+        private async Task<Result> RunHandler(FunctionParam param)
+        {
+            var data = await getDataHanlders[param.Function.Id](param).ConfigureAwait(false);
+
+            if (data == null)
+            {
+                return Result.CreateSuccessfulResult("No data");
+            }
+
+            return await BuildAndSendMessage(param, data).ConfigureAwait(false);
+        }
+
+        protected Task<bool> IsCustomerClosed(User user)
+            => customerService.IsAccountClosed(user.CustId, user.SubAccountId);
+
+        protected virtual Task<Result> BuildAndSendAccountClosedMessage(FunctionParam param)
+        {
+            if (SendMessageInCaseAccountClosed)
+            {
+                var message = messageBuilder.BuildAccountClosedMessage(param.User.Language);
+
+                return messageSender.SendMessage(param.User.Id, param.Messenger, message, param.Function.Id);
+            }
+
+            return Task.FromResult(Result.CreateSuccessfulResult());
+        }
+
+        protected Task<Result> BuildAndSendMessage(FunctionParam param, object data)
+        {
+            string message = BuildMessage(param.User.Language, param.Function.Id, param.Messenger.Type, data);
+
+            return messageSender.SendMessage(param.User.Id, param.Messenger, message, param.Function.Id);
+        }
+
+        protected string BuildMessage(string language, int functionId, int messengerType, object data)
+            => messageBuilder.BuildCommandResultMessage(
+                    language,
+                    functionId,
+                    messengerType,
+                    data);
+
+        public virtual Task<IEnumerable<FunctionMessage>> GetFunctionMessages(FunctionParam param)
+            => Task.FromResult<IEnumerable<FunctionMessage>>(new List<FunctionMessage>());
+
+        protected void LogError(User user, Exception ex)
+        {
+            var logMessage = string.Join(
+                                    "\n",
+                                    "Function Handler Exception",
+                                    $"User: {user.Id}, CustId: {user.CustId}, SubAccId: {user.SubAccountId}, Language: {user.Language}",
+                                    ex.ToString());
+
+            logger.Error(logMessage);
+        }
+
+        protected void LogError(Exception ex)
+        {
+            var logMessage = string.Join(
+                                    "\n",
+                                    "Function Handler Exception",
+                                    ex.ToString());
+
+            logger.Error(logMessage);
+        }
+    }
+}

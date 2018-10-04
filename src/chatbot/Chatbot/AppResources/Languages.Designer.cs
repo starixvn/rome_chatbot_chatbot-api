@@ -124,7 +124,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your command is not recognized..
+        ///   Looks up a localized string similar to Invalid command..
         /// </summary>
         public static string CommandIsNotRecognized {
             get {
@@ -214,7 +214,52 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your account has been verified, Chatbot is fully functioning..
+        ///   Looks up a localized string similar to Yesterday Win Loss.
+        /// </summary>
+        public static string Header_4 {
+            get {
+                return ResourceManager.GetString("Header_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personal Message.
+        /// </summary>
+        public static string Header_5 {
+            get {
+                return ResourceManager.GetString("Header_5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Special Announcement.
+        /// </summary>
+        public static string Header_6 {
+            get {
+                return ResourceManager.GetString("Header_6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normal Announcement.
+        /// </summary>
+        public static string Header_7 {
+            get {
+                return ResourceManager.GetString("Header_7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Announcement.
+        /// </summary>
+        public static string Header_8 {
+            get {
+                return ResourceManager.GetString("Header_8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your Letstalk ID has been verified, Atom is fully functioning..
         /// </summary>
         public static string InformingVerifiedMessage_1 {
             get {
@@ -340,6 +385,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, you haven&apos;t registered for this chatbot service yet!.
+        /// </summary>
+        public static string ServiceNotAvailable {
+            get {
+                return ResourceManager.GetString("ServiceNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Super.
         /// </summary>
         public static string Super {
@@ -412,7 +466,16 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You have requested to set up Chatbot for your account {0}. Your verification code is {1}..
+        ///   Looks up a localized string similar to Sorry, the system is under maintenance from {0} to {1} GMT+8. Please come back later..
+        /// </summary>
+        public static string UnderMaintenance {
+            get {
+                return ResourceManager.GetString("UnderMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have requested to set up Atom. Your verification code is {0}..
         /// </summary>
         public static string VerificationCode_1 {
             get {
@@ -421,7 +484,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The code will be expired in {0} minutes. To secure your information, please delete this message after completing verification..
+        ///   Looks up a localized string similar to The code will expire in {0} minutes..
         /// </summary>
         public static string VerificationCode_2 {
             get {
@@ -462,6 +525,15 @@ namespace Chatbot.AppResources {
         public static string YesterdayWinLoss {
             get {
                 return ResourceManager.GetString("YesterdayWinLoss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your account is closed..
+        /// </summary>
+        public static string YourAccountIsClosed {
+            get {
+                return ResourceManager.GetString("YourAccountIsClosed", resourceCulture);
             }
         }
     }

@@ -7,13 +7,13 @@ Report Services
    :backlinks: top
 
 Get Win-Loss
-----------------------
+------------
 
 Gets win loss report for customer by date.
 
   **Http Request:**
 
-  ``GET: /api/report/{custId}/winloss/{date}``
+  ``GET: /api/report/{custId}/{custLevel}/winloss/{date}``
 
   **Request Headers:**
 
@@ -28,7 +28,9 @@ Gets win loss report for customer by date.
   ==========  =====  ===================================
   Paramater   Type   Description
   ==========  =====  ===================================
-  custId      int    customer id
+  custId      int    Customer id
+  ----------  -----  -----------------------------------
+  custLevel   int    Customer level
   ----------  -----  -----------------------------------
   date        long   Time of the report in milliseconds
   ==========  =====  ===================================
@@ -39,74 +41,49 @@ Gets win loss report for customer by date.
 
   Response body sample in JSON format:
 
-    .. hlist::
-        :columns: 3
+    - Customer level is Agent:
 
-        - Member Yesterday Win Loss (Customer level is Agent)
+    .. code-block:: JSON
 
-            .. code-block:: JSON
+        {
+            "Turnover": 30000,
+            "GrossComm": 50,
+            "MemberNetWinLoss.WinLoss": -50,
+            "MemberNetWinLoss.Comm": -5,
+            "MemberNetWinLoss.Total": -55,
+            "AgentNetWinLoss.WinLoss": -50,
+            "AgentNetWinLoss.Comm": 5,
+            "AgentNetWinLoss.Total": -70,
+            "companyWinLoss": -500
+        }
 
-                {
-                    "turnover": 30000,
-                    "grosscomm": 50,
-                    "memberwinloss": {
-                        "winloss": -50,
-                        "comm": -5,
-                        "total": -55
-                    },
-                    "agentwinloss": {
-                        "winloss": -50,
-                        "comm": 5,
-                        "total": -70
-                    },
-                    "masterwinloss": null,
-                    "superwinloss": null,
-                    "company": -500
-                }
+    - Customer level is Master:
 
-        - Agent Yesterday Win Loss (Customer level is Master)
+    .. code-block:: JSON
 
-            .. code-block:: JSON
+        {
+            "Turnover": 30000,
+            "GrossComm": 50,
+            "AgentNetWinLoss.Total": -55,
+            "MasterNetWinLoss.WinLoss": -50,
+            "MasterNetWinLoss.Comm": 5,
+            "MasterNetWinLoss.Total": -70,
+            "companyWinLoss": -500
+        }
+    
+    - Customer level is Super:
 
-                {
-                    "turnover": 30000,
-                    "grosscomm": 50,
-                    "memberwinloss": null,
-                    "agentwinloss": {
-                        "winloss": null,
-                        "comm": null,
-                        "total": -70
-                    },
-                    "masterwinloss": {
-                        "winloss": -50,
-                        "comm": -5,
-                        "total": -70
-                    },
-                    "superwinloss": null,
-                    "company": -500
-                }
+    .. code-block:: JSON
 
-        - Master Yesterday Win Loss (Customer level is Super)
-
-            .. code-block:: JSON
-
-                {
-                    "turnover": 30000,
-                    "grosscomm": 50,
-                    "memberwinloss": null,
-                    "agentwinloss": null,
-                    "masterwinloss": {
-                        "winloss": null,
-                        "comm": null,
-                        "total": -70
-                    },
-                    "superwinloss": {
-                        "winloss": -50,
-                        "comm": -5,
-                        "total": -70
-                    },
-                    "company": -500
-                }
+        {
+            "Turnover": 30000,
+            "GrossComm": 50,
+            "MasterNetWinLoss.Total": -55,
+            "SuperNetWinLoss.WinLoss": -50,
+            "SuperNetWinLoss.Comm": 5,
+            "SuperNetWinLoss.Total": -70,
+            "companyWinLoss": -500
+        }
 
 ----------------------
 
@@ -117,7 +94,7 @@ Gets oustanding report for customer.
 
   **Http Request:**
 
-  ``GET: /api/report/{custId}/oustanding``
+  ``GET: /api/report/{custId}/{custLevel}/outstanding``
 
   **Request Headers:**
 
@@ -132,7 +109,9 @@ Gets oustanding report for customer.
   ==========  =====  ============================
   Paramater   Type   Description
   ==========  =====  ============================
-  custId      int    customer id
+  custId      int    Customer id
+  ----------  -----  ----------------------------
+  custLevel   int    Customer level
   ==========  =====  ============================
 
   **Response:**
@@ -141,13 +120,33 @@ Gets oustanding report for customer.
 
   Response body sample in JSON format:
 
-  .. code-block:: json
+    - Customer level is Agent:
+    
+    .. code-block:: json
 
-    {
-        "levelid": 2,
-        "totaloutstanding": 1000,
-        "outstanding": 50
-    }
+        {
+            "Member": 1000,
+            "Agent": 50
+        }
+    
+    - Customer level is Master:
+    
+    .. code-block:: json
+
+        {
+            "Member": 1000,
+            "Master": 50
+        }
+
+    - Customer level is Super:
+    
+    .. code-block:: json
+
+        {
+            "Member": 1000,
+            "Super": 50
+        }
+
 
 --------------------------
 
@@ -182,16 +181,50 @@ Gets balance info for customer
 
   Response body sample in JSON format:
 
-  .. code-block:: json
+    - Customer level is Agent:
 
-    {
-        "currency": "UUS",
-        "cashbalance": 1500000,
-        "yesterdaycashbalance": 1500000,
-        "totalbalance": -120000,
-        "yesterdaytotalbalance": -120906,
-        "todaywinloss": 0,
-        "yesterdaywinloss": 0,
-        "givencredit": 6000000,
-        "membercredit": 5630000
-    }
+    .. code-block:: json
+
+        {
+            "CurrencyName": "UUS",
+            "CashBalance": 1500000,
+            "YesterdayCashBalance": 1500000,
+            "TotalBalance": -120000,
+            "YesterdayTotalBalance": -120906,
+            "TodayWinLoss": 0,
+            "YesterdayWinLoss": 0,
+            "GivenCredit": 6000000,
+            "MemberTotalCredit": 5630000
+        }
+
+    - Customer level is Master:
+
+    .. code-block:: json
+
+        {
+            "CurrencyName": "UUS",
+            "CashBalance": 1500000,
+            "YesterdayCashBalance": 1500000,
+            "TotalBalance": -120000,
+            "YesterdayTotalBalance": -120906,
+            "TodayWinLoss": 0,
+            "YesterdayWinLoss": 0,
+            "GivenCredit": 6000000,
+            "AgentTotalCredit": 5630000
+        }
+
+    - Customer level is Super:
+
+    .. code-block:: json
+
+        {
+            "CurrencyName": "UUS",
+            "CashBalance": 1500000,
+            "YesterdayCashBalance": 1500000,
+            "TotalBalance": -120000,
+            "YesterdayTotalBalance": -120906,
+            "TodayWinLoss": 0,
+            "YesterdayWinLoss": 0,
+            "GivenCredit": 6000000,
+            "MasterTotalCredit": 5630000
+        }
