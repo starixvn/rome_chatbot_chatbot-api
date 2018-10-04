@@ -125,6 +125,7 @@
                 var message = string.Format(GetResource(nameof(Languages.UnderMaintenance), langCode), from, to);
                 stringBuilder
                     .Append(message)
+                    .Append(GetMessengerFormatter(messengerType).NewLine())
                     .Append(GetMessengerFormatter(messengerType).NewLine());
             }
 
@@ -139,6 +140,7 @@
             {
                 stringBuilder
                     .Append(GetResource(nameof(Languages.ServiceNotAvailable), langCode))
+                    .Append(GetMessengerFormatter(messengerType).NewLine())
                     .Append(GetMessengerFormatter(messengerType).NewLine());
             }
 
