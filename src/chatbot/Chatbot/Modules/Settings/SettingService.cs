@@ -56,7 +56,6 @@
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
         private readonly IChatbotConfigs chatbotConfigs;
-        private readonly NotificationService messageService;
 
 #pragma warning disable S107 // Methods should not have too many parameters
 
@@ -66,7 +65,6 @@
             IMessageBuilder messageBuilder,
             ICacheService cacheService,
             IChatbotConfigs chatbotConfigs,
-            NotificationService messageService,
             Func<string> randomNumberFunc = null,
             Func<DateTime> getCurrentDateTimeFunc = null)
 #pragma warning restore S107 // Methods should not have too many parameters
@@ -78,7 +76,6 @@
             this.messageSender = messageSender;
             this.messageBuilder = messageBuilder;
             this.chatbotConfigs = chatbotConfigs;
-            this.messageService = messageService;
         }
 
         public async Task GenerateVerificationCode(int userId, Messenger messenger)

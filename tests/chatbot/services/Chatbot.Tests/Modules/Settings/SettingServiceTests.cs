@@ -27,7 +27,6 @@
         private readonly ICacheService cacheService;
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
-        private readonly IMessageLogger messageLogger;
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly NotificationService messageService;
 
@@ -42,7 +41,6 @@
             messageSender = Substitute.For<IMessageSender>();
             messageBuilder = Substitute.For<IMessageBuilder>();
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
-            messageService = Substitute.For<NotificationService>();
 
             settingService = new SettingServiceImpl(
                 dynamicRepository,
@@ -50,7 +48,6 @@
                 messageBuilder,
                 cacheService,
                 chatbotConfigs,
-                messageService,
                 randomNumberFunc,
                 getCurrentDateTimeFunc);
         }

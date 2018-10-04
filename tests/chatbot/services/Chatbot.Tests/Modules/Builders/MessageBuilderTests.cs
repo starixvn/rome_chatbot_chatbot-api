@@ -98,7 +98,7 @@
             var message = messageBuilder.BuildUnderMaintenanceMessage(1, "2:00", "3:00");
 
             Assert.Equal(
-                "Sorry, the system is under maintenance from 2:00 to 3:00 GMT+8. Please come back later._newline_Sorry, the system is under maintenance from 2:00 to 3:00 GMT+8. Please come back later._newline_Sorry, the system is under maintenance from 2:00 to 3:00 GMT+8. Please come back later._newline_",
+                "Sorry, the system is under maintenance from 2:00 to 3:00 GMT+8. Please come back later._newline__newline_Sorry, the system is under maintenance from 2:00 to 3:00 GMT+8. Please come back later._newline__newline_Sorry, the system is under maintenance from 2:00 to 3:00 GMT+8. Please come back later._newline__newline_",
                 message);
         }
 
