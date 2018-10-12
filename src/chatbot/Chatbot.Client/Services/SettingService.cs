@@ -11,19 +11,19 @@ namespace Chatbot.Client.Services
     {
         Task<List<Function>> GetFunctions(int userId, string language);
 
-        Task<Result> UpdateFunctions(int userId, IEnumerable<Function> functions);
+        Task<Result> UpdateFunctions(int userId, IEnumerable<Function> functions, LogParam logParam);
 
-        Task<Result> UpdateLanguage(int userId, string language);
+        Task<Result> UpdateLanguage(int userId, string language, LogParam logParam);
 
         Task<Result> GenerateVerificationCode(int userId, string messengerUsername, int messengerType = MessengerType.Letstalk);
 
-        Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, string messengerUsername, int messengerType = MessengerType.Letstalk);
+        Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, string messengerUsername, int messengerType, LogParam logParam);
 
-        Task<AddingUserResult> AddUser(int custId, int custLevel, int subAccountId, string language, string messengerUsername, int messengerType = MessengerType.Letstalk);
+        Task<AddingUserResult> AddUser(int custId, int custLevel, int subAccountId, string language, string messengerUsername, int messengerType, LogParam logParam);
 
         Task<User> GetUser(int custId, int subAccountId, string language);
 
-        Task<Result> Unsubscribe(int userId, int messengerType, string messengerUsername);
+        Task<Result> Unsubscribe(int userId, int messengerType, string messengerUsername, LogParam logParam);
 
         Task<Messenger> GetMessenger(int messengerType, string messengerUsername);
 
@@ -50,20 +50,28 @@ namespace Chatbot.Client.Services
             return restClient.ExecuteGetAsync<List<Function>>($"setting/{userId}/function/{language}");
         }
 
-        public Task<Result> UpdateFunctions(int userId, IEnumerable<Function> functions)
+        public Task<Result> UpdateFunctions(int userId, IEnumerable<Function> functions, LogParam logParam)
         {
             InputValidator.ValidateInputParam(nameof(userId), userId);
             InputValidator.ValidateInputParam(nameof(functions), functions);
+            InputValidator.ValidateInputParam(nameof(logParam), logParam);
 
-            return restClient.ExecutePostAsync<Result>($"setting/{userId}/function", functions);
+            return restClient.ExecutePostAsync<Result>(
+                $"setting/{userId}/function",
+                new
+                {
+                    functions,
+                    logParam
+                });
         }
 
-        public Task<Result> UpdateLanguage(int userId, string language)
+        public Task<Result> UpdateLanguage(int userId, string language, LogParam logParam)
         {
             InputValidator.ValidateInputParam(nameof(userId), userId);
             InputValidator.ValidateInputParam(nameof(language), language);
+            InputValidator.ValidateInputParam(nameof(logParam), logParam);
 
-            return restClient.ExecutePostAsync<Result>($"setting/{userId}/language/{language}");
+            return restClient.ExecutePostAsync<Result>($"setting/{userId}/language/{language}", logParam);
         }
 
         public Task<Result> GenerateVerificationCode(int userId, string messengerUsername, int messengerType = 1)
@@ -81,17 +89,19 @@ namespace Chatbot.Client.Services
         }
 
         public Task<AddingUserResult> AddUser(
-            int custId, 
+            int custId,
             int custLevel,
-            int subAccountId, 
-            string language, 
-            string messengerUsername, 
-            int messengerType = 1)
+            int subAccountId,
+            string language,
+            string messengerUsername,
+            int messengerType,
+            LogParam logParam)
         {
             InputValidator.ValidateInputParam(nameof(custId), custId);
             InputValidator.ValidateInputParam(nameof(messengerUsername), messengerUsername);
             InputValidator.ValidateInputParam(nameof(messengerType), messengerType);
             InputValidator.ValidateInputParam(nameof(language), language);
+            InputValidator.ValidateInputParam(nameof(logParam), logParam);
 
             return restClient.ExecutePostAsync<AddingUserResult>(
                 $"setting/user",
@@ -102,22 +112,33 @@ namespace Chatbot.Client.Services
                     subAccountId,
                     language,
                     messengerUsername,
-                    messengerType
+                    messengerType,
+                    logParam
                 });
         }
 
         public Task<User> GetUser(int custId, int subAccountId, string language)
             => restClient.ExecuteGetAsync<User>($"setting/user?custId={custId}&subAccountId={subAccountId}&language={language}");
 
-        public Task<Result> Unsubscribe(int userId, int messengerType, string messengerUsername)
+        public Task<Result> Unsubscribe(
+            int userId,
+            int messengerType,
+            string messengerUsername,
+            LogParam logParam)
         {
             InputValidator.ValidateInputParam(nameof(userId), userId);
             InputValidator.ValidateInputParam(nameof(messengerType), messengerType);
+            InputValidator.ValidateInputParam(nameof(logParam), logParam);
 
-            return restClient.ExecutePostAsync<Result>($"setting/{userId}/unsubscribe/{messengerType}/{messengerUsername}");
+            return restClient.ExecutePostAsync<Result>($"setting/{userId}/unsubscribe/{messengerType}/{messengerUsername}", logParam);
         }
 
-        public Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, string messengerUsername, int messengerType = 1)
+        public Task<VerificationCodeResult> VerifyVerificationCode(
+            int userId,
+            string verificationCode,
+            string messengerUsername,
+            int messengerType,
+            LogParam logParam)
         {
             InputValidator.ValidateInputParam(nameof(userId), userId);
             InputValidator.ValidateInputParam(nameof(verificationCode), verificationCode);
@@ -130,7 +151,8 @@ namespace Chatbot.Client.Services
                 {
                     verificationCode,
                     messengerUsername,
-                    messengerType
+                    messengerType,
+                    logParam
                 });
         }
 

@@ -1,0 +1,45 @@
+﻿namespace Chatbot.Modules.Settings.Logs
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using Chatbot.Constants;
+    using Chatbot.Models;
+
+    public class UpdateFunctionsLog : LogData
+    {
+        public UpdateFunctionsLog(
+            int actorId,
+            int custId,
+            string ip,
+            IEnumerable<Function> newFunctionSettings,
+            IEnumerable<Function> oldFunctionSettings)
+            : base(actorId, custId, ip)
+        {
+            NewValues = new Dictionary<string, object>();
+            OldValues = new Dictionary<string, object>();
+
+            foreach (var setting in oldFunctionSettings)
+            {
+                OldValues.Add($"Fucntion{setting.Id}", setting.Enabled);
+
+                var newSetting = newFunctionSettings.FirstOrDefault(s => s.Id == setting.Id);
+                if (newSetting == null)
+                {
+                    NewValues.Add($"Fucntion{setting.Id}", setting.Enabled);
+                }
+                else
+                {
+                    NewValues.Add($"Fucntion{newSetting.Id}", newSetting.Enabled);
+                }
+            }
+        }
+
+        public override int ActionId => LogAction.UpdateChatbotFunctions;
+
+        public override string SPName => "Chatbot_UpdateUserFunctions";
+
+        public override IDictionary<string, object> NewValues { get; }
+
+        public override IDictionary<string, object> OldValues { get; }
+    }
+}

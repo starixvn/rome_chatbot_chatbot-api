@@ -40,12 +40,28 @@
                 new Function{ Id = 1, Command = "cm" },
                 new Function{ Id = 2, Command = "cm2" }
             };
+            var logParam = new LogParam
+            {
+                ActorId = 1,
+                CustId = 2,
+                IP = "127.0.0.1"
+            };
 
-            settingService.UpdateFunctions(userId, functions).GetAwaiter().GetResult();
+            settingService.UpdateFunctions(userId, functions, logParam).GetAwaiter().GetResult();
+
+            Func<object, bool> assert = data =>
+            {
+                var type = data.GetType();
+                var actualFunctions = type.GetProperty("functions").GetValue(data);
+                var actualLogParam = type.GetProperty("logParam").GetValue(data);
+
+                return actualFunctions == functions
+                    && actualLogParam == logParam;
+            };
 
             restClient.Received().ExecutePostAsync<Result>(
                 "setting/1/function",
-                functions);
+                Arg.Is<object>(data => assert(data)));
         }
 
         [Fact]
@@ -53,10 +69,18 @@
         {
             var userId = 1;
             var language = "en-US";
+            var logParam = new LogParam
+            {
+                ActorId = 1,
+                CustId = 2,
+                IP = "127.0.0.1"
+            };
 
-            settingService.UpdateLanguage(userId, language).GetAwaiter().GetResult();
+            settingService.UpdateLanguage(userId, language, logParam).GetAwaiter().GetResult();
 
-            restClient.Received().ExecutePostAsync<Result>("setting/1/language/en-US");
+            restClient.Received().ExecutePostAsync<Result>(
+                "setting/1/language/en-US",
+                Arg.Is<object>(data => data == logParam));
         }
 
         [Fact]
@@ -74,7 +98,7 @@
                 var actualMessengerUsername = type.GetProperty("messengerUsername").GetValue(data);
                 var actualMessengerType = (int)type.GetProperty("messengerType").GetValue(data);
 
-                return actualMessengerUsername == "username"
+                return actualMessengerUsername.Equals("username")
                     && actualMessengerType == messengerType;
             };
 
@@ -92,8 +116,14 @@
             var language = "en-US";
             var messengerUsername = "username";
             var messengerType = 2;
+            var logParam = new LogParam
+            {
+                ActorId = custId,
+                CustId = custId,
+                IP = "172.0.0.1"
+            };
 
-            settingService.AddUser(custId, custLevel, subAccountId, language, messengerUsername, messengerType).GetAwaiter().GetResult();
+            settingService.AddUser(custId, custLevel, subAccountId, language, messengerUsername, messengerType, logParam).GetAwaiter().GetResult();
 
             Func<object, bool> assert = data =>
             {
@@ -104,13 +134,15 @@
                 var actualCustLevel = (int)type.GetProperty("custLevel").GetValue(data);
                 var actualSubAccountId = (int)type.GetProperty("subAccountId").GetValue(data);
                 var actualLanguage = type.GetProperty("language").GetValue(data);
+                var actualLogParam = type.GetProperty("logParam").GetValue(data);
 
-                return actualMessengerUsername == "username"
+                return actualMessengerUsername.Equals("username")
                     && actualMessengerType == messengerType
                     && actualCustId == custId
                     && actualCustLevel == custLevel
-                    && actualLanguage == language
-                    && actualSubAccountId == subAccountId;
+                    && actualLanguage.Equals(language)
+                    && actualSubAccountId == subAccountId
+                    && actualLogParam == logParam;
             };
 
             restClient.Received().ExecutePostAsync<AddingUserResult>(
@@ -136,10 +168,18 @@
             var userId = 1;
             var messengerType = 2;
             var messengerUsername = "messenger-name";
+            var logParam = new LogParam
+            {
+                ActorId = 1,
+                CustId = 2,
+                IP = "172.0.0.1"
+            };
 
-            settingService.Unsubscribe(userId, messengerType, messengerUsername).GetAwaiter().GetResult();
+            settingService.Unsubscribe(userId, messengerType, messengerUsername, logParam).GetAwaiter().GetResult();
 
-            restClient.Received().ExecutePostAsync<Result>("setting/1/unsubscribe/2/messenger-name");
+            restClient.Received().ExecutePostAsync<Result>(
+                "setting/1/unsubscribe/2/messenger-name",
+                Arg.Is<object>(data => data == logParam));
         }
 
         [Fact]
@@ -149,8 +189,14 @@
             var messengerUsername = "username";
             var messengerType = 2;
             var verificationCode = "343434";
+            var logParam = new LogParam
+            {
+                ActorId = 1,
+                CustId = 2,
+                IP = "172.0.0.1"
+            };
 
-            settingService.VerifyVerificationCode(userId, verificationCode, messengerUsername, messengerType).GetAwaiter().GetResult();
+            settingService.VerifyVerificationCode(userId, verificationCode, messengerUsername, messengerType, logParam).GetAwaiter().GetResult();
 
             Func<object, bool> assert = data =>
             {
@@ -158,10 +204,12 @@
                 var actualMessengerUsername = type.GetProperty("messengerUsername").GetValue(data);
                 var actualMessengerType = (int)type.GetProperty("messengerType").GetValue(data);
                 var actualVerificationCode = type.GetProperty("verificationCode").GetValue(data);
+                var actualLogParam = type.GetProperty("logParam").GetValue(data);
 
-                return actualMessengerUsername == "username"
+                return actualMessengerUsername.Equals("username")
                     && actualMessengerType == messengerType
-                    && actualVerificationCode == verificationCode;
+                    && actualVerificationCode.Equals(verificationCode)
+                    && actualLogParam == logParam;
             };
 
             restClient.Received().ExecutePostAsync<VerificationCodeResult>(

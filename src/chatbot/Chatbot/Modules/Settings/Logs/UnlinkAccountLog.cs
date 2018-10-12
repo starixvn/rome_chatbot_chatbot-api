@@ -1,0 +1,36 @@
+﻿namespace Chatbot.Modules.Settings.Logs
+{
+    using System.Collections.Generic;
+    using Chatbot.Constants;
+    using Chatbot.Models;
+
+    public class UnlinkAccountLog : LogData
+    {
+        private readonly IDictionary<int, int> unlinkAccountLogActions = new Dictionary<int, int>
+        {
+            [MessengerType.Letstalk] = LogAction.UnlinkLetstalkId
+        };
+
+        private readonly Messenger messenger;
+
+        public UnlinkAccountLog(
+            int actorId,
+            int custId,
+            string ip,
+            Messenger messenger)
+            : base(actorId, custId, ip)
+        {
+            this.messenger = messenger;
+        }
+
+        public override int ActionId => unlinkAccountLogActions[messenger.Type];
+
+        public override string SPName => "Chatbot_UpdateMessengerAccountStatus";
+
+        public override IDictionary<string, object> NewValues
+            => new Dictionary<string, object>
+            {
+                [nameof(messenger.Username)] = messenger.Username
+            };
+    }
+}

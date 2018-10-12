@@ -17,5 +17,7 @@ namespace Chatbot.WebApi.Params
         public string MessengerUsername { get; set; }
 
         public int CustLevel { get; set; }
+
+        public LogParam LogParam { get; set; }
     }
 }

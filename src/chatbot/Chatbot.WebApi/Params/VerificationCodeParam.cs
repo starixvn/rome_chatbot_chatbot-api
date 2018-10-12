@@ -9,5 +9,7 @@ namespace Chatbot.WebApi.Params
         public int MessengerType { get; set; }
 
         public string MessengerUsername { get; set; }
+
+        public LogParam LogParam { get; set; }
     }
 }
