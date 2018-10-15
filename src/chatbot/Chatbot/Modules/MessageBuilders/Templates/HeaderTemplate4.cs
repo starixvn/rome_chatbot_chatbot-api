@@ -6,6 +6,6 @@
     public class HeaderTemplate4 : HeaderTemplate
     {
         public override string ToString(int functionId, CultureInfo cultureInfo)
-         => $"[{GetResource($"Header_{functionId}", cultureInfo)} - {DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd")}]";
+         => $"[{GetResource($"Header_{functionId}", cultureInfo)} - {DateTime.Now.AddDays(-1).ToString("yyyyMMdd")}]";
     }
 }

@@ -15,6 +15,6 @@
             => Languages.ResourceManager.GetString(key, cultureInfo);
 
         public virtual string ToString(int functionId, CultureInfo cultureInfo)
-            => $"[{GetResource($"Header_{functionId}", cultureInfo)} - {DateTime.Now.ToString("yyyy/MM/dd")}]";
+            => $"[{GetResource($"Header_{functionId}", cultureInfo)} - {DateTime.Now.ToString("yyyyMMdd")}]";
     }
 }
