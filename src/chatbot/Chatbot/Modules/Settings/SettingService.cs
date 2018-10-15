@@ -4,14 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Alpha.Services.Client.Services;
     using Chatbot.Configurations;
     using Chatbot.Helpers;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
-    using Chatbot.Modules.Settings.Logs;
+    using Chatbot.Modules.SettingLogs;
+    using Chatbot.Modules.SettingLogs.Models;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
     using Fanex.Caching;
@@ -59,7 +59,7 @@
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
         private readonly IChatbotConfigs chatbotConfigs;
-        private readonly LogService logService;
+        private readonly SettingLogService settingLogService;
 
         public SettingServiceImpl(
             IDynamicRepository dynamicRepository,
@@ -67,7 +67,7 @@
             IMessageBuilder messageBuilder,
             ICacheService cacheService,
             IChatbotConfigs chatbotConfigs,
-            LogService logService,
+            SettingLogService settingLogService,
             Func<string> randomNumberFunc = null,
             Func<DateTime> getCurrentDateTimeFunc = null)
         {
@@ -78,7 +78,7 @@
             this.messageSender = messageSender;
             this.messageBuilder = messageBuilder;
             this.chatbotConfigs = chatbotConfigs;
-            this.logService = logService;
+            this.settingLogService = settingLogService;
         }
 
         public async Task GenerateVerificationCode(int userId, Messenger messenger)
@@ -262,7 +262,7 @@
             var command = new UpdateUserFunctionsCommand(userId, functions);
             await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
 
-            await logService.WriteLog(logData).ConfigureAwait(false);
+            await settingLogService.WriteLog(logData).ConfigureAwait(false);
         }
 
         public async Task UpdateLanguage(int userId, string language, UpdateLanguageLog logData)
@@ -273,7 +273,7 @@
             var command = new UpdateUserLanguageCommand(userId, language);
 
             await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
-            await logService.WriteLog(logData).ConfigureAwait(false);
+            await settingLogService.WriteLog(logData).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -292,7 +292,7 @@
 
             if (userId > 0)
             {
-                await logService.WriteLog(logData).ConfigureAwait(false);
+                await settingLogService.WriteLog(logData).ConfigureAwait(false);
             }
 
             var result = await VerifyMessengerAccount(userId, messenger).ConfigureAwait(false);
@@ -414,7 +414,7 @@
 
             await Task.WhenAll(
                 UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true),
-                logService.WriteLog(logData),
+                settingLogService.WriteLog(logData),
                 ResetUserActionCount(userId, chatbotConfigs.WrongVerificationCodeActionId, messenger.Type, messenger.Username),
                 SendWelcomeMessage(user, messenger))
                 .ConfigureAwait(false);
@@ -534,7 +534,7 @@
         {
             await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, false).ConfigureAwait(false);
 
-            await logService.WriteLog(logData).ConfigureAwait(false);
+            await settingLogService.WriteLog(logData).ConfigureAwait(false);
         }
     }
 }

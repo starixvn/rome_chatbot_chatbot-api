@@ -1,11 +1,11 @@
-﻿namespace Chatbot.Modules.Settings.Logs
+﻿namespace Chatbot.Modules.SettingLogs.Models
 {
     using System.Collections.Generic;
-    using Chatbot.Constants;
+    using Chatbot.Modules.SettingLogs.Constants;
 
     public class UpdateLanguageLog : LogData
     {
-        private const string languageKey = "language";
+        private const string languageKey = "Language";
 
         public UpdateLanguageLog(
 

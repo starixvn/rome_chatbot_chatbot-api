@@ -1,4 +1,4 @@
-﻿namespace Chatbot.Constants
+﻿namespace Chatbot.Modules.SettingLogs.Constants
 {
     public static class LogAction
     {

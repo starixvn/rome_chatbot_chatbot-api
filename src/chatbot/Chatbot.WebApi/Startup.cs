@@ -15,6 +15,7 @@ namespace Chatbot.WebApi
     using Chatbot.Modules.MessageBuilders.Templates;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageServices;
+    using Chatbot.Modules.SettingLogs;
     using Chatbot.Modules.Settings;
     using Chatbot.WebApi.Filters;
     using Chatbot.WebApi.Middlewares;
@@ -76,6 +77,7 @@ namespace Chatbot.WebApi
             services.AddSingleton<FunctionService, FunctionServiceImpl>();
             services.AddSingleton<MessageService, MessageServiceImpl>();
             services.AddSingleton<ReportService, ReportServiceImpl>();
+            services.AddSingleton<SettingLogService, SettingLogServiceImpl>();
             services.AddSingleton<Alpha.Services.Client.Services.LogService, LogServiceImpl>();
 
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {

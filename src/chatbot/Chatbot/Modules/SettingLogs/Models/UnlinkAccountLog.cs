@@ -1,19 +1,20 @@
-﻿namespace Chatbot.Modules.Settings.Logs
+﻿namespace Chatbot.Modules.SettingLogs.Models
 {
     using System.Collections.Generic;
     using Chatbot.Constants;
     using Chatbot.Models;
+    using Chatbot.Modules.SettingLogs.Constants;
 
-    public class VerifyAccountLog : LogData
+    public class UnlinkAccountLog : LogData
     {
-        private readonly IDictionary<int, int> verifyAccountLogActions = new Dictionary<int, int>
+        private readonly IDictionary<int, int> unlinkAccountLogActions = new Dictionary<int, int>
         {
-            [MessengerType.Letstalk] = LogAction.VerifyLetstalkId
+            [MessengerType.Letstalk] = LogAction.UnlinkLetstalkId
         };
 
         private readonly Messenger messenger;
 
-        public VerifyAccountLog(
+        public UnlinkAccountLog(
             int actorId,
             int custId,
             string ip,
@@ -23,7 +24,7 @@
             this.messenger = messenger;
         }
 
-        public override int ActionId => verifyAccountLogActions[messenger.Type];
+        public override int ActionId => unlinkAccountLogActions[messenger.Type];
 
         public override string SPName => "Chatbot_UpdateMessengerAccountStatus";
 

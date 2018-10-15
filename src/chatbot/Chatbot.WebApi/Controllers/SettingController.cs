@@ -6,8 +6,8 @@ namespace Chatbot.WebApi.Controllers
     using System.Threading.Tasks;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
+    using Chatbot.Modules.SettingLogs.Models;
     using Chatbot.Modules.Settings;
-    using Chatbot.Modules.Settings.Logs;
     using Chatbot.WebApi.Params;
     using Microsoft.AspNetCore.Mvc;
 

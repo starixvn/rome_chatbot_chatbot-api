@@ -5,14 +5,14 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Models;
-    using Alpha.Services.Client.Services;
     using Chatbot.Configurations;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.SettingLogs;
+    using Chatbot.Modules.SettingLogs.Models;
     using Chatbot.Modules.Settings;
-    using Chatbot.Modules.Settings.Logs;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
     using Fanex.Caching;
@@ -29,7 +29,7 @@
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
         private readonly IChatbotConfigs chatbotConfigs;
-        private readonly LogService logService;
+        private readonly SettingLogService settingLogService;
 
         private readonly SettingService settingService;
 
@@ -42,7 +42,7 @@
             messageSender = Substitute.For<IMessageSender>();
             messageBuilder = Substitute.For<IMessageBuilder>();
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
-            logService = Substitute.For<LogService>();
+            settingLogService = Substitute.For<SettingLogService>();
 
             settingService = new SettingServiceImpl(
                 dynamicRepository,
@@ -50,7 +50,7 @@
                 messageBuilder,
                 cacheService,
                 chatbotConfigs,
-                logService,
+                settingLogService,
                 randomNumberFunc,
                 getCurrentDateTimeFunc);
         }
@@ -313,8 +313,8 @@
             settingService.UpdateLanguage(userId, language, logData).GetAwaiter().GetResult();
 
             // Assert
-            logService.Received().WriteLog(Arg.Is<ILogData>(
-                log => log == logData));
+            settingLogService.Received().WriteLog(
+                Arg.Is<ILogData>(log => log == logData));
         }
 
         [Fact]

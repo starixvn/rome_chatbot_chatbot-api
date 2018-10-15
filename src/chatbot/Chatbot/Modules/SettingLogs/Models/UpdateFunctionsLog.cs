@@ -1,9 +1,9 @@
-﻿namespace Chatbot.Modules.Settings.Logs
+﻿namespace Chatbot.Modules.SettingLogs.Models
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Chatbot.Constants;
     using Chatbot.Models;
+    using Chatbot.Modules.SettingLogs.Constants;
 
     public class UpdateFunctionsLog : LogData
     {
@@ -23,6 +23,7 @@
                 OldValues.Add($"Fucntion{setting.Id}", setting.Enabled);
 
                 var newSetting = newFunctionSettings.FirstOrDefault(s => s.Id == setting.Id);
+
                 if (newSetting == null)
                 {
                     NewValues.Add($"Fucntion{setting.Id}", setting.Enabled);

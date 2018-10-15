@@ -1,4 +1,4 @@
-﻿namespace Chatbot.Modules.Settings.Logs
+﻿namespace Chatbot.Modules.SettingLogs.Models
 {
     using System.Collections.Generic;
     using Alpha.Services.Client.Models;
