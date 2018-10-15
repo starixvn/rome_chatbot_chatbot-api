@@ -1,5 +1,6 @@
 ﻿namespace Chatbot.Modules.MessageBuilders.Templates
 {
+    using System;
     using System.Globalization;
     using Chatbot.AppResources;
 
@@ -13,7 +14,7 @@
         protected virtual string GetResource(string key, CultureInfo cultureInfo)
             => Languages.ResourceManager.GetString(key, cultureInfo);
 
-        public string ToString(int functionId, CultureInfo cultureInfo)
-            => GetResource($"Header_{functionId}", cultureInfo);
+        public virtual string ToString(int functionId, CultureInfo cultureInfo)
+            => $"[{GetResource($"Header_{functionId}", cultureInfo)} - {DateTime.Now.ToString("yyyy/MM/dd")}]";
     }
 }
