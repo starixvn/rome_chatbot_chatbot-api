@@ -81,6 +81,7 @@ namespace Chatbot.WebApi
             services.AddSingleton<Alpha.Services.Client.Services.LogService, LogServiceImpl>();
 
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
+                { chatbotConfigs.YesterdayWinLossFunctionId, new MessageTemplate(new HeaderTemplate4(), new BodyTemplate()) },
                 { chatbotConfigs.PersonalMessageFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { chatbotConfigs.SpecialAnnouncementFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { chatbotConfigs.NormalAnnouncementFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
