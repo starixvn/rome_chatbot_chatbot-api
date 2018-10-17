@@ -20,17 +20,17 @@
 
             foreach (var setting in oldFunctionSettings)
             {
-                OldValues.Add($"Fucntion{setting.Id}", setting.Enabled);
+                OldValues.Add($"Function{setting.Id}", GetFunctionStatus(setting.Enabled));
 
                 var newSetting = newFunctionSettings.FirstOrDefault(s => s.Id == setting.Id);
 
                 if (newSetting == null)
                 {
-                    NewValues.Add($"Fucntion{setting.Id}", setting.Enabled);
+                    NewValues.Add($"Function{setting.Id}", GetFunctionStatus(setting.Enabled));
                 }
                 else
                 {
-                    NewValues.Add($"Fucntion{newSetting.Id}", newSetting.Enabled);
+                    NewValues.Add($"Function{newSetting.Id}", GetFunctionStatus(newSetting.Enabled));
                 }
             }
         }
@@ -42,5 +42,8 @@
         public override IDictionary<string, object> NewValues { get; }
 
         public override IDictionary<string, object> OldValues { get; }
+
+        private static string GetFunctionStatus(bool isEnabled)
+            => isEnabled ? FunctionStatus.Enabled : FunctionStatus.Disabled;
     }
 }
