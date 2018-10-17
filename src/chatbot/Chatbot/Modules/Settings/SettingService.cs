@@ -262,7 +262,8 @@
             var command = new UpdateUserFunctionsCommand(userId, functions);
             await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
 
-            await settingLogService.WriteLog(logData).ConfigureAwait(false);
+            Task.Run(() => settingLogService.WriteLog(logData));
+            //await settingLogService.WriteLog(logData).ConfigureAwait(false);
         }
 
         public async Task UpdateLanguage(int userId, string language, UpdateLanguageLog logData)
