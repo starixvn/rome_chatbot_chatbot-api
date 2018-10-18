@@ -6,7 +6,7 @@
 
     public interface SettingLogService
     {
-        Task WriteLog(ILogData logData);
+        void WriteLog(ILogData logData);
     }
 
     public class SettingLogServiceImpl : SettingLogService
@@ -18,7 +18,7 @@
             this.logService = logService;
         }
 
-        public async Task WriteLog(ILogData logData)
-            => await logService.WriteLog(logData).ConfigureAwait(false);
+        public void WriteLog(ILogData logData)
+            => Task.Run(() => logService.WriteLog(logData));
     }
 }

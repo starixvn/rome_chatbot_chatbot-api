@@ -262,8 +262,7 @@
             var command = new UpdateUserFunctionsCommand(userId, functions);
             await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
 
-            Task.Run(() => settingLogService.WriteLog(logData));
-            //await settingLogService.WriteLog(logData).ConfigureAwait(false);
+            settingLogService.WriteLog(logData);
         }
 
         public async Task UpdateLanguage(int userId, string language, UpdateLanguageLog logData)
@@ -274,7 +273,8 @@
             var command = new UpdateUserLanguageCommand(userId, language);
 
             await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
-            await settingLogService.WriteLog(logData).ConfigureAwait(false);
+
+            settingLogService.WriteLog(logData);
         }
 
         /// <summary>
@@ -293,7 +293,7 @@
 
             if (userId > 0)
             {
-                await settingLogService.WriteLog(logData).ConfigureAwait(false);
+                settingLogService.WriteLog(logData);
             }
 
             var result = await VerifyMessengerAccount(userId, messenger).ConfigureAwait(false);
@@ -415,10 +415,11 @@
 
             await Task.WhenAll(
                 UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true),
-                settingLogService.WriteLog(logData),
                 ResetUserActionCount(userId, chatbotConfigs.WrongVerificationCodeActionId, messenger.Type, messenger.Username),
                 SendWelcomeMessage(user, messenger))
                 .ConfigureAwait(false);
+
+            settingLogService.WriteLog(logData);
 
             return VerificationCodeResult.CreateVerificationSuccessfulResult();
         }
@@ -535,7 +536,7 @@
         {
             await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, false).ConfigureAwait(false);
 
-            await settingLogService.WriteLog(logData).ConfigureAwait(false);
+            settingLogService.WriteLog(logData);
         }
     }
 }
