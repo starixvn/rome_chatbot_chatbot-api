@@ -291,16 +291,13 @@
 
             var userId = await InsertUser(custId, subAccountId, language, messenger, custLevel).ConfigureAwait(false);
 
-            if (userId > 0)
-            {
-                settingLogService.WriteLog(logData);
-            }
-
             var result = await VerifyMessengerAccount(userId, messenger).ConfigureAwait(false);
             if (result.IsNotOk)
             {
                 return result;
             }
+
+            settingLogService.WriteLog(logData);
 
             await GenerateVerificationCode(userId, messenger).ConfigureAwait(false);
 
