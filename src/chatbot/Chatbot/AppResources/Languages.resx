@@ -276,4 +276,13 @@
   <data name="ServiceNotAvailable" xml:space="preserve">
     <value>Sorry, you haven't registered for this chatbot service yet!</value>
   </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>+Total+</value>
+  </data>
+  <data name="Header_9" xml:space="preserve">
+    <value>Outstanding Detail</value>
+  </data>
 </root>

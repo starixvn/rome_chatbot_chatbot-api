@@ -259,6 +259,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Outstanding Detail.
+        /// </summary>
+        public static string Header_9 {
+            get {
+                return ResourceManager.GetString("Header_9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your Letstalk ID has been verified, Atom is fully functioning..
         /// </summary>
         public static string InformingVerifiedMessage_1 {
@@ -448,6 +457,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to +Total+.
+        /// </summary>
+        public static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Balance.
         /// </summary>
         public static string TotalBalance {
@@ -471,6 +489,15 @@ namespace Chatbot.AppResources {
         public static string UnderMaintenance {
             get {
                 return ResourceManager.GetString("UnderMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string Username {
+            get {
+                return ResourceManager.GetString("Username", resourceCulture);
             }
         }
         

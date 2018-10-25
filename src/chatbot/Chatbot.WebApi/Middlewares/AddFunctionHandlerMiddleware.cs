@@ -11,7 +11,6 @@
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.Params;
     using Microsoft.Extensions.DependencyInjection;
-    using Newtonsoft.Json;
     using Serilog;
 
     public static class AddFunctionHandlerMiddleware
@@ -33,16 +32,17 @@
 
             services.AddSingleton<IDictionary<int, Func<FunctionParam, Task<object>>>>(
                 new Dictionary<int, Func<FunctionParam, Task<object>>>
-            {
-                { chatbotConfigs.OutstandingFunctionId, GetOutstanding },
-                { chatbotConfigs.WinlossFunctionId, GetWinLoss },
-                { chatbotConfigs.BalanceFunctionId, GetBalanceInfo },
-                { chatbotConfigs.YesterdayWinLossFunctionId, GetYesterdayWinLoss },
-                { chatbotConfigs.PersonalMessageFunctionId, GetPersonalMessage },
-                { chatbotConfigs.SpecialAnnouncementFunctionId, GetSpecialAnnouncement },
-                { chatbotConfigs.NormalAnnouncementFunctionId, GetNormalAnnouncement },
-                { chatbotConfigs.SystemUpdateFunctionId, GetSystemUpdate }
-            });
+                {
+                    { chatbotConfigs.OutstandingFunctionId, GetOutstanding },
+                    { chatbotConfigs.WinlossFunctionId, GetWinLoss },
+                    { chatbotConfigs.BalanceFunctionId, GetBalanceInfo },
+                    { chatbotConfigs.YesterdayWinLossFunctionId, GetYesterdayWinLoss },
+                    { chatbotConfigs.PersonalMessageFunctionId, GetPersonalMessage },
+                    { chatbotConfigs.SpecialAnnouncementFunctionId, GetSpecialAnnouncement },
+                    { chatbotConfigs.NormalAnnouncementFunctionId, GetNormalAnnouncement },
+                    { chatbotConfigs.SystemUpdateFunctionId, GetSystemUpdate },
+                    { chatbotConfigs.OutstandingDetailFunctionId, GetOutstandingDetail}
+                });
         }
 
         private static async Task<object> GetOutstanding(FunctionParam param)
@@ -105,7 +105,6 @@
             {
                 CustId = user.CustId,
                 Language = user.Language,
-                RoleId = (byte)user.CustLevel
             });
 
         private static void WriteLogWhenHaveMessage(IEnumerable<Customer> customers, IEnumerable<Message> messages)
@@ -124,5 +123,8 @@
                     $"Message list received: {messageLog} ");
             }
         }
+
+        private static async Task<object> GetOutstandingDetail(FunctionParam param)
+            => await reportService.GetOutstandingDetailAsync(param.User.CustId, (byte)param.User.CustLevel);
     }
 }
