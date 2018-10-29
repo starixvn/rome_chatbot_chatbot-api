@@ -23,6 +23,8 @@
         string BuildUnderMaintenanceMessage(int messengerType, string from, string to);
 
         string BuildServiceIsUnavailableMessage(int messengerType);
+
+        string BuildInvalidCustNameMessage(string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -146,5 +148,8 @@
 
             return stringBuilder.ToString();
         }
+
+        public string BuildInvalidCustNameMessage(string language)
+            => GetResource(Languages.InvalidCustName, language);
     }
 }

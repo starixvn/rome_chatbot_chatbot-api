@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using Chatbot.Configurations;
     using Chatbot.Constants;
-    using Chatbot.Modules.Functions.FunctionHandler;
+    using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
@@ -19,7 +19,7 @@
 
     public interface CommandService
     {
-        Task Execute(string command, int messengerType, string messengerUsername);
+        Task Execute(string command, string parameter, int messengerType, string messengerUsername);
     }
 
     public class CommandServiceImpl : CommandService
@@ -29,7 +29,7 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageLogger messageLogger;
         private readonly IChatbotConfigs chatbotConfigs;
-        private readonly IFunctionHandler functionHandler;
+        private readonly IFunctionHandlerFactory functionHandlerFactory;
         private readonly ILogger logger;
 
         public CommandServiceImpl(
@@ -38,26 +38,27 @@
             IMessageBuilder messageBuilder,
             IMessageLogger messageLogger,
             IChatbotConfigs chatbotConfigs,
-            IFunctionHandler functionHandler,
+            IFunctionHandlerFactory functionHandlerFactory,
             ILogger logger)
         {
             this.settingService = settingService;
             this.messageSender = messageSender;
             this.messageBuilder = messageBuilder;
-            this.logger = logger;
-            this.chatbotConfigs = chatbotConfigs;
-            this.functionHandler = functionHandler;
             this.messageLogger = messageLogger;
+            this.chatbotConfigs = chatbotConfigs;
+            this.functionHandlerFactory = functionHandlerFactory;
+            this.logger = logger;
         }
 
-        public async Task Execute(string command, int messengerType, string messengerUsername)
+        public async Task Execute(string command, string parameter, int messengerType, string messengerUsername)
         {
-            if(string.IsNullOrWhiteSpace(command))
+            if (string.IsNullOrWhiteSpace(command))
             {
                 return;
             }
 
             var encodedCommand = System.Net.WebUtility.HtmlEncode(command);
+            var encodedParameter = System.Net.WebUtility.HtmlEncode(parameter);
 
             var messengerDto = await settingService.GetMessenger(messengerType, messengerUsername).ConfigureAwait(false);
 
@@ -80,12 +81,12 @@
                 var commandFunction = await GetCommandFunction(messengerDto.UserId, encodedCommand).ConfigureAwait(false);
 
                 await Task.WhenAll(
-                    messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, encodedCommand, functionId: commandFunction?.Id ?? chatbotConfigs.NotRecognizedCommandFunctionId),
-                    RunCommand(encodedCommand, user, messenger, commandFunction)).ConfigureAwait(false);
+                    messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, $"{encodedCommand} {encodedParameter}", functionId: commandFunction?.Id ?? chatbotConfigs.NotRecognizedCommandFunctionId),
+                    RunCommand(encodedCommand, encodedParameter, user, messenger, commandFunction)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                await LogError(encodedCommand, messengerDto, user, ex).ConfigureAwait(false);
+                await LogError(encodedCommand, encodedParameter, messengerDto, user, ex).ConfigureAwait(false);
             }
         }
 
@@ -102,6 +103,7 @@
 
         private async Task RunCommand(
             string command,
+            string parameter,
             User user,
             Messenger messenger,
             Function commandFunction)
@@ -114,10 +116,13 @@
                         messenger,
                         new Dictionary<string, object>
                         {
-                            { "command", command }
+                            { nameof(parameter), parameter }
                         });
 
-                await functionHandler.Handle(functionParam).ConfigureAwait(false);
+                await functionHandlerFactory
+                    .CreateFunctionHandler(commandFunction.Id)
+                    .Handle(functionParam)
+                    .ConfigureAwait(false);
             }
             else
             {
@@ -125,7 +130,7 @@
             }
         }
 
-        private async Task LogError(string command, MessengerDto messengerDto, User user, Exception ex)
+        private async Task LogError(string command, string parameter, MessengerDto messengerDto, User user, Exception ex)
         {
             var logMessage = string.Join(
                                     "\n",
@@ -133,6 +138,7 @@
                                     $"User: {user.Id}, CustId: {user.CustId}, SubAccId: {user.SubAccountId}, Language: {user.Language}",
                                     $"Messenger: {messengerDto.Username}, Type: {messengerDto.Type}",
                                     $"Command: {command}",
+                                    $"Parameter: {parameter}",
                                     ex.ToString());
 
             logger.Error(logMessage);

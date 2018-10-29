@@ -286,6 +286,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid username.
+        /// </summary>
+        public static string InvalidCustName {
+            get {
+                return ResourceManager.GetString("InvalidCustName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Master.
         /// </summary>
         public static string Master {
@@ -457,7 +466,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to +Total+.
+        ///   Looks up a localized string similar to Total.
         /// </summary>
         public static string Total {
             get {

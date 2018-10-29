@@ -46,6 +46,14 @@
 
         private static async Task<object> GetOutstanding(FunctionParam param)
         {
+            if (param.Others.ContainsKey("CustId"))
+            {
+                return await reportService.GetDownlineOutstandingAsync(
+                    param.User.CustId,
+                    (byte)param.User.CustLevel,
+                    (int)param.Others["CustId"]);
+            }
+
             return await reportService.GetOutstandingsAsync(param.User.CustId, (byte)param.User.CustLevel);
         }
 

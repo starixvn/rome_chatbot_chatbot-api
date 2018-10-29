@@ -19,9 +19,9 @@
 
     public class DefaultFunctionHandler : IFunctionHandler
     {
-        private readonly IMessageBuilder messageBuilder;
-        private readonly IMessageSender messageSender;
-        private readonly CustomerService customerService;
+        protected readonly IMessageBuilder messageBuilder;
+        protected readonly IMessageSender messageSender;
+        protected readonly CustomerService customerService;
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders;
         private readonly ILogger logger;
 
@@ -58,7 +58,7 @@
             return await RunHandler(param).ConfigureAwait(false);
         }
 
-        private async Task<Result> RunHandler(FunctionParam param)
+        protected virtual async Task<Result> RunHandler(FunctionParam param)
         {
             var data = await getDataHanlders[param.Function.Id](param).ConfigureAwait(false);
 

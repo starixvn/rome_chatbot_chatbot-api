@@ -8,8 +8,8 @@
     using Chatbot.Constants;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
-    using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions;
+    using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
@@ -26,7 +26,7 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageLogger messageLogger;
         private readonly IChatbotConfigs chatbotConfigs;
-        private readonly IFunctionHandler functionHandler;
+        private readonly IFunctionHandlerFactory functionHandlerFactory;
         private readonly ILogger logger;
 
         private readonly CommandService commandService;
@@ -38,7 +38,7 @@
             messageBuilder = Substitute.For<IMessageBuilder>();
             messageLogger = Substitute.For<IMessageLogger>();
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
-            functionHandler = Substitute.For<IFunctionHandler>();
+            functionHandlerFactory = Substitute.For<IFunctionHandlerFactory>();
             logger = Substitute.For<ILogger>();
 
             commandService = new CommandServiceImpl(
@@ -47,7 +47,7 @@
                 messageBuilder,
                 messageLogger,
                 chatbotConfigs,
-                functionHandler,
+                functionHandlerFactory,
                 logger);
         }
 
@@ -55,7 +55,7 @@
         public void Execute_MessengerDoesExist_CallLogInfo()
         {
             commandService
-                    .Execute("cm", 1, "username")
+                    .Execute("cm", "parameter", 1, "username")
                     .GetAwaiter()
                     .GetResult();
 
@@ -73,7 +73,7 @@
                 .Returns(Task.FromResult(new MessengerDto(1, 1, "name", false, false, "code", DateTime.Now)));
 
             commandService
-                    .Execute("cm", messengerType, messengerUsername)
+                    .Execute("cm", "parameter", messengerType, messengerUsername)
                     .GetAwaiter()
                     .GetResult();
 
@@ -91,7 +91,7 @@
                 .Returns(Task.FromResult(new MessengerDto(1, 1, "name", false, true, "code", DateTime.Now)));
 
             commandService
-                   .Execute("cm", messengerType, messengerUsername)
+                   .Execute("cm", "parameter", messengerType, messengerUsername)
                    .GetAwaiter()
                    .GetResult();
 
@@ -108,7 +108,7 @@
             SetupSendCommand(userId, messenger, user);
 
             commandService
-                    .Execute("cm", messenger.Type, messenger.Username)
+                    .Execute("cm", "parameter", messenger.Type, messenger.Username)
                     .GetAwaiter()
                     .GetResult();
 
@@ -133,7 +133,7 @@
             SetupSendCommand(userId, messenger, user);
 
             commandService
-                    .Execute("cm2", messenger.Type, messenger.Username)
+                    .Execute("cm2", "parameter", messenger.Type, messenger.Username)
                     .GetAwaiter()
                     .GetResult();
 
@@ -158,7 +158,7 @@
             SetupSendCommand(userId, messenger, user);
 
             commandService
-                    .Execute("cm1", messenger.Type, messenger.Username)
+                    .Execute("cm1", "parameter", messenger.Type, messenger.Username)
                     .GetAwaiter()
                     .GetResult();
 
@@ -170,7 +170,7 @@
                 Arg.Is<Messenger>(
                     msg => msg.Type == messenger.Type
                         && msg.Username == messenger.Username),
-                "cm1",
+                "cm1 parameter",
                 0,
                 1);
         }
@@ -185,12 +185,12 @@
             SetupSendCommand(userId, messenger, user);
 
             commandService
-                    .Execute("cm1", messenger.Type, messenger.Username)
+                    .Execute("cm1", "parameter", messenger.Type, messenger.Username)
                     .GetAwaiter()
                     .GetResult();
 
-            functionHandler
-                .Received()
+            functionHandlerFactory
+                .Received().CreateFunctionHandler(1)
                 .Handle(
                     Arg.Is<FunctionParam>(function =>
                         function.User.Id == userId

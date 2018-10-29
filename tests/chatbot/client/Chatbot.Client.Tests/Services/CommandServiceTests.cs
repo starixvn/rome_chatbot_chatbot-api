@@ -23,10 +23,11 @@
         public void Run_Alway_ExecuteExecutePostAsync()
         {
             var command = "cm";
+            var parameter = "parameter";
             var messengerUsername = "username";
             var messengerType = 2;
 
-            commandService.Run(command, messengerType, messengerUsername).GetAwaiter().GetResult();
+            commandService.Run(command, parameter, messengerType, messengerUsername).GetAwaiter().GetResult();
 
             Func<object, bool> assert = data =>
             {
@@ -34,10 +35,12 @@
                 var actualMessengerUsername = type.GetProperty("messengerUsername").GetValue(data);
                 var actualMessengerType = (int)type.GetProperty("messengerType").GetValue(data);
                 var actualCommand = type.GetProperty("command").GetValue(data);
+                var actualParameter = type.GetProperty("parameter").GetValue(data);
 
                 return actualMessengerUsername == messengerUsername
                     && actualMessengerType == messengerType
-                    && actualCommand == command;
+                    && actualCommand == command
+                    && actualParameter == parameter; ;
             };
 
             restClient.Received().ExecutePostAsync<Result>(

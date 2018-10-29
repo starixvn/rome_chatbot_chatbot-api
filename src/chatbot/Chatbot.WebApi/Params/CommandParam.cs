@@ -4,6 +4,8 @@
     {
         public string Command { get; set; }
 
+        public string Parameter { get; set; }
+
         public int MessengerType { get; set; }
 
         public string MessengerUsername { get; set; }

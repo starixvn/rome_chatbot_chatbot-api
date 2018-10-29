@@ -14,10 +14,10 @@
 
             var model = data as T;
 
-            if (model == null)
-            {
-                throw new InvalidOperationException($"Cannot parse {typeof(T)} model");
-            }
+            //if (model == null)
+            //{
+            //    throw new InvalidOperationException($"Cannot parse {typeof(T)} model");
+            //}
 
             return model;
         }

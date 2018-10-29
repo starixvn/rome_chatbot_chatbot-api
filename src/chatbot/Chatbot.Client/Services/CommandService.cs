@@ -6,7 +6,7 @@
 
     public interface CommandService
     {
-        Task<Result> Run(string command, int messengerType, string messengerUsername);
+        Task<Result> Run(string command, string parameter, int messengerType, string messengerUsername);
     }
 
     public class CommandServiceImpl : CommandService
@@ -22,7 +22,7 @@
             this.restClient = restClient ?? ChatbotClientManager.RestClient;
         }
 
-        public Task<Result> Run(string command, int messengerType, string messengerUsername)
+        public Task<Result> Run(string command, string parameter, int messengerType, string messengerUsername)
         {
             InputValidator.ValidateInputParam(nameof(command), command);
             InputValidator.ValidateInputParam(nameof(messengerUsername), messengerUsername);
@@ -33,6 +33,7 @@
                 new
                 {
                     command,
+                    parameter,
                     messengerUsername,
                     messengerType
                 });

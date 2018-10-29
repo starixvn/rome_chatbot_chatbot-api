@@ -285,4 +285,7 @@
   <data name="Header_9" xml:space="preserve">
     <value>Outstanding Detail</value>
   </data>
+  <data name="InvalidCustName" xml:space="preserve">
+    <value>Invalid username</value>
+  </data>
 </root>
