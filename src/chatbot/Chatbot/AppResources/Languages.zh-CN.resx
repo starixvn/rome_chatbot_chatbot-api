@@ -276,4 +276,7 @@
   <data name="UnderMaintenance" xml:space="preserve">
     <value>很抱歉，服务器正在维护中，维护时间从{0}至{1} (GMT+8)。请稍后访问。</value>
   </data>
+  <data name="Total" xml:space="preserve">
+    <value>总和</value>
+  </data>
 </root>

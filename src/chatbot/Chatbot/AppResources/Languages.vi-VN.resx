@@ -235,4 +235,7 @@
   <data name="ServiceNotAvailable" xml:space="preserve">
     <value>Xin lỗi, bạn chưa đăng ký dịch vụ chatbot này!</value>
   </data>
+  <data name="Total" xml:space="preserve">
+    <value>Tổng cộng</value>
+  </data>
 </root>

@@ -196,4 +196,7 @@
   <data name="MemberNetWinLoss.Comm" xml:space="preserve">
     <value>회원 수수료</value>
   </data>
+  <data name="Total" xml:space="preserve">
+    <value>총</value>
+  </data>
 </root>

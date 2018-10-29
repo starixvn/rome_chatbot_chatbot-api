@@ -86,7 +86,7 @@ namespace Chatbot.WebApi
                 { chatbotConfigs.SpecialAnnouncementFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { chatbotConfigs.NormalAnnouncementFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { chatbotConfigs.SystemUpdateFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
-                { chatbotConfigs.OutstandingDetailFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate9()) },
+                { chatbotConfigs.OutstandingFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate1()) },
             });
             services.AddSingleton<IDictionary<int, IMessengerFormatter>>(
                 new Dictionary<int, IMessengerFormatter>

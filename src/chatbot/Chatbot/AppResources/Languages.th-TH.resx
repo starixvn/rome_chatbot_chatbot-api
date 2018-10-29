@@ -250,4 +250,7 @@
   <data name="CommandIsNotRecognized" xml:space="preserve">
     <value>คำสั่งไม่ถูกต้อง</value>
   </data>
+  <data name="Total" xml:space="preserve">
+    <value>ยอดรวม</value>
+  </data>
 </root>

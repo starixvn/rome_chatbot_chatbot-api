@@ -136,4 +136,7 @@
   <data name="AgentTotalCredit" xml:space="preserve">
     <value>エージェント貸付</value>
   </data>
+  <data name="Total" xml:space="preserve">
+    <value>合計</value>
+  </data>
 </root>

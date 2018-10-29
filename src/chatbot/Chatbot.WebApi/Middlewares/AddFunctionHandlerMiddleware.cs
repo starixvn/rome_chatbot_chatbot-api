@@ -41,12 +41,13 @@
                     { chatbotConfigs.SpecialAnnouncementFunctionId, GetSpecialAnnouncement },
                     { chatbotConfigs.NormalAnnouncementFunctionId, GetNormalAnnouncement },
                     { chatbotConfigs.SystemUpdateFunctionId, GetSystemUpdate },
-                    { chatbotConfigs.OutstandingDetailFunctionId, GetOutstandingDetail}
                 });
         }
 
         private static async Task<object> GetOutstanding(FunctionParam param)
-           => await reportService.GetOutstandingAsync(param.User.CustId, (byte)param.User.CustLevel);
+        {
+            return await reportService.GetOutstandingsAsync(param.User.CustId, (byte)param.User.CustLevel);
+        }
 
         private static async Task<object> GetWinLoss(FunctionParam param)
             => await reportService.GetWinLossAsync(param.User.CustId, (byte)param.User.CustLevel, DateTime.Now.Date);
@@ -123,8 +124,5 @@
                     $"Message list received: {messageLog} ");
             }
         }
-
-        private static async Task<object> GetOutstandingDetail(FunctionParam param)
-            => await reportService.GetOutstandingDetailAsync(param.User.CustId, (byte)param.User.CustLevel);
     }
 }
