@@ -1,9 +1,7 @@
 ﻿namespace Chatbot.Tests.Modules.Builders.Templates
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
-    using System.Text;
     using Chatbot.Modules.MessageBuilders.Templates;
     using Xunit;
 
@@ -16,8 +14,9 @@
             var cultureInfo = CultureInfo.CreateSpecificCulture("en-US");
 
             var headerFunctionString = headerTemplate.ToString(1, cultureInfo);
+            var date = DateTime.Now.ToString("yyyyMMdd");
 
-            Assert.Equal("Outstanding", headerFunctionString);
+            Assert.Equal($"[Outstanding - {date}]", headerFunctionString);
         }
     }
 }

@@ -4,9 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Text;
     using System.Threading.Tasks;
-    using Chatbot.Client.Helpers;
     using Chatbot.Configurations;
     using Chatbot.Models;
     using Chatbot.Modules.MessageServices;
@@ -62,7 +60,7 @@
 
             // Assert
             var firstMessage = messages.First();
-            Assert.Equal(1, messages.Count());
+            Assert.Single(messages);
             Assert.Equal("content", firstMessage.Content);
             Assert.Equal("messengername", firstMessage.MessengerUsername);
             Assert.Equal(new DateTime(1989, 12, 13), firstMessage.SentDate);
@@ -88,7 +86,7 @@
                 criteria => criteria.FromDate == new DateTime(1989, 12, 9)));
         }
 
-        [Fact] 
+        [Fact]
         public void LogMessage_Always_ExecuteInsertMessageCommand()
         {
             var sender = 1;

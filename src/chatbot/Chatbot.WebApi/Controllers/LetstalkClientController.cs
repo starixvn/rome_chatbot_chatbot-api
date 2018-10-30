@@ -3,6 +3,7 @@
 namespace Chatbot.WebApi.Controllers
 {
     using System.Threading.Tasks;
+    using Chatbot.Constants;
     using Chatbot.Models;
     using Chatbot.Modules.MessageSenders;
     using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,7 @@ namespace Chatbot.WebApi.Controllers
         }
 
         [Route("setwebhook/{webhookurl}"), HttpPost]
-#pragma warning disable S3994 // URI Parameters should not be strings
         public async Task<Result> SetWebhook(string webhookUrl)
-#pragma warning restore S3994 // URI Parameters should not be strings
         {
             var messengerClient = messengerFactory.CreateMessengerClient(MessengerType.Letstalk);
 

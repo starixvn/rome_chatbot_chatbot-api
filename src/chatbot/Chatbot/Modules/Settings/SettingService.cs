@@ -8,9 +8,10 @@
     using Chatbot.Helpers;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
-    using Chatbot.Modules.Funtions;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.SettingLogs;
+    using Chatbot.Modules.SettingLogs.Models;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
     using Fanex.Caching;
@@ -20,15 +21,15 @@
     {
         Task<IEnumerable<Function>> GetFunctions(int userId, string language = "");
 
-        Task UpdateFunctions(int userId, IEnumerable<Function> functions);
+        Task UpdateFunctions(int userId, IEnumerable<Function> functions, UpdateFunctionsLog logData);
 
-        Task UpdateLanguage(int userId, string language);
+        Task UpdateLanguage(int userId, string language, UpdateLanguageLog logData);
 
         Task GenerateVerificationCode(int userId, Messenger messenger);
 
-        Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger);
+        Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger, VerifyAccountLog logData);
 
-        Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, Messenger messenger, int custLevel);
+        Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, Messenger messenger, int custLevel, LinkAccountLog logData);
 
         Task<IEnumerable<Function>> GetAllFunctions();
 
@@ -43,6 +44,8 @@
         Task<IEnumerable<User>> GetUsersByFunction(int functionId, int environment);
 
         Task<IEnumerable<Messenger>> GetMessengers(int userId, bool isEnabledOnly = false);
+
+        Task Unsubscribe(int userId, Messenger messenger, UnlinkAccountLog logData);
     }
 
     public class SettingServiceImpl : SettingService
@@ -56,8 +59,7 @@
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
         private readonly IChatbotConfigs chatbotConfigs;
-
-#pragma warning disable S107 // Methods should not have too many parameters
+        private readonly SettingLogService settingLogService;
 
         public SettingServiceImpl(
             IDynamicRepository dynamicRepository,
@@ -65,9 +67,9 @@
             IMessageBuilder messageBuilder,
             ICacheService cacheService,
             IChatbotConfigs chatbotConfigs,
+            SettingLogService settingLogService,
             Func<string> randomNumberFunc = null,
             Func<DateTime> getCurrentDateTimeFunc = null)
-#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.dynamicRepository = dynamicRepository;
             this.randomNumberFunc = randomNumberFunc ?? RandomSixDigitsNumber;
@@ -76,6 +78,7 @@
             this.messageSender = messageSender;
             this.messageBuilder = messageBuilder;
             this.chatbotConfigs = chatbotConfigs;
+            this.settingLogService = settingLogService;
         }
 
         public async Task GenerateVerificationCode(int userId, Messenger messenger)
@@ -251,17 +254,18 @@
         private Task<IEnumerable<FunctionLanguageDto>> GetFunctionLanguage(int functionId)
             => dynamicRepository.FetchAsync<FunctionLanguageDto>(new GetFunctionNameCriteria(functionId));
 
-        public async Task UpdateFunctions(int userId, IEnumerable<Function> functions)
+        public async Task UpdateFunctions(int userId, IEnumerable<Function> functions, UpdateFunctionsLog logData)
         {
             InputValidator.Validate(nameof(userId), userId);
             InputValidator.Validate(nameof(functions), functions);
 
             var command = new UpdateUserFunctionsCommand(userId, functions);
-
             await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
+
+            settingLogService.WriteLog(logData);
         }
 
-        public async Task UpdateLanguage(int userId, string language)
+        public async Task UpdateLanguage(int userId, string language, UpdateLanguageLog logData)
         {
             InputValidator.Validate(nameof(userId), userId);
             InputValidator.Validate(nameof(language), language);
@@ -269,12 +273,14 @@
             var command = new UpdateUserLanguageCommand(userId, language);
 
             await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
+
+            settingLogService.WriteLog(logData);
         }
 
         /// <summary>
         /// Need more refactor here
         /// </summary>
-        public async Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, Messenger messenger, int custLevel)
+        public async Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, Messenger messenger, int custLevel, LinkAccountLog logData)
         {
             InputValidator.Validate(nameof(custId), custId);
             InputValidator.Validate(nameof(custLevel), custLevel);
@@ -290,6 +296,8 @@
             {
                 return result;
             }
+
+            settingLogService.WriteLog(logData);
 
             await GenerateVerificationCode(userId, messenger).ConfigureAwait(false);
 
@@ -385,7 +393,7 @@
             await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
         }
 
-        public async Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger)
+        public async Task<VerificationCodeResult> VerifyVerificationCode(int userId, string verificationCode, Messenger messenger, VerifyAccountLog logData)
         {
             InputValidator.Validate(nameof(userId), userId);
             InputValidator.Validate(nameof(verificationCode), verificationCode);
@@ -407,6 +415,8 @@
                 ResetUserActionCount(userId, chatbotConfigs.WrongVerificationCodeActionId, messenger.Type, messenger.Username),
                 SendWelcomeMessage(user, messenger))
                 .ConfigureAwait(false);
+
+            settingLogService.WriteLog(logData);
 
             return VerificationCodeResult.CreateVerificationSuccessfulResult();
         }
@@ -517,6 +527,13 @@
             var users = await dynamicRepository.FetchAsync<User>(criteria).ConfigureAwait(false);
 
             return users;
+        }
+
+        public async Task Unsubscribe(int userId, Messenger messenger, UnlinkAccountLog logData)
+        {
+            await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, false).ConfigureAwait(false);
+
+            settingLogService.WriteLog(logData);
         }
     }
 }

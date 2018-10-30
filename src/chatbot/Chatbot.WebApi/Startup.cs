@@ -15,6 +15,7 @@ namespace Chatbot.WebApi
     using Chatbot.Modules.MessageBuilders.Templates;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageServices;
+    using Chatbot.Modules.SettingLogs;
     using Chatbot.Modules.Settings;
     using Chatbot.WebApi.Filters;
     using Chatbot.WebApi.Middlewares;
@@ -30,10 +31,10 @@ namespace Chatbot.WebApi
     using Microsoft.Extensions.DependencyInjection;
     using ONEbook.UM;
     using ONEbook.UM.AspNetCore.Configuration;
-    using Serilog;
     using ONEbook.UM.Helpers;
     using ONEbook.UM.Services;
     using ONEbook.UM.Transport;
+    using Serilog;
     using Swashbuckle.AspNetCore.Swagger;
 
     public class Startup
@@ -76,7 +77,11 @@ namespace Chatbot.WebApi
             services.AddSingleton<FunctionService, FunctionServiceImpl>();
             services.AddSingleton<MessageService, MessageServiceImpl>();
             services.AddSingleton<ReportService, ReportServiceImpl>();
+            services.AddSingleton<SettingLogService, SettingLogServiceImpl>();
+            services.AddSingleton<Alpha.Services.Client.Services.LogService, LogServiceImpl>();
+
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
+                { chatbotConfigs.YesterdayWinLossFunctionId, new MessageTemplate(new HeaderTemplate4(), new BodyTemplate()) },
                 { chatbotConfigs.PersonalMessageFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { chatbotConfigs.SpecialAnnouncementFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { chatbotConfigs.NormalAnnouncementFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },

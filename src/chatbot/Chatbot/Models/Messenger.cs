@@ -2,12 +2,6 @@
 // TODO: Temporart fixing sonarqube for CAB
 namespace Chatbot.Models
 {
-    public static class MessengerType
-    {
-        public const int Letstalk = 1;
-        public const int Skype = 2;
-        public const int Line = 3;
-    }
 
     public class Messenger
     {
