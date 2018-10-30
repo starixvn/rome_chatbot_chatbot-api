@@ -5,6 +5,8 @@
         string NewLine();
 
         string Point();
+
+        string Tab();
     }
 
     public class LetstalkFormatter : IMessengerFormatter
@@ -14,5 +16,8 @@
 
         public string Point()
             => "\u2022";
+
+        public string Tab()
+            => "\t\t";
     }
 }

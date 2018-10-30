@@ -116,7 +116,8 @@
                         messenger,
                         new Dictionary<string, object>
                         {
-                            { nameof(parameter), parameter }
+                            [nameof(command)] = command,
+                            [nameof(parameter)] = parameter
                         });
 
                 await functionHandlerFactory

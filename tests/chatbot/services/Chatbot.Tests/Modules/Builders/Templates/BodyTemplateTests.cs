@@ -1,9 +1,7 @@
 ﻿namespace Chatbot.Tests.Modules.Builders.Templates
 {
-    using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Text;
     using Chatbot.Modules.MessageBuilders.Templates;
     using NSubstitute;
     using Xunit;
@@ -42,10 +40,11 @@
                 { "param4", true }
             };
             messengerFormatter.NewLine().Returns("_newline_");
+            messengerFormatter.Tab().Returns("_tab_");
 
             var template = bodyTemplate.ToString(data, cultureInfo, messengerFormatter);
 
-            Assert.Equal("Super: 3434_newline_Master: 4,545.56_newline_: value3_newline_: True", template);
+            Assert.Equal("Super:_newline__tab_3434_newline_Master:_newline__tab_4,545.56_newline_:_newline__tab_value3_newline_:_newline__tab_True", template);
         }
     }
 }
