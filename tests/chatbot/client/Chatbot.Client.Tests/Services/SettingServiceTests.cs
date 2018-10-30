@@ -238,5 +238,18 @@
 
             restClient.Received().ExecuteGetAsync<List<User>>("setting/users/function/2/3");
         }
+
+        [Fact]
+        public void GetAllFunctions_Alway_ExecuteExecuteGetAsync()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            settingService.GetAllFunctions(language).GetAwaiter().GetResult();
+
+            // Assert
+            restClient.Received().ExecuteGetAsync<List<Function>>($"setting/functions/{language}");
+        }
     }
 }

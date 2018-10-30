@@ -6,7 +6,7 @@ namespace Chatbot.Modules.Settings.Params.Db.Criteria
 
     public class GetAllFunctionsCriteria : CriteriaBase
     {
-        public override string GetSettingKey() => "GetAllFunctionsCriteria";
+        public override string GetSettingKey() => "Chatbot_GetAllFunctions";
 
         public override bool IsValid() => true;
     }

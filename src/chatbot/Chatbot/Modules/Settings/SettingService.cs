@@ -31,7 +31,7 @@
 
         Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, Messenger messenger, int custLevel, LinkAccountLog logData);
 
-        Task<IEnumerable<Function>> GetAllFunctions();
+        Task<IEnumerable<Function>> GetAllFunctions(string language = "");
 
         Task<User> GetUser(int custId, int subAccountId, string language);
 
@@ -130,8 +130,22 @@
         private static DateTime GetCurrentDateTime()
             => DateTime.Now;
 
-        public Task<IEnumerable<Function>> GetAllFunctions()
-            => dynamicRepository.FetchAsync<Function>(new GetAllFunctionsCriteria());
+        public async Task<IEnumerable<Function>> GetAllFunctions(string language = "")
+        {
+            var functions = await dynamicRepository
+                .FetchAsync<Function>(new GetAllFunctionsCriteria())
+                .ConfigureAwait(false);
+
+            if (!string.IsNullOrWhiteSpace(language))
+            {
+                foreach (var function in functions)
+                {
+                    function.Name = await GetFunctionName(function.Id, language).ConfigureAwait(false);
+                }
+            }
+
+            return functions;
+        }
 
         public async Task<User> GetUser(int custId, int subAccountId, string language)
         {

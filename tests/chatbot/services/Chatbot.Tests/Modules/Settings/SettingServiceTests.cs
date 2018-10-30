@@ -828,5 +828,52 @@
                 new Messenger(3, "Messenger31", true, false),
                 new Messenger(1, "Messenger4", false, false)
             };
+
+        [Fact]
+        public void GetAllFunctions_Always_CallsFetchAsync()
+        {
+            // Arrange
+            var language = string.Empty;
+
+            // Act
+            settingService.GetAllFunctions(language).ConfigureAwait(false);
+
+            // Assert
+            dynamicRepository.Received().FetchAsync<Function>(
+                Arg.Any<GetAllFunctionsCriteria>());
+        }
+
+        [Fact]
+        public void GetAllFunctions_AlwaysGetByLanguage_ReturnFunctionListWithName()
+        {
+            // Arrange
+            dynamicRepository
+                .FetchAsync<Function>(Arg.Any<GetAllFunctionsCriteria>())
+                .Returns(Task.FromResult(new List<Function>
+                {
+                    new Function
+                    {
+                        Id = 1,
+                        Command = "/os",
+                        Name = "name"
+                    }
+                } as IEnumerable<Function>));
+
+            cacheService.GetOrSetAsync(
+                "SettingServiceImpl.FunctionNameByLanguageCacheKey.1",
+                Arg.Any<Func<IEnumerable<FunctionLanguageDto>>>(),
+                Arg.Any<CacheItemOptions>())
+                .Returns(Task.FromResult(new List<FunctionLanguageDto>
+                {
+                    new FunctionLanguageDto(1, "name-en-us", "function", "en-US")
+                } as IEnumerable<FunctionLanguageDto>));
+
+            // Act
+            var actualFunctions = settingService.GetAllFunctions("en-US").GetAwaiter().GetResult();
+
+            // Assert
+            Assert.Single(actualFunctions);
+            Assert.Equal("name-en-us", actualFunctions.ElementAt(0).Name);
+        }
     }
 }

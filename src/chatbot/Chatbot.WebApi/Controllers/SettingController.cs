@@ -2,14 +2,14 @@
 // TODO: Temporart fixing sonarqube for CAB
 namespace Chatbot.WebApi.Controllers
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.SettingLogs.Models;
     using Chatbot.Modules.Settings;
     using Chatbot.WebApi.Params;
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     [Route("api/setting")]
     [ApiController]
@@ -121,5 +121,9 @@ namespace Chatbot.WebApi.Controllers
         [Route("users/function/{functionId}/{environment}"), HttpGet]
         public Task<IEnumerable<User>> GetUsersByFunction(int functionId, int environment)
             => settingService.GetUsersByFunction(functionId, environment);
+
+        [Route("functions/{language}"), HttpGet]
+        public async Task<IEnumerable<Function>> GetAllFunctions(string language)
+            => await settingService.GetAllFunctions(language);
     }
 }
