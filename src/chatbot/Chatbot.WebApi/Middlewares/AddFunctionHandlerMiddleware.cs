@@ -54,7 +54,9 @@
                     (int)param.Others["CustId"]);
             }
 
-            return await reportService.GetOutstandingsAsync(param.User.CustId, (byte)param.User.CustLevel);
+            var topQuery = param.Others.ContainsKey("topQuery") ? (int)param.Others["topQuery"] : 50;
+
+            return await reportService.GetOutstandingsAsync(param.User.CustId, (byte)param.User.CustLevel, topQuery);
         }
 
         private static async Task<object> GetWinLoss(FunctionParam param)

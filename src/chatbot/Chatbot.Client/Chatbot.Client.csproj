@@ -2,7 +2,7 @@
 
   <PropertyGroup>
      <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
-     <Version>1.0.2-beta1</Version>
+     <Version>1.0.2-beta2</Version>
      <Authors>_</Authors>
      <Company>_</Company>
      <Description>Chatbot Client for working with Chatbot Services
@@ -14,6 +14,7 @@ To use it, please add these config to your config file:
      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
      <AssemblyVersion>1.0.2.0</AssemblyVersion>
      <FileVersion>1.0.2.0</FileVersion>
+     <PackageReleaseNotes>Add method to get all available functions</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">

@@ -150,6 +150,6 @@
         }
 
         public string BuildInvalidCustNameMessage(string language)
-            => GetResource(Languages.InvalidCustName, language);
+            => GetResource(nameof(Languages.InvalidCustName), language);
     }
 }

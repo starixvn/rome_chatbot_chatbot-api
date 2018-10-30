@@ -3,15 +3,12 @@
     using System.Collections.Generic;
     using System.Globalization;
     using Alpha.Services.Client.Models;
-    using Chatbot.Helpers;
 
     public class BodyTemplate1 : BodyTemplate
     {
         public override string ToString(object data, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
         {
-            var outstandingDetail = DataHelper.Parse<OutstandingDetail>(data);
-
-            if (outstandingDetail == null)
+            if (!(data is OutstandingDetail outstandingDetail))
             {
                 return base.ToString(data, cultureInfo, messengerFormatter);
             }

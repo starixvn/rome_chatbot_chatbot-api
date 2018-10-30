@@ -23,25 +23,29 @@
 
         protected override async Task<Result> RunHandler(FunctionParam param)
         {
-            var userName = param.Others["parameter"].ToString();
+            var parameter = param.Others["parameter"].ToString();
 
-            if (!string.IsNullOrWhiteSpace(userName))
+            if (!string.IsNullOrWhiteSpace(parameter))
             {
-                var downlineInfo = await customerService.GetDownlineInfo(param.User.CustId, userName);
-
-                if (downlineInfo == null || !IsDirectDownline(param.User.CustLevel, downlineInfo.RoleId))
+                if (int.TryParse(parameter, out int topQuery))
                 {
-                    return await BuildAndSendInvalidCustNameMessage(param);
+                    param.Others.Add(nameof(topQuery), topQuery);
                 }
+                else
+                {
+                    var downlineInfo = await customerService.GetDownlineInfo(param.User.CustId, parameter);
 
-                param.Others.Add(nameof(downlineInfo.CustId), downlineInfo.CustId);
+                    if (downlineInfo == null || !IsDirectDownline(param.User.CustLevel, downlineInfo.RoleId))
+                    {
+                        return await BuildAndSendInvalidCustNameMessage(param);
+                    }
+
+                    param.Others.Add(nameof(downlineInfo.CustId), downlineInfo.CustId);
+                }
             }
 
             return await base.RunHandler(param);
         }
-
-        private bool IsDirectDownline(int custLevel, int downlineLevel)
-            => (custLevel - downlineLevel) == 1;
 
         private Task<Result> BuildAndSendInvalidCustNameMessage(FunctionParam param)
         {
@@ -49,5 +53,8 @@
 
             return messageSender.SendMessage(param.User.Id, param.Messenger, message, param.Function.Id);
         }
+
+        private static bool IsDirectDownline(int custLevel, int downlineLevel)
+            => (custLevel - downlineLevel) == 1;
     }
 }

@@ -24,7 +24,11 @@ namespace Chatbot.WebApi.Controllers
         [Route("run"), HttpPost]
         public async Task Run([FromBody]CommandParam param)
         {
-            await commandService.Execute(param.Command, param.Parameter, param.MessengerType, param.MessengerUsername);
+            await commandService.Execute(
+                param.Command,
+                param.Parameter,
+                param.MessengerType,
+                param.MessengerUsername);
         }
     }
 }
