@@ -548,6 +548,17 @@
             await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, false).ConfigureAwait(false);
 
             settingLogService.WriteLog(logData);
+
+            await SendUnlinkMessage(userId, messenger).ConfigureAwait(false);
+        }
+
+        private async Task SendUnlinkMessage(int userId, Messenger messenger)
+        {
+            var user = await GetUser(userId).ConfigureAwait(false);
+
+            var message = messageBuilder.BuildUnlinkMessage(user.Language);
+
+            await messageSender.SendMessage(user.Id, messenger, message).ConfigureAwait(false);
         }
     }
 }

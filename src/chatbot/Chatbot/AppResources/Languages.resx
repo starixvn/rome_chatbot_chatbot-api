@@ -318,4 +318,7 @@
   <data name="SuperOutstanding" xml:space="preserve">
     <value>Super Outstanding</value>
   </data>
+  <data name="UnlinkMessage" xml:space="preserve">
+    <value>Service has been stopped.</value>
+  </data>
 </root>

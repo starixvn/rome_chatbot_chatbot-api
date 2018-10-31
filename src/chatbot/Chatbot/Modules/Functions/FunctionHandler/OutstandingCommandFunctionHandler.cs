@@ -16,8 +16,9 @@
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
             CustomerService customerService,
-            ILogger logger, IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders = null)
-            : base(messageBuilder, messageSender, customerService, logger, getDataHanlders)
+            ILogger logger,
+            IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers = null)
+            : base(messageBuilder, messageSender, customerService, logger, getDataHandlers)
         {
         }
 
@@ -33,18 +34,21 @@
                 }
                 else
                 {
-                    var downlineInfo = await customerService.GetDownlineInfo(param.User.CustId, parameter);
+                    var downlineInfo = await customerService.GetDownlineInfo(param.User.CustId, parameter)
+                        .ConfigureAwait(false);
 
-                    if (downlineInfo == null || !IsDirectDownline(param.User.CustLevel, downlineInfo.RoleId))
+                    if (downlineInfo == null ||
+                        downlineInfo.CustId == 0 ||
+                        !IsDirectDownline(param.User.CustLevel, downlineInfo.RoleId))
                     {
-                        return await BuildAndSendInvalidCustNameMessage(param);
+                        return await BuildAndSendInvalidCustNameMessage(param).ConfigureAwait(false);
                     }
 
                     param.Others.Add(nameof(downlineInfo.CustId), downlineInfo.CustId);
                 }
             }
 
-            return await base.RunHandler(param);
+            return await base.RunHandler(param).ConfigureAwait(false);
         }
 
         private Task<Result> BuildAndSendInvalidCustNameMessage(FunctionParam param)

@@ -81,7 +81,12 @@
                 var commandFunction = await GetCommandFunction(messengerDto.UserId, encodedCommand).ConfigureAwait(false);
 
                 await Task.WhenAll(
-                    messageLogger.LogMessage(user.Id, CommonId.BotUserId, messenger, $"{encodedCommand} {encodedParameter}", functionId: commandFunction?.Id ?? chatbotConfigs.NotRecognizedCommandFunctionId),
+                    messageLogger.LogMessage(
+                        user.Id,
+                        CommonId.BotUserId,
+                        messenger,
+                        $"{encodedCommand} {encodedParameter}",
+                        functionId: commandFunction?.Id ?? chatbotConfigs.NotRecognizedCommandFunctionId),
                     RunCommand(encodedCommand, encodedParameter, user, messenger, commandFunction)).ConfigureAwait(false);
             }
             catch (Exception ex)

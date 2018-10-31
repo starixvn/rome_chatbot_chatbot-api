@@ -592,6 +592,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service has been stopped..
+        /// </summary>
+        public static string UnlinkMessage {
+            get {
+                return ResourceManager.GetString("UnlinkMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
         public static string Username {
