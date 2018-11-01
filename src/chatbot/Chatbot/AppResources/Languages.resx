@@ -304,7 +304,7 @@
     <value>{0} more {1}(s) are not shown.</value>
   </data>
   <data name="HintMessage" xml:space="preserve">
-    <value>Hint: You can type /os 50 to view top 50 outstanding {0}s</value>
+    <value>Hint: You can type /os 50 to view top 50 {0}s with highest member's outstanding or you can type /os {0}'s username to view a {0}'s outstanding.</value>
   </data>
   <data name="MemberOutstanding" xml:space="preserve">
     <value>Member Outstanding</value>

@@ -51,9 +51,7 @@
 
             if (IsShowHint())
             {
-                var hintMessage = string.Format(
-                    GetResource(nameof(Languages.HintMessage), cultureInfo),
-                    GetResource($"CustLevel_{outstandingDetail.CustLevel - 1}", cultureInfo));
+                var hintMessage = BuildHintMessage(outstandingDetail.CustLevel - 1, cultureInfo);
                 textContainer.Add($"{messengerFormatter.NewLine()}{hintMessage}");
             }
 
@@ -70,5 +68,10 @@
             var value = random.Next(1, 6);
             return value == 1;
         }
+
+        private string BuildHintMessage(int custLevel, CultureInfo cultureInfo)
+            => string.Format(
+                GetResource(nameof(Languages.HintMessage), cultureInfo),
+                GetResource($"CustLevel_{custLevel}", cultureInfo));
     }
 }

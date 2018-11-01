@@ -322,7 +322,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hint: You can type /os 50 to view top 50 outstanding {0}s.
+        ///   Looks up a localized string similar to Hint: You can type /os 50 to view top 50 {0}s with highest member&apos;s outstanding or you can type /os {0}&apos;s username to view a {0}&apos;s outstanding..
         /// </summary>
         public static string HintMessage {
             get {
