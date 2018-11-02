@@ -28,13 +28,13 @@
             };
 
             var total = outstandingDetail.Total;
-            textContainer.Add($"{messengerFormatter.Tab()}{GetFormattedValue(total.MemberOutstanding)}  {messengerFormatter.Point()}  {GetFormattedValue(total.Outstanding)}");
+            textContainer.Add($"    {GetFormattedValue(total.MemberOutstanding)}  {messengerFormatter.Point()}  {GetFormattedValue(total.Outstanding)}");
 
             var index = 1;
             foreach (var outstanding in outstandingDetail.TopOutstandings)
             {
                 textContainer.Add($"{index}. {outstanding.CustName}");
-                textContainer.Add($"{messengerFormatter.Tab()}{GetFormattedValue(outstanding.MemberOutstanding)}  {messengerFormatter.Point()}  {GetFormattedValue(outstanding.Outstanding)}");
+                textContainer.Add($"    {GetFormattedValue(outstanding.MemberOutstanding)}  {messengerFormatter.Point()}  {GetFormattedValue(outstanding.Outstanding)}");
 
                 index++;
             }

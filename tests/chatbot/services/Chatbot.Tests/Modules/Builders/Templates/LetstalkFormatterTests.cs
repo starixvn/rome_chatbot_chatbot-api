@@ -20,13 +20,5 @@
 
             Assert.Equal("\u2022", point);
         }
-
-        [Fact]
-        public void Tab_Alway_ReturnTabCharacter()
-        {
-            var tab = new LetstalkFormatter().Tab();
-
-            Assert.Equal("\t\t", tab);
-        }
     }
 }

@@ -29,7 +29,7 @@
                 if (keyValue.Value != null)
                 {
                     textContainer.Add($"{GetResource(keyValue.Key, cultureInfo)}:");
-                    textContainer.Add($"{messengerFormatter.Tab()}{GetFormattedValue(keyValue.Value)}");
+                    textContainer.Add($"    {GetFormattedValue(keyValue.Value)}");
                 }
             }
 

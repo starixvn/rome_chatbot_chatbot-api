@@ -31,13 +31,12 @@
             };
 
             messengerFormatter.NewLine().Returns("\n");
-            messengerFormatter.Tab().Returns("\t\t");
 
             // Act
             var template = bodyTemplate.ToString(data, cultureInfo, messengerFormatter);
 
             // Assert
-            Assert.Equal("Username:\n\t\tusername\nMember:\n\t\t4,545.56\nAgent:\n\t\t123.46", template);
+            Assert.Equal("Username:\n    username\nMember:\n    4,545.56\nAgent:\n    123.46", template);
         }
     }
 }

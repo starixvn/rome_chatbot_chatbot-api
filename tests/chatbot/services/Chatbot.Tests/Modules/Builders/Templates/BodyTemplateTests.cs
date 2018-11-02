@@ -40,11 +40,10 @@
                 { "param4", true }
             };
             messengerFormatter.NewLine().Returns("_newline_");
-            messengerFormatter.Tab().Returns("_tab_");
 
             var template = bodyTemplate.ToString(data, cultureInfo, messengerFormatter);
 
-            Assert.Equal("Super:_newline__tab_3434_newline_Master:_newline__tab_4,545.56_newline_:_newline__tab_value3_newline_:_newline__tab_True", template);
+            Assert.Equal("Super:_newline_    3434_newline_Master:_newline_    4,545.56_newline_:_newline_    value3_newline_:_newline_    True", template);
         }
     }
 }
