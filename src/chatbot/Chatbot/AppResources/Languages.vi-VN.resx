@@ -238,4 +238,7 @@
   <data name="Total" xml:space="preserve">
     <value>Tổng cộng</value>
   </data>
+  <data name="Username" xml:space="preserve">
+    <value>Tên đăng nhập</value>
+  </data>
 </root>

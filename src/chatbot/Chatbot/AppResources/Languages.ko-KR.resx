@@ -211,4 +211,7 @@
   <data name="CustLevel_4" xml:space="preserve">
     <value>슈퍼</value>
   </data>
+  <data name="Username" xml:space="preserve">
+    <value>사용자 이름</value>
+  </data>
 </root>

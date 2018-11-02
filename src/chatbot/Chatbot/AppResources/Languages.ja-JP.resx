@@ -148,4 +148,7 @@
   <data name="CustLevel_3" xml:space="preserve">
     <value>マスター</value>
   </data>
+  <data name="Username" xml:space="preserve">
+    <value>ユーザー名</value>
+  </data>
 </root>

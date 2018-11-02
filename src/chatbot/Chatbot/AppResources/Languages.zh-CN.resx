@@ -291,4 +291,7 @@
   <data name="CustLevel_4" xml:space="preserve">
     <value>超级</value>
   </data>
+  <data name="Username" xml:space="preserve">
+    <value>用户名</value>
+  </data>
 </root>

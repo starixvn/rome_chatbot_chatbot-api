@@ -23,7 +23,7 @@
             var textContainer = new List<string>
             {
                 messageHeader,
-                "------------------------------------------",
+                "------------------------------------",
                 $"{messengerFormatter.Point()}{GetResource("Total", cultureInfo)}{messengerFormatter.Point()}"
             };
 
@@ -41,22 +41,27 @@
 
             if (outstandingDetail.HiddenDownlinesCount > 0)
             {
-                var hiddenDownlinesMessage = string.Format(
-                    GetResource(nameof(Languages.HiddenDownlinesCount),
-                    cultureInfo), outstandingDetail.HiddenDownlinesCount,
-                    GetResource($"CustLevel_{outstandingDetail.CustLevel - 1}", cultureInfo));
+                var hiddenDownlinesMessage = BuildHiddenDownlinesMessage(
+                    outstandingDetail.HiddenDownlinesCount,
+                    outstandingDetail.CustLevel - 1,
+                    cultureInfo);
 
                 textContainer.Add(hiddenDownlinesMessage);
             }
 
             if (IsShowHint())
             {
-                var hintMessage = BuildHintMessage(outstandingDetail.CustLevel - 1, cultureInfo);
+                var hintMessage = BuildHintMessage(cultureInfo);
                 textContainer.Add($"{messengerFormatter.NewLine()}{hintMessage}");
             }
 
             return string.Join(messengerFormatter.NewLine(), textContainer);
         }
+
+        private string BuildHiddenDownlinesMessage(int count, int custLevel, CultureInfo cultureInfo)
+            => string.Format(GetResource(nameof(Languages.HiddenDownlinesCount), cultureInfo),
+                count,
+                GetResource($"CustLevel_{custLevel}", cultureInfo));
 
         /// <summary>
         /// Random rate of 20%
@@ -65,13 +70,18 @@
         private static bool IsShowHint()
         {
             var random = new Random();
-            var value = random.Next(1, 6);
-            return value == 1;
+            return random.Next(0, 5) == 0;
         }
 
-        private string BuildHintMessage(int custLevel, CultureInfo cultureInfo)
-            => string.Format(
-                GetResource(nameof(Languages.HintMessage), cultureInfo),
-                GetResource($"CustLevel_{custLevel}", cultureInfo));
+        private string BuildHintMessage(CultureInfo cultureInfo)
+        {
+            var random = new Random();
+            if (random.Next(0, 2) == 0)
+            {
+                return GetResource(nameof(Languages.HintTopOutstanding), cultureInfo);
+            }
+
+            return GetResource(nameof(Languages.HintSpecificDownline), cultureInfo);
+        }
     }
 }

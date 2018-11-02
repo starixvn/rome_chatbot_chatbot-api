@@ -184,7 +184,7 @@
             var message = messageBuilder.BuildUnlinkMessage(language);
 
             // Assert
-            Assert.Equal("Service has been stopped.", message);
+            Assert.Equal("You have opted out service successfully. Thanks a lot for using our service.", message);
         }
     }
 }

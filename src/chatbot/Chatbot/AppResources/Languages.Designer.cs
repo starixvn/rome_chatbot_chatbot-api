@@ -304,15 +304,6 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Outstanding Detail.
-        /// </summary>
-        public static string Header_9 {
-            get {
-                return ResourceManager.GetString("Header_9", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to {0} more {1}(s) are not shown..
         /// </summary>
         public static string HiddenDownlinesCount {
@@ -322,11 +313,20 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hint: You can type /os 50 to view top 50 {0}s with highest member&apos;s outstanding or you can type /os {0}&apos;s username to view a {0}&apos;s outstanding..
+        ///   Looks up a localized string similar to *Hint: to view your downline&apos;s outstanding, please type: /os username.
         /// </summary>
-        public static string HintMessage {
+        public static string HintSpecificDownline {
             get {
-                return ResourceManager.GetString("HintMessage", resourceCulture);
+                return ResourceManager.GetString("HintSpecificDownline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to *Hint: for quick commands, please type: /os 50.
+        /// </summary>
+        public static string HintTopOutstanding {
+            get {
+                return ResourceManager.GetString("HintTopOutstanding", resourceCulture);
             }
         }
         
@@ -592,7 +592,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Service has been stopped..
+        ///   Looks up a localized string similar to You have opted out service successfully. Thanks a lot for using our service..
         /// </summary>
         public static string UnlinkMessage {
             get {

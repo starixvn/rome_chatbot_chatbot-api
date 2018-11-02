@@ -265,4 +265,7 @@
   <data name="CustLevel_4" xml:space="preserve">
     <value>สูงสุด</value>
   </data>
+  <data name="Username" xml:space="preserve">
+    <value>ชื่อผู้ใช้ระบบ</value>
+  </data>
 </root>
