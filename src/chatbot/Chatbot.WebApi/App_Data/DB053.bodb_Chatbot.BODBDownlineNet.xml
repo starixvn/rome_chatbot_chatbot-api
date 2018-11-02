@@ -36,7 +36,7 @@
     </Setting>
     <Setting Key="GetSetting" SpName="Chatbot_GetSetting" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="UpdateSetting" SpName="Chatbot_UpdateSetting" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="Chatbot_GetAllFunctions" SpName="Chatbot_GetAllFunctions_xtest" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="Chatbot_GetAllFunctions" SpName="Chatbot_GetAllFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="functionid" />
       <Mapping ObjectProperty="Name" DataField="functionname" />
       <Mapping ObjectProperty="Type" DataField="type" />
