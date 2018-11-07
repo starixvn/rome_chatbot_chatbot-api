@@ -1,4 +1,4 @@
-﻿namespace Chatbot.Helpers
+﻿namespace Chatbot.Shared.Helpers
 {
     using System;
 

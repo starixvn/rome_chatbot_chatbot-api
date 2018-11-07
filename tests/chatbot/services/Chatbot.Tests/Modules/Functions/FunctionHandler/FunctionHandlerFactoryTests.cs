@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Services;
-    using Chatbot.Configurations;
+    using Chatbot.Shared.Configurations;
     using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;

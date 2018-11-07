@@ -3,10 +3,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Chatbot.Configurations;
-    using Chatbot.Constants;
     using Chatbot.Models;
     using Chatbot.Modules.MessageServices;
+    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using Fanex.Logging;
     using MessengerClient = Messenger.Client;
 

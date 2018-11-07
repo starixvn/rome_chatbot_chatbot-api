@@ -2,7 +2,7 @@
 // TODO: Temporart fixing sonarqube for CAB
 namespace Chatbot.Modules.MessageSenders
 {
-    using Chatbot.Constants;
+    using Chatbot.Shared.Constants;
     using Messenger.Client;
     using Messenger.Client.Configurations;
 

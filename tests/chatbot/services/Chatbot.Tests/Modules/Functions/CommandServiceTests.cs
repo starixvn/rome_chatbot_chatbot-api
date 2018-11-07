@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Chatbot.Configurations;
-    using Chatbot.Constants;
+    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.Funtions;

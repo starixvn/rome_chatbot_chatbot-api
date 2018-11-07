@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Models;
-    using Chatbot.Configurations;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.MessageBuilders;
@@ -15,6 +14,7 @@
     using Chatbot.Modules.Settings;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
+    using Chatbot.Shared.Configurations;
     using Fanex.Caching;
     using Fanex.Data.Repository;
     using NSubstitute;

@@ -3,7 +3,7 @@ namespace Chatbot.Tests.Modules.Functions
     using System;
     using System.Globalization;
     using System.Threading.Tasks;
-    using Chatbot.Configurations;
+    using Chatbot.Shared.Configurations;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;

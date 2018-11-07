@@ -1,6 +1,6 @@
 ﻿namespace Chatbot.Tests.Extensions
 {
-    using Chatbot.Extensions;
+    using Chatbot.Shared.Extensions;
     using Xunit;
 
     public class NumberExtensionsTests

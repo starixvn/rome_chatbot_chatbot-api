@@ -24,7 +24,7 @@
 
         protected override async Task<Result> RunHandler(FunctionParam param)
         {
-            var parameter = param.Others["parameter"].ToString();
+            var parameter = (param.Others["parameter"] as string[])[0];
 
             if (!string.IsNullOrWhiteSpace(parameter))
             {

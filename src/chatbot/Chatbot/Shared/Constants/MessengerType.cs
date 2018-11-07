@@ -1,4 +1,4 @@
-﻿namespace Chatbot.Constants
+﻿namespace Chatbot.Shared.Constants
 {
     public static class MessengerType
     {

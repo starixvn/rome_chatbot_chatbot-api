@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Fanex.Caching" Version="2.2.0-beta2" />
     <PackageReference Include="Fanex.Logging.RabbitMQ" Version="1.0.0-beta8" />
-    <PackageReference Include="Messenger.Client" Version="1.0.0-beta6" />
+    <PackageReference Include="Messenger.Client" Version="1.0.1-beta1" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.2" />
     <PackageReference Include="ONEbook.UM" Version="3.0.0-beta3" />
     <PackageReference Include="ONEbook.UM.AspNetCore" Version="3.0.0-beta" />

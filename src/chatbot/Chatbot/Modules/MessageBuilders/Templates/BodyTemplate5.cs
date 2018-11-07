@@ -1,9 +1,9 @@
 ﻿namespace Chatbot.Modules.MessageBuilders.Templates
 {
     using System.Globalization;
-    using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Extensions;
-    using Chatbot.Helpers;
+    using Alpha.Services.Client.Models;
+    using Chatbot.Shared.Helpers;
 
     public class BodyTemplate5 : IBodyTemplate
     {

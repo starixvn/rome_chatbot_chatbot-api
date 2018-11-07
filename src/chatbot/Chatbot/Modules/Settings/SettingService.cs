@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Chatbot.Configurations;
-    using Chatbot.Helpers;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.MessageBuilders;
@@ -14,6 +12,8 @@
     using Chatbot.Modules.SettingLogs.Models;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
+    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Helpers;
     using Fanex.Caching;
     using Fanex.Data.Repository;
 

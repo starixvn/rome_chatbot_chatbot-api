@@ -7,9 +7,9 @@
     using System.Threading.Tasks;
     using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
-    using Chatbot.Configurations;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.Params;
+    using Chatbot.Shared.Configurations;
     using Microsoft.Extensions.DependencyInjection;
     using Serilog;
 

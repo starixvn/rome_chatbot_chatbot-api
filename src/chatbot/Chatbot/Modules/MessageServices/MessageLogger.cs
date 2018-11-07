@@ -5,11 +5,11 @@ namespace Chatbot.Modules.MessageServices
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Chatbot.Configurations;
-    using Chatbot.Helpers;
     using Chatbot.Models;
     using Chatbot.Modules.MessageServices.Params.Db;
     using Chatbot.Modules.Settings.Params.Db.Commands;
+    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Helpers;
     using Fanex.Data.Repository;
 
     public interface IMessageLogger

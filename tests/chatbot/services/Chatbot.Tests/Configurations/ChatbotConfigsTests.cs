@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using Chatbot.Configurations;
+    using Chatbot.Shared.Configurations;
     using Microsoft.Extensions.Configuration;
     using NSubstitute;
     using Xunit;

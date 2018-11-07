@@ -4,22 +4,23 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Net;
     using System.Threading.Tasks;
-    using Chatbot.Configurations;
-    using Chatbot.Constants;
     using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageServices;
     using Chatbot.Modules.Settings;
+    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using Fanex.Logging;
     using Models;
     using Models.Dtos;
 
     public interface CommandService
     {
-        Task Execute(string command, string parameter, int messengerType, string messengerUsername);
+        Task Execute(string command, string buttonData, int messengerType, string messengerUsername);
     }
 
     public class CommandServiceImpl : CommandService
@@ -50,49 +51,76 @@
             this.logger = logger;
         }
 
-        public async Task Execute(string command, string parameter, int messengerType, string messengerUsername)
+        public async Task Execute(
+            string command,
+            string buttonData,
+            int messengerType,
+            string messengerUsername)
         {
             if (string.IsNullOrWhiteSpace(command))
             {
                 return;
             }
 
-            var encodedCommand = System.Net.WebUtility.HtmlEncode(command);
-            var encodedParameter = System.Net.WebUtility.HtmlEncode(parameter);
+            var encodedCommand = WebUtility.HtmlEncode(command);
 
-            var messengerDto = await settingService.GetMessenger(messengerType, messengerUsername).ConfigureAwait(false);
+            var messengerDto = await settingService
+                .GetMessenger(messengerType, messengerUsername)
+                .ConfigureAwait(false);
 
-            if (messengerDto == null
-                || !messengerDto.Enabled
-                || messengerDto.IsVerifying)
+            if (!await IsMessengerValid(messengerDto, messengerType, messengerUsername).ConfigureAwait(false))
             {
-                await SendServiceUnavailableMessage(messengerType, messengerUsername).ConfigureAwait(false);
-                logger.Info($"messenger {messengerUsername} is not verified or enabled");
                 return;
             }
 
-            var user = await settingService.GetUser(messengerDto.UserId).ConfigureAwait(false)
-                ?? throw new InvalidOperationException($"user cannot be found for messenger {messengerUsername}");
+            var user = await settingService
+                .GetUser(messengerDto.UserId)
+                .ConfigureAwait(false)
+                    ?? throw new InvalidOperationException($"user cannot be found for messenger {messengerUsername}");
 
             var messenger = new Messenger(messengerType, messengerUsername);
 
+            await RunCommand(encodedCommand, user, messenger).ConfigureAwait(false);
+        }
+
+        private async Task RunCommand(
+            string encodedCommand,
+            User user,
+            Messenger messenger)
+        {
             try
             {
-                var commandFunction = await GetCommandFunction(messengerDto.UserId, encodedCommand).ConfigureAwait(false);
+                var splittedCommand = SplitCommand(encodedCommand);
+                var commandFunction = await GetCommandFunction(user.Id, encodedCommand).ConfigureAwait(false);
 
                 await Task.WhenAll(
                     messageLogger.LogMessage(
                         user.Id,
                         CommonId.BotUserId,
                         messenger,
-                        $"{encodedCommand} {encodedParameter}",
+                        encodedCommand,
                         functionId: commandFunction?.Id ?? chatbotConfigs.NotRecognizedCommandFunctionId),
-                    RunCommand(encodedCommand, encodedParameter, user, messenger, commandFunction)).ConfigureAwait(false);
+                    HandleCommand(splittedCommand.Item1, splittedCommand.Item2, user, messenger, commandFunction)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                await LogError(encodedCommand, encodedParameter, messengerDto, user, ex).ConfigureAwait(false);
+                await LogError(encodedCommand, messenger, user, ex).ConfigureAwait(false);
             }
+        }
+
+        private async Task<bool> IsMessengerValid(MessengerDto messengerDto, int messengerType, string messengerUsername)
+        {
+            if (messengerDto == null
+                || !messengerDto.Enabled
+                || messengerDto.IsVerifying)
+            {
+                await SendServiceUnavailableMessage(messengerType, messengerUsername).ConfigureAwait(false);
+                logger.Info($"messenger {messengerUsername} is not verified or enabled");
+
+                return await Task.FromResult(false).ConfigureAwait(false);
+            }
+
+            return await Task.FromResult(true).ConfigureAwait(false);
         }
 
         private async Task<Function> GetCommandFunction(int userId, string command)
@@ -106,9 +134,9 @@
             return commandFunction;
         }
 
-        private async Task RunCommand(
+        private async Task HandleCommand(
             string command,
-            string parameter,
+            string[] parameters,
             User user,
             Messenger messenger,
             Function commandFunction)
@@ -122,7 +150,7 @@
                         new Dictionary<string, object>
                         {
                             [nameof(command)] = command,
-                            [nameof(parameter)] = parameter
+                            [nameof(parameters)] = parameters
                         });
 
                 await functionHandlerFactory
@@ -136,20 +164,17 @@
             }
         }
 
-        private async Task LogError(string command, string parameter, MessengerDto messengerDto, User user, Exception ex)
+        private async Task LogError(string command, Messenger messenger, User user, Exception ex)
         {
             var logMessage = string.Join(
                                     "\n",
                                     "Command Service Exception",
                                     $"User: {user.Id}, CustId: {user.CustId}, SubAccId: {user.SubAccountId}, Language: {user.Language}",
-                                    $"Messenger: {messengerDto.Username}, Type: {messengerDto.Type}",
+                                    $"Messenger: {messenger.Username}, Type: {messenger.Type}",
                                     $"Command: {command}",
-                                    $"Parameter: {parameter}",
                                     ex.ToString());
 
             logger.Error(logMessage);
-
-            var messenger = new Messenger(messengerDto.Type, messengerDto.Username);
 
             if (chatbotConfigs.ReturnRawErrorToMessenger)
             {
@@ -180,6 +205,15 @@
             var message = messageBuilder.BuildServiceIsUnavailableMessage(messengerType);
 
             await messageSender.SendMessage(new Messenger(messengerType, messengerName), message, logToDatabase: false).ConfigureAwait(false);
+        }
+
+        private static (string, string[]) SplitCommand(string command)
+        {
+            var firstSpaceIndex = command.IndexOf(" ", StringComparison.OrdinalIgnoreCase);
+            var commandName = command.Substring(0, firstSpaceIndex);
+            var commandParam = command.Substring(firstSpaceIndex + 1).Split(" ");
+
+            return (commandName, commandParam);
         }
     }
 }
