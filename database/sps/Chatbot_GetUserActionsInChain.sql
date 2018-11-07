@@ -1,4 +1,4 @@
-﻿/*<info serverAlias="DB053-bodb_ChatBot" executers="bodbDownlineNet" viewers="vnteam" selecters=""></info>*/
+﻿/*<info serverAlias="DBAGE-bodb_ChatBot" executers="bodbDownlineNet" viewers="vnteam" selecters=""></info>*/
 
 USE [bodb_ChatBot]
 GO
@@ -10,7 +10,7 @@ AS
 /*
 	Creator:	20181106@Kan
 	Task:		Support chatbot conversation
-	Database:	DB053.bodb_ChatBot
+	Database:	DBAGE.bodb_ChatBot
 	
 	Revisions:
 		- 20181106@Kan: Create new [RedmineId: 103467]
@@ -24,6 +24,46 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	
+	DECLARE @TempActionId INT = @ActionId;
+	DECLARE @TempParentId INT = 0;
+
+	DECLARE @TempAction TABLE
+	(
+		ActionId INT
+	);
+
+	WHILE (1 = 1)
+	BEGIN
+		SELECT @TempParentId = ParentId
+		FROM dbo.[Action] WITH (NOLOCK)
+		WHERE ActionId = @TempActionId;
+
+		IF (@TempParentId = 0)
+		BEGIN
+			BREAK;
+		END
+
+		SET @TempActionId = @TempParentId;
+		INSERT INTO @TempAction(ActionId) VALUES(@TempActionId);
+	END
+
+	IF (@TempActionId <> @ActionId)
+	BEGIN
+		DECLARE @TempUserActionId INT = 0;
+
+		SELECT TOP 1
+			@TempUserActionId = u.UserActionId
+		FROM UserAction u WITH (NOLOCK)
+		WHERE u.UserId = @UserId AND u.ActionId = @TempActionId
+		ORDER BY UserActionId DESC
+
+		IF (@TempUserActionId > 0)
+		BEGIN
+			SELECT u.UserActionId, u.UserId, u.ActionId, u.UserResponse, u.CompiledCommand, u.ChatTime
+			FROM UserAction u WITH (NOLOCK) INNER JOIN @TempAction t
+				ON u.ActionId = t.ActionId
+			WHERE u.UserActionId >= @TempUserActionId
+		END
+	END
 END
 GO

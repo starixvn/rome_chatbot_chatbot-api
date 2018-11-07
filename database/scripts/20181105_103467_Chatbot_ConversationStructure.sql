@@ -30,7 +30,6 @@ CREATE TABLE [dbo].[UserAction](
 	[ActionId] [int] NOT NULL,
 	[UserResponse] [nvarchar](255) NULL,
 	[CompiledCommand] [nvarchar](255) NULL,
-	[Status] [tinyint] NOT NULL,
 	[ChatTime] [smalldatetime] NULL,
  CONSTRAINT [PK_UserAction] PRIMARY KEY CLUSTERED 
 (
