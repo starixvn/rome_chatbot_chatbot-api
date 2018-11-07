@@ -28,8 +28,8 @@ BEGIN
 	SET NOCOUNT ON;
 
 	INSERT INTO dbo.UserAction
-		(UserId, ActionId, UserResponse, CompiledCommand, ChatTime)
+		(UserId, ActionId, UserResponse, CompiledCommand, ChatTime, Status)
 	VALUES
-		(@UserId, @ActionId, @UserResponse, @CompiledCommand, @ChatTime);
+		(@UserId, @ActionId, @UserResponse, @CompiledCommand, @ChatTime, 1);
 END
 GO

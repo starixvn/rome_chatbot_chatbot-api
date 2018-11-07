@@ -43,6 +43,7 @@ BEGIN
 	(
 		ActionId INT
 	);
+	INSERT INTO @TempAction(ActionId) VALUES(@TempActionId);
 
 	WHILE (1 = 1)
 	BEGIN
@@ -59,10 +60,10 @@ BEGIN
 		INSERT INTO @TempAction(ActionId) VALUES(@TempActionId);
 	END
 
-	IF (@TempActionId = @ActionId)
-	BEGIN
-		RETURN;
-	END
+	-- IF (@TempActionId = @ActionId)
+	-- BEGIN
+	-- 	RETURN;
+	-- END
 
 	DECLARE @TempUserActionId INT = 0;
 
