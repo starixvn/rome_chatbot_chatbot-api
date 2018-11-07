@@ -3,7 +3,7 @@
 USE [bodb_ChatBot]
 GO
 
-ALTER PROCEDURE [dbo].[Chatbot_GetAction]
+ALTER PROCEDURE [dbo].[Chatbot_GetAllActions]
 AS
 /*
 	Creator:	20181105@Kan
