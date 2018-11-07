@@ -37,6 +37,7 @@ namespace Chatbot.WebApi
     using ONEbook.UM.Transport;
     using Serilog;
     using Swashbuckle.AspNetCore.Swagger;
+    using Chatbot.Modules.Actions;
 
     public class Startup
     {
@@ -67,6 +68,7 @@ namespace Chatbot.WebApi
             services.AddSingleton<IMessageBuilder, MessageBuilder>();
             services.AddSingleton<IMessageLogger, MessageLogger>();
             services.AddSingleton<IMessageSender, MessageSender>();
+            services.AddSingleton<ActionService, ActionServiceImpl>();
             services.AddSingleton<CommandService, CommandServiceImpl>();
             services.AddSingleton<IFunctionHandler, DefaultFunctionHandler>();
             services.AddSingleton<IChatbotConfigs>(chatbotConfigs);

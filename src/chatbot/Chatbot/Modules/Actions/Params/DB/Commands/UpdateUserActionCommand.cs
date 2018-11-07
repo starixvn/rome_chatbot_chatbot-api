@@ -1,6 +1,5 @@
 ﻿namespace Chatbot.Modules.Actions.Params.DB.Commands
 {
-    using System;
     using Fanex.Data.Repository;
 
     public class UpdateUserActionCommand : NonQueryCommand
@@ -22,11 +21,9 @@
         public string CompiledCommand { get; }
 
         public override string GetSettingKey()
-            => "UpdateUserActionCommand";
+            => "Chatbot_UpdateUserActionFullCommand";
 
         public override bool IsValid()
-        {
-            throw new NotImplementedException();
-        }
+            => UserActionId > 0;
     }
 }

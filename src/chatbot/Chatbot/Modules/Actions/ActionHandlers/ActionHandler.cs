@@ -8,12 +8,12 @@
 
     public interface IActionHandler
     {
-        string BuildCommand(IEnumerable<Models.Action> actionChain, IEnumerable<UserActionItemDto> userActions);
+        string BuildCommand(IEnumerable<Models.Action> actionChain, IEnumerable<UserAction> userActions);
     }
 
     public class DefaultActionHandler : IActionHandler
     {
-        public virtual string BuildCommand(IEnumerable<Models.Action> actionChain, IEnumerable<UserActionItemDto> userActions)
+        public virtual string BuildCommand(IEnumerable<Models.Action> actionChain, IEnumerable<UserAction> userActions)
         {
             if (!actionChain.Any())
             {
@@ -30,10 +30,13 @@
                 var action =
                     actionChain.FirstOrDefault(act => act.Id == userAction.ActionId)
                     ?? throw new InvalidOperationException($"Cannot found action {userAction.ActionId} of user {userAction.UserId}");
-
-                command += action.Type == ActionType.Button
+                var actionCommand = action.Type == ActionType.Button
                     ? action.Command
                     : userAction.UserResponse;
+
+                command += string.IsNullOrWhiteSpace(actionCommand)
+                    ? string.Empty
+                    : actionCommand + " ";
             }
 
             return command.TrimEnd();

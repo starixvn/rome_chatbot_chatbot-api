@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
+    using Chatbot.Modules.Actions;
     using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
@@ -32,6 +33,7 @@
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly IFunctionHandlerFactory functionHandlerFactory;
         private readonly ILogger logger;
+        private readonly ActionService actionService;
 
         public CommandServiceImpl(
             SettingService settingService,
@@ -40,7 +42,8 @@
             IMessageLogger messageLogger,
             IChatbotConfigs chatbotConfigs,
             IFunctionHandlerFactory functionHandlerFactory,
-            ILogger logger)
+            ILogger logger,
+            ActionService actionService)
         {
             this.settingService = settingService;
             this.messageSender = messageSender;
@@ -49,6 +52,7 @@
             this.chatbotConfigs = chatbotConfigs;
             this.functionHandlerFactory = functionHandlerFactory;
             this.logger = logger;
+            this.actionService = actionService;
         }
 
         public async Task Execute(
@@ -80,17 +84,17 @@
 
             var messenger = new Messenger(messengerType, messengerUsername);
 
-            await RunCommand(encodedCommand, user, messenger).ConfigureAwait(false);
+            await RunCommand(encodedCommand, buttonData, user, messenger).ConfigureAwait(false);
         }
 
         private async Task RunCommand(
             string encodedCommand,
+            string buttonData,
             User user,
             Messenger messenger)
         {
             try
             {
-                var splittedCommand = SplitCommand(encodedCommand);
                 var commandFunction = await GetCommandFunction(user.Id, encodedCommand).ConfigureAwait(false);
 
                 await Task.WhenAll(
@@ -100,7 +104,7 @@
                         messenger,
                         encodedCommand,
                         functionId: commandFunction?.Id ?? chatbotConfigs.NotRecognizedCommandFunctionId),
-                    HandleCommand(splittedCommand.Item1, splittedCommand.Item2, user, messenger, commandFunction)).ConfigureAwait(false);
+                    HandleCommand(encodedCommand, buttonData, user, messenger, commandFunction)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -135,33 +139,43 @@
         }
 
         private async Task HandleCommand(
-            string command,
-            string[] parameters,
+            string encodedCommand,
+            string buttonData,
+            User user,
+            Messenger messenger,
+            Function function)
+        {
+            if (function != null)
+            {
+                await HandleCommand(encodedCommand, user, messenger, function);
+            }
+            else
+            {
+                await HandleNotRecognizedCommandMessage(user, messenger, encodedCommand, buttonData).ConfigureAwait(false);
+            }
+        }
+
+        private async Task HandleCommand(
+            string encodedCommand,
             User user,
             Messenger messenger,
             Function commandFunction)
         {
-            if (commandFunction != null)
-            {
-                var functionParam = new FunctionParam(
-                        user,
-                        commandFunction,
-                        messenger,
-                        new Dictionary<string, object>
-                        {
-                            [nameof(command)] = command,
-                            [nameof(parameters)] = parameters
-                        });
+            var splittedCommand = SplitCommand(encodedCommand);
+            var functionParam = new FunctionParam(
+                    user,
+                    commandFunction,
+                    messenger,
+                    new Dictionary<string, object>
+                    {
+                        ["command"] = splittedCommand.Item1,
+                        ["parameters"] = splittedCommand.Item2
+                    });
 
-                await functionHandlerFactory
-                    .CreateFunctionHandler(commandFunction.Id)
-                    .Handle(functionParam)
-                    .ConfigureAwait(false);
-            }
-            else
-            {
-                await SendNotRecognizedCommandMessage(user, messenger).ConfigureAwait(false);
-            }
+            await functionHandlerFactory
+                .CreateFunctionHandler(commandFunction.Id)
+                .Handle(functionParam)
+                .ConfigureAwait(false);
         }
 
         private async Task LogError(string command, Messenger messenger, User user, Exception ex)
@@ -186,11 +200,24 @@
             }
         }
 
-        private async Task SendNotRecognizedCommandMessage(User user, Messenger messenger)
+        private async Task HandleNotRecognizedCommandMessage(
+            User user,
+            Messenger messenger,
+            string encodedCommand,
+            string buttonData)
         {
-            var message = messageBuilder.BuildNotRecognizedCommandMessage(user.Language);
+            var actionResult = await actionService.BuildAction(encodedCommand, buttonData, user);
 
-            await messageSender.SendMessage(user.Id, messenger, message, chatbotConfigs.NotRecognizedCommandFunctionId).ConfigureAwait(false);
+            if (string.IsNullOrWhiteSpace(actionResult.Command))
+            {
+                await messageSender.SendMessage(user.Id, messenger, actionResult.Message, actionResult.FunctionId);
+            }
+            else
+            {
+                var function = (await settingService.GetAllFunctions()).FirstOrDefault(fnc => fnc.Id == actionResult.FunctionId);
+
+                HandleCommand(encodedCommand, user, messenger, function);
+            }
         }
 
         private async Task SendErrorMessage(User user, Messenger messenger)

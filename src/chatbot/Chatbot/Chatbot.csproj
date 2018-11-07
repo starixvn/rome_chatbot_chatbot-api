@@ -40,8 +40,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Modules\Actions\Validators\" />
-  </ItemGroup>
-
 </Project>

@@ -4,10 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Chatbot.Shared.Configurations;
-    using Chatbot.Shared.Constants;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
+    using Chatbot.Modules.Actions;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
@@ -15,6 +14,8 @@
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageServices;
     using Chatbot.Modules.Settings;
+    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using Fanex.Logging;
     using NSubstitute;
     using Xunit;
@@ -28,6 +29,7 @@
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly IFunctionHandlerFactory functionHandlerFactory;
         private readonly ILogger logger;
+        private readonly ActionService actionService;
 
         private readonly CommandService commandService;
 
@@ -38,6 +40,7 @@
             messageBuilder = Substitute.For<IMessageBuilder>();
             messageLogger = Substitute.For<IMessageLogger>();
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
+            actionService = Substitute.For<ActionService>();
             functionHandlerFactory = Substitute.For<IFunctionHandlerFactory>();
             logger = Substitute.For<ILogger>();
 
@@ -48,7 +51,8 @@
                 messageLogger,
                 chatbotConfigs,
                 functionHandlerFactory,
-                logger);
+                logger,
+                actionService);
         }
 
         [Fact]

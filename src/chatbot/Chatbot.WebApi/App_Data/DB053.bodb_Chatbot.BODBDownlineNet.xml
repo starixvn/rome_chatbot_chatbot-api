@@ -45,4 +45,14 @@
     </Setting>
     <Setting Key="Chatbot_GetResource" SpName="Chatbot_GetResource" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
   </Function>
+  <Function Name="Action">
+    <Setting Key="Chatbot_GetUserActionsInChain" SpName="Chatbot_GetUserActionsInChain" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+      <Mapping ObjectProperty="Id" DataField="useractionid" />
+    </Setting>
+    <Setting Key="Chatbot_InsertUserAction" SpName="Chatbot_InsertUserAction" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_UpdateUserActionFullCommand" SpName="Chatbot_UpdateUserActionFullCommand" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_GetAllActions" SpName="Chatbot_GetAllActions" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+      <Mapping ObjectProperty="Id" DataField="actionid" />
+    </Setting>
+  </Function>
 </Functions>

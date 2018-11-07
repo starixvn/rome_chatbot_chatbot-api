@@ -5,11 +5,9 @@
     public class GetAllActionsCriteria : CriteriaBase
     {
         public override string GetSettingKey()
-            => "GetAllActions";
+            => "Chatbot_GetAllActions";
 
         public override bool IsValid()
-        {
-            throw new System.NotImplementedException();
-        }
+            => true;
     }
 }

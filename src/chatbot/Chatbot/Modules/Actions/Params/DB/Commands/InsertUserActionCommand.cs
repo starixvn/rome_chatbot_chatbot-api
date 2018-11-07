@@ -9,13 +9,11 @@
             int userId,
             int actionId,
             string userReponse,
-            bool isBeginAction,
             string compileCommand)
         {
             UserId = userId;
             ActionId = actionId;
             UserResponse = userReponse;
-            IsBeginAction = isBeginAction;
             CompiledCommand = compileCommand;
         }
 
@@ -27,16 +25,12 @@
 
         public DateTime ChatTime => DateTime.Now;
 
-        public bool IsBeginAction { get; }
-
         public string CompiledCommand { get; }
 
         public override string GetSettingKey()
-            => "Setting_Key";
+            => "Chatbot_InsertUserAction";
 
         public override bool IsValid()
-        {
-            throw new NotImplementedException();
-        }
+            => UserId > 0 && ActionId > 0;
     }
 }

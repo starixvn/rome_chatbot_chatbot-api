@@ -1,6 +1,5 @@
 ﻿namespace Chatbot.Modules.Actions.Params.DB.Criteria
 {
-    using System;
     using Fanex.Data.Repository;
 
     public class GetActionsByUser : CriteriaBase
@@ -13,11 +12,9 @@
         public int UserId { get; }
 
         public override string GetSettingKey()
-            => "GetActionsByUser";
+            => "Chatbot_GetUserActionsInChain";
 
         public override bool IsValid()
-        {
-            throw new NotImplementedException();
-        }
+            => UserId > 0;
     }
 }
