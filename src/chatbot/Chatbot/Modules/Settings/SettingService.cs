@@ -52,6 +52,7 @@
     {
         private const string DefaultLanguage = "en-US";
         private const string functionNameByLanguageCacheKey = "SettingServiceImpl.FunctionNameByLanguageCacheKey.{0}";
+        private const string AllFunctionsCacheKey = "SettingServiceImpl.AllFunctionsCacheKey";
         private readonly IDynamicRepository dynamicRepository;
         private readonly Func<string> randomNumberFunc;
         private readonly Func<DateTime> getCurrentDateTimeFunc;
@@ -132,9 +133,11 @@
 
         public async Task<IEnumerable<Function>> GetAllFunctions(string language = "")
         {
-            var functions = await dynamicRepository
-                .FetchAsync<Function>(new GetAllFunctionsCriteria())
-                .ConfigureAwait(false);
+            var functions = await cacheService.GetOrSetAsync(
+                AllFunctionsCacheKey,
+                () => dynamicRepository.FetchAsync<Function>(new GetAllFunctionsCriteria()).Result,
+                new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0)))
+            .ConfigureAwait(false);
 
             if (!string.IsNullOrWhiteSpace(language))
             {
