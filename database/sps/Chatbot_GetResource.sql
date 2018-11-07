@@ -4,7 +4,7 @@ USE [bodb_ChatBot]
 GO
 
 ALTER PROCEDURE [dbo].[Chatbot_GetResource]
-    @FunctionId INT,
+    @Key INT,
     @Type VARCHAR(20)
 AS
 /*
@@ -24,7 +24,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-    SELECT [Key] AS [FunctionId], [Type] AS ResourceType, LanguageCode, [Value] AS FunctionName
+    SELECT [Key], [Type], LanguageCode, [Value]
 	FROM dbo.[Resource] WITH (NOLOCK)
-	WHERE [Key] = @FunctionId AND [Type] = @Type;
+	WHERE [Key] = @Key AND [Type] = @Type;
 END

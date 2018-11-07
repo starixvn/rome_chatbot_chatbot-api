@@ -5,7 +5,7 @@ GO
 
 ALTER PROCEDURE [dbo].[Chatbot_GetUserActionsInChain]
 	@UserId INT,
-	@ActionId INT
+	@TimeOutInMinutes INT = 3
 AS
 /*
 	Creator:	20181106@Kan
@@ -23,10 +23,22 @@ AS
 */
 BEGIN
 	SET NOCOUNT ON;
+	
+	DECLARE @TimeOutTime SMALLDATETIME = DATEADD(MINUTE, @TimeOutInMinutes * -1, GETDATE());
+	DECLARE @ActionId INT = 0;
+
+	SELECT TOP 1 @ActionId = ActionId
+	FROM UserAction WITH (NOLOCK)
+	WHERE UserId = @UserId AND ChatTime >= @TimeOutTime
+	ORDER BY UserActionId DESC;
+
+	IF (@ActionId = 0)
+	BEGIN
+		RETURN;
+	END
 
 	DECLARE @TempActionId INT = @ActionId;
 	DECLARE @TempParentId INT = 0;
-
 	DECLARE @TempAction TABLE
 	(
 		ActionId INT
@@ -47,23 +59,25 @@ BEGIN
 		INSERT INTO @TempAction(ActionId) VALUES(@TempActionId);
 	END
 
-	IF (@TempActionId <> @ActionId)
+	IF (@TempActionId = @ActionId)
 	BEGIN
-		DECLARE @TempUserActionId INT = 0;
+		RETURN;
+	END
 
-		SELECT TOP 1
-			@TempUserActionId = u.UserActionId
-		FROM UserAction u WITH (NOLOCK)
-		WHERE u.UserId = @UserId AND u.ActionId = @TempActionId
-		ORDER BY UserActionId DESC
+	DECLARE @TempUserActionId INT = 0;
 
-		IF (@TempUserActionId > 0)
-		BEGIN
-			SELECT u.UserActionId, u.UserId, u.ActionId, u.UserResponse, u.CompiledCommand, u.ChatTime
-			FROM UserAction u WITH (NOLOCK) INNER JOIN @TempAction t
-				ON u.ActionId = t.ActionId
-			WHERE u.UserActionId >= @TempUserActionId
-		END
+	SELECT TOP 1
+		@TempUserActionId = u.UserActionId
+	FROM UserAction u WITH (NOLOCK)
+	WHERE u.UserId = @UserId AND u.ActionId = @TempActionId
+	ORDER BY UserActionId DESC;
+
+	IF (@TempUserActionId > 0)
+	BEGIN
+		SELECT u.UserActionId, u.UserId, u.ActionId, u.UserResponse, u.CompiledCommand, u.ChatTime
+		FROM UserAction u WITH (NOLOCK) INNER JOIN @TempAction t
+			ON u.ActionId = t.ActionId
+		WHERE u.UserActionId >= @TempUserActionId;
 	END
 END
 GO
