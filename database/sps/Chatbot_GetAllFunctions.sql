@@ -1,4 +1,4 @@
-﻿/*<info serverAlias="DB053-bodb_ChatBot" executers="bodbDownlineNet" viewers="vnteam" selecters=""></info>*/
+﻿/*<info serverAlias="DBAGE-bodb_ChatBot" executers="bodbDownlineNet" viewers="vnteam" selecters=""></info>*/
 
 USE [bodb_ChatBot]
 GO
@@ -8,7 +8,7 @@ AS
 /*
 	Creator:	20181029@Kan.Nguyen
 	Task:		Get all functions, their status differ Hide
-	Database:	DB053.bodb_ChatBot
+	Database:	DBAGE.bodb_ChatBot
 	
 	Revisions:
 		- 20181029@Kan.Nguyen:	Create new - [RedmineId: #103467]
