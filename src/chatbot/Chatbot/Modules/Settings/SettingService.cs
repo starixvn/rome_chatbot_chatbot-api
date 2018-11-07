@@ -8,6 +8,9 @@
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.Resources;
+    using Chatbot.Modules.Resources.Constants;
+    using Chatbot.Modules.Resources.Models;
     using Chatbot.Modules.SettingLogs;
     using Chatbot.Modules.SettingLogs.Models;
     using Chatbot.Modules.Settings.Params.Db.Commands;
@@ -61,6 +64,7 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly SettingLogService settingLogService;
+        private readonly ResourceService resourceService;
 
         public SettingServiceImpl(
             IDynamicRepository dynamicRepository,
@@ -69,6 +73,7 @@
             ICacheService cacheService,
             IChatbotConfigs chatbotConfigs,
             SettingLogService settingLogService,
+            ResourceService resourceService,
             Func<string> randomNumberFunc = null,
             Func<DateTime> getCurrentDateTimeFunc = null)
         {
@@ -80,6 +85,7 @@
             this.messageBuilder = messageBuilder;
             this.chatbotConfigs = chatbotConfigs;
             this.settingLogService = settingLogService;
+            this.resourceService = resourceService;
         }
 
         public async Task GenerateVerificationCode(int userId, Messenger messenger)
@@ -255,21 +261,21 @@
                         .ConfigureAwait(false);
 
             var functionName = functionLanguages
-                .FirstOrDefault(languageDto => languageDto.LanguageCode == language)
-                ?.FunctionName;
+                .FirstOrDefault(resource => resource.LanguageCode == language)
+                ?.Value;
 
             if (string.IsNullOrWhiteSpace(functionName))
             {
                 functionName = functionLanguages
-                .FirstOrDefault(languageDto => languageDto.LanguageCode == DefaultLanguage)
-                ?.FunctionName;
+                .FirstOrDefault(resource => resource.LanguageCode == DefaultLanguage)
+                ?.Value;
             }
 
             return functionName;
         }
 
-        private Task<IEnumerable<FunctionLanguageDto>> GetFunctionLanguage(int functionId)
-            => dynamicRepository.FetchAsync<FunctionLanguageDto>(new GetFunctionNameCriteria(functionId));
+        private Task<IEnumerable<Resource>> GetFunctionLanguage(int functionId)
+            => resourceService.GetResources(functionId, ResourceType.Function);
 
         public async Task UpdateFunctions(int userId, IEnumerable<Function> functions, UpdateFunctionsLog logData)
         {

@@ -9,6 +9,8 @@
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.Resources;
+    using Chatbot.Modules.Resources.Models;
     using Chatbot.Modules.SettingLogs;
     using Chatbot.Modules.SettingLogs.Models;
     using Chatbot.Modules.Settings;
@@ -30,6 +32,7 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly SettingLogService settingLogService;
+        private readonly ResourceService resourceService;
 
         private readonly SettingService settingService;
 
@@ -43,6 +46,7 @@
             messageBuilder = Substitute.For<IMessageBuilder>();
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
             settingLogService = Substitute.For<SettingLogService>();
+            resourceService = Substitute.For<ResourceService>();
 
             settingService = new SettingServiceImpl(
                 dynamicRepository,
@@ -51,6 +55,7 @@
                 cacheService,
                 chatbotConfigs,
                 settingLogService,
+                resourceService,
                 randomNumberFunc,
                 getCurrentDateTimeFunc);
         }
@@ -249,12 +254,12 @@
 
             cacheService.GetOrSetAsync(
                 "SettingServiceImpl.FunctionNameByLanguageCacheKey.1",
-                Arg.Any<Func<IEnumerable<FunctionLanguageDto>>>(),
+                Arg.Any<Func<IEnumerable<Resource>>>(),
                 Arg.Any<CacheItemOptions>())
-                .Returns(Task.FromResult(new List<FunctionLanguageDto>
+                .Returns(Task.FromResult(new List<Resource>
                 {
-                    new FunctionLanguageDto(1, "name-en-us", "function", "en-US")
-                } as IEnumerable<FunctionLanguageDto>));
+                    new Resource(1, "function", "en-US","name-en-us")
+                } as IEnumerable<Resource>));
 
             var actualFunctions = settingService.GetFunctions(userId, "en-US").GetAwaiter().GetResult();
 
@@ -864,12 +869,12 @@
 
             cacheService.GetOrSetAsync(
                 "SettingServiceImpl.FunctionNameByLanguageCacheKey.1",
-                Arg.Any<Func<IEnumerable<FunctionLanguageDto>>>(),
+                Arg.Any<Func<IEnumerable<Resource>>>(),
                 Arg.Any<CacheItemOptions>())
-                .Returns(Task.FromResult(new List<FunctionLanguageDto>
+                .Returns(Task.FromResult(new List<Resource>
                 {
-                    new FunctionLanguageDto(1, "name-en-us", "function", "en-US")
-                } as IEnumerable<FunctionLanguageDto>));
+                    new Resource(1,  "function", "en-US", "name-en-us")
+                } as IEnumerable<Resource>));
 
             // Act
             var actualFunctions = settingService.GetAllFunctions("en-US").GetAwaiter().GetResult();

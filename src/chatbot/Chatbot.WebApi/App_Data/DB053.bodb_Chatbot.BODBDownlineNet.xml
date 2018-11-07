@@ -43,5 +43,6 @@
       <Mapping ObjectProperty="Command" DataField="defaultcommand" />
       <Mapping ObjectProperty="Environment" DataField="environment" />
     </Setting>
+    <Setting Key="Chatbot_GetResource" SpName="Chatbot_GetResource" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
   </Function>
 </Functions>
