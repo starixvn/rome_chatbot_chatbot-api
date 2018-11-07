@@ -24,7 +24,7 @@
             {
                 messageHeader,
                 "------------------------------------",
-                $"{messengerFormatter.Point()}{GetResource("Total", cultureInfo)}{messengerFormatter.Point()}"
+                $"{messengerFormatter.Point()}{GetResource("Total", cultureInfo).ToUpperInvariant()}{messengerFormatter.Point()}"
             };
 
             var total = outstandingDetail.Total;

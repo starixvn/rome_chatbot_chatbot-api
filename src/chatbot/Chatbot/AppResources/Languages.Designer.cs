@@ -313,7 +313,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to *Hint: to view your downline&apos;s outstanding, please type: /os username.
+        ///   Looks up a localized string similar to *Hint: To view your downline&apos;s outstanding, please type: /os username.
         /// </summary>
         public static string HintSpecificDownline {
             get {
@@ -322,7 +322,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to *Hint: for quick commands, please type: /os 50.
+        ///   Looks up a localized string similar to *Hint: For quick commands, please type: /os 50.
         /// </summary>
         public static string HintTopOutstanding {
             get {

@@ -316,9 +316,9 @@
     <value>You have opted out service successfully. Thanks a lot for using our service.</value>
   </data>
   <data name="HintTopOutstanding" xml:space="preserve">
-    <value>*Hint: for quick commands, please type: /os 50</value>
+    <value>*Hint: For quick commands, please type: /os 50</value>
   </data>
   <data name="HintSpecificDownline" xml:space="preserve">
-    <value>*Hint: to view your downline's outstanding, please type: /os username</value>
+    <value>*Hint: To view your downline's outstanding, please type: /os username</value>
   </data>
 </root>
