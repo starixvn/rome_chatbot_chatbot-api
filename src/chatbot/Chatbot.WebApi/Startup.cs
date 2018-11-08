@@ -6,6 +6,7 @@ namespace Chatbot.WebApi
     using System.Globalization;
     using System.Linq;
     using Alpha.Services.Client.Services;
+    using Chatbot.Modules.Actions;
     using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.FunctionHandler;
@@ -37,7 +38,6 @@ namespace Chatbot.WebApi
     using ONEbook.UM.Transport;
     using Serilog;
     using Swashbuckle.AspNetCore.Swagger;
-    using Chatbot.Modules.Actions;
 
     public class Startup
     {
@@ -97,6 +97,7 @@ namespace Chatbot.WebApi
                 {
                     { MessengerType.Letstalk, new LetstalkFormatter() }
                 });
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IDictionary<string, CultureInfo>>(
                 new Dictionary<string, CultureInfo>
@@ -110,6 +111,7 @@ namespace Chatbot.WebApi
                     { "ko-KR", CultureInfo.CreateSpecificCulture("ko-KR") }
                 });
             services.AddFunctionHandler();
+            services.AddActionHandler();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Chatbot API", Version = "v1" });

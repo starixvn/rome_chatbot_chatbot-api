@@ -27,6 +27,12 @@
         string BuildInvalidCustNameMessage(string language);
 
         string BuildUnlinkMessage(string language);
+
+        string BuildInvalidNumerOfDownline(string language);
+
+        string BuildInvalidDownlineMessage(string username, string language);
+
+        string BuildInvalidDirectDownlineMessage(string username, int directDownlineLevel, string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -138,6 +144,20 @@
 
         public string BuildUnlinkMessage(string language)
             => GetResource(nameof(Languages.UnlinkMessage), language);
+
+        public string BuildInvalidNumerOfDownline(string language)
+            => GetResource(nameof(Languages.InvalidNumerOfDownlines), language);
+
+        public string BuildInvalidDownlineMessage(string username, string language)
+            => string.Format(
+                GetResource(nameof(Languages.InvalidDownline), language),
+                username);
+
+        public string BuildInvalidDirectDownlineMessage(string username, int directDownlineLevel, string language)
+            => string.Format(
+                GetResource(nameof(Languages.InvalidDirectDownline), language),
+                username,
+                GetResource($"CustLevel_{directDownlineLevel}", language));
 
         private IMessengerFormatter GetMessengerFormatter(int messengerType)
             => messengerFormatters.ContainsKey(messengerType)

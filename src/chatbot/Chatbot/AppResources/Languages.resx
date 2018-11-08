@@ -321,4 +321,13 @@
   <data name="HintSpecificDownline" xml:space="preserve">
     <value>*Hint: To view your downline's outstanding, please type: /os username</value>
   </data>
+  <data name="InvalidNumerOfDownlines" xml:space="preserve">
+    <value>Number of downline must be numeric.</value>
+  </data>
+  <data name="InvalidDownline" xml:space="preserve">
+    <value>'{0}' is not your valid downline.</value>
+  </data>
+  <data name="InvalidDirectDownline" xml:space="preserve">
+    <value>'{0}' is not your valid {1}.</value>
+  </data>
 </root>

@@ -358,6 +358,33 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is not your valid {1}..
+        /// </summary>
+        public static string InvalidDirectDownline {
+            get {
+                return ResourceManager.GetString("InvalidDirectDownline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is not your valid downline..
+        /// </summary>
+        public static string InvalidDownline {
+            get {
+                return ResourceManager.GetString("InvalidDownline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of downline must be numeric..
+        /// </summary>
+        public static string InvalidNumerOfDownlines {
+            get {
+                return ResourceManager.GetString("InvalidNumerOfDownlines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Master.
         /// </summary>
         public static string Master {
