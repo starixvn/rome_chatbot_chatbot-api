@@ -35,10 +35,10 @@ VALUES ('View Outstanding Report', 1, '/os', 10, @OutstandingFunctionId, 0, 0, 0
 SELECT @ViewOutstandingReportActionId = SCOPE_IDENTITY();
 
 INSERT INTO dbo.Action(ActionName, [Type], Command, DisplayOrder, FunctionId, ParentId, IsEndAction, [Status])
-VALUES ('View Today Win Loss', 2, '/wl', 20, @TodayWinLossFunctionId, 0, 1, 0);
+VALUES ('View Today Win Loss', 1, '/wl', 20, @TodayWinLossFunctionId, 0, 1, 0);
 
 INSERT INTO dbo.Action(ActionName, [Type], Command, DisplayOrder, FunctionId, ParentId, IsEndAction, [Status])
-VALUES ('View Balance Info', 2, '/bal', 30, @BalanceInfoFunctionId, 0, 1, 0);
+VALUES ('View Balance Info', 1, '/bal', 30, @BalanceInfoFunctionId, 0, 1, 0);
 
 -- Insert Outstanding actions
 INSERT INTO dbo.Action(ActionName, [Type], Command, DisplayOrder, FunctionId, ParentId, IsEndAction, [Status])

@@ -7,8 +7,7 @@ ALTER PROCEDURE [dbo].[Chatbot_InsertUserAction]
 	@UserId INT,
 	@ActionId INT,
 	@UserResponse NVARCHAR(255),
-	@CompiledCommand NVARCHAR(255),
-	@ChatTime DATETIME
+	@CompiledCommand NVARCHAR(255)
 AS
 /*
 	Creator:	20181105@Kan
@@ -30,6 +29,6 @@ BEGIN
 	INSERT INTO dbo.UserAction
 		(UserId, ActionId, UserResponse, CompiledCommand, ChatTime, Status)
 	VALUES
-		(@UserId, @ActionId, @UserResponse, @CompiledCommand, @ChatTime, 1);
+		(@UserId, @ActionId, @UserResponse, @CompiledCommand, GETDATE(), 1);
 END
 GO
