@@ -24,27 +24,31 @@
 
         protected override async Task<Result> RunHandler(FunctionParam param)
         {
-            var parameter = (param.Others["parameter"] as string[])[0];
-
-            if (!string.IsNullOrWhiteSpace(parameter))
+            var rawParameter = param.Others["parameters"] as string[];
+            if (rawParameter.Length > 0)
             {
-                if (int.TryParse(parameter, out int topQuery))
-                {
-                    param.Others.Add(nameof(topQuery), topQuery);
-                }
-                else
-                {
-                    var downlineInfo = await customerService.GetDownlineInfo(param.User.CustId, parameter)
-                        .ConfigureAwait(false);
+                var parameter = rawParameter[0];
 
-                    if (downlineInfo == null ||
-                        downlineInfo.CustId == 0 ||
-                        !IsDirectDownline(param.User.CustLevel, downlineInfo.RoleId))
+                if (!string.IsNullOrWhiteSpace(parameter))
+                {
+                    if (int.TryParse(parameter, out int topQuery))
                     {
-                        return await BuildAndSendInvalidCustNameMessage(param).ConfigureAwait(false);
+                        param.Others.Add(nameof(topQuery), topQuery);
                     }
+                    else
+                    {
+                        var downlineInfo = await customerService.GetDownlineInfo(param.User.CustId, parameter)
+                            .ConfigureAwait(false);
 
-                    param.Others.Add(nameof(downlineInfo.CustId), downlineInfo.CustId);
+                        if (downlineInfo == null ||
+                            downlineInfo.CustId == 0 ||
+                            !IsDirectDownline(param.User.CustLevel, downlineInfo.RoleId))
+                        {
+                            return await BuildAndSendInvalidCustNameMessage(param).ConfigureAwait(false);
+                        }
+
+                        param.Others.Add(nameof(downlineInfo.CustId), downlineInfo.CustId);
+                    }
                 }
             }
 

@@ -22,7 +22,8 @@
 
             var distinctUserActions = userActions
                 .DistinctBy(userAction => userAction.ActionId)
-                .OrderBy(userAction => userAction.ActionId);
+                .OrderBy(userAction => userAction.ActionId)
+                .Where(userAction => actionChain.Any(action => action.Id == userAction.ActionId));
             var command = string.Empty;
 
             foreach (var userAction in distinctUserActions)

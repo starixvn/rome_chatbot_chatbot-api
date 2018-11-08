@@ -115,6 +115,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel this request.
+        /// </summary>
+        public static string CancelThisRequest {
+            get {
+                return ResourceManager.GetString("CancelThisRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cash.
         /// </summary>
         public static string CashBalance {
@@ -210,6 +219,15 @@ namespace Chatbot.AppResources {
         public static string DefaultErrorMessage {
             get {
                 return ResourceManager.GetString("DefaultErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} has been cancelled..
+        /// </summary>
+        public static string FunctionHasBeenCancelled {
+            get {
+                return ResourceManager.GetString("FunctionHasBeenCancelled", resourceCulture);
             }
         }
         
@@ -507,6 +525,24 @@ namespace Chatbot.AppResources {
         public static string Outstanding {
             get {
                 return ResourceManager.GetString("Outstanding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select an option..
+        /// </summary>
+        public static string PleaseSelectOption {
+            get {
+                return ResourceManager.GetString("PleaseSelectOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, we couldn&apos;t recognize your request. Which action would you like to take?.
+        /// </summary>
+        public static string RootActionTitle {
+            get {
+                return ResourceManager.GetString("RootActionTitle", resourceCulture);
             }
         }
         

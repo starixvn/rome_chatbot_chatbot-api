@@ -1,6 +1,5 @@
 ﻿namespace Chatbot.Modules.Actions.Params.DB.Commands
 {
-    using System;
     using Fanex.Data.Repository;
 
     public class InsertUserActionCommand : NonQueryCommand
@@ -22,8 +21,6 @@
         public int ActionId { get; }
 
         public string UserResponse { get; }
-
-        public DateTime ChatTime => DateTime.Now;
 
         public string CompiledCommand { get; }
 

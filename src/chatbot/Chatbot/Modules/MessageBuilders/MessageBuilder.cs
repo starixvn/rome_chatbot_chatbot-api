@@ -2,9 +2,12 @@
 {
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
     using System.Text;
+    using System.Threading.Tasks;
     using Chatbot.AppResources;
     using Chatbot.Modules.MessageBuilders.Templates;
+    using Chatbot.Modules.Resources;
 
     public interface IMessageBuilder
     {
@@ -30,9 +33,19 @@
 
         string BuildInvalidNumerOfDownline(string language);
 
+        Task<string> BuildActionName(int actionId, string language);
+
         string BuildInvalidDownlineMessage(string username, string language);
 
+        string BuildActionTitle(string language);
+
         string BuildInvalidDirectDownlineMessage(string username, int directDownlineLevel, string language);
+
+        string BuildRootActionTitle(string language);
+
+        string BuildCancelRequestMessage(string language);
+
+        Task<string> BuildResponseCancelRequestMessage(int actionId, string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -52,21 +65,26 @@
             "zh-TW"
         };
 
+        private const string ActionResourceName = "Action";
+
         private static readonly CultureInfo defaultCultureInfo = CultureInfo.CreateSpecificCulture("en-US");
         private static readonly IMessageTemplate defaultTemplate = new MessageTemplate(new HeaderTemplate(), new BodyTemplate());
 
         private readonly IDictionary<int, IMessengerFormatter> messengerFormatters;
         private readonly IDictionary<string, CultureInfo> cultureInfoList;
         private readonly IDictionary<int, IMessageTemplate> messageTemplates;
+        private readonly ResourceService resourceService;
 
         public MessageBuilder(
             IDictionary<string, CultureInfo> cultureInfoList,
             IDictionary<int, IMessageTemplate> messageTemplates,
-            IDictionary<int, IMessengerFormatter> messengerFormatters)
+            IDictionary<int, IMessengerFormatter> messengerFormatters,
+            ResourceService resourceService)
         {
             this.cultureInfoList = cultureInfoList;
             this.messageTemplates = messageTemplates;
             this.messengerFormatters = messengerFormatters;
+            this.resourceService = resourceService;
         }
 
         public string BuildCommandResultMessage(
@@ -176,5 +194,23 @@
             => cultureInfoList.ContainsKey(language)
                             ? cultureInfoList[language]
                             : defaultCultureInfo;
+
+        public async Task<string> BuildActionName(int actionId, string language)
+            => (await resourceService.GetResources(actionId, ActionResourceName))
+            .FirstOrDefault(resource => resource.LanguageCode == language)?.Value;
+
+        public string BuildActionTitle(string language)
+        => GetResource(nameof(Languages.PleaseSelectOption), language);
+
+        public string BuildRootActionTitle(string language)
+            => GetResource(nameof(Languages.RootActionTitle), language);
+
+        public string BuildCancelRequestMessage(string language)
+             => GetResource(nameof(Languages.CancelThisRequest), language);
+
+        public async Task<string> BuildResponseCancelRequestMessage(int actionId, string language)
+            => string.Format(
+                GetResource(nameof(Languages.FunctionHasBeenCancelled), language),
+                await BuildActionName(actionId, language).ConfigureAwait(false));
     }
 }

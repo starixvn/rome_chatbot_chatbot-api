@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
@@ -132,7 +131,7 @@
             var userFuntions = await settingService.GetFunctions(userId).ConfigureAwait(false);
             var commandFunction = userFuntions
                                     .FirstOrDefault(
-                                        function => string.Compare(function.Command, command, true, CultureInfo.InvariantCulture) == 0
+                                        function => command.IndexOf(function.Command, StringComparison.OrdinalIgnoreCase) == 0
                                         && function.Enabled);
 
             return commandFunction;
@@ -216,7 +215,7 @@
             {
                 var function = (await settingService.GetAllFunctions()).FirstOrDefault(fnc => fnc.Id == actionResult.FunctionId);
 
-                HandleCommand(encodedCommand, user, messenger, function);
+                HandleCommand(actionResult.Command, user, messenger, function);
             }
         }
 
@@ -237,6 +236,12 @@
         private static (string, string[]) SplitCommand(string command)
         {
             var firstSpaceIndex = command.IndexOf(" ", StringComparison.OrdinalIgnoreCase);
+
+            if (firstSpaceIndex == -1)
+            {
+                return (command, new string[0]);
+            }
+
             var commandName = command.Substring(0, firstSpaceIndex);
             var commandParam = command.Substring(firstSpaceIndex + 1).Split(" ");
 

@@ -81,9 +81,12 @@ namespace Chatbot.Modules.MessageServices
                 message.Content
             };
 
-            foreach (var action in message.MessageMarkup.MessageActions)
+            if (message.MessageMarkup != null)
             {
-                logMessage.Add($"<a href='#'>{action.Label}</a>");
+                foreach (var action in message.MessageMarkup.MessageActions)
+                {
+                    logMessage.Add($"<a href='#'>{action.Label}</a>");
+                }
             }
 
             await LogMessage(
