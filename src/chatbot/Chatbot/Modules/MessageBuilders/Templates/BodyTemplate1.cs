@@ -22,9 +22,8 @@
 
             var textContainer = new List<string>
             {
-                messageHeader,
-                "------------------------------------",
-                $"{messengerFormatter.Point()}{GetResource("Total", cultureInfo).ToUpperInvariant()}{messengerFormatter.Point()}"
+                $"{messageHeader}{messengerFormatter.NewLine()}",
+                GetResource("Total", cultureInfo).ToUpperInvariant()
             };
 
             var total = outstandingDetail.Total;

@@ -349,7 +349,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid username.
+        ///   Looks up a localized string similar to Invalid username..
         /// </summary>
         public static string InvalidCustName {
             get {

@@ -241,4 +241,31 @@
   <data name="Username" xml:space="preserve">
     <value>Tên đăng nhập</value>
   </data>
+  <data name="HiddenDownlinesCount" xml:space="preserve">
+    <value> Còn {0} {1}(s) nữa chưa hiện ra.</value>
+  </data>
+  <data name="UnlinkMessage" xml:space="preserve">
+    <value>Bạn đã ngừng sử dụng dịch vụ thành công. Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.</value>
+  </data>
+  <data name="SuperOutstanding" xml:space="preserve">
+    <value>Số tiền chưa xử lý của Super</value>
+  </data>
+  <data name="MasterOutstanding" xml:space="preserve">
+    <value>Số tiền chưa xử lý của Master</value>
+  </data>
+  <data name="AgentOutstanding" xml:space="preserve">
+    <value>Số tiền chưa xử lý của Agent</value>
+  </data>
+  <data name="MemberOutstanding" xml:space="preserve">
+    <value>Số tiền chưa xử lý của Member</value>
+  </data>
+  <data name="InvalidCustName" xml:space="preserve">
+    <value>Tên tài khoản không hợp lệ.</value>
+  </data>
+  <data name="HintTopOutstanding" xml:space="preserve">
+    <value>*Gợi ý: để xem nhanh, vui lòng nhập: /os 50</value>
+  </data>
+  <data name="HintSpecificDownline" xml:space="preserve">
+    <value>*Gợi ý: để xem tiền chưa xử lý của tài khoản cấp dưới, vui lòng nhập: /os tên tài khoản</value>
+  </data>
 </root>

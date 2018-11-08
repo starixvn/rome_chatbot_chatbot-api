@@ -839,17 +839,20 @@
             settingService.GetAllFunctions(language).ConfigureAwait(false);
 
             // Assert
-            dynamicRepository.Received().FetchAsync<Function>(
-                Arg.Any<GetAllFunctionsCriteria>());
+            cacheService.Received().GetOrSetAsync(
+                "SettingServiceImpl.AllFunctionsCacheKey",
+                Arg.Any<Func<IEnumerable<Function>>>(),
+                Arg.Any<CacheItemOptions>());
         }
 
         [Fact]
         public void GetAllFunctions_AlwaysGetByLanguage_ReturnFunctionListWithName()
         {
             // Arrange
-            dynamicRepository
-                .FetchAsync<Function>(Arg.Any<GetAllFunctionsCriteria>())
-                .Returns(Task.FromResult(new List<Function>
+            cacheService.GetOrSetAsync(
+                "SettingServiceImpl.AllFunctionsCacheKey",
+                Arg.Any<Func<IEnumerable<Function>>>(),
+                Arg.Any<CacheItemOptions>()).Returns(Task.FromResult(new List<Function>
                 {
                     new Function
                     {

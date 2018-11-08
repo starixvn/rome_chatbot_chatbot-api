@@ -40,7 +40,7 @@
                 return actualMessengerUsername == messengerUsername
                     && actualMessengerType == messengerType
                     && actualCommand == command
-                    && actualParameter == parameter; ;
+                    && actualParameter == parameter;
             };
 
             restClient.Received().ExecutePostAsync<Result>(

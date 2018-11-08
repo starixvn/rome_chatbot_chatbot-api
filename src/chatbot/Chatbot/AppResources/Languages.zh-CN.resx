@@ -294,4 +294,31 @@
   <data name="Username" xml:space="preserve">
     <value>用户名</value>
   </data>
+  <data name="MemberOutstanding" xml:space="preserve">
+    <value>会员未结束交易</value>
+  </data>
+  <data name="AgentOutstanding" xml:space="preserve">
+    <value>代理未结束交易</value>
+  </data>
+  <data name="MasterOutstanding" xml:space="preserve">
+    <value>总代理未结束交易</value>
+  </data>
+  <data name="SuperOutstanding" xml:space="preserve">
+    <value>超级总代理未完成交易</value>
+  </data>
+  <data name="UnlinkMessage" xml:space="preserve">
+    <value>您已成功选择退出服务。非常感谢您使用我们的服务。</value>
+  </data>
+  <data name="HintTopOutstanding" xml:space="preserve">
+    <value>*提示：快速指令，请输入：/os 50</value>
+  </data>
+  <data name="HintSpecificDownline" xml:space="preserve">
+    <value>*提示：浏览下线未结束交易，请输入：/os 账号</value>
+  </data>
+  <data name="InvalidCustName" xml:space="preserve">
+    <value>用户名无效。</value>
+  </data>
+  <data name="HiddenDownlinesCount" xml:space="preserve">
+    <value>超过 {0} {1}就不会显示</value>
+  </data>
 </root>

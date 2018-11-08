@@ -171,7 +171,7 @@
             var message = messageBuilder.BuildInvalidCustNameMessage(language);
 
             // Assert
-            Assert.Equal("Invalid username", message);
+            Assert.Equal("Invalid username.", message);
         }
 
         [Fact]

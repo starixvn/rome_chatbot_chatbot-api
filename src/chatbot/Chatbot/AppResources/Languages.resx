@@ -283,7 +283,7 @@
     <value>Total</value>
   </data>
   <data name="InvalidCustName" xml:space="preserve">
-    <value>Invalid username</value>
+    <value>Invalid username.</value>
   </data>
   <data name="CustLevel_1" xml:space="preserve">
     <value>Member</value>
