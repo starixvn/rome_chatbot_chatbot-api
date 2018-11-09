@@ -48,6 +48,9 @@
             this.actionValidators = actionValidators;
         }
 
+        /// <summary>
+        /// refactor code later :)
+        /// </summary>
         public async Task<ActionResult> BuildAction(string command, string buttonData, User user)
         {
             var actionId = 0;
@@ -67,6 +70,7 @@
                 if (lastAction == null)
                 {
                     // show root button
+                    await ResetUserAction(user).ConfigureAwait(false);
                     return new ActionResult(await BuildRootActionMessage(user.Language), 0);
                 }
                 actionId = lastAction.ActionId;
