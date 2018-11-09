@@ -287,7 +287,7 @@
     <value>มี {0} {1} ที่ไม่ได้แสดงผล</value>
   </data>
   <data name="InvalidCustName" xml:space="preserve">
-    <value>ขอบพระคุณ</value>
+    <value>ชื่อผู้ใช้งานไม่ถูกต้อง</value>
   </data>
   <data name="MasterOutstanding" xml:space="preserve">
     <value>การเดิมพันที่ยังไม่สิ้นสุดของ ตัวแทนหลัก</value>
