@@ -212,7 +212,7 @@
             .FetchAsync<UserAction>(new GetActionsByUser(user.Id))
             .ConfigureAwait(false))
             .OrderBy(userAction => userAction.ActionId)
-            .ThenBy(userAction => userAction.Id)
+            .ThenByDescending(userAction => userAction.Id)
             .DistinctBy(userAction => userAction.ActionId)
             .ToList();
 
