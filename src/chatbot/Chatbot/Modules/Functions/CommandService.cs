@@ -131,7 +131,9 @@
             var userFuntions = await settingService.GetFunctions(userId).ConfigureAwait(false);
             var commandFunction = userFuntions
                                     .FirstOrDefault(
-                                        function => command.IndexOf(function.Command, StringComparison.OrdinalIgnoreCase) == 0
+                                        function => !string.IsNullOrWhiteSpace(command)
+                                                    && !string.IsNullOrWhiteSpace(function.Command)
+                                                    && command.IndexOf(function.Command, StringComparison.OrdinalIgnoreCase) == 0
                                         && function.Enabled);
 
             return commandFunction;
@@ -205,17 +207,29 @@
             string encodedCommand,
             string buttonData)
         {
-            var actionResult = await actionService.BuildAction(encodedCommand, buttonData, user);
+            var actionResult = await actionService.BuildAction(encodedCommand, buttonData, user).ConfigureAwait(false);
 
             if (string.IsNullOrWhiteSpace(actionResult.Command))
             {
-                await messageSender.SendMessage(user.Id, messenger, actionResult.Message, actionResult.FunctionId);
+                if (!string.IsNullOrWhiteSpace(actionResult.ValidationFailedMessage))
+                {
+                    await messageSender
+                        .SendMessage(user.Id, messenger, actionResult.ValidationFailedMessage, actionResult.FunctionId)
+                        .ConfigureAwait(false);
+                }
+
+                await messageSender
+                    .SendMessage(user.Id, messenger, actionResult.Message, actionResult.FunctionId)
+                    .ConfigureAwait(false);
             }
             else
             {
-                var function = (await settingService.GetAllFunctions()).FirstOrDefault(fnc => fnc.Id == actionResult.FunctionId);
+                var function = (await settingService
+                    .GetAllFunctions()
+                    .ConfigureAwait(false))
+                    .FirstOrDefault(fnc => fnc.Id == actionResult.FunctionId);
 
-                HandleCommand(actionResult.Command, user, messenger, function);
+                HandleCommand(actionResult.Command, user, messenger, function).ConfigureAwait(false);
             }
         }
 

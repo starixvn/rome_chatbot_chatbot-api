@@ -9,6 +9,7 @@
     using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.Actions.Params.DB.Commands;
     using Chatbot.Modules.Actions.Params.DB.Criteria;
+    using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
     using Fanex.Caching;
     using Fanex.Data.Repository;
@@ -17,6 +18,7 @@
     using Action = Models.Action;
 
     using MessengerClient = Messenger.Client;
+    using Result = Chatbot.Models.Result;
 
     public interface ActionService
     {
@@ -30,15 +32,18 @@
 
         private readonly ICacheService cacheService;
         private readonly IMessageBuilder messageBuilder;
+        private readonly IDictionary<int, IActionValidator> actionValidators;
 
         public ActionServiceImpl(
             IDynamicRepository dynamicRepository,
             ICacheService cacheService,
-            IMessageBuilder messageBuilder)
+            IMessageBuilder messageBuilder,
+            IDictionary<int, IActionValidator> actionValidators)
         {
             this.dynamicRepository = dynamicRepository;
             this.cacheService = cacheService;
             this.messageBuilder = messageBuilder;
+            this.actionValidators = actionValidators;
         }
 
         public async Task<ActionResult> BuildAction(string command, string buttonData, User user)
@@ -62,10 +67,19 @@
                     // show root button
                     return new ActionResult(await BuildRootActionMessage(user.Language), 0);
                 }
+                actionId = lastAction.ActionId;
+
+                if (actionValidators.Keys.Contains(actionId))
+                {
+                    var validationResult = actionValidators[actionId].ValidateAction(actionId, user, command);
+                    if (validationResult.IsNotOk)
+                    {
+                        return await BuildWrongValidationResult(actionId, user, validationResult).ConfigureAwait(false);
+                    }
+                }
 
                 compiledCommand = await CompileCommand(userActions, command).ConfigureAwait(false);
                 await UpdateUserAction(lastAction.Id, command, compiledCommand).ConfigureAwait(false);
-                actionId = lastAction.ActionId;
             }
             else
             {
@@ -88,7 +102,7 @@
                     }
                     else if (lastAction == null)
                     {
-                        return new ActionResult(await BuildRootActionMessage(user.Language), 0);
+                        return new ActionResult(await BuildRootActionMessage(user.Language).ConfigureAwait(false), 0);
                     }
 
                     userActions.Add(new UserAction(0, user.Id, action.Id, action.Command, DateTime.Now));
@@ -102,6 +116,16 @@
             return action.IsEndAction
                 ? new ActionResult(compiledCommand, action.FunctionId)
                 : new ActionResult(await BuildNextMessage(actionId, user).ConfigureAwait(false), action.FunctionId);
+        }
+
+        private async Task<ActionResult> BuildWrongValidationResult(int actionId, User user, Result result)
+        {
+            var action = await GetActionById(actionId).ConfigureAwait(false);
+
+            return new ActionResult(
+                await BuildMessageWithAbortButton(actionId, user.Language),
+                result.Message,
+                action.FunctionId);
         }
 
         private async Task<MessengerClient.Models.Message> BuildRootActionMessage(string language)
@@ -240,9 +264,6 @@
 
             return Enumerable.Empty<Action>();
         }
-
-        private async Task<IEnumerable<Action>> GetNextAction(int actionId)
-            => (await GetAllActions().ConfigureAwait(false)).Where(action => action.ParentId == actionId);
 
         private async Task<Action> GetPrevAction(int parentId)
             => (await GetAllActions().ConfigureAwait(false))
