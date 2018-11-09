@@ -280,7 +280,7 @@
                 var messageAction = nextActions.FirstOrDefault();
                 await InsertUserAction(user, messageAction.Id, string.Empty, string.Empty).ConfigureAwait(false);
 
-                return await BuildMessageWithAbortButton(actionId, user.Language).ConfigureAwait(false);
+                return await BuildMessageWithAbortButton(messageAction.Id, user.Language).ConfigureAwait(false);
             }
 
             return await BuildButtons(actionId, user.Language, nextActions).ConfigureAwait(false);
