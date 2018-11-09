@@ -12,7 +12,7 @@
         {
             if (!(data is OutstandingDetail outstandingDetail))
             {
-                return BuildDownlineOutstandings((IEnumerable<DownlineOutstanding>)data, cultureInfo, messengerFormatter);
+                return base.ToString(data, cultureInfo, messengerFormatter);
             }
 
             var messageHeader = string.Format("{0}  /  {1}  {2}  {3}",
@@ -81,32 +81,6 @@
             }
 
             return GetResource(nameof(Languages.HintSpecificDownline), cultureInfo);
-        }
-
-        private string BuildDownlineOutstandings(
-            IEnumerable<DownlineOutstanding> outstandings,
-            CultureInfo cultureInfo,
-            IMessengerFormatter messengerFormatter)
-        {
-            //var messageHeader = string.Format("{0}  /  {1}  {2}  {3}",
-            //    GetResource($"CustLevel_{outstandingDetail.CustLevel - 1}", cultureInfo),
-            //    GetResource(nameof(Languages.Member), cultureInfo), messengerFormatter.Point(),
-            //    GetResource($"CustLevel_{outstandingDetail.CustLevel}", cultureInfo));
-
-            //var textContainer = new List<string>
-            //{
-            //    messageHeader,
-            //    "------------------------------------",
-            //    $"{messengerFormatter.Point()}{GetResource("Total", cultureInfo)}{messengerFormatter.Point()}"
-            //};
-
-            //foreach (var outstanding in outstandings)
-            //{
-            //    textContainer.Add($"{outstanding.ProductName}");
-            //    textContainer.Add($"    {GetFormattedValue(outstanding.MemberOutstanding)}  {messengerFormatter.Point()}  {GetFormattedValue(outstanding.Outstanding)}");
-            //}
-
-            return null;
         }
     }
 }
