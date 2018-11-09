@@ -106,8 +106,7 @@
                         return await HandleCancelRequest(actionId, action.FunctionId, user).ConfigureAwait(false);
                     }
 
-                    if (lastAction == null
-                        || !(await IsActionInChain(actionId, lastAction.ActionId).ConfigureAwait(false)))
+                    if (action.ParentId > 0 && lastAction == null)
                     {
                         return new ActionResult(await BuildRootActionMessage(user).ConfigureAwait(false), 0);
                     }
