@@ -342,4 +342,7 @@
   <data name="FunctionHasBeenCancelled" xml:space="preserve">
     <value>{0} has been cancelled.</value>
   </data>
+  <data name="Products" xml:space="preserve">
+    <value>Products</value>
+  </data>
 </root>

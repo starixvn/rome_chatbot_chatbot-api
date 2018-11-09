@@ -10,13 +10,11 @@
     {
         public override string ToString(object data, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
         {
-            if (!(data is OutstandingDetail outstandingDetail))
-            {
-                return base.ToString(data, cultureInfo, messengerFormatter);
-            }
+            var outstandingDetail = (OutstandingDetail)data;
+            var isTopXOutstanding = string.IsNullOrWhiteSpace(outstandingDetail.DownlineName);
 
             var messageHeader = string.Format("{0}  /  {1}  {2}  {3}",
-                GetResource($"CustLevel_{outstandingDetail.CustLevel - 1}", cultureInfo),
+                GetResource(isTopXOutstanding ? $"CustLevel_{outstandingDetail.CustLevel - 1}" : "Products", cultureInfo),
                 GetResource(nameof(Languages.Member), cultureInfo), messengerFormatter.Point(),
                 GetResource($"CustLevel_{outstandingDetail.CustLevel}", cultureInfo));
 
@@ -32,7 +30,7 @@
             var index = 1;
             foreach (var outstanding in outstandingDetail.TopOutstandings)
             {
-                textContainer.Add($"{index}. {outstanding.CustName}");
+                textContainer.Add(isTopXOutstanding ? $"{index}. {outstanding.Name}" : outstanding.Name);
                 textContainer.Add($"    {GetFormattedValue(outstanding.MemberOutstanding)}  {messengerFormatter.Point()}  {GetFormattedValue(outstanding.Outstanding)}");
 
                 index++;

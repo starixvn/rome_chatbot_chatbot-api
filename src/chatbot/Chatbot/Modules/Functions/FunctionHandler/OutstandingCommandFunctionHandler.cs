@@ -48,6 +48,7 @@
                         }
 
                         param.Others.Add(nameof(downlineInfo.CustId), downlineInfo.CustId);
+                        param.Others.Add("CustName", parameter);
                     }
                 }
             }

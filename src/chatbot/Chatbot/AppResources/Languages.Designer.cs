@@ -538,6 +538,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Products.
+        /// </summary>
+        public static string Products {
+            get {
+                return ResourceManager.GetString("Products", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, we couldn&apos;t recognize your request. Which action would you like to take?.
         /// </summary>
         public static string RootActionTitle {
