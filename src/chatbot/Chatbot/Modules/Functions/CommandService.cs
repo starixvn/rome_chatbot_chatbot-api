@@ -25,6 +25,7 @@
 
     public class CommandServiceImpl : CommandService
     {
+        private const int CommandFunctionType = 1;
         private readonly SettingService settingService;
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;
@@ -148,7 +149,7 @@
         {
             if (function != null)
             {
-                await HandleCommand(encodedCommand, user, messenger, function);
+                await HandleCommand(encodedCommand, user, messenger, function).ConfigureAwait(false);
             }
             else
             {
@@ -209,6 +210,14 @@
             string encodedCommand,
             string buttonData)
         {
+            var userFunctions = await settingService.GetFunctions(user.Id).ConfigureAwait(false);
+
+            if (!userFunctions.Any(func => func.Type == CommandFunctionType && func.Enabled))
+            {
+                await SendNotRecognizedCommandMessage(user, messenger).ConfigureAwait(false);
+                return;
+            }
+
             var actionResult = await actionService.BuildAction(encodedCommand, buttonData, user).ConfigureAwait(false);
 
             if (string.IsNullOrWhiteSpace(actionResult.Command))
@@ -231,8 +240,15 @@
                     .ConfigureAwait(false))
                     .FirstOrDefault(fnc => fnc.Id == actionResult.FunctionId);
 
-                HandleCommand(actionResult.Command, user, messenger, function).ConfigureAwait(false);
+                await HandleCommand(actionResult.Command, user, messenger, function).ConfigureAwait(false);
             }
+        }
+
+        private async Task SendNotRecognizedCommandMessage(User user, Messenger messenger)
+        {
+            var message = messageBuilder.BuildNotRecognizedCommandMessage(user.Language);
+
+            await messageSender.SendMessage(user.Id, messenger, message, chatbotConfigs.NotRecognizedCommandFunctionId).ConfigureAwait(false);
         }
 
         private async Task SendErrorMessage(User user, Messenger messenger)

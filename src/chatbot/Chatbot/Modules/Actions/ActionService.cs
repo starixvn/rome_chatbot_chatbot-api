@@ -11,6 +11,7 @@
     using Chatbot.Modules.Actions.Params.DB.Criteria;
     using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
+    using Chatbot.Modules.Settings;
     using Fanex.Caching;
     using Fanex.Data.Repository;
     using Messenger.Client.Models;
@@ -35,17 +36,20 @@
         private readonly ICacheService cacheService;
         private readonly IMessageBuilder messageBuilder;
         private readonly IDictionary<int, IActionValidator> actionValidators;
+        private readonly SettingService settingService;
 
         public ActionServiceImpl(
             IDynamicRepository dynamicRepository,
             ICacheService cacheService,
             IMessageBuilder messageBuilder,
-            IDictionary<int, IActionValidator> actionValidators)
+            IDictionary<int, IActionValidator> actionValidators,
+            SettingService settingService)
         {
             this.dynamicRepository = dynamicRepository;
             this.cacheService = cacheService;
             this.messageBuilder = messageBuilder;
             this.actionValidators = actionValidators;
+            this.settingService = settingService;
         }
 
         /// <summary>
@@ -71,7 +75,7 @@
                 {
                     // show root button
                     await ResetUserAction(user).ConfigureAwait(false);
-                    return new ActionResult(await BuildRootActionMessage(user.Language), 0);
+                    return new ActionResult(await BuildRootActionMessage(user).ConfigureAwait(false), 0);
                 }
                 actionId = lastAction.ActionId;
 
@@ -102,13 +106,15 @@
                         return await HandleCancelRequest(actionId, action.FunctionId, user).ConfigureAwait(false);
                     }
 
+                    if (lastAction == null
+                        || !(await IsActionInChain(actionId, lastAction.ActionId).ConfigureAwait(false)))
+                    {
+                        return new ActionResult(await BuildRootActionMessage(user).ConfigureAwait(false), 0);
+                    }
+
                     if (action.ParentId == 0)
                     {
                         userActions = new List<UserAction>();
-                    }
-                    else if (lastAction == null)
-                    {
-                        return new ActionResult(await BuildRootActionMessage(user.Language).ConfigureAwait(false), 0);
                     }
 
                     userActions.Add(new UserAction(0, user.Id, action.Id, action.Command, DateTime.Now));
@@ -124,34 +130,47 @@
                 : new ActionResult(await BuildNextMessage(actionId, user).ConfigureAwait(false), action.FunctionId);
         }
 
+        private async Task<bool> IsActionInChain(int actionId, int lastUserActionId)
+        {
+            var actionChain = await GetActionChain(lastUserActionId).ConfigureAwait(false);
+
+            return actionChain.Any(action => action.Id == actionId);
+        }
+
         private async Task<ActionResult> BuildWrongValidationResult(int actionId, User user, Result result)
         {
             var action = await GetActionById(actionId).ConfigureAwait(false);
 
             return new ActionResult(
-                await BuildMessageWithAbortButton(actionId, user.Language),
+                await BuildMessageWithAbortButton(actionId, user.Language).ConfigureAwait(false),
                 result.Message,
                 action.FunctionId);
         }
 
-        private async Task<MessengerClient.Models.Message> BuildRootActionMessage(string language)
+        private async Task<MessengerClient.Models.Message> BuildRootActionMessage(User user)
         {
             var messageActions = new List<MessageAction>();
             var rootActions = (await GetAllActions().ConfigureAwait(false)).Where(action => action.ParentId == 0);
+            var userFunctions = await settingService.GetFunctions(user.Id).ConfigureAwait(false);
 
             foreach (var rootAction in rootActions)
             {
-                messageActions.Add(new MessageAction
+                var userFunction = userFunctions.FirstOrDefault(func => func.Id == rootAction.FunctionId);
+
+                if (userFunction != null && userFunction.Enabled)
                 {
-                    Label = await messageBuilder.BuildActionName(rootAction.Id, language).ConfigureAwait(false),
-                    Type = "postback",
-                    Data = $"ActionId={rootAction.Id}"
-                });
+                    messageActions.Add(new MessageAction
+                    {
+                        Label = await messageBuilder.BuildActionName(rootAction.Id, user.Language).ConfigureAwait(false),
+                        Type = "postback",
+                        Data = $"ActionId={rootAction.Id}"
+                    });
+                }
             }
 
             return new MessengerClient.Models.Message
             {
-                Content = messageBuilder.BuildRootActionTitle(language),
+                Content = messageBuilder.BuildRootActionTitle(user.Language),
                 MessageMarkup = new MessageMarkup
                 {
                     MessageActions = messageActions
@@ -179,7 +198,6 @@
 
             if (lastAction != null)
             {
-                var actionInfo = await GetActionById(lastAction.ActionId).ConfigureAwait(false);
                 var actionHandler = new DefaultActionHandler();
                 var actionChain = await GetActionChain(lastAction.ActionId).ConfigureAwait(false);
                 lastAction.UserResponse = userResponse;
@@ -194,7 +212,7 @@
             => (await GetAllActions().ConfigureAwait(false))
             .FirstOrDefault(action => action.Id == actionId);
 
-        private (bool, int) ParseActionInfo(string buttonData)
+        private static (bool, int) ParseActionInfo(string buttonData)
         {
             if (string.IsNullOrWhiteSpace(buttonData))
             {
@@ -341,7 +359,7 @@
 
             if (rootUserAction != null)
             {
-                await UpdateUserActionStatus(rootUserAction.Id, true);
+                await UpdateUserActionStatus(rootUserAction.Id, true).ConfigureAwait(false);
             }
 
             return new ActionResult(
