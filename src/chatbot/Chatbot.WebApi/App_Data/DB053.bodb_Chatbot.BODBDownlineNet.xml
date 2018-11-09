@@ -55,5 +55,6 @@
       <Mapping ObjectProperty="Id" DataField="actionid" />
     </Setting>
     <Setting Key="Chatbot_UpdateUserActionStatus" SpName="Chatbot_UpdateUserActionStatus_xtest" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_ResetUserActionStatus" SpName="Chatbot_ResetUserActionStatus" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
   </Function>
 </Functions>

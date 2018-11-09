@@ -23,6 +23,8 @@
     public interface ActionService
     {
         Task<ActionResult> BuildAction(string command, string buttonData, User user);
+
+        Task ResetUserAction(User user);
     }
 
     public class ActionServiceImpl : ActionService
@@ -370,5 +372,8 @@
         private Task UpdateUserActionStatus(int userActionId, bool isCompletedOrCancel)
             => dynamicRepository
                 .ExecuteAsync(new UpdateUserActionStatusCommand(userActionId, isCompletedOrCancel));
+
+        public Task ResetUserAction(User user)
+            => dynamicRepository.ExecuteAsync(new ResetUserActionCommand(user.Id));
     }
 }

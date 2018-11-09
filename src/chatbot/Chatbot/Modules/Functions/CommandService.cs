@@ -177,6 +177,8 @@
                 .CreateFunctionHandler(commandFunction.Id)
                 .Handle(functionParam)
                 .ConfigureAwait(false);
+
+            await actionService.ResetUserAction(user).ConfigureAwait(false);
         }
 
         private async Task LogError(string command, Messenger messenger, User user, Exception ex)
