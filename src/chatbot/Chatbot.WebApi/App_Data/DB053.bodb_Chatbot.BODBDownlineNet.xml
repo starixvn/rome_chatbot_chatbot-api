@@ -15,18 +15,18 @@
     <Setting Key="GetUser" SpName="Chatbot_GetUser" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="userid" />
     </Setting>
-    <Setting Key="GetUserActions" SpName="Chatbot_GetUserActions" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="GetUserActions" SpName="Chatbot_GetUserLogActions_xtest" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="GetUserFunctions" SpName="Chatbot_GetUserFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="functionid" />
     </Setting>
-    <Setting Key="InsertUserAction" SpName="Chatbot_InsertUserAction" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="InsertUserAction" SpName="Chatbot_InsertUserLogAction_xtest" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="InsertMessage" SpName="Chatbot_InsertMessage" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="InsertMessengerAccount" SpName="Chatbot_InsertMessengerAccount" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="InsertUser" SpName="Chatbot_InsertUser" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="UpdateMessengerAccountStatus" SpName="Chatbot_UpdateMessengerAccountStatus" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="UpdateUserFunctions" SpName="Chatbot_UpdateUserFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="UpdateUserLanguage" SpName="Chatbot_UpdateUserLanguage" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="ResetUserActionCount" SpName="Chatbot_ResetUserActionCount" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="ResetUserActionCount" SpName="Chatbot_ResetUserLogActionCount_xtest" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="Chatbot_GetMessageLog" SpName="Chatbot_GetMessageLog" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="logid" />
       <Mapping ObjectProperty="Content" DataField="message" />
@@ -43,17 +43,17 @@
       <Mapping ObjectProperty="Command" DataField="defaultcommand" />
       <Mapping ObjectProperty="Environment" DataField="environment" />
     </Setting>
-    <Setting Key="Chatbot_GetResource" SpName="Chatbot_GetResource" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_GetResource" SpName="Chatbot_GetResource_xtest" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
   </Function>
   <Function Name="Action">
-    <Setting Key="Chatbot_GetUserActionsInChain" SpName="Chatbot_GetUserActionsInChain" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="Chatbot_GetUserActionsInChain" SpName="Chatbot_GetUserActionsInChain_xtest" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="useractionid" />
     </Setting>
-    <Setting Key="Chatbot_InsertUserAction" SpName="Chatbot_InsertUserAction" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="Chatbot_UpdateUserActionFullCommand" SpName="Chatbot_UpdateUserActionFullCommand" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="Chatbot_GetAllActions" SpName="Chatbot_GetAllActions" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="Chatbot_InsertUserAction" SpName="Chatbot_InsertUserAction_xtest" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_UpdateUserActionFullCommand" SpName="Chatbot_UpdateUserActionFullCommand_xtest" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_GetAllActions" SpName="Chatbot_GetAllActions_xtest" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="actionid" />
     </Setting>
-    <Setting Key="Chatbot_UpdateUserActionStatus" SpName="Chatbot_UpdateUserActionStatus" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_UpdateUserActionStatus" SpName="Chatbot_UpdateUserActionStatus_xtest" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
   </Function>
 </Functions>
