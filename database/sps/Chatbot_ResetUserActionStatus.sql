@@ -1,4 +1,4 @@
-/*<info serverAlias="DBAGE-bodb_ChatBot" executers="bodbDownlineNet" viewers="vnteam" selecters=""></info>*/
+/*<info serverAlias="DBBOT-bodb_ChatBot" executers="bodbDownlineNet" viewers="vnteam" selecters=""></info>*/
 
 USE [bodb_ChatBot]
 GO
@@ -9,7 +9,7 @@ AS
 /*
 	Creator:	20181109@Kan
 	Task:		Support chatbot conversation
-	Database:	DBAGE.bodb_ChatBot
+	Database:	DBBOT.bodb_ChatBot
 	
 	Revisions:
 		- 20181109@Kan: Create new [RedmineId: 103467]
