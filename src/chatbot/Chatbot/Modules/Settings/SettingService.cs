@@ -66,6 +66,8 @@
         private readonly SettingLogService settingLogService;
         private readonly ResourceService resourceService;
 
+#pragma warning disable S107 // Methods should not have too many parameters
+
         public SettingServiceImpl(
             IDynamicRepository dynamicRepository,
             IMessageSender messageSender,
@@ -76,6 +78,7 @@
             ResourceService resourceService,
             Func<string> randomNumberFunc = null,
             Func<DateTime> getCurrentDateTimeFunc = null)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.dynamicRepository = dynamicRepository;
             this.randomNumberFunc = randomNumberFunc ?? RandomSixDigitsNumber;

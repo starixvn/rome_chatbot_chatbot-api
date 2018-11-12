@@ -37,95 +37,138 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IDictionary<int, IActionValidator> actionValidators;
         private readonly SettingService settingService;
+        private readonly Func<DateTime> getDateTimeNowFunc;
 
         public ActionServiceImpl(
             IDynamicRepository dynamicRepository,
             ICacheService cacheService,
             IMessageBuilder messageBuilder,
             IDictionary<int, IActionValidator> actionValidators,
-            SettingService settingService)
+            SettingService settingService,
+            Func<DateTime> getDateTimeNowFunc = null)
         {
             this.dynamicRepository = dynamicRepository;
             this.cacheService = cacheService;
             this.messageBuilder = messageBuilder;
             this.actionValidators = actionValidators;
             this.settingService = settingService;
+            this.getDateTimeNowFunc = getDateTimeNowFunc ?? GetDateTimeNow;
         }
 
-        /// <summary>
-        /// refactor code later :)
-        /// </summary>
+        private static DateTime GetDateTimeNow()
+            => DateTime.Now;
+
         public async Task<ActionResult> BuildAction(string command, string buttonData, User user)
         {
             var userActions = await GetUserActions(user).ConfigureAwait(false);
             var lastAction = userActions.Any(userAction => userAction.IsActionCompletedOrCancel)
                 ? null
                 : userActions.LastOrDefault();
-            var compiledCommand = string.Empty;
-            Action currentAction = null;
-            var currentActionId = 0;
+            var isUserChatMessage = string.IsNullOrWhiteSpace(buttonData);
 
-            if (string.IsNullOrWhiteSpace(buttonData))
+            var handlingActionResult = isUserChatMessage
+                ? await HandleUserReponseByMessage(lastAction, userActions, user, command).ConfigureAwait(false)
+                : await HandleUserReponseByButton(lastAction, userActions, user, buttonData).ConfigureAwait(false);
+
+            // Exception cases
+            if (handlingActionResult.Item3 != null)
             {
-                // Handle case not button
-                if (lastAction == null)
-                {
-                    // show root button
-                    await ResetUserAction(user).ConfigureAwait(false);
-                    return new ActionResult(await BuildRootActionMessage(user).ConfigureAwait(false), 0);
-                }
-
-                currentActionId = lastAction.ActionId;
-
-                if (actionValidators.Keys.Contains(currentActionId))
-                {
-                    var validationResult = actionValidators[currentActionId].ValidateAction(currentActionId, user, command);
-                    if (validationResult.IsNotOk)
-                    {
-                        return await BuildWrongValidationResult(currentActionId, user, validationResult).ConfigureAwait(false);
-                    }
-                }
-
-                compiledCommand = await CompileCommand(userActions, command).ConfigureAwait(false);
-                await UpdateUserAction(lastAction.Id, command, compiledCommand).ConfigureAwait(false);
-            }
-            else
-            {
-                var actionInfo = ParseActionInfo(buttonData);
-                var isCancelRequest = actionInfo.Item1;
-                currentActionId = actionInfo.Item2;
-
-                if (currentActionId > 0)
-                {
-                    currentAction = await GetActionById(currentActionId).ConfigureAwait(false);
-
-                    if (isCancelRequest)
-                    {
-                        return await HandleCancelRequest(currentActionId, currentAction.FunctionId, user).ConfigureAwait(false);
-                    }
-
-                    if (currentAction.ParentId > 0
-                        && await IsLastActionInvalid(currentActionId, lastAction).ConfigureAwait(false))
-                    {
-                        return new ActionResult(await BuildRootActionMessage(user).ConfigureAwait(false), 0);
-                    }
-
-                    if (currentAction.ParentId == 0)
-                    {
-                        userActions = new List<UserAction>();
-                    }
-
-                    userActions.Add(new UserAction(0, user.Id, currentAction.Id, currentAction.Command, DateTime.Now));
-                    compiledCommand = await CompileCommand(userActions, string.Empty).ConfigureAwait(false);
-                    await InsertUserAction(user, currentActionId, string.Empty, compiledCommand).ConfigureAwait(false);
-                }
+                return handlingActionResult.Item3;
             }
 
-            currentAction = currentAction ?? await GetActionById(currentActionId).ConfigureAwait(false);
+            var compiledCommand = handlingActionResult.Item1;
+            var currentActionId = handlingActionResult.Item2;
+            var currentAction = await GetActionById(currentActionId).ConfigureAwait(false);
 
             return currentAction.IsEndAction
                 ? new ActionResult(compiledCommand, currentAction.FunctionId)
                 : new ActionResult(await BuildNextMessage(currentActionId, user).ConfigureAwait(false), currentAction.FunctionId);
+        }
+
+        private async Task<(string, int, ActionResult)> HandleUserReponseByButton(
+            UserAction lastAction,
+            IList<UserAction> userActions,
+            User user,
+            string buttonData)
+        {
+            var actionInfo = ParseActionInfo(buttonData);
+            var isCancelRequest = actionInfo.Item1;
+            var currentActionId = actionInfo.Item2;
+            var compiledCommand = string.Empty;
+
+            if (currentActionId > 0)
+            {
+                var currentAction = await GetActionById(currentActionId).ConfigureAwait(false);
+
+                if (isCancelRequest)
+                {
+                    return (
+                        string.Empty,
+                        currentActionId,
+                        await HandleCancelRequest(currentActionId, currentAction.FunctionId, user).ConfigureAwait(false));
+                }
+
+                if (currentAction.ParentId > 0
+                    && await IsLastActionInvalid(currentActionId, lastAction).ConfigureAwait(false))
+                {
+                    return (
+                        string.Empty,
+                        currentActionId,
+                        await BuildRootAction(user).ConfigureAwait(false));
+                }
+
+                compiledCommand = await HandleButtonAction(currentAction, userActions, user).ConfigureAwait(false);
+            }
+
+            return (compiledCommand, currentActionId, null);
+        }
+
+        private async Task<(string, int, ActionResult)> HandleUserReponseByMessage(
+            UserAction lastAction,
+            IList<UserAction> userActions,
+            User user,
+            string userReponse)
+        {
+            if (lastAction == null)
+            {
+                return (string.Empty, 0, await BuildRootAction(user).ConfigureAwait(false));
+            }
+
+            var currentActionId = lastAction.ActionId;
+
+            if (actionValidators.Keys.Contains(currentActionId))
+            {
+                var validationResult = actionValidators[currentActionId].ValidateAction(currentActionId, user, userReponse);
+                if (validationResult.IsNotOk)
+                {
+                    return (string.Empty, currentActionId, await BuildWrongValidationResult(currentActionId, user, validationResult).ConfigureAwait(false));
+                }
+            }
+
+            var compiledCommand = await CompileCommand(userActions, userReponse).ConfigureAwait(false);
+            await UpdateUserAction(lastAction.Id, userReponse, compiledCommand).ConfigureAwait(false);
+
+            return (compiledCommand, currentActionId, null);
+        }
+
+        private async Task<string> HandleButtonAction(Action currentAction, IList<UserAction> userActions, User user)
+        {
+            var actualUserActions = currentAction.ParentId == 0
+                ? new List<UserAction>()
+                : userActions;
+
+            actualUserActions.Add(new UserAction(0, user.Id, currentAction.Id, currentAction.Command, getDateTimeNowFunc()));
+            var compiledCommand = await CompileCommand(actualUserActions, string.Empty).ConfigureAwait(false);
+            await InsertUserAction(user, currentAction.Id, string.Empty, compiledCommand).ConfigureAwait(false);
+
+            return compiledCommand;
+        }
+
+        private async Task<ActionResult> BuildRootAction(User user)
+        {
+            await ResetUserAction(user).ConfigureAwait(false);
+
+            return new ActionResult(await BuildRootActionMessage(user).ConfigureAwait(false), 0);
         }
 
         private async Task<bool> IsLastActionInvalid(int actionId, UserAction lastAction)
@@ -141,14 +184,10 @@
         }
 
         private async Task<ActionResult> BuildWrongValidationResult(int actionId, User user, Result result)
-        {
-            var action = await GetActionById(actionId).ConfigureAwait(false);
-
-            return new ActionResult(
+            => new ActionResult(
                 await BuildMessageWithAbortButton(actionId, user.Language).ConfigureAwait(false),
                 result.Message,
-                action.FunctionId);
-        }
+                (await GetActionById(actionId).ConfigureAwait(false)).FunctionId);
 
         private async Task<MessengerClient.Models.Message> BuildRootActionMessage(User user)
         {
@@ -376,8 +415,7 @@
         private async Task<MessengerClient.Models.Message> BuildMessageWithAbortButton(
             int actionId,
             string language)
-        {
-            return new MessengerClient.Models.Message
+            => new MessengerClient.Models.Message
             {
                 Content = await messageBuilder.BuildActionName(actionId, language).ConfigureAwait(true),
                 MessageMarkup = new MessageMarkup
@@ -388,7 +426,6 @@
                     }
                 }
             };
-        }
 
         private static bool ActionIsMessage(IEnumerable<Action> nextActions)
             => nextActions.Count() == 1

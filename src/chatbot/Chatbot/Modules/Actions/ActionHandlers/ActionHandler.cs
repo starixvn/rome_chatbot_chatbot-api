@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using Chatbot.Modules.Actions.Models;
     using Shared.Extensions;
 
@@ -24,23 +25,35 @@
                 .DistinctBy(userAction => userAction.ActionId)
                 .OrderBy(userAction => userAction.ActionId)
                 .Where(userAction => actionChain.Any(action => action.Id == userAction.ActionId));
-            var command = string.Empty;
+
+            var command = new StringBuilder();
 
             foreach (var userAction in distinctUserActions)
             {
-                var action =
-                    actionChain.FirstOrDefault(act => act.Id == userAction.ActionId)
-                    ?? throw new InvalidOperationException($"Cannot found action {userAction.ActionId} of user {userAction.UserId}");
-                var actionCommand = action.Type == ActionType.Button
-                    ? action.Command
-                    : userAction.UserResponse;
-
-                command += string.IsNullOrWhiteSpace(actionCommand)
-                    ? string.Empty
-                    : actionCommand + " ";
+                AppendCommand(actionChain, command, userAction);
             }
 
-            return command.TrimEnd();
+            return command.ToString().TrimEnd();
+        }
+
+        private static void AppendCommand(
+            IEnumerable<Models.Action> actionChain,
+            StringBuilder command,
+            UserAction userAction)
+        {
+            var action = actionChain.FirstOrDefault(act => act.Id == userAction.ActionId)
+                                ?? throw new InvalidOperationException($"Cannot found action {userAction.ActionId} of user {userAction.UserId}");
+
+            var actionCommand = action.Type == ActionType.Button
+                ? action.Command
+                : userAction.UserResponse;
+
+            if (!string.IsNullOrWhiteSpace(actionCommand))
+            {
+                command
+                    .Append(actionCommand)
+                    .Append(" ");
+            }
         }
     }
 }
