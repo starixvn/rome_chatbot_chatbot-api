@@ -1,7 +1,7 @@
 /*
 	CreatedDate: 20181105@Kan
 	Task: Insert default data into Action table
-	DB: DBAGE/bodb_ChatBot
+	DB: DBBOT/bodb_ChatBot
     Column explanation:
     - Type: 1: button, 2: message, 3 uri
     - Status: 0: PRO, 1: UAT, 2: Hide

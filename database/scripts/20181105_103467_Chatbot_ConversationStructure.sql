@@ -1,7 +1,7 @@
 /*
 	CreatedDate: 20181105@Kan
 	Task: Add tables Action, UserAction to support Chatbot conversation
-	DB: DBAGE/bodb_ChatBot
+	DB: DBBOT/bodb_ChatBot
 */
 
 USE [bodb_ChatBot]

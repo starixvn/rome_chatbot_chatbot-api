@@ -1,4 +1,4 @@
-/*<info serverAlias="DB053-bodb_ChatBot" executers="bodbDownlineNet" viewers="vnteam" selecters=""></info>*/
+/*<info serverAlias="DBBOT-bodb_ChatBot" executers="bodbDownlineNet" viewers="vnteam" selecters=""></info>*/
 
 USE [bodb_ChatBot]
 GO
@@ -10,7 +10,7 @@ AS
 /*
 	Creator:	20181105@Kan
 	Task:		Get resource by key and type
-	Database:	DB053.bodb_ChatBot
+	Database:	DBBOT.bodb_ChatBot
 	
 	Revisions:
 		- 20181106@Kan: Create new [RedmineId: 103467]
