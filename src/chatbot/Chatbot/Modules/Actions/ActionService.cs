@@ -57,17 +57,14 @@
         /// </summary>
         public async Task<ActionResult> BuildAction(string command, string buttonData, User user)
         {
-            var actionId = 0;
             var userActions = await GetUserActions(user).ConfigureAwait(false);
-            var lastAction = userActions.LastOrDefault();
-
-            if (userActions.Any(userAction => userAction.IsActionCompletedOrCancel))
-            {
-                lastAction = null;
-            }
-
+            var lastAction = userActions.Any(userAction => userAction.IsActionCompletedOrCancel)
+                ? null
+                : userActions.LastOrDefault();
             var compiledCommand = string.Empty;
-            Action action = null;
+            Action currentAction = null;
+            var currentActionId = 0;
+
             if (string.IsNullOrWhiteSpace(buttonData))
             {
                 // Handle case not button
@@ -77,14 +74,15 @@
                     await ResetUserAction(user).ConfigureAwait(false);
                     return new ActionResult(await BuildRootActionMessage(user).ConfigureAwait(false), 0);
                 }
-                actionId = lastAction.ActionId;
 
-                if (actionValidators.Keys.Contains(actionId))
+                currentActionId = lastAction.ActionId;
+
+                if (actionValidators.Keys.Contains(currentActionId))
                 {
-                    var validationResult = actionValidators[actionId].ValidateAction(actionId, user, command);
+                    var validationResult = actionValidators[currentActionId].ValidateAction(currentActionId, user, command);
                     if (validationResult.IsNotOk)
                     {
-                        return await BuildWrongValidationResult(actionId, user, validationResult).ConfigureAwait(false);
+                        return await BuildWrongValidationResult(currentActionId, user, validationResult).ConfigureAwait(false);
                     }
                 }
 
@@ -95,45 +93,51 @@
             {
                 var actionInfo = ParseActionInfo(buttonData);
                 var isCancelRequest = actionInfo.Item1;
-                actionId = actionInfo.Item2;
+                currentActionId = actionInfo.Item2;
 
-                if (actionId > 0)
+                if (currentActionId > 0)
                 {
-                    action = await GetActionById(actionId).ConfigureAwait(false);
+                    currentAction = await GetActionById(currentActionId).ConfigureAwait(false);
 
                     if (isCancelRequest)
                     {
-                        return await HandleCancelRequest(actionId, action.FunctionId, user).ConfigureAwait(false);
+                        return await HandleCancelRequest(currentActionId, currentAction.FunctionId, user).ConfigureAwait(false);
                     }
 
-                    if (action.ParentId > 0 && lastAction == null)
+                    if (currentAction.ParentId > 0
+                        && await IsLastActionInvalid(currentActionId, lastAction).ConfigureAwait(false))
                     {
                         return new ActionResult(await BuildRootActionMessage(user).ConfigureAwait(false), 0);
                     }
 
-                    if (action.ParentId == 0)
+                    if (currentAction.ParentId == 0)
                     {
                         userActions = new List<UserAction>();
                     }
 
-                    userActions.Add(new UserAction(0, user.Id, action.Id, action.Command, DateTime.Now));
+                    userActions.Add(new UserAction(0, user.Id, currentAction.Id, currentAction.Command, DateTime.Now));
                     compiledCommand = await CompileCommand(userActions, string.Empty).ConfigureAwait(false);
-                    await InsertUserAction(user, actionId, string.Empty, compiledCommand).ConfigureAwait(false);
+                    await InsertUserAction(user, currentActionId, string.Empty, compiledCommand).ConfigureAwait(false);
                 }
             }
 
-            action = action ?? await GetActionById(actionId).ConfigureAwait(false);
+            currentAction = currentAction ?? await GetActionById(currentActionId).ConfigureAwait(false);
 
-            return action.IsEndAction
-                ? new ActionResult(compiledCommand, action.FunctionId)
-                : new ActionResult(await BuildNextMessage(actionId, user).ConfigureAwait(false), action.FunctionId);
+            return currentAction.IsEndAction
+                ? new ActionResult(compiledCommand, currentAction.FunctionId)
+                : new ActionResult(await BuildNextMessage(currentActionId, user).ConfigureAwait(false), currentAction.FunctionId);
         }
 
-        private async Task<bool> IsActionInChain(int actionId, int lastUserActionId)
+        private async Task<bool> IsLastActionInvalid(int actionId, UserAction lastAction)
         {
-            var actionChain = await GetActionChain(lastUserActionId).ConfigureAwait(false);
+            if (lastAction == null)
+            {
+                return true;
+            }
 
-            return actionChain.Any(action => action.Id == actionId);
+            var actionChain = await GetActionChain(actionId).ConfigureAwait(false);
+
+            return !actionChain.Any(action => action.Id == lastAction.ActionId);
         }
 
         private async Task<ActionResult> BuildWrongValidationResult(int actionId, User user, Result result)
