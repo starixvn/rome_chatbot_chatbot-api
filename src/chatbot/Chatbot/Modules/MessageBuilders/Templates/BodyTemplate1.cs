@@ -41,9 +41,8 @@
             textContainer.Add(string.Format("{0}  /  {1}  {2}  {3}",
                 GetResource(isTopXOutstanding ? $"CustLevel_{outstandingDetail.CustLevel - 1}" : "Products", cultureInfo),
                 GetResource(nameof(Languages.Member), cultureInfo), messengerFormatter.Point(),
-                GetResource($"CustLevel_{outstandingDetail.CustLevel}", cultureInfo)));
-            textContainer.Add("------------------------------------");
-            textContainer.Add($"{messengerFormatter.Point()}{GetResource("Total", cultureInfo).ToUpperInvariant()}{messengerFormatter.Point()}");
+                $"{GetResource($"CustLevel_{outstandingDetail.CustLevel}", cultureInfo)}{messengerFormatter.NewLine()}"));
+            textContainer.Add(GetResource("Total", cultureInfo).ToUpperInvariant());
         }
 
         private static void AddTotalBodyMessage(
