@@ -1,4 +1,4 @@
-﻿namespace Chatbot.Modules.Actions.ActionHandlers
+﻿namespace Chatbot.Modules.Actions.Compilers
 {
     using System;
     using System.Collections.Generic;
@@ -7,14 +7,14 @@
     using Chatbot.Modules.Actions.Models;
     using Shared.Extensions;
 
-    public interface IActionHandler
+    public interface IActionCompiler
     {
-        string BuildCommand(IEnumerable<Models.Action> actionChain, IEnumerable<UserAction> userActions);
+        string Compile(IEnumerable<Models.Action> actionChain, IEnumerable<UserAction> userActions);
     }
 
-    public class DefaultActionHandler : IActionHandler
+    public class DefaultActionCompiler : IActionCompiler
     {
-        public virtual string BuildCommand(IEnumerable<Models.Action> actionChain, IEnumerable<UserAction> userActions)
+        public virtual string Compile(IEnumerable<Models.Action> actionChain, IEnumerable<UserAction> userActions)
         {
             if (!actionChain.Any())
             {

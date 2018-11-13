@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Chatbot.Models;
-    using Chatbot.Modules.Actions.ActionHandlers;
+    using Chatbot.Modules.Actions.Compilers;
     using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.Actions.Params.DB.Commands;
     using Chatbot.Modules.Actions.Params.DB.Criteria;
@@ -36,6 +36,7 @@
         private readonly ICacheService cacheService;
         private readonly IMessageBuilder messageBuilder;
         private readonly IDictionary<int, IActionValidator> actionValidators;
+        private readonly IDictionary<int, IActionCompiler> actionCompilers;
         private readonly SettingService settingService;
         private readonly Func<DateTime> getDateTimeNowFunc;
 
@@ -44,6 +45,7 @@
             ICacheService cacheService,
             IMessageBuilder messageBuilder,
             IDictionary<int, IActionValidator> actionValidators,
+            IDictionary<int, IActionCompiler> actionCompilers,
             SettingService settingService,
             Func<DateTime> getDateTimeNowFunc = null)
         {
@@ -51,6 +53,7 @@
             this.cacheService = cacheService;
             this.messageBuilder = messageBuilder;
             this.actionValidators = actionValidators;
+            this.actionCompilers = actionCompilers;
             this.settingService = settingService;
             this.getDateTimeNowFunc = getDateTimeNowFunc ?? GetDateTimeNow;
         }
@@ -85,7 +88,7 @@
                 : new ActionResult(await BuildNextMessage(currentActionId, user).ConfigureAwait(false), currentAction.FunctionId);
         }
 
-        private async Task<(string, int, ActionResult)> HandleUserReponseByButton(
+        internal async Task<(string, int, ActionResult)> HandleUserReponseByButton(
             UserAction lastAction,
             IList<UserAction> userActions,
             User user,
@@ -114,7 +117,7 @@
                     return (
                         string.Empty,
                         currentActionId,
-                        await BuildRootAction(user).ConfigureAwait(false));
+                        await BuildRootActions(user).ConfigureAwait(false));
                 }
 
                 compiledCommand = await HandleButtonAction(currentAction, userActions, user).ConfigureAwait(false);
@@ -123,7 +126,7 @@
             return (compiledCommand, currentActionId, null);
         }
 
-        private async Task<(string, int, ActionResult)> HandleUserReponseByMessage(
+        internal async Task<(string, int, ActionResult)> HandleUserReponseByMessage(
             UserAction lastAction,
             IList<UserAction> userActions,
             User user,
@@ -131,7 +134,7 @@
         {
             if (lastAction == null)
             {
-                return (string.Empty, 0, await BuildRootAction(user).ConfigureAwait(false));
+                return (string.Empty, 0, await BuildRootActions(user).ConfigureAwait(false));
             }
 
             var currentActionId = lastAction.ActionId;
@@ -151,7 +154,7 @@
             return (compiledCommand, currentActionId, null);
         }
 
-        private async Task<string> HandleButtonAction(Action currentAction, IList<UserAction> userActions, User user)
+        internal async Task<string> HandleButtonAction(Action currentAction, IList<UserAction> userActions, User user)
         {
             var actualUserActions = currentAction.ParentId == 0
                 ? new List<UserAction>()
@@ -164,11 +167,11 @@
             return compiledCommand;
         }
 
-        private async Task<ActionResult> BuildRootAction(User user)
+        private async Task<ActionResult> BuildRootActions(User user)
         {
             await ResetUserAction(user).ConfigureAwait(false);
 
-            return new ActionResult(await BuildRootActionMessage(user).ConfigureAwait(false), 0);
+            return new ActionResult(await BuildRootActionsMessage(user).ConfigureAwait(false), 0);
         }
 
         private async Task<bool> IsLastActionInvalid(int actionId, UserAction lastAction)
@@ -189,7 +192,7 @@
                 result.Message,
                 (await GetActionById(actionId).ConfigureAwait(false)).FunctionId);
 
-        private async Task<MessengerClient.Models.Message> BuildRootActionMessage(User user)
+        internal async Task<MessengerClient.Models.Message> BuildRootActionsMessage(User user)
         {
             var messageActions = new List<MessageAction>();
             var rootActions = (await GetAllActions().ConfigureAwait(false)).Where(action => action.ParentId == 0);
@@ -232,7 +235,7 @@
             .ExecuteAsync(new UpdateUserActionCommand(userActionId, userResponse, compiledCommand))
             .ConfigureAwait(false);
 
-        public async Task<string> CompileCommand(
+        internal async Task<string> CompileCommand(
             IList<UserAction> userActions,
             string userResponse)
         {
@@ -240,11 +243,13 @@
 
             if (lastAction != null)
             {
-                var actionHandler = new DefaultActionHandler();
+                var compiler = actionCompilers.ContainsKey(lastAction.Id)
+                    ? actionCompilers[lastAction.Id]
+                    : new DefaultActionCompiler();
                 var actionChain = await GetActionChain(lastAction.ActionId).ConfigureAwait(false);
                 lastAction.UserResponse = userResponse;
 
-                return actionHandler.BuildCommand(actionChain, userActions);
+                return compiler.Compile(actionChain, userActions);
             }
 
             return string.Empty;
@@ -254,7 +259,7 @@
             => (await GetAllActions().ConfigureAwait(false))
             .FirstOrDefault(action => action.Id == actionId);
 
-        private static (bool, int) ParseActionInfo(string buttonData)
+        internal static (bool, int) ParseActionInfo(string buttonData)
         {
             if (string.IsNullOrWhiteSpace(buttonData))
             {
@@ -292,10 +297,8 @@
 
         private async Task<IDictionary<int, IEnumerable<Action>>> GetActionChains()
         {
-            var actions = await dynamicRepository
-                .FetchAsync<Action>(new GetAllActionsCriteria())
-                .ConfigureAwait(false);
-            var endActions = actions.Where(action => action.IsEndAction);
+            var endActions = (await GetAllActions().ConfigureAwait(false))
+                                .Where(action => action.IsEndAction);
             var actionChains = new Dictionary<int, IEnumerable<Action>>();
 
             foreach (var endAction in endActions)

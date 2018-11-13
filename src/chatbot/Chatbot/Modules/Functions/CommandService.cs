@@ -35,6 +35,8 @@
         private readonly ILogger logger;
         private readonly ActionService actionService;
 
+#pragma warning disable S107 // Methods should not have too many parameters
+
         public CommandServiceImpl(
             SettingService settingService,
             IMessageSender messageSender,
@@ -44,6 +46,7 @@
             IFunctionHandlerFactory functionHandlerFactory,
             ILogger logger,
             ActionService actionService)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.settingService = settingService;
             this.messageSender = messageSender;
@@ -212,7 +215,9 @@
         {
             var userFunctions = await settingService.GetFunctions(user.Id).ConfigureAwait(false);
 
-            if (!userFunctions.Any(func => func.Type == CommandFunctionType && func.Enabled))
+            if (!userFunctions.Any(func =>
+                                        func.Type == CommandFunctionType
+                                        && func.Enabled))
             {
                 await SendNotRecognizedCommandMessage(user, messenger).ConfigureAwait(false);
                 return;
@@ -220,14 +225,14 @@
 
             var actionResult = await actionService.BuildAction(encodedCommand, buttonData, user).ConfigureAwait(false);
 
+            await HandleActionResult(user, messenger, actionResult).ConfigureAwait(false);
+        }
+
+        private async Task HandleActionResult(User user, Messenger messenger, Actions.Models.ActionResult actionResult)
+        {
             if (string.IsNullOrWhiteSpace(actionResult.Command))
             {
-                if (!string.IsNullOrWhiteSpace(actionResult.ValidationFailedMessage))
-                {
-                    await messageSender
-                        .SendMessage(user.Id, messenger, actionResult.ValidationFailedMessage, actionResult.FunctionId)
-                        .ConfigureAwait(false);
-                }
+                await SendValidationMessage(user, messenger, actionResult).ConfigureAwait(false);
 
                 await messageSender
                     .SendMessage(user.Id, messenger, actionResult.Message, actionResult.FunctionId)
@@ -244,12 +249,22 @@
             }
         }
 
-        private async Task SendNotRecognizedCommandMessage(User user, Messenger messenger)
+        private async Task SendValidationMessage(User user, Messenger messenger, Actions.Models.ActionResult actionResult)
         {
-            var message = messageBuilder.BuildNotRecognizedCommandMessage(user.Language);
-
-            await messageSender.SendMessage(user.Id, messenger, message, chatbotConfigs.NotRecognizedCommandFunctionId).ConfigureAwait(false);
+            if (!string.IsNullOrWhiteSpace(actionResult.ValidationFailedMessage))
+            {
+                await messageSender
+                    .SendMessage(user.Id, messenger, actionResult.ValidationFailedMessage, actionResult.FunctionId)
+                    .ConfigureAwait(false);
+            }
         }
+
+        private Task SendNotRecognizedCommandMessage(User user, Messenger messenger)
+            => messageSender.SendMessage(
+                user.Id,
+                messenger,
+                messageBuilder.BuildNotRecognizedCommandMessage(user.Language),
+                chatbotConfigs.NotRecognizedCommandFunctionId);
 
         private async Task SendErrorMessage(User user, Messenger messenger)
         {

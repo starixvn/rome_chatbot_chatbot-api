@@ -10,7 +10,7 @@
         {
         }
 
-        public UserAction(
+        internal UserAction(
             int id,
             int userId,
             int actionId,

@@ -7,6 +7,7 @@ namespace Chatbot.WebApi
     using System.Linq;
     using Alpha.Services.Client.Services;
     using Chatbot.Modules.Actions;
+    using Chatbot.Modules.Actions.Compilers;
     using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.FunctionHandler;
@@ -97,6 +98,7 @@ namespace Chatbot.WebApi
                 {
                     { MessengerType.Letstalk, new LetstalkFormatter() }
                 });
+            services.AddSingleton<IDictionary<int, IActionCompiler>>(new Dictionary<int, IActionCompiler>());
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IDictionary<string, CultureInfo>>(
