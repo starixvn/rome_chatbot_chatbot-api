@@ -43,7 +43,8 @@
                 UserId = 1,
                 MessengerType = 1,
                 MessengerUsername = "username",
-                Message = "message"
+                Message = "message",
+                SelfdestructionPeriod = null
             };
 
             // Act
@@ -55,7 +56,8 @@
                 Arg.Is<Models.Messenger>(
                     m => m.Type == param.MessengerType
                         && m.Username == param.MessengerUsername),
-                param.Message);
+                param.Message,
+                param.SelfdestructionPeriod);
         }
 
         [Fact]
@@ -96,7 +98,12 @@
             messageController.Send(param).ConfigureAwait(false);
 
             // Assert
-            subMessageSender.Received().SendMessage(param.UserId, param.Message, messengers, param.FunctionId);
+            subMessageSender.Received().SendMessage(
+                param.UserId,
+                param.Message,
+                messengers,
+                param.SelfdestructionPeriod,
+                param.FunctionId);
         }
 
         [Fact]

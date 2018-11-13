@@ -85,7 +85,7 @@
         public void GetUser_UserExists_ReturnUser()
         {
             var existedUser = 1502143;
-            var user = new User(existedUser, 100012, 1, 1000343, "en-US");
+            var user = new User(existedUser, 100012, 1, 1000343, "en-US", null);
             dynamicRepository
                 .GetAsync<User>(Arg.Is<GetUserCriteria>(criteria => criteria.UserId == existedUser))
                 .Returns(Task.FromResult(user));
@@ -117,7 +117,7 @@
 
             dynamicRepository
                .GetAsync<User>(Arg.Is<GetUserCriteria>(criteria => criteria.UserId == userId))
-               .Returns(Task.FromResult(new User(userId, 2, 2, 3, "en-us")));
+               .Returns(Task.FromResult(new User(userId, 2, 2, 3, "en-us", null)));
 
             var verificationCode = "124578";
             randomNumberFunc.Invoke().Returns(verificationCode);
@@ -144,7 +144,7 @@
 
             dynamicRepository
                .GetAsync<User>(Arg.Is<GetUserCriteria>(criteria => criteria.UserId == userId))
-               .Returns(Task.FromResult(new User(userId, 2, 2, 3, "en-us")));
+               .Returns(Task.FromResult(new User(userId, 2, 2, 3, "en-us", null)));
 
             var verificationCode = "124578";
             randomNumberFunc.Invoke().Returns(verificationCode);
@@ -162,7 +162,7 @@
             settingService.GenerateVerificationCode(userId, messenger).GetAwaiter().GetResult();
 
             // Assert
-            messageSender.Received().SendMessage(userId, messenger, "Messsage");
+            messageSender.Received().SendMessage(userId, messenger, "Messsage", null);
         }
 
         [Fact]
@@ -555,7 +555,7 @@
                 .GetResult();
 
             // Assert
-            messageSender.Received().SendMessage(userId, messenger, "Welcome Message!");
+            messageSender.Received().SendMessage(userId, messenger, "Welcome Message!", null);
         }
 
         [Fact]
@@ -569,7 +569,7 @@
             var userId = 434;
             var messenger = new Messenger(1, "messenger type", true);
             var custLevel = 2;
-            var user = new User(userId, custId, custLevel, subAccountId, language);
+            var user = new User(userId, custId, custLevel, subAccountId, language, null);
             var logData = new LinkAccountLog(custId, custId, "127.0.0.1", messenger);
             SetupAddUserSuccessful(custId, subAccountId, language, userId, user);
 
@@ -596,7 +596,7 @@
             var userId = 434;
             var custLevel = 1;
             var messenger = new Messenger(1, "messenger type", true);
-            var user = new User(userId, custId, custLevel, subAccountId, language);
+            var user = new User(userId, custId, custLevel, subAccountId, language, null);
             var logData = new LinkAccountLog(custId, custId, "127.0.0.1", messenger);
             SetupAddUserSuccessful(custId, subAccountId, language, userId, user);
             var addAccountActionId = 34;
@@ -634,7 +634,7 @@
             var language = "en-US";
             var userId = 434;
             var messenger = new Messenger(1, "messenger type", true);
-            var user = new User(userId, custId, 2, subAccountId, language);
+            var user = new User(userId, custId, 2, subAccountId, language, null);
             var custLevel = 1;
             var logData = new LinkAccountLog(custId, custId, "127.0.0.1", messenger);
             SetupAddUserSuccessful(custId, subAccountId, language, userId, user);
@@ -662,7 +662,7 @@
             var userId = 434;
             var messenger = new Messenger(1, "messenger type", true);
             var custLevel = 3;
-            var user = new User(userId, custId, custLevel, subAccountId, language);
+            var user = new User(userId, custId, custLevel, subAccountId, language, null);
             var logData = new LinkAccountLog(custId, custId, "127.0.0.1", messenger);
             SetupAddUserSuccessful(custId, subAccountId, language, userId, user);
 
@@ -693,7 +693,7 @@
             var userId = 434;
             var custLevel = 1;
             var messenger = new Messenger(1, "messenger type", true);
-            var user = new User(userId, custId, custLevel, subAccountId, language);
+            var user = new User(userId, custId, custLevel, subAccountId, language, null);
             var logData = new LinkAccountLog(custId, custId, "127.0.0.1", messenger);
             SetupAddUserSuccessful(custId, subAccountId, language, userId, user);
 
@@ -702,7 +702,7 @@
                 .GetAwaiter().GetResult();
 
             // Assert
-            messageSender.Received().SendMessage(userId, messenger, Arg.Any<string>());
+            messageSender.Received().SendMessage(userId, messenger, Arg.Any<string>(), null);
         }
 
         [Fact]
@@ -803,7 +803,7 @@
 
             dynamicRepository
                 .GetAsync<User>(Arg.Is<GetUserCriteria>(criteria => criteria.UserId == userId))
-                .Returns(Task.FromResult(new User(userId, 2, 2, 3, "en-us")));
+                .Returns(Task.FromResult(new User(userId, 2, 2, 3, "en-us", null)));
         }
 
         private IEnumerable<Messenger> StubMessengers()

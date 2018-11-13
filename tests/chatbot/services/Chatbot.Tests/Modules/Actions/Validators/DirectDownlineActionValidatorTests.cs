@@ -70,7 +70,7 @@
         public void ValidateAction_IsNotDirectDownline_ReturnsErrorResult()
         {
             // Arrange
-            var user = new User(1, 2, 4, 0, "en-US");
+            var user = new User(1, 2, 4, 0, "en-US", null);
             var downlineInfo = new DownlineInfo
             {
                 CustId = 1,
@@ -98,7 +98,7 @@
         public void ValidateAction_ValidDirectDownline_ReturnsSuResult()
         {
             // Arrange
-            var user = new User(1, 2, 4, 0, "en-US");
+            var user = new User(1, 2, 4, 0, "en-US", null);
             var downlineInfo = new DownlineInfo
             {
                 CustId = 1,

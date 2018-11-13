@@ -30,6 +30,8 @@ namespace Chatbot.Client.Services
         Task<List<User>> GetUsersByFunction(int functionId, int environment);
 
         Task<List<Function>> GetAllFunctions(string language);
+
+        Task<Result> UpdateSelfdestructionPeriod(int userId, int minutes, LogParam logParam);
     }
 
     public class SettingServiceImpl : SettingService
@@ -175,5 +177,12 @@ namespace Chatbot.Client.Services
 
         public Task<List<Function>> GetAllFunctions(string language)
             => restClient.ExecuteGetAsync<List<Function>>($"setting/functions/{language}");
+
+        public Task<Result> UpdateSelfdestructionPeriod(int userId, int minutes, LogParam logParam)
+        {
+            InputValidator.ValidateInputParam(nameof(userId), userId);
+
+            return restClient.ExecutePostAsync<Result>($"setting/{userId}/selfdestructionPeriod/{minutes}", logParam);
+        }
     }
 }

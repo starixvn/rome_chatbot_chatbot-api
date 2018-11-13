@@ -34,14 +34,18 @@
 
         [Route("sendToSpecificMessenger"), HttpPost]
         public Task<Result> SendToSpecificMessenger([FromBody]MessageParam param)
-            => messageSender.SendMessage(param.UserId, new Messenger(param.MessengerType, param.MessengerUsername), param.Message);
+            => messageSender.SendMessage(
+                param.UserId,
+                new Messenger(param.MessengerType, param.MessengerUsername),
+                param.Message,
+                param.SelfdestructionPeriod);
 
         [Route("send"), HttpPost]
         public async Task<Result> Send([FromBody]MessageParam param)
         {
             var messengers = await settingService.GetMessengers(param.UserId, true);
 
-            return await messageSender.SendMessage(param.UserId, param.Message, messengers, param.FunctionId);
+            return await messageSender.SendMessage(param.UserId, param.Message, messengers, param.SelfdestructionPeriod, param.FunctionId);
         }
 
         [Route("getFunctionMessages"), HttpGet]

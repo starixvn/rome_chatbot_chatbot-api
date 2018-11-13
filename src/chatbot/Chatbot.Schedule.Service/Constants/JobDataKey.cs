@@ -6,5 +6,6 @@
         public const string UserId = "userId";
         public const string CronSchedule = "cronSchedule";
         public const string Message = "message";
+        public const string SelfdestructionPeriod = "selfdestructionPeriod";
     }
 }

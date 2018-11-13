@@ -196,7 +196,7 @@
 
             if (chatbotConfigs.ReturnRawErrorToMessenger)
             {
-                await messageSender.SendMessage(user.Id, messenger, logMessage.Replace("\r\n", string.Empty)).ConfigureAwait(false);
+                await messageSender.SendMessage(user.Id, messenger, logMessage.Replace("\r\n", string.Empty), user.SelfdestructionPeriod).ConfigureAwait(false);
             }
             else
             {
@@ -268,14 +268,14 @@
         {
             var message = messageBuilder.BuildErrorMessage(user.Language);
 
-            await messageSender.SendMessage(user.Id, messenger, message).ConfigureAwait(false);
+            await messageSender.SendMessage(user.Id, messenger, message, user.SelfdestructionPeriod).ConfigureAwait(false);
         }
 
         private async Task SendServiceUnavailableMessage(int messengerType, string messengerName)
         {
             var message = messageBuilder.BuildServiceIsUnavailableMessage(messengerType);
 
-            await messageSender.SendMessage(new Messenger(messengerType, messengerName), message, logToDatabase: false).ConfigureAwait(false);
+            await messageSender.SendMessage(new Messenger(messengerType, messengerName), message, null, logToDatabase: false).ConfigureAwait(false);
         }
 
         private static (string, string[]) SplitCommand(string command)

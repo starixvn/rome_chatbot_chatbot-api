@@ -8,7 +8,6 @@
         private const string languageKey = "Language";
 
         public UpdateLanguageLog(
-
             int actorId,
             int custId,
             string ip,

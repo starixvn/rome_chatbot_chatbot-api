@@ -76,7 +76,7 @@
                 {
                     var message = BuildMessage(user.Language, param.Function.Id, messenger.Type, data);
 
-                    functionMessages.Add(new FunctionMessage(user.Id, message));
+                    functionMessages.Add(new FunctionMessage(user.Id, message, user.SelfdestructionPeriod));
                 }
             }
         }

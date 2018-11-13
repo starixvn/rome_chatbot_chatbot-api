@@ -81,9 +81,10 @@
 
             // Assert
             messageSender.Received().SendMessage(
-                Arg.Is<Chatbot.Models.Messenger>(
+                Arg.Is<Models.Messenger>(
                     messenger => messenger.Type == 1 && messenger.Username == "Username"),
                     "UM Message",
+                    null,
                     0,
                     false);
         }

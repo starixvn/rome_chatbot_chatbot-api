@@ -122,5 +122,21 @@
         [Route("functions/{language}"), HttpGet]
         public async Task<IEnumerable<Function>> GetAllFunctions(string language)
             => await settingService.GetAllFunctions(language);
+
+        [HttpPost("{userId}/selfdestructionPeriod/{minutes}")]
+        public async Task<Result> UpdateSelfdestructionPeriod(int userId, int minutes, [FromBody]LogParam logParam)
+        {
+            var user = await settingService.GetUser(userId);
+            var logData = new UpdateSelfdestructionPeriodLog(
+                logParam.ActorId,
+                logParam.CustId,
+                logParam.IP,
+                minutes,
+                user.SelfdestructionPeriod);
+
+            await settingService.UpdateSelfdestructionPeriod(userId, minutes, logData);
+
+            return Result.CreateSuccessfulResult();
+        }
     }
 }

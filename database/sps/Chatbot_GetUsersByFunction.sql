@@ -1,4 +1,4 @@
-﻿/*<info serverAlias="DBAGE-bodb_ChatBot" executers="bodbDownlineNet" viewers="vnteam" selecters=""></info>*/
+﻿/*<info serverAlias="DBBOT-bodb_ChatBot" executers="bodbDownlineNet" viewers="vnteam" selecters=""></info>*/
 
 USE [bodb_ChatBot]
 GO
@@ -11,11 +11,11 @@ GO
 /*
 	Creator:	20180809@Ricky.Nguyen
 	Task:		Description - [Redmine: #96019]
-	Database:	DB053.bodb_ChatBot
+	Database:	DBBOT.bodb_ChatBot
 	
 	Revisions:
 		- 20180727@Ricky.Nguyen:	Initial
-		
+		- 20181116@Alvin.Nguyen: get SelfdestructionPeriod [Redmine: #104686]
 	Parameter's Explaination:
 		- @Example:			NULL		- Explaination [DEFAULT]
 		
@@ -35,7 +35,8 @@ BEGIN
 			ui.CustId,
 			ui.SubAccId,
 			ui.CustomerLevel as CustLevel,
-			ui.Language
+			ui.Language,
+			ui.SelfdestructionPeriod
 	FROM	[dbo].[UserFunctionSetting]		AS ufs	WITH(NOLOCK)
 			INNER JOIN [dbo].[Function]		AS fc	WITH (NOLOCK)
 				ON ufs.FunctionId = fc.FunctionId

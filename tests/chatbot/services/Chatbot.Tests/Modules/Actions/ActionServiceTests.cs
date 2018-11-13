@@ -12,6 +12,8 @@
     using Chatbot.Modules.Actions.Params.DB.Criteria;
     using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
+    using Chatbot.Modules.Resources;
+    using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
     using Fanex.Caching;
     using Fanex.Data.Repository;
@@ -31,6 +33,8 @@
         private readonly Func<DateTime> getDateTimeNowFunc;
         private readonly ActionServiceImpl actionServiceImpl;
         private readonly IDynamicRepository dynamicRepository;
+        private readonly SettingService settingService;
+        private readonly ResourceService resourceService;
         private readonly IChatbotConfigs chatbotConfigs;
 
         public ActionServiceTests()
@@ -51,6 +55,8 @@
                 { 4, actionCompiler },
                 { 6, actionCompiler }
             };
+            settingService = Substitute.For<SettingService>();
+            resourceService = Substitute.For<ResourceService>();
             getDateTimeNowFunc = Substitute.For<Func<DateTime>>();
 
             actionServiceImpl = new ActionServiceImpl(
@@ -59,6 +65,8 @@
                 messageBuilder,
                 actionValidators,
                 actionCompilers,
+                settingService,
+                resourceService,
                 chatbotConfigs,
                 getDateTimeNowFunc);
 
@@ -70,7 +78,7 @@
         [Fact]
         public void HandleUserReponseByMessage_LastActionIsNull_ReturnUserRootActions()
         {
-            var user = new User(1, 1, 4, 0, "en-US");
+            var user = new User(1, 1, 4, 0, "en-US", null);
 
             StubActions();
             StubUserFuntions(user);
@@ -94,7 +102,7 @@
         public void HandleUserReponseByMessage_UserReponseIsIncorrectFormat_ReturnWrongInputMessage()
         {
             StubActions();
-            var user = new User(1, 1, 4, 0, "en-US");
+            var user = new User(1, 1, 4, 0, "en-US", null);
             StubUserFuntions(user);
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             actionValidator.ValidateAction(4, user, "user reponse").Returns(new Result(1, "failed"));
@@ -111,7 +119,7 @@
         public void HandleUserReponseByMessage_UserReponseIsIncorrectFormat_ReturnRepeatMessage()
         {
             StubActions();
-            var user = new User(1, 1, 4, 0, "en-US");
+            var user = new User(1, 1, 4, 0, "en-US", null);
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             StubUserFuntions(user);
             actionValidator.ValidateAction(4, user, "user reponse").Returns(new Result(1, "failed"));
@@ -131,7 +139,7 @@
         public void HandleUserReponseByMessage_Always_ReturnCompiledCommand()
         {
             StubActions();
-            var user = new User(1, 1, 4, 0, "en-US");
+            var user = new User(1, 1, 4, 0, "en-US", null);
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             var userActions = StubUserActions(user.Id);
             StubUserFuntions(user);
@@ -151,7 +159,7 @@
         public void HandleUserReponseByMessage_Always_ReturnLastUserActionId()
         {
             StubActions();
-            var user = new User(1, 1, 4, 0, "en-US");
+            var user = new User(1, 1, 4, 0, "en-US", null);
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             var userActions = StubUserActions(user.Id);
             StubUserFuntions(user);
@@ -171,7 +179,7 @@
         public void HandleUserReponseByButton_CancelRequest_ExecuteUpdateUserActionsToCancel()
         {
             StubActions();
-            var user = new User(1, 1, 4, 0, "en-US");
+            var user = new User(1, 1, 4, 0, "en-US", null);
             var userActions = StubUserActions(user.Id);
             var messenger = new Messenger(1, "ltid");
 
@@ -195,7 +203,7 @@
         public void HandleUserReponseByButton_CancelRequest_ReturnCancelMessageAndRootButtons()
         {
             StubActions();
-            var user = new User(1, 1, 4, 0, "en-US");
+            var user = new User(1, 1, 4, 0, "en-US", null);
             var userActions = StubUserActions(user.Id);
             var messenger = new Messenger(1, "ltid");
             messageBuilder
@@ -219,7 +227,7 @@
         public void HandleUserReponseByButton_LastActonIsInvalid_ReturnRootActions()
         {
             StubActions();
-            var user = new User(1, 1, 4, 0, "en-US");
+            var user = new User(1, 1, 4, 0, "en-US", null);
             var messenger = new Messenger(1, "ltid");
             StubUserFuntions(user);
             messageBuilder.BuildRootActionTitle(user.Language).Returns("message title");
@@ -240,7 +248,7 @@
         [Fact]
         public void HandleUserReponseByButton_ActionIsValid_ExecuteInsertUserAction()
         {
-            var user = new User(1, 1, 4, 0, "en-US");
+            var user = new User(1, 1, 4, 0, "en-US", null);
             var messenger = new Messenger(1, "ltid");
             StubActions();
             StubUserFuntions(user);
@@ -269,7 +277,7 @@
         {
             StubActions();
             var messenger = new Messenger(1, "ltid");
-            var user = new User(1, 1, 4, 0, "en-US");
+            var user = new User(1, 1, 4, 0, "en-US", null);
             StubUserActions(user.Id);
             StubUserFuntions(user);
             messageBuilder
@@ -291,7 +299,7 @@
         public void BuildAction_ActionIsEnd_ReturnCompileCommand()
         {
             StubActions();
-            var user = new User(1, 1, 4, 0, "en-US");
+            var user = new User(1, 1, 4, 0, "en-US", null);
             var messenger = new Messenger(1, "ltid");
             StubUserActions(user.Id);
             StubUserFuntions(user);
@@ -311,7 +319,7 @@
         {
             StubActions();
             var messenger = new Messenger(1, "ltid");
-            var user = new User(1, 1, 4, 0, "en-US");
+            var user = new User(1, 1, 4, 0, "en-US", null);
             StubUserActions(user.Id);
             StubUserFuntions(user);
 
@@ -331,7 +339,7 @@
         public void BuildAction_ActionIsNotEndAndNextActionIsMessage_ReturnNextMessage()
         {
             StubActions();
-            var user = new User(1, 1, 4, 0, "en-US");
+            var user = new User(1, 1, 4, 0, "en-US", null);
             var messenger = new Messenger(1, "ltid");
             StubUserActions(user.Id);
             StubUserFuntions(user);

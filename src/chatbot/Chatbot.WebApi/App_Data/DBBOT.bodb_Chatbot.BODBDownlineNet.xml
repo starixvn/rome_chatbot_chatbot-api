@@ -44,6 +44,7 @@
       <Mapping ObjectProperty="Environment" DataField="environment" />
     </Setting>
     <Setting Key="Chatbot_GetResource" SpName="Chatbot_GetResource" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_UpdateSelfdestructionPeriod" SpName="Chatbot_UpdateSelfdestructionPeriod_xtest" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
   </Function>
   <Function Name="Action">
     <Setting Key="Chatbot_GetUserActionsInChain" SpName="Chatbot_GetUserActionsInChain" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet">

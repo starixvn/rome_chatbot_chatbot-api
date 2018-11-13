@@ -204,7 +204,7 @@ namespace Chatbot.WebApi
             DbSettingProviderManager
               .StartNewSession()
               .UseConnectionStrings(connections)
-              .UseDefaultDbSettingProvider("~/App_Data")
+              .UseDefaultDbSettingProvider(Configuration["StoredProcedurePath"])
               .Run();
 
             Log.Logger = new LoggerConfiguration()

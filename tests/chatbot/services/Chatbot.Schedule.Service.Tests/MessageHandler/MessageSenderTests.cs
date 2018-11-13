@@ -26,7 +26,7 @@
             var scheduler = await schedulerFactory.GetScheduler();
 
             // Act
-            await messageSender.SendMessageToUser(1, 2, "message");
+            await messageSender.SendMessageToUser(1, 2, "message", null);
 
             // Assert
             scheduler.ListenerManager.Received().AddJobListener(jobListener);
@@ -39,7 +39,7 @@
             var scheduler = await schedulerFactory.GetScheduler();
 
             // Act
-            await messageSender.SendMessageToUser(1, 2, "message");
+            await messageSender.SendMessageToUser(1, 2, "message", null);
 
             // Assert
             await scheduler.Received(1).ScheduleJob(

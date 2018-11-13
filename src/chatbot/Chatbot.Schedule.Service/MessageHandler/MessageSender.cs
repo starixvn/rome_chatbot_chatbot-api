@@ -10,11 +10,12 @@
 
     public interface IMessageSender
     {
-        Task SendMessageToUser(int userId, int functionId, string message);
+        Task SendMessageToUser(int userId, int functionId, string message, int? selfdestructionPeriod);
     }
 
     public class MessageSender : IMessageSender
     {
+        private const int DefaultSelfDestructionPeriod = 30; //Minutes
         private readonly ISchedulerFactory schedulerFactory;
         private readonly IJobListener jobFailureHandler;
 
@@ -33,7 +34,7 @@
             this.jobFailureHandler = jobFailureHandler ?? new JobFailureHandler();
         }
 
-        public async Task SendMessageToUser(int userId, int functionId, string message)
+        public async Task SendMessageToUser(int userId, int functionId, string message, int? selfdestructionPeriod)
         {
             var scheduler = await schedulerFactory.GetScheduler();
             scheduler.ListenerManager.AddJobListener(jobFailureHandler);
@@ -43,6 +44,9 @@
                         .UsingJobData(JobDataKey.UserId, userId)
                         .UsingJobData(JobDataKey.FunctionId, functionId)
                         .UsingJobData(JobDataKey.Message, message)
+                        .UsingJobData(
+                            JobDataKey.SelfdestructionPeriod,
+                            selfdestructionPeriod.HasValue ? selfdestructionPeriod.Value : DefaultSelfDestructionPeriod)
                         .Build();
             var trigger = TriggerBuilder
                         .Create()

@@ -11,6 +11,10 @@
     using Chatbot.Modules.Actions.Params.DB.Criteria;
     using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
+    using Chatbot.Modules.Resources;
+    using Chatbot.Modules.Resources.Constants;
+    using Chatbot.Modules.Resources.Models;
+    using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
     using Fanex.Caching;
     using Fanex.Data.Repository;
@@ -40,10 +44,10 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IDictionary<int, IActionValidator> actionValidators;
         private readonly IDictionary<int, IActionCompiler> actionCompilers;
+        private readonly SettingService settingService;
+        private readonly ResourceService resourceService;
         private readonly Func<DateTime> getDateTimeNowFunc;
         private readonly IChatbotConfigs chatbotConfigs;
-
-#pragma warning disable S107 // Methods should not have too many parameters
 
         public ActionServiceImpl(
             IDynamicRepository dynamicRepository,
@@ -51,15 +55,18 @@
             IMessageBuilder messageBuilder,
             IDictionary<int, IActionValidator> actionValidators,
             IDictionary<int, IActionCompiler> actionCompilers,
+            SettingService settingService,
+            ResourceService resourceService,
             IChatbotConfigs chatbotConfigs,
             Func<DateTime> getDateTimeNowFunc = null)
-#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.dynamicRepository = dynamicRepository;
             this.cacheService = cacheService;
             this.messageBuilder = messageBuilder;
             this.actionValidators = actionValidators;
             this.actionCompilers = actionCompilers;
+            this.settingService = settingService;
+            this.resourceService = resourceService;
             this.getDateTimeNowFunc = getDateTimeNowFunc ?? GetDateTimeNow;
             this.chatbotConfigs = chatbotConfigs;
         }
@@ -150,6 +157,13 @@
                 || await IsActionNotExist(lastAction.ActionId).ConfigureAwait(false)
                 || IsUserFuntionDisabled(user, await GetActionById(lastAction.ActionId).ConfigureAwait(false)))
             {
+                var functions = await GetFunctionsByKeyword(userReponse, user.Id).ConfigureAwait(false);
+
+                if (functions.Any())
+                {
+                    return (string.Empty, 0, await BuildConfirmKeywordActions(functions, user).ConfigureAwait(false));
+                }
+
                 return (
                     string.Empty,
                     0,
@@ -172,6 +186,73 @@
 
             return (compiledCommand, currentActionId, null);
         }
+
+        private async Task<IEnumerable<Function>> GetFunctionsByKeyword(string userResponse, int userId)
+        {
+            var result = new List<Function>();
+            var functions = (await settingService.GetFunctions(userId).ConfigureAwait(false)).Where(f => f.Enabled);
+
+            foreach (var function in functions)
+            {
+                var resources = await GetFunctionKeyworks(function.Id).ConfigureAwait(false);
+
+                foreach (var resource in resources)
+                {
+                    var keywords = resource.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    var isContainsKeyword = keywords.Any(keyword => userResponse.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+
+                    if (isContainsKeyword && !result.Contains(function))
+                    {
+                        result.Add(function);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private async Task<ActionResult> BuildConfirmKeywordActions(IEnumerable<Function> functions, User user)
+        {
+            var messageActions = new List<MessageAction>();
+
+            foreach (var function in functions)
+            {
+                var action = (await GetAllActions().ConfigureAwait(false))
+                .FirstOrDefault(a => a.ParentId == 0 && a.FunctionId == function.Id);
+
+                if (action != null)
+                {
+                    messageActions.Add(new MessageAction
+                    {
+                        Label = (await messageBuilder.BuildActionName(action.Id, user.Language).ConfigureAwait(false)).ToUpperInvariant(),
+                        Type = PostbackType,
+                        Data = $"ActionId={action.Id}"
+                    });
+                }
+            }
+
+            messageActions.Add(new MessageAction
+            {
+                Label = messageBuilder.BuildNoneOfTheAboveMessage(user.Language).ToUpperInvariant(),
+                Type = PostbackType,
+                Data = ""
+            });
+
+            var message = new MessengerClient.Models.Message
+            {
+                Content = messageBuilder.BuildConfirmKeywordTitle(user.Language),
+                MessageMarkup = new MessageMarkup
+                {
+                    MessageActions = messageActions
+                }
+            };
+
+            return new ActionResult(message, 0);
+        }
+
+        private async Task<IEnumerable<Resource>> GetFunctionKeyworks(int functionId)
+            => await resourceService.GetResources(functionId, ResourceType.Keyword).ConfigureAwait(false);
 
         internal async Task<string> HandleButtonAction(Action currentAction, IList<UserAction> userActions, User user)
         {

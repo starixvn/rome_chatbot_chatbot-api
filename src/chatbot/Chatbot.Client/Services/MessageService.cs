@@ -10,7 +10,7 @@ namespace Chatbot.Client.Services
 
     public interface MessageService
     {
-        Task<Result> SendMessage(int userId, string message, int functionId = 0);
+        Task<Result> SendMessage(int userId, string message, int? selfdestructionPeriod, int functionId = 0);
 
         Task<List<Message>> GetMessageLogs(int userId, DateTimeOffset fromDate, DateTimeOffset toDate, int functionId = 0, int messengerType = 0);
 
@@ -30,7 +30,7 @@ namespace Chatbot.Client.Services
             this.restClient = restClient ?? ChatbotClientManager.RestClient;
         }
 
-        public Task<Result> SendMessage(int userId, string message, int functionId = 0)
+        public Task<Result> SendMessage(int userId, string message, int? selfdestructionPeriod, int functionId = 0)
         {
             InputValidator.ValidateInputParam(nameof(userId), userId);
             InputValidator.ValidateInputParam(nameof(message), message);
@@ -41,6 +41,7 @@ namespace Chatbot.Client.Services
                 {
                     userId,
                     message,
+                    selfdestructionPeriod,
                     functionId
                 });
         }
