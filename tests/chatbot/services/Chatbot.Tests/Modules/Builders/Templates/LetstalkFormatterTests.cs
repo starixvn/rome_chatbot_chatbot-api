@@ -12,5 +12,13 @@
 
             Assert.Equal("\n", newLine);
         }
+
+        [Fact]
+        public void Point_Alway_ReturnPointCharacter()
+        {
+            var point = new LetstalkFormatter().Point();
+
+            Assert.Equal("\u2022", point);
+        }
     }
 }

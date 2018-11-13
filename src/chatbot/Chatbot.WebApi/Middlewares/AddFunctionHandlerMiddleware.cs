@@ -11,7 +11,6 @@
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.Params;
     using Microsoft.Extensions.DependencyInjection;
-    using Newtonsoft.Json;
     using Serilog;
 
     public static class AddFunctionHandlerMiddleware
@@ -33,20 +32,32 @@
 
             services.AddSingleton<IDictionary<int, Func<FunctionParam, Task<object>>>>(
                 new Dictionary<int, Func<FunctionParam, Task<object>>>
-            {
-                { chatbotConfigs.OutstandingFunctionId, GetOutstanding },
-                { chatbotConfigs.WinlossFunctionId, GetWinLoss },
-                { chatbotConfigs.BalanceFunctionId, GetBalanceInfo },
-                { chatbotConfigs.YesterdayWinLossFunctionId, GetYesterdayWinLoss },
-                { chatbotConfigs.PersonalMessageFunctionId, GetPersonalMessage },
-                { chatbotConfigs.SpecialAnnouncementFunctionId, GetSpecialAnnouncement },
-                { chatbotConfigs.NormalAnnouncementFunctionId, GetNormalAnnouncement },
-                { chatbotConfigs.SystemUpdateFunctionId, GetSystemUpdate }
-            });
+                {
+                    { chatbotConfigs.OutstandingFunctionId, GetOutstanding },
+                    { chatbotConfigs.WinlossFunctionId, GetWinLoss },
+                    { chatbotConfigs.BalanceFunctionId, GetBalanceInfo },
+                    { chatbotConfigs.YesterdayWinLossFunctionId, GetYesterdayWinLoss },
+                    { chatbotConfigs.PersonalMessageFunctionId, GetPersonalMessage },
+                    { chatbotConfigs.SpecialAnnouncementFunctionId, GetSpecialAnnouncement },
+                    { chatbotConfigs.NormalAnnouncementFunctionId, GetNormalAnnouncement },
+                    { chatbotConfigs.SystemUpdateFunctionId, GetSystemUpdate },
+                });
         }
 
         private static async Task<object> GetOutstanding(FunctionParam param)
-           => await reportService.GetOutstandingAsync(param.User.CustId, (byte)param.User.CustLevel);
+        {
+            if (param.Others.ContainsKey("CustId"))
+            {
+                return await reportService.GetDownlineOutstandingAsync(
+                    param.User.CustId,
+                    (byte)param.User.CustLevel,
+                    (int)param.Others["CustId"]);
+            }
+
+            var topQuery = param.Others.ContainsKey("topQuery") ? (int)param.Others["topQuery"] : 50;
+
+            return await reportService.GetOutstandingsAsync(param.User.CustId, (byte)param.User.CustLevel, topQuery);
+        }
 
         private static async Task<object> GetWinLoss(FunctionParam param)
             => await reportService.GetWinLossAsync(param.User.CustId, (byte)param.User.CustLevel, DateTime.Now.Date);
@@ -105,7 +116,6 @@
             {
                 CustId = user.CustId,
                 Language = user.Language,
-                RoleId = (byte)user.CustLevel
             });
 
         private static void WriteLogWhenHaveMessage(IEnumerable<Customer> customers, IEnumerable<Message> messages)

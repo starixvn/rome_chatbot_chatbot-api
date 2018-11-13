@@ -1,9 +1,7 @@
 ﻿namespace Chatbot.Tests.Modules.Builders.Templates
 {
-    using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Text;
     using Chatbot.Modules.MessageBuilders.Templates;
     using NSubstitute;
     using Xunit;
@@ -45,7 +43,7 @@
 
             var template = bodyTemplate.ToString(data, cultureInfo, messengerFormatter);
 
-            Assert.Equal("Super: 3434_newline_Master: 4,545.56_newline_: value3_newline_: True", template);
+            Assert.Equal("Super:_newline_    3434_newline_Master:_newline_    4,545.56_newline_:_newline_    value3_newline_:_newline_    True", template);
         }
     }
 }

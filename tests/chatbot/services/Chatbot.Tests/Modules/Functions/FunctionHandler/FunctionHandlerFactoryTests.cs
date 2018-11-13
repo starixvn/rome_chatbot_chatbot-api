@@ -1,4 +1,4 @@
-namespace Chatbot.Tests.Modules.Functions.FunctionHandler
+﻿namespace Chatbot.Tests.Modules.Functions.FunctionHandler
 {
     using System;
     using System.Collections.Generic;
@@ -36,6 +36,7 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
             subLogger = Substitute.For<ILogger>();
             subChatbotConfigs.MessageAndAnnoucementFunctionIds.Returns(new List<int> { 2, 3, 4 });
             subChatbotConfigs.YesterdayWinLossFunctionId.Returns(6);
+            subChatbotConfigs.OutstandingFunctionId.Returns(1);
         }
 
         private FunctionHandlerFactory CreateFactory()
@@ -78,6 +79,19 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
 
             // Assert
             Assert.IsType<YesterdayWinLossFunctionHandler>(functionHandler);
+        }
+
+        [Fact]
+        public void CreateFunctionHandler_FunctionIdIsOutstanding_ReturnYesterdayWinLossFunctionHandler()
+        {
+            // Arrange
+            var factory = CreateFactory();
+
+            // Act
+            var functionHandler = factory.CreateFunctionHandler(1);
+
+            // Assert
+            Assert.IsType<OutstandingCommandFunctionHandler>(functionHandler);
         }
 
         [Fact]

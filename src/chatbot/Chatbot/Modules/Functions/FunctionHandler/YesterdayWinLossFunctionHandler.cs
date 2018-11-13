@@ -5,7 +5,6 @@
     using System.Threading.Tasks;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
-    using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
@@ -15,18 +14,18 @@
     public class YesterdayWinLossFunctionHandler : DefaultFunctionHandler
     {
         private readonly SettingService settingService;
-        private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders;
+        private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers;
 
         public YesterdayWinLossFunctionHandler(
             IMessageBuilder messageBuilder,
             IMessageSender messageSender, CustomerService customerService,
             SettingService settingService,
             ILogger logger,
-            IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders = null)
-            : base(messageBuilder, messageSender, customerService, logger, getDataHanlders)
+            IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers = null)
+            : base(messageBuilder, messageSender, customerService, logger, getDataHandlers)
         {
             this.settingService = settingService;
-            this.getDataHanlders = getDataHanlders;
+            this.getDataHandlers = getDataHandlers;
         }
 
         /// <summary>
@@ -70,7 +69,7 @@
         {
             foreach (var messenger in messengers)
             {
-                var data = await getDataHanlders[param.Function.Id](new FunctionParam(user, param.Function, messenger, null))
+                var data = await getDataHandlers[param.Function.Id](new FunctionParam(user, param.Function, messenger, null))
                     .ConfigureAwait(false);
 
                 if (data != null)

@@ -10,5 +10,12 @@
 
             return result;
         }
+
+        public static string ToFormattedNumber(this decimal numberValue)
+        {
+            var result = numberValue.ToString(NumberFormat);
+
+            return result;
+        }
     }
 }

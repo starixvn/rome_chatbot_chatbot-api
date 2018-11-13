@@ -250,4 +250,49 @@
   <data name="CommandIsNotRecognized" xml:space="preserve">
     <value>คำสั่งไม่ถูกต้อง</value>
   </data>
+  <data name="Total" xml:space="preserve">
+    <value>ยอดรวม</value>
+  </data>
+  <data name="CustLevel_1" xml:space="preserve">
+    <value>สมาชิก</value>
+  </data>
+  <data name="CustLevel_2" xml:space="preserve">
+    <value>ตัวแทน</value>
+  </data>
+  <data name="CustLevel_3" xml:space="preserve">
+    <value>ตัวแทนหลัก</value>
+  </data>
+  <data name="CustLevel_4" xml:space="preserve">
+    <value>สูงสุด</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>ชื่อผู้ใช้ระบบ</value>
+  </data>
+  <data name="MemberOutstanding" xml:space="preserve">
+    <value>การเดิมพันที่ยังไม่สิ้นสุดของ สมาชิก</value>
+  </data>
+  <data name="AgentOutstanding" xml:space="preserve">
+    <value>เอเย่นต์ยอดคงค้าง</value>
+  </data>
+  <data name="SuperOutstanding" xml:space="preserve">
+    <value>ยอดคงค้างของซุปเปอร์</value>
+  </data>
+  <data name="HintTopOutstanding" xml:space="preserve">
+    <value>*หมายเหตุ：คำสั่งแบบรวดเร็ว กรุณาพิมพ์ /os 50</value>
+  </data>
+  <data name="HintSpecificDownline" xml:space="preserve">
+    <value>*หมายเหตุ：ดูรายการยอดค้างชำระ กรุณาพิมพ์  /os ไอดีลูกค้า</value>
+  </data>
+  <data name="HiddenDownlinesCount" xml:space="preserve">
+    <value>มี {0} {1} ที่ไม่ได้แสดงผล</value>
+  </data>
+  <data name="InvalidCustName" xml:space="preserve">
+    <value>ชื่อผู้ใช้งานไม่ถูกต้อง</value>
+  </data>
+  <data name="MasterOutstanding" xml:space="preserve">
+    <value>การเดิมพันที่ยังไม่สิ้นสุดของ ตัวแทนหลัก</value>
+  </data>
+  <data name="UnlinkMessage" xml:space="preserve">
+    <value>การยกเลิกบริการสำเร็จ ขอบคุณสำหรับการใช้งาน</value>
+  </data>
 </root>

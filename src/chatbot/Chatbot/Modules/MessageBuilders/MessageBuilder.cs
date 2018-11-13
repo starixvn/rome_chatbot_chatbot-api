@@ -23,6 +23,10 @@
         string BuildUnderMaintenanceMessage(int messengerType, string from, string to);
 
         string BuildServiceIsUnavailableMessage(int messengerType);
+
+        string BuildInvalidCustNameMessage(string language);
+
+        string BuildUnlinkMessage(string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -77,26 +81,11 @@
             return template.ToString(functionId, data, cultureInfo, messengerFormatter);
         }
 
-        private IMessengerFormatter GetMessengerFormatter(int messengerType)
-            => messengerFormatters.ContainsKey(messengerType)
-                            ? messengerFormatters[messengerType]
-                            : new LetstalkFormatter();
-
-        private CultureInfo GetCultureInfo(string language)
-            => cultureInfoList.ContainsKey(language)
-                            ? cultureInfoList[language]
-                            : defaultCultureInfo;
-
         public string BuildVerificationCodeMessage(string language, int messengerType, string verificationCode, int expiredVerificationCodeInMinutes)
             => string.Join(
                 GetMessengerFormatter(messengerType).NewLine(),
                 string.Format(GetResource(nameof(Languages.VerificationCode_1), language), verificationCode),
                 string.Format(GetResource(nameof(Languages.VerificationCode_2), language), expiredVerificationCodeInMinutes));
-
-        private IMessageTemplate GetTemplate(int functionId)
-            => messageTemplates.ContainsKey(functionId)
-                ? messageTemplates[functionId]
-                : defaultTemplate;
 
         public string BuildErrorMessage(string language)
             => GetResource(nameof(Languages.DefaultErrorMessage), language);
@@ -109,9 +98,6 @@
                 GetMessengerFormatter(messengerType).NewLine(),
                 GetResource(nameof(Languages.InformingVerifiedMessage_1), language),
                 GetResource(nameof(Languages.InformingVerifiedMessage_2), language));
-
-        private string GetResource(string key, string language)
-            => Languages.ResourceManager.GetString(key, GetCultureInfo(language));
 
         public string BuildAccountClosedMessage(string language)
             => GetResource(nameof(Languages.YourAccountIsClosed), language);
@@ -146,5 +132,29 @@
 
             return stringBuilder.ToString();
         }
+
+        public string BuildInvalidCustNameMessage(string language)
+            => GetResource(nameof(Languages.InvalidCustName), language);
+
+        public string BuildUnlinkMessage(string language)
+            => GetResource(nameof(Languages.UnlinkMessage), language);
+
+        private IMessengerFormatter GetMessengerFormatter(int messengerType)
+            => messengerFormatters.ContainsKey(messengerType)
+                            ? messengerFormatters[messengerType]
+                            : new LetstalkFormatter();
+
+        private IMessageTemplate GetTemplate(int functionId)
+           => messageTemplates.ContainsKey(functionId)
+               ? messageTemplates[functionId]
+               : defaultTemplate;
+
+        private string GetResource(string key, string language)
+            => Languages.ResourceManager.GetString(key, GetCultureInfo(language));
+
+        private CultureInfo GetCultureInfo(string language)
+            => cultureInfoList.ContainsKey(language)
+                            ? cultureInfoList[language]
+                            : defaultCultureInfo;
     }
 }

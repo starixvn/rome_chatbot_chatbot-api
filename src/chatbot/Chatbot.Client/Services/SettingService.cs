@@ -28,6 +28,8 @@ namespace Chatbot.Client.Services
         Task<Messenger> GetMessenger(int messengerType, string messengerUsername);
 
         Task<List<User>> GetUsersByFunction(int functionId, int environment);
+
+        Task<List<Function>> GetAllFunctions(string language);
     }
 
     public class SettingServiceImpl : SettingService
@@ -170,5 +172,8 @@ namespace Chatbot.Client.Services
 
             return restClient.ExecuteGetAsync<List<User>>($"setting/users/function/{functionId}/{environment}");
         }
+
+        public Task<List<Function>> GetAllFunctions(string language)
+            => restClient.ExecuteGetAsync<List<Function>>($"setting/functions/{language}");
     }
 }

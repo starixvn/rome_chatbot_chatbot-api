@@ -136,4 +136,19 @@
   <data name="AgentTotalCredit" xml:space="preserve">
     <value>エージェント貸付</value>
   </data>
+  <data name="Total" xml:space="preserve">
+    <value>合計</value>
+  </data>
+  <data name="CustLevel_1" xml:space="preserve">
+    <value>メンバー</value>
+  </data>
+  <data name="CustLevel_2" xml:space="preserve">
+    <value>エージェント</value>
+  </data>
+  <data name="CustLevel_3" xml:space="preserve">
+    <value>マスター</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>ユーザー名</value>
+  </data>
 </root>

@@ -57,6 +57,11 @@
                 return new YesterdayWinLossFunctionHandler(messageBuilder, messageSender, customerService, settingService, logger, getDataHanlders);
             }
 
+            if (functionId == chatbotConfigs.OutstandingFunctionId)
+            {
+                return new OutstandingCommandFunctionHandler(messageBuilder, messageSender, customerService, logger, getDataHanlders);
+            }
+
             return new DefaultFunctionHandler(messageBuilder, messageSender, customerService, logger, getDataHanlders);
         }
     }

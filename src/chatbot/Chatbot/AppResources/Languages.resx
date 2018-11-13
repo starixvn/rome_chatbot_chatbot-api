@@ -276,4 +276,49 @@
   <data name="ServiceNotAvailable" xml:space="preserve">
     <value>Sorry, you haven't registered for this chatbot service yet!</value>
   </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="InvalidCustName" xml:space="preserve">
+    <value>Invalid username.</value>
+  </data>
+  <data name="CustLevel_1" xml:space="preserve">
+    <value>Member</value>
+  </data>
+  <data name="CustLevel_2" xml:space="preserve">
+    <value>Agent</value>
+  </data>
+  <data name="CustLevel_3" xml:space="preserve">
+    <value>Master</value>
+  </data>
+  <data name="CustLevel_4" xml:space="preserve">
+    <value>Super</value>
+  </data>
+  <data name="HiddenDownlinesCount" xml:space="preserve">
+    <value>{0} more {1}(s) are not shown.</value>
+  </data>
+  <data name="MemberOutstanding" xml:space="preserve">
+    <value>Member Outstanding</value>
+  </data>
+  <data name="AgentOutstanding" xml:space="preserve">
+    <value>Agent Outstanding</value>
+  </data>
+  <data name="MasterOutstanding" xml:space="preserve">
+    <value>Master Outstanding</value>
+  </data>
+  <data name="SuperOutstanding" xml:space="preserve">
+    <value>Super Outstanding</value>
+  </data>
+  <data name="UnlinkMessage" xml:space="preserve">
+    <value>You have opted out service successfully. Thanks a lot for using our service.</value>
+  </data>
+  <data name="HintTopOutstanding" xml:space="preserve">
+    <value>*Hint: For quick commands, please type: /os 50</value>
+  </data>
+  <data name="HintSpecificDownline" xml:space="preserve">
+    <value>*Hint: To view your downline's outstanding, please type: /os username</value>
+  </data>
 </root>

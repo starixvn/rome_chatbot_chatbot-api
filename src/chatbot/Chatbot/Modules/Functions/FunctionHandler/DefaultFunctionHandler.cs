@@ -19,10 +19,10 @@
 
     public class DefaultFunctionHandler : IFunctionHandler
     {
-        private readonly IMessageBuilder messageBuilder;
-        private readonly IMessageSender messageSender;
-        private readonly CustomerService customerService;
-        private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders;
+        protected readonly IMessageBuilder messageBuilder;
+        protected readonly IMessageSender messageSender;
+        protected readonly CustomerService customerService;
+        private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers;
         private readonly ILogger logger;
 
         protected bool SendMessageInCaseAccountClosed = true;
@@ -32,11 +32,11 @@
             IMessageSender messageSender,
             CustomerService customerService,
             ILogger logger,
-            IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders = null)
+            IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers = null)
         {
             this.messageBuilder = messageBuilder;
             this.messageSender = messageSender;
-            this.getDataHanlders = getDataHanlders;
+            this.getDataHandlers = getDataHandlers;
             this.customerService = customerService;
             this.logger = logger;
         }
@@ -45,7 +45,7 @@
         {
             // Check Params
 
-            if (!getDataHanlders.ContainsKey(param.Function.Id))
+            if (!getDataHandlers.ContainsKey(param.Function.Id))
             {
                 throw new InvalidOperationException($"Cannot find get data function for function: {param.Function.Id}-{param.Function.Name}");
             }
@@ -58,9 +58,9 @@
             return await RunHandler(param).ConfigureAwait(false);
         }
 
-        private async Task<Result> RunHandler(FunctionParam param)
+        protected virtual async Task<Result> RunHandler(FunctionParam param)
         {
-            var data = await getDataHanlders[param.Function.Id](param).ConfigureAwait(false);
+            var data = await getDataHandlers[param.Function.Id](param).ConfigureAwait(false);
 
             if (data == null)
             {

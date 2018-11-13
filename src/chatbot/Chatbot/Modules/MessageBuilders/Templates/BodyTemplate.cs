@@ -14,7 +14,7 @@
 
     public class BodyTemplate : IBodyTemplate
     {
-        public string ToString(object data, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
+        public virtual string ToString(object data, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
         {
             var keyValues = DataHelper.Parse<Dictionary<string, object>>(data);
             var textContainer = new List<string>();
@@ -28,14 +28,15 @@
             {
                 if (keyValue.Value != null)
                 {
-                    textContainer.Add($"{GetResource(keyValue.Key, cultureInfo)}: {GetFormattedValue(keyValue.Value)}");
+                    textContainer.Add($"{GetResource(keyValue.Key, cultureInfo)}:");
+                    textContainer.Add($"    {GetFormattedValue(keyValue.Value)}");
                 }
             }
 
             return string.Join(messengerFormatter.NewLine(), textContainer);
         }
 
-        private static string GetFormattedValue(object value)
+        protected static string GetFormattedValue(object value)
         {
             if (value is string)
             {
@@ -45,6 +46,11 @@
             if (value is double)
             {
                 return ((double)value).ToFormattedNumber();
+            }
+
+            if (value is decimal)
+            {
+                return ((decimal)value).ToFormattedNumber();
             }
 
             return value.ToString();

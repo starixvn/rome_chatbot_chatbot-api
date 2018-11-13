@@ -31,7 +31,7 @@
 
         Task<AddingUserResult> AddUser(int custId, int subAccountId, string custName, string language, Messenger messenger, int custLevel, LinkAccountLog logData);
 
-        Task<IEnumerable<Function>> GetAllFunctions();
+        Task<IEnumerable<Function>> GetAllFunctions(string language = "");
 
         Task<User> GetUser(int custId, int subAccountId, string language);
 
@@ -52,6 +52,7 @@
     {
         private const string DefaultLanguage = "en-US";
         private const string functionNameByLanguageCacheKey = "SettingServiceImpl.FunctionNameByLanguageCacheKey.{0}";
+        private const string AllFunctionsCacheKey = "SettingServiceImpl.AllFunctionsCacheKey";
         private readonly IDynamicRepository dynamicRepository;
         private readonly Func<string> randomNumberFunc;
         private readonly Func<DateTime> getCurrentDateTimeFunc;
@@ -130,8 +131,24 @@
         private static DateTime GetCurrentDateTime()
             => DateTime.Now;
 
-        public Task<IEnumerable<Function>> GetAllFunctions()
-            => dynamicRepository.FetchAsync<Function>(new GetAllFunctionsCriteria());
+        public async Task<IEnumerable<Function>> GetAllFunctions(string language = "")
+        {
+            var functions = await cacheService.GetOrSetAsync(
+                AllFunctionsCacheKey,
+                () => dynamicRepository.FetchAsync<Function>(new GetAllFunctionsCriteria()).Result,
+                new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0)))
+            .ConfigureAwait(false);
+
+            if (!string.IsNullOrWhiteSpace(language))
+            {
+                foreach (var function in functions)
+                {
+                    function.Name = await GetFunctionName(function.Id, language).ConfigureAwait(false);
+                }
+            }
+
+            return functions;
+        }
 
         public async Task<User> GetUser(int custId, int subAccountId, string language)
         {
@@ -534,6 +551,17 @@
             await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, false).ConfigureAwait(false);
 
             settingLogService.WriteLog(logData);
+
+            await SendUnlinkMessage(userId, messenger).ConfigureAwait(false);
+        }
+
+        private async Task SendUnlinkMessage(int userId, Messenger messenger)
+        {
+            var user = await GetUser(userId).ConfigureAwait(false);
+
+            var message = messageBuilder.BuildUnlinkMessage(user.Language);
+
+            await messageSender.SendMessage(user.Id, messenger, message).ConfigureAwait(false);
         }
     }
 }

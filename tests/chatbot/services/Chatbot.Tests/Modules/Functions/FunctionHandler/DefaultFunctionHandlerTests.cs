@@ -1,4 +1,4 @@
-namespace Chatbot.Tests.Modules.Functions.FunctionHandler
+﻿namespace Chatbot.Tests.Modules.Functions.FunctionHandler
 {
     using System;
     using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
         private readonly IMessageSender subMessageSender;
         private readonly CustomerService subCustomerService;
         private readonly ILogger subLogger;
-        private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHanlders;
+        private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers;
 
         public DefaultFunctionHandlerTests()
         {
@@ -26,7 +26,7 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
             subMessageSender = Substitute.For<IMessageSender>();
             subCustomerService = Substitute.For<CustomerService>();
             subLogger = Substitute.For<ILogger>();
-            getDataHanlders = new Dictionary<int, Func<FunctionParam, Task<object>>>();
+            getDataHandlers = new Dictionary<int, Func<FunctionParam, Task<object>>>();
         }
 
         private DefaultFunctionHandler CreateDefaultFunctionHandler()
@@ -36,7 +36,7 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
                 subMessageSender,
                 subCustomerService,
                 subLogger,
-                getDataHanlders);
+                getDataHandlers);
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
             // Arrange
             var param = new FunctionParam(new Models.User(1, custId: 2, custLevel: 4, subAccountId: 3, language: "en-US"),
                 new Models.Function { Id = 2 }, new Models.Messenger(), null);
-            getDataHanlders.Add(2, null);
+            getDataHandlers.Add(2, null);
             subCustomerService.IsAccountClosed(2, 3).Returns(true);
             subMessageBuilder.BuildAccountClosedMessage("en-US").Returns("Account is closed");
             var handler = CreateDefaultFunctionHandler();
@@ -74,7 +74,7 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
             // Arrange
             var param = new FunctionParam(new Models.User(1, custId: 2, custLevel: 4, subAccountId: 3, language: "en-US"),
                 new Models.Function { Id = 2 }, new Models.Messenger(1, "sa"), null);
-            getDataHanlders.Add(2, async (_) => await Task.FromResult("Message"));
+            getDataHandlers.Add(2, async (_) => await Task.FromResult("Message"));
             subCustomerService.IsAccountClosed(2, 3).Returns(false);
             subMessageBuilder.BuildCommandResultMessage("en-US", 2, 1, "Message").Returns("Message");
             var handler = CreateDefaultFunctionHandler();

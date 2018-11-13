@@ -1,9 +1,7 @@
 ﻿namespace Chatbot.Tests.Modules
 {
-    using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Text;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageBuilders.Templates;
     using NSubstitute;
@@ -45,14 +43,14 @@
             var expiredVerificationCodeInMinutes = 10;
 
             var verificationCodeMessage = messageBuilder.BuildVerificationCodeMessage(
-                language, 
-                messengerType, 
-                verificationCode, 
+                language,
+                messengerType,
+                verificationCode,
                 expiredVerificationCodeInMinutes);
 
             Assert.Equal(
                 "You have requested to set up Atom. "
-                + "Your verification code is 422134._newline_The code will expire in 10 minutes.", 
+                + "Your verification code is 422134._newline_The code will expire in 10 minutes.",
                 verificationCodeMessage);
         }
 
@@ -122,6 +120,71 @@
             Assert.Equal("Builded Message", message);
         }
 
+        [Fact]
+        public void BuildCommandResultMessage_DataIsNull_ReturnMessage()
+        {
+            // Arrange
+            var functionId = 1;
+            var messengerType = 1;
+            var language = "en-US";
 
+            // Act
+            var message = messageBuilder.BuildCommandResultMessage(language, functionId, messengerType, null);
+
+            // Assert
+            Assert.Equal("No information is available", message);
+        }
+
+        [Fact]
+        public void BuildErrorMessage_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildErrorMessage(language);
+
+            // Assert
+            Assert.Equal("Oops...you are here because of a system error, please notify the administrators", message);
+        }
+
+        [Fact]
+        public void BuildServiceIsUnavailableMessage_Always_ReturnMessage()
+        {
+            // Arrange
+            var messageType = 1;
+
+            // Act
+            var message = messageBuilder.BuildServiceIsUnavailableMessage(messageType);
+
+            // Assert
+            Assert.Equal("Sorry, you haven't registered for this chatbot service yet!_newline__newline_Sorry, you haven't registered for this chatbot service yet!_newline__newline_Sorry, you haven't registered for this chatbot service yet!_newline__newline_Sorry, you haven't registered for this chatbot service yet!_newline__newline_", message);
+        }
+
+        [Fact]
+        public void BuildInvalidCustNameMessage_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildInvalidCustNameMessage(language);
+
+            // Assert
+            Assert.Equal("Invalid username.", message);
+        }
+
+        [Fact]
+        public void BuildUnlinkMessage_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildUnlinkMessage(language);
+
+            // Assert
+            Assert.Equal("You have opted out service successfully. Thanks a lot for using our service.", message);
+        }
     }
 }

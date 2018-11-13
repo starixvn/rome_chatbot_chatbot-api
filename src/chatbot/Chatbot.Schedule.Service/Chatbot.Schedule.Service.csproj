@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Chatbot.Client" Version="1.0.1" />
+    <PackageReference Include="Chatbot.Client" Version="1.0.4" />
     <PackageReference Include="Chatbot.Client.Transport" Version="1.0.0" />
     <PackageReference Include="Fanex.Logging.RabbitMQ" Version="1.0.0-beta8" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />

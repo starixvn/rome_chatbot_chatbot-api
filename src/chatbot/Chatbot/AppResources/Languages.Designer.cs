@@ -97,6 +97,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Agent Outstanding.
+        /// </summary>
+        public static string AgentOutstanding {
+            get {
+                return ResourceManager.GetString("AgentOutstanding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Agent Credit.
         /// </summary>
         public static string AgentTotalCredit {
@@ -156,6 +165,42 @@ namespace Chatbot.AppResources {
         public static string CurrencyName {
             get {
                 return ResourceManager.GetString("CurrencyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member.
+        /// </summary>
+        public static string CustLevel_1 {
+            get {
+                return ResourceManager.GetString("CustLevel_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agent.
+        /// </summary>
+        public static string CustLevel_2 {
+            get {
+                return ResourceManager.GetString("CustLevel_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Master.
+        /// </summary>
+        public static string CustLevel_3 {
+            get {
+                return ResourceManager.GetString("CustLevel_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Super.
+        /// </summary>
+        public static string CustLevel_4 {
+            get {
+                return ResourceManager.GetString("CustLevel_4", resourceCulture);
             }
         }
         
@@ -259,6 +304,33 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} more {1}(s) are not shown..
+        /// </summary>
+        public static string HiddenDownlinesCount {
+            get {
+                return ResourceManager.GetString("HiddenDownlinesCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to *Hint: To view your downline&apos;s outstanding, please type: /os username.
+        /// </summary>
+        public static string HintSpecificDownline {
+            get {
+                return ResourceManager.GetString("HintSpecificDownline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to *Hint: For quick commands, please type: /os 50.
+        /// </summary>
+        public static string HintTopOutstanding {
+            get {
+                return ResourceManager.GetString("HintTopOutstanding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your Letstalk ID has been verified, Atom is fully functioning..
         /// </summary>
         public static string InformingVerifiedMessage_1 {
@@ -273,6 +345,15 @@ namespace Chatbot.AppResources {
         public static string InformingVerifiedMessage_2 {
             get {
                 return ResourceManager.GetString("InformingVerifiedMessage_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid username..
+        /// </summary>
+        public static string InvalidCustName {
+            get {
+                return ResourceManager.GetString("InvalidCustName", resourceCulture);
             }
         }
         
@@ -309,6 +390,15 @@ namespace Chatbot.AppResources {
         public static string MasterNetWinLoss_WinLoss {
             get {
                 return ResourceManager.GetString("MasterNetWinLoss.WinLoss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Master Outstanding.
+        /// </summary>
+        public static string MasterOutstanding {
+            get {
+                return ResourceManager.GetString("MasterOutstanding", resourceCulture);
             }
         }
         
@@ -354,6 +444,15 @@ namespace Chatbot.AppResources {
         public static string MemberNetWinLoss_WinLoss {
             get {
                 return ResourceManager.GetString("MemberNetWinLoss.WinLoss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Outstanding.
+        /// </summary>
+        public static string MemberOutstanding {
+            get {
+                return ResourceManager.GetString("MemberOutstanding", resourceCulture);
             }
         }
         
@@ -430,6 +529,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Super Outstanding.
+        /// </summary>
+        public static string SuperOutstanding {
+            get {
+                return ResourceManager.GetString("SuperOutstanding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Super Credit.
         /// </summary>
         public static string SuperTotalCredit {
@@ -444,6 +552,15 @@ namespace Chatbot.AppResources {
         public static string TodayWinLoss {
             get {
                 return ResourceManager.GetString("TodayWinLoss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
             }
         }
         
@@ -471,6 +588,24 @@ namespace Chatbot.AppResources {
         public static string UnderMaintenance {
             get {
                 return ResourceManager.GetString("UnderMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have opted out service successfully. Thanks a lot for using our service..
+        /// </summary>
+        public static string UnlinkMessage {
+            get {
+                return ResourceManager.GetString("UnlinkMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string Username {
+            get {
+                return ResourceManager.GetString("Username", resourceCulture);
             }
         }
         
