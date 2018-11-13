@@ -70,6 +70,5 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Chatbot.Client.Transport\Chatbot.Client.Transport.csproj" />
-    <ProjectReference Include="..\Chatbot.Client\Chatbot.Client.csproj" />
   </ItemGroup>
 </Project>
