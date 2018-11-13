@@ -33,6 +33,11 @@
                 {
                     if (int.TryParse(parameter, out int topQuery))
                     {
+                        if (topQuery < 0)
+                        {
+                            return await BuildAndSendInvalidCustNameMessage(param).ConfigureAwait(false);
+                        }
+
                         param.Others.Add(nameof(topQuery), topQuery);
                     }
                     else
