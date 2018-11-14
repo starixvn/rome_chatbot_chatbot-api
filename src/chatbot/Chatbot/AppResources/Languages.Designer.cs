@@ -232,7 +232,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} has been cancelled..
+        ///   Looks up a localized string similar to The current request has been cancelled..
         /// </summary>
         public static string FunctionHasBeenCancelled {
             get {
@@ -714,6 +714,15 @@ namespace Chatbot.AppResources {
         public static string VerificationCode_2 {
             get {
                 return ResourceManager.GetString("VerificationCode_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Which action would you like to take?.
+        /// </summary>
+        public static string WhichActionWouldYouLikeToTake {
+            get {
+                return ResourceManager.GetString("WhichActionWouldYouLikeToTake", resourceCulture);
             }
         }
         

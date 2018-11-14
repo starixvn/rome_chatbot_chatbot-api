@@ -22,6 +22,7 @@
     using NSubstitute;
     using Xunit;
 
+    [Trait("Modules", "Settings")]
     public class SettingServiceTests
     {
         private readonly IDynamicRepository dynamicRepository;

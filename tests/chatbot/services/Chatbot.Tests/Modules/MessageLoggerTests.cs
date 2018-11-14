@@ -14,6 +14,7 @@
     using NSubstitute;
     using Xunit;
 
+    [Trait("Modules", "MessageLogger")]
     public class MessageLoggerTests
     {
         private readonly IMessageLogger messageLogger;

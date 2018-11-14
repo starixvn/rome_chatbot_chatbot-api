@@ -2,9 +2,9 @@
 {
     using Fanex.Data.Repository;
 
-    public class GetActionsByUser : CriteriaBase
+    public class GetActionByUserCriteria : CriteriaBase
     {
-        public GetActionsByUser(int userId)
+        public GetActionByUserCriteria(int userId)
         {
             UserId = userId;
         }

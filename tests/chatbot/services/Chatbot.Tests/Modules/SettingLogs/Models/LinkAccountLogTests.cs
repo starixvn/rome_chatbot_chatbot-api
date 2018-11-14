@@ -7,6 +7,7 @@
     using Chatbot.Modules.SettingLogs.Models;
     using Xunit;
 
+    [Trait("Modules", "SettingLogs")]
     public class LinkAccountLogTests
     {
         [Fact]

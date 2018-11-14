@@ -8,6 +8,7 @@
     using NSubstitute;
     using Xunit;
 
+    [Trait("Modules", "Builders")]
     public class MessageBuilderTests
     {
         private readonly IDictionary<int, IMessengerFormatter> messengerFormatters;

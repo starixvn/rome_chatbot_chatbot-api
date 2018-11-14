@@ -6,6 +6,7 @@
     using NSubstitute;
     using Xunit;
 
+    [Trait("Controllers", "Command")]
     public class CommandControllerTests
     {
         private readonly CommandService commandService;

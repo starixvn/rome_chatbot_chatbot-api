@@ -16,9 +16,9 @@
     using ONEbook.UM.Services;
     using Xunit;
 
+    [Trait("Filter", "AutoReplyUMFilter")]
     public class AutoReplyUMFilterAttributeTests
     {
-        private const string ParamName = "param";
         private readonly IMaintenanceService maintenanceService;
         private readonly IMessageSender messageSender;
         private readonly IMessageBuilder messageBuilder;

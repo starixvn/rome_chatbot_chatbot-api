@@ -6,6 +6,7 @@
     using NSubstitute;
     using Xunit;
 
+    [Trait("Modules", "Buildes/Templates")]
     public class BodyTemplate1Test
     {
         private readonly BodyTemplate1 bodyTemplate;

@@ -340,13 +340,16 @@
     <value>Cancel this request</value>
   </data>
   <data name="FunctionHasBeenCancelled" xml:space="preserve">
-    <value>{0} has been cancelled.</value>
+    <value>The current request has been cancelled.</value>
   </data>
   <data name="For" xml:space="preserve">
     <value>For</value>
   </data>
   <data name="Products" xml:space="preserve">
     <value>Products</value>
+  </data>
+  <data name="WhichActionWouldYouLikeToTake" xml:space="preserve">
+    <value>Which action would you like to take?</value>
   </data>
   <data name="InvalidNumerOfDownlinesRange" xml:space="preserve">
     <value>Number of downline must be positive and up to {0}.</value>

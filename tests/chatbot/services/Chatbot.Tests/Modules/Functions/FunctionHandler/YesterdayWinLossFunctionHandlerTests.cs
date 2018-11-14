@@ -15,6 +15,7 @@
     using NSubstitute;
     using Xunit;
 
+    [Trait("Modules", "Functions/Handlers")]
     public class YesterdayWinLossFunctionHandlerTests
     {
         private readonly IMessageBuilder subMessageBuilder;

@@ -12,6 +12,7 @@
     using Chatbot.Shared.Constants;
     using Chatbot.Shared.Configurations;
 
+    [Trait("Modules", "MessageSenders")]
     public class MessageSenderTests
     {
         private readonly MessengerFactory messengerFactory;

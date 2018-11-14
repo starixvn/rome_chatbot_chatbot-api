@@ -16,14 +16,15 @@
     {
         public virtual string Compile(IEnumerable<Models.Action> actionChain, IEnumerable<UserAction> userActions)
         {
-            if (!actionChain.Any())
+            if (actionChain == null || !actionChain.Any())
             {
                 return string.Empty;
             }
 
             var distinctUserActions = userActions
-                .DistinctBy(userAction => userAction.ActionId)
                 .OrderBy(userAction => userAction.ActionId)
+                .ThenByDescending(userAction => userAction.Id)
+                .DistinctBy(userAction => userAction.ActionId)
                 .Where(userAction => actionChain.Any(action => action.Id == userAction.ActionId));
 
             var command = new StringBuilder();

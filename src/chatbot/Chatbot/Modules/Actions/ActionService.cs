@@ -23,13 +23,16 @@
 
     public interface ActionService
     {
-        Task<ActionResult> BuildAction(string command, string buttonData, User user);
+        Task<ActionResult> BuildAction(string command, string buttonData, User user, Messenger messenger);
 
         Task ResetUserAction(User user);
+
+        Task<bool> NoRootActionExist();
     }
 
     public class ActionServiceImpl : ActionService
     {
+        private const string PostbackType = "postback";
         private const string AllActionsCacheKey = "Chatbot.Modules.Actions.AllActions";
         private readonly IDynamicRepository dynamicRepository;
 
@@ -61,7 +64,7 @@
         private static DateTime GetDateTimeNow()
             => DateTime.Now;
 
-        public async Task<ActionResult> BuildAction(string command, string buttonData, User user)
+        public async Task<ActionResult> BuildAction(string command, string buttonData, User user, Messenger messenger)
         {
             var userActions = await GetUserActions(user).ConfigureAwait(false);
             var lastAction = userActions.Any(userAction => userAction.IsActionCompletedOrCancel)
@@ -71,7 +74,7 @@
 
             var handlingActionResult = isUserChatMessage
                 ? await HandleUserReponseByMessage(lastAction, userActions, user, command).ConfigureAwait(false)
-                : await HandleUserReponseByButton(lastAction, userActions, user, buttonData).ConfigureAwait(false);
+                : await HandleUserReponseByButton(lastAction, userActions, user, buttonData, messenger).ConfigureAwait(false);
 
             // Exception cases
             if (handlingActionResult.Item3 != null)
@@ -92,7 +95,8 @@
             UserAction lastAction,
             IList<UserAction> userActions,
             User user,
-            string buttonData)
+            string buttonData, 
+            Messenger messenger)
         {
             var actionInfo = ParseActionInfo(buttonData);
             var isCancelRequest = actionInfo.Item1;
@@ -101,23 +105,24 @@
 
             if (currentActionId > 0)
             {
-                var currentAction = await GetActionById(currentActionId).ConfigureAwait(false);
-
                 if (isCancelRequest)
                 {
                     return (
                         string.Empty,
                         currentActionId,
-                        await HandleCancelRequest(currentActionId, currentAction.FunctionId, user).ConfigureAwait(false));
+                        await HandleCancelRequest(user, messenger.Type).ConfigureAwait(false));
                 }
 
-                if (currentAction.ParentId > 0
-                    && await IsLastActionInvalid(currentActionId, lastAction).ConfigureAwait(false))
+                var currentAction = await GetActionById(currentActionId).ConfigureAwait(false);
+
+                if (await IsActionNotExist(currentActionId).ConfigureAwait(false) 
+                    || (currentAction.ParentId > 0 && await IsLastActionInvalid(currentActionId, lastAction).ConfigureAwait(false)))
                 {
+                    var rootMessage = messageBuilder.BuildRootActionTitle(user.Language);
                     return (
                         string.Empty,
                         currentActionId,
-                        await BuildRootActions(user).ConfigureAwait(false));
+                        await BuildRootActions(user, rootMessage).ConfigureAwait(false));
                 }
 
                 compiledCommand = await HandleButtonAction(currentAction, userActions, user).ConfigureAwait(false);
@@ -134,7 +139,10 @@
         {
             if (lastAction == null)
             {
-                return (string.Empty, 0, await BuildRootActions(user).ConfigureAwait(false));
+                return (
+                    string.Empty, 
+                    0, 
+                    await BuildRootActions(user, messageBuilder.BuildRootActionTitle(user.Language)).ConfigureAwait(false));
             }
 
             var currentActionId = lastAction.ActionId;
@@ -167,12 +175,18 @@
             return compiledCommand;
         }
 
-        private async Task<ActionResult> BuildRootActions(User user)
+        private async Task<ActionResult> BuildRootActions(User user, string rootMessage)
         {
             await ResetUserAction(user).ConfigureAwait(false);
 
-            return new ActionResult(await BuildRootActionsMessage(user).ConfigureAwait(false), 0);
+            return new ActionResult(await BuildRootActionsMessage(user, rootMessage).ConfigureAwait(false), 0);
         }
+
+        private async Task<bool> IsActionNotExist(int actionId)
+            => !(await GetAllActions().ConfigureAwait(false)).Any(action => action.Id == actionId);
+
+        public async Task<bool> NoRootActionExist()
+            => !(await GetAllActions().ConfigureAwait(false)).Any(action => action.ParentId == 0);
 
         private async Task<bool> IsLastActionInvalid(int actionId, UserAction lastAction)
         {
@@ -192,7 +206,7 @@
                 result.Message,
                 (await GetActionById(actionId).ConfigureAwait(false)).FunctionId);
 
-        internal async Task<MessengerClient.Models.Message> BuildRootActionsMessage(User user)
+        internal async Task<MessengerClient.Models.Message> BuildRootActionsMessage(User user, string rootMessage)
         {
             var messageActions = new List<MessageAction>();
             var rootActions = (await GetAllActions().ConfigureAwait(false)).Where(action => action.ParentId == 0);
@@ -207,7 +221,7 @@
                     messageActions.Add(new MessageAction
                     {
                         Label = await messageBuilder.BuildActionName(rootAction.Id, user.Language).ConfigureAwait(false),
-                        Type = "postback",
+                        Type = PostbackType,
                         Data = $"ActionId={rootAction.Id}"
                     });
                 }
@@ -215,7 +229,7 @@
 
             return new MessengerClient.Models.Message
             {
-                Content = messageBuilder.BuildRootActionTitle(user.Language),
+                Content = rootMessage,
                 MessageMarkup = new MessageMarkup
                 {
                     MessageActions = messageActions
@@ -243,8 +257,8 @@
 
             if (lastAction != null)
             {
-                var compiler = actionCompilers.ContainsKey(lastAction.Id)
-                    ? actionCompilers[lastAction.Id]
+                var compiler = actionCompilers.ContainsKey(lastAction.ActionId)
+                    ? actionCompilers[lastAction.ActionId]
                     : new DefaultActionCompiler();
                 var actionChain = await GetActionChain(lastAction.ActionId).ConfigureAwait(false);
                 lastAction.UserResponse = userResponse;
@@ -280,7 +294,7 @@
 
         private async Task<IList<UserAction>> GetUserActions(User user)
             => (await dynamicRepository
-            .FetchAsync<UserAction>(new GetActionsByUser(user.Id))
+            .FetchAsync<UserAction>(new GetActionByUserCriteria(user.Id))
             .ConfigureAwait(false))
             .OrderBy(userAction => userAction.ActionId)
             .ThenByDescending(userAction => userAction.Id)
@@ -367,7 +381,7 @@
                 messageActions.Add(new MessageAction
                 {
                     Label = await messageBuilder.BuildActionName(nextAction.Id, language).ConfigureAwait(false),
-                    Type = "postback",
+                    Type = PostbackType,
                     Data = $"ActionId={nextAction.Id}"
                 });
             }
@@ -397,22 +411,11 @@
             };
         }
 
-        private async Task<ActionResult> HandleCancelRequest(int rootActionId, int functionId, User user)
+        private async Task<ActionResult> HandleCancelRequest(User user, int messengerType)
         {
-            var userActions = await GetUserActions(user).ConfigureAwait(false);
-            var rootUserAction = userActions.FirstOrDefault(userAction => userAction.ActionId == rootActionId);
+            var rootMessage = messageBuilder.BuildResponseCancelRequestMessage(messengerType, user.Language);
 
-            if (rootUserAction != null)
-            {
-                await UpdateUserActionStatus(rootUserAction.Id, true).ConfigureAwait(false);
-            }
-
-            return new ActionResult(
-                new MessengerClient.Models.Message
-                {
-                    Content = await messageBuilder.BuildResponseCancelRequestMessage(rootActionId, user.Language).ConfigureAwait(false)
-                },
-                functionId);
+            return await BuildRootActions(user, rootMessage).ConfigureAwait(false);
         }
 
         private async Task<MessengerClient.Models.Message> BuildMessageWithAbortButton(

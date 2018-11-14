@@ -1,13 +1,12 @@
 ﻿namespace Chatbot.Tests.Modules.Settings.DbParams.Commands
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using Chatbot.Models;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Xunit;
 
+    [Trait("Modules", "Settings")]
     public class UpdateUserFunctionsCommandTests
     {
         [Theory]
@@ -16,7 +15,7 @@
         public void IsValid_ParamsIsNegativeOrZero_ReturnFalse(int userId)
         {
             var result = new UpdateUserFunctionsCommand(
-                userId, 
+                userId,
                 new List<Function> { new Function() })
                 .IsValid();
 
@@ -58,6 +57,5 @@
 
             Assert.Equal("<ROOT><Function UserId=\"1\" FunctionId=\"1\" Command=\"cm1\" Enable=\"True\"/> <Function UserId=\"1\" FunctionId=\"2\" Command=\"cm2\" Enable=\"False\"/> </ROOT>", actualFormattedXml);
         }
-
     }
 }

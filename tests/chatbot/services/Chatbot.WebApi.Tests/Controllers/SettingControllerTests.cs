@@ -11,6 +11,7 @@
     using NSubstitute;
     using Xunit;
 
+    [Trait("Controllers", "Setting")]
     public class SettingControllerTests
     {
         private readonly CompareLogic compareLogic;

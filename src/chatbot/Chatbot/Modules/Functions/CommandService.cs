@@ -217,13 +217,14 @@
 
             if (!userFunctions.Any(func =>
                                         func.Type == CommandFunctionType
-                                        && func.Enabled))
+                                        && func.Enabled)
+                || await actionService.NoRootActionExist().ConfigureAwait(false))
             {
                 await SendNotRecognizedCommandMessage(user, messenger).ConfigureAwait(false);
                 return;
             }
 
-            var actionResult = await actionService.BuildAction(encodedCommand, buttonData, user).ConfigureAwait(false);
+            var actionResult = await actionService.BuildAction(encodedCommand, buttonData, user, messenger).ConfigureAwait(false);
 
             await HandleActionResult(user, messenger, actionResult).ConfigureAwait(false);
         }

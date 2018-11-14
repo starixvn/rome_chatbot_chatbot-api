@@ -3,6 +3,7 @@
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Xunit;
 
+    [Trait("Modules", "Settings")]
     public class UpdateUserLanguageCommandTests
     {
         [Theory]

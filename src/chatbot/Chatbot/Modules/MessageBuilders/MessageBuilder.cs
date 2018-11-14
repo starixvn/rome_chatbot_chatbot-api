@@ -47,7 +47,7 @@
 
         string BuildCancelRequestMessage(string language);
 
-        Task<string> BuildResponseCancelRequestMessage(int actionId, string language);
+        string BuildResponseCancelRequestMessage(int messengerType, string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -203,7 +203,7 @@
                             : defaultCultureInfo;
 
         public async Task<string> BuildActionName(int actionId, string language)
-            => (await resourceService.GetResources(actionId, ActionResourceName))
+            => (await resourceService.GetResources(actionId, ActionResourceName).ConfigureAwait(false))
             .FirstOrDefault(resource => resource.LanguageCode == language)?.Value;
 
         public string BuildActionTitle(string language)
@@ -215,9 +215,10 @@
         public string BuildCancelRequestMessage(string language)
              => GetResource(nameof(Languages.CancelThisRequest), language);
 
-        public async Task<string> BuildResponseCancelRequestMessage(int actionId, string language)
-            => string.Format(
+        public string BuildResponseCancelRequestMessage(int messengerType, string language)
+         => string.Join(
+                GetMessengerFormatter(messengerType).NewLine(),
                 GetResource(nameof(Languages.FunctionHasBeenCancelled), language),
-                await BuildActionName(actionId, language).ConfigureAwait(false));
+                GetResource(nameof(Languages.WhichActionWouldYouLikeToTake), language));
     }
 }

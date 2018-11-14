@@ -20,6 +20,7 @@
     using NSubstitute;
     using Xunit;
 
+    [Trait("Modules", "Functions")]
     public class CommandServiceTests
     {
         private readonly SettingService settingService;

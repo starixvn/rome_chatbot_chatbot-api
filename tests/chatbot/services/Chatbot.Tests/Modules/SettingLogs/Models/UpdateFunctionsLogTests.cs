@@ -1,11 +1,12 @@
-﻿using System.Linq;
-using Chatbot.Models;
-using Chatbot.Modules.SettingLogs.Constants;
-using Chatbot.Modules.SettingLogs.Models;
-using Xunit;
-
-namespace Chatbot.Tests.Modules.SettingLogs.Models
+﻿namespace Chatbot.Tests.Modules.SettingLogs.Models
 {
+    using System.Linq;
+    using Chatbot.Models;
+    using Chatbot.Modules.SettingLogs.Constants;
+    using Chatbot.Modules.SettingLogs.Models;
+    using Xunit;
+
+    [Trait("Modules", "SettingLogs")]
     public class UpdateFunctionsLogTests
     {
         [Fact]

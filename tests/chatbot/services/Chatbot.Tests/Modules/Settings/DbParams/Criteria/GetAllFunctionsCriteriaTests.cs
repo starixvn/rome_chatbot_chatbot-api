@@ -3,6 +3,7 @@
     using Chatbot.Modules.Settings.Params.Db.Criteria;
     using Xunit;
 
+    [Trait("Modules", "Settings")]
     public class GetAllFunctionsCriteriaTests
     {
         [Fact]
