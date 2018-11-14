@@ -8,18 +8,23 @@
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Shared.Configurations;
     using Fanex.Logging;
 
     public class OutstandingCommandFunctionHandler : DefaultFunctionHandler
     {
+        private readonly IChatbotConfigs chatbotConfigs;
+
         public OutstandingCommandFunctionHandler(
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
             CustomerService customerService,
             ILogger logger,
+            IChatbotConfigs chatbotConfigs,
             IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers = null)
             : base(messageBuilder, messageSender, customerService, logger, getDataHandlers)
         {
+            this.chatbotConfigs = chatbotConfigs;
         }
 
         protected override async Task<Result> RunHandler(FunctionParam param)
@@ -33,9 +38,10 @@
                 {
                     if (int.TryParse(parameter, out int topQuery))
                     {
-                        if (topQuery < 0)
+                        if (topQuery < 0 || topQuery > chatbotConfigs.OutstandingMaxTopQuery)
                         {
-                            return await BuildAndSendInvalidCustNameMessage(param).ConfigureAwait(false);
+                            return await BuildAndSendInvalidNumerOfDownlineRangeMessage(param, chatbotConfigs.OutstandingMaxTopQuery)
+                                .ConfigureAwait(false);
                         }
 
                         param.Others.Add(nameof(topQuery), topQuery);
@@ -59,6 +65,13 @@
             }
 
             return await base.RunHandler(param).ConfigureAwait(false);
+        }
+
+        private Task<Result> BuildAndSendInvalidNumerOfDownlineRangeMessage(FunctionParam param, int maxTopQuery)
+        {
+            var message = messageBuilder.BuildInvalidNumerOfDownlineRange(param.User.Language, maxTopQuery);
+
+            return messageSender.SendMessage(param.User.Id, param.Messenger, message, param.Function.Id);
         }
 
         private Task<Result> BuildAndSendInvalidCustNameMessage(FunctionParam param)

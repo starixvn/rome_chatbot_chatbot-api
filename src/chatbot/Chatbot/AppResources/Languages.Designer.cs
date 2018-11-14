@@ -412,6 +412,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number of downline must be positive and up to {0}..
+        /// </summary>
+        public static string InvalidNumerOfDownlinesRange {
+            get {
+                return ResourceManager.GetString("InvalidNumerOfDownlinesRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Master.
         /// </summary>
         public static string Master {

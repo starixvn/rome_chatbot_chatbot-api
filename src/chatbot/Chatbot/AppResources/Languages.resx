@@ -348,4 +348,7 @@
   <data name="Products" xml:space="preserve">
     <value>Products</value>
   </data>
+  <data name="InvalidNumerOfDownlinesRange" xml:space="preserve">
+    <value>Number of downline must be positive and up to {0}.</value>
+  </data>
 </root>

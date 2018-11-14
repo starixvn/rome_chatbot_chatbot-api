@@ -10,6 +10,7 @@
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Shared.Configurations;
     using Fanex.Logging;
     using NSubstitute;
     using Xunit;
@@ -22,6 +23,7 @@
         private readonly CustomerService customerService;
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers;
         private readonly OutstandingCommandFunctionHandler handler;
+        private readonly IChatbotConfigs chatbotConfigs;
 
         public OutstandingCommandFunctionHandlerTests()
         {
@@ -30,12 +32,14 @@
             messageSender = Substitute.For<IMessageSender>();
             customerService = Substitute.For<CustomerService>();
             getDataHandlers = new Dictionary<int, Func<FunctionParam, Task<object>>>();
+            chatbotConfigs = Substitute.For<IChatbotConfigs>();
 
             handler = new OutstandingCommandFunctionHandler(
                 messageBuilder,
                 messageSender,
                 customerService,
                 logger,
+                chatbotConfigs,
                 getDataHandlers);
         }
 

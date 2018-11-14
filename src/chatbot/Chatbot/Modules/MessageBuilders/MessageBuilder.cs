@@ -33,6 +33,8 @@
 
         string BuildInvalidNumerOfDownline(string language);
 
+        string BuildInvalidNumerOfDownlineRange(string language, int maxTopQuery);
+
         Task<string> BuildActionName(int actionId, string language);
 
         string BuildInvalidDownlineMessage(string username, string language);
@@ -165,6 +167,11 @@
 
         public string BuildInvalidNumerOfDownline(string language)
             => GetResource(nameof(Languages.InvalidNumerOfDownlines), language);
+
+        public string BuildInvalidNumerOfDownlineRange(string language, int maxTopQuery)
+            => string.Format(
+                GetResource(nameof(Languages.InvalidNumerOfDownlinesRange), language),
+                maxTopQuery);
 
         public string BuildInvalidDownlineMessage(string username, string language)
             => string.Format(

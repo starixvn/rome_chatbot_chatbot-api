@@ -48,6 +48,8 @@ namespace Chatbot.Shared.Configurations
         bool IsProduction { get; }
 
         int OutstandingSpecificDirectDownlineActionId { get; }
+
+        int OutstandingMaxTopQuery { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -79,6 +81,7 @@ namespace Chatbot.Shared.Configurations
             DisabledSendToMessenger = GetValue<bool>("Chatbot:DisabledSendToMessenger");
             IsProduction = GetValue<bool>("Chatbot:IsProduction");
             OutstandingSpecificDirectDownlineActionId = GetValue<int>("Chatbot:OutstandingSpecificDirectDownlineActionId");
+            OutstandingMaxTopQuery = GetValue<int>("Chatbot:OutstandingMaxTopQuery");
         }
 
         public int MaxAddActionTimes { get; }
@@ -120,6 +123,8 @@ namespace Chatbot.Shared.Configurations
         public bool IsProduction { get; }
 
         public int OutstandingSpecificDirectDownlineActionId { get; }
+
+        public int OutstandingMaxTopQuery { get; }
 
         private T GetValue<T>(string key)
         {
