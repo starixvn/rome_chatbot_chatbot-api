@@ -75,7 +75,7 @@ BEGIN
 		SELECT u.UserActionId, u.UserId, u.ActionId, u.UserResponse, u.CompiledCommand, u.ChatTime, [Status]
 		FROM UserAction u WITH (NOLOCK) INNER JOIN @TempAction t
 			ON u.ActionId = t.ActionId
-		WHERE u.UserActionId >= @TempUserActionId;
+		WHERE u.UserActionId >= @TempUserActionId AND UserId = @UserId;
 	END
 END
 GO
