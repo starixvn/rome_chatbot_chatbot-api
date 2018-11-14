@@ -25,7 +25,7 @@ BEGIN
 	SET NOCOUNT ON;
 	
 	-- Get lastest action between NOW and (NOW - @TimeOutInMinutes)
-	DECLARE @TimeOutTime SMALLDATETIME = DATEADD(MINUTE, @TimeOutInMinutes * -1, GETDATE());
+	DECLARE @TimeOutTime DATETIME = DATEADD(MINUTE, @TimeOutInMinutes * -1, GETDATE());
 	DECLARE @LatestActionId INT = 0;
 
 	SELECT TOP 1 @LatestActionId = ActionId

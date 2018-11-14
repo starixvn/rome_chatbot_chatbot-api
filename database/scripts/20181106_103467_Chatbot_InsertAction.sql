@@ -31,22 +31,22 @@ WHERE FunctionName = 'Balance Info';
 
 -- Insert root Actions
 INSERT INTO dbo.Action(ActionName, [Type], Command, DisplayOrder, FunctionId, ParentId, IsEndAction, [Status])
-VALUES ('View Outstanding Report', 1, '/os', 10, @OutstandingFunctionId, 0, 0, 0);
+VALUES ('View Outstanding Report', 1, '/os', 10, @OutstandingFunctionId, 0, 0, 1);
 SELECT @ViewOutstandingReportActionId = SCOPE_IDENTITY();
 
 INSERT INTO dbo.Action(ActionName, [Type], Command, DisplayOrder, FunctionId, ParentId, IsEndAction, [Status])
-VALUES ('View Today Win Loss', 1, '/wl', 20, @TodayWinLossFunctionId, 0, 1, 0);
+VALUES ('View Today Win Loss', 1, '/wl', 20, @TodayWinLossFunctionId, 0, 1, 1);
 
 INSERT INTO dbo.Action(ActionName, [Type], Command, DisplayOrder, FunctionId, ParentId, IsEndAction, [Status])
-VALUES ('View Balance Info', 1, '/bal', 30, @BalanceInfoFunctionId, 0, 1, 0);
+VALUES ('View Balance Info', 1, '/bal', 30, @BalanceInfoFunctionId, 0, 1, 1);
 
 -- Insert Outstanding actions
 INSERT INTO dbo.Action(ActionName, [Type], Command, DisplayOrder, FunctionId, ParentId, IsEndAction, [Status])
-VALUES ('Specific Direct Downline', 1, '', 60, @OutstandingFunctionId, @ViewOutstandingReportActionId, 0, 0);
+VALUES ('Specific Direct Downline', 1, '', 60, @OutstandingFunctionId, @ViewOutstandingReportActionId, 0, 1);
 SELECT @SpecificDirectDownlineActionId = SCOPE_IDENTITY();
 
 INSERT INTO dbo.Action(ActionName, [Type], Command, DisplayOrder, FunctionId, ParentId, IsEndAction, [Status])
-VALUES ('Top 50 Outstanding', 1, '50', 70, @OutstandingFunctionId, @ViewOutstandingReportActionId, 1, 0);
+VALUES ('Top 50 Outstanding', 1, '50', 70, @OutstandingFunctionId, @ViewOutstandingReportActionId, 1, 1);
 
 INSERT INTO dbo.Action(ActionName, [Type], Command, DisplayOrder, FunctionId, ParentId, IsEndAction, [Status])
-VALUES ('Please input username', 2, '', '', @OutstandingFunctionId, @SpecificDirectDownlineActionId, 1, 0);
+VALUES ('Please input username', 2, '', '', @OutstandingFunctionId, @SpecificDirectDownlineActionId, 1, 1);
