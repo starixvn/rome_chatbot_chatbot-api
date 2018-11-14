@@ -145,7 +145,8 @@
             User user,
             string userReponse)
         {
-            if (lastAction == null)
+            if (lastAction == null
+                || await IsUserFuntionDisabled(user, await GetActionById(lastAction.ActionId).ConfigureAwait(false)).ConfigureAwait(false))
             {
                 return (
                     string.Empty, 

@@ -165,7 +165,7 @@
         }
 
         [Fact]
-        public void HandleUserReponseByButton_CancelRequest_ExecuteUpdatePrevUserActionsToCancel()
+        public void HandleUserReponseByButton_CancelRequest_ExecuteUpdateUserActionsToCancel()
         {
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US");
@@ -189,7 +189,7 @@
         }
 
         [Fact]
-        public void HandleUserReponseByButton_CancelRequest_ReturnCancelMessage()
+        public void HandleUserReponseByButton_CancelRequest_ReturnCancelMessageAndRootButtons()
         {
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US");
