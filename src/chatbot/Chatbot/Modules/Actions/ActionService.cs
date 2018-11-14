@@ -115,7 +115,8 @@
 
                 var currentAction = await GetActionById(currentActionId).ConfigureAwait(false);
 
-                if (await IsActionNotExist(currentActionId).ConfigureAwait(false) 
+                if (await IsActionNotExist(currentActionId).ConfigureAwait(false)
+                    || await IsUserFuntionDisabled(user, currentAction).ConfigureAwait(false)
                     || (currentAction.ParentId > 0 && await IsLastActionInvalid(currentActionId, lastAction).ConfigureAwait(false)))
                 {
                     var rootMessage = messageBuilder.BuildRootActionTitle(user.Language);
@@ -130,6 +131,13 @@
 
             return (compiledCommand, currentActionId, null);
         }
+
+        private async Task<bool> IsUserFuntionDisabled(User user, Action currentAction)
+            => !(await settingService
+                    .GetFunctions(user.Id)
+                    .ConfigureAwait(false)).Any(
+                            func => func.Id == currentAction.FunctionId 
+                                    && func.Enabled);
 
         internal async Task<(string, int, ActionResult)> HandleUserReponseByMessage(
             UserAction lastAction,
