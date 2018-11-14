@@ -115,7 +115,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel this request.
+        ///   Looks up a localized string similar to Cancel current request.
         /// </summary>
         public static string CancelThisRequest {
             get {

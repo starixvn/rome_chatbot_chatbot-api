@@ -337,7 +337,7 @@
     <value>Please select an option.</value>
   </data>
   <data name="CancelThisRequest" xml:space="preserve">
-    <value>Cancel this request</value>
+    <value>Cancel current request</value>
   </data>
   <data name="FunctionHasBeenCancelled" xml:space="preserve">
     <value>The current request has been cancelled.</value>
