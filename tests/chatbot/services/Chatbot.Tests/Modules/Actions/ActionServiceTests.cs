@@ -13,6 +13,7 @@
     using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.Settings;
+    using Chatbot.Shared.Configurations;
     using Fanex.Caching;
     using Fanex.Data.Repository;
     using NSubstitute;
@@ -32,6 +33,7 @@
         private readonly Func<DateTime> getDateTimeNowFunc;
         private readonly ActionServiceImpl actionServiceImpl;
         private readonly IDynamicRepository dynamicRepository;
+        private readonly IChatbotConfigs chatbotConfigs;
 
         public ActionServiceTests()
         {
@@ -40,7 +42,7 @@
             messageBuilder = Substitute.For<IMessageBuilder>();
             actionValidator = Substitute.For<IActionValidator>();
             actionCompiler = Substitute.For<IActionCompiler>();
-
+            chatbotConfigs = Substitute.For<IChatbotConfigs>();
             actionValidators = new Dictionary<int, IActionValidator>
             {
                 { 4, actionValidator }
@@ -61,6 +63,7 @@
                 actionValidators,
                 actionCompilers,
                 settingService,
+                chatbotConfigs,
                 getDateTimeNowFunc);
 
             actionValidator
@@ -87,7 +90,7 @@
             Assert.Equal(2, actionResult.Message.MessageMarkup.MessageActions.Count());
             Assert.Equal("ActionId=1", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
             Assert.Equal("outstanding label", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Label);
-            Assert.Equal("ActionId=3", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
+            Assert.Equal("ActionId=2", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
             Assert.Equal("message title", actionResult.Message.Content);
         }
 
@@ -96,6 +99,7 @@
         {
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US");
+            StubUserFuntions(user);
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             actionValidator.ValidateAction(4, user, "user reponse").Returns(new Result(1, "failed"));
 
@@ -113,6 +117,7 @@
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US");
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
+            StubUserFuntions(user);
             actionValidator.ValidateAction(4, user, "user reponse").Returns(new Result(1, "failed"));
             messageBuilder.BuildActionName(4, user.Language).Returns("outstanding label");
             messageBuilder.BuildCancelRequestMessage("en-US").Returns("cancel button");
@@ -133,6 +138,7 @@
             var user = new User(1, 1, 4, 0, "en-US");
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             var userActions = StubUserActions(user.Id);
+            StubUserFuntions(user);
             actionCompiler.Compile(Arg.Any<IEnumerable<Action>>(), Arg.Any<IEnumerable<UserAction>>())
                 .Returns("compiled command");
 
@@ -152,6 +158,7 @@
             var user = new User(1, 1, 4, 0, "en-US");
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             var userActions = StubUserActions(user.Id);
+            StubUserFuntions(user);
             actionCompiler.Compile(Arg.Any<IEnumerable<Action>>(), Arg.Any<IEnumerable<UserAction>>())
                 .Returns("compiled command");
 
@@ -230,7 +237,7 @@
             Assert.Equal(2, actionResult.Message.MessageMarkup.MessageActions.Count());
             Assert.Equal("ActionId=1", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
             Assert.Equal("outstanding label", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Label);
-            Assert.Equal("ActionId=3", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
+            Assert.Equal("ActionId=2", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
             Assert.Equal("message title", actionResult.Message.Content);
         }
 
@@ -262,12 +269,13 @@
         }
 
         [Fact]
-        public void BuildAction_ActionIsCancelled_ReturnCancelMessage()
+        public void BuildAction_ActionIsCancelled_ReturnCancelMessageAndRootButton()
         {
             StubActions();
             var messenger = new Messenger(1, "ltid");
             var user = new User(1, 1, 4, 0, "en-US");
             StubUserActions(user.Id);
+            StubUserFuntions(user);
             messageBuilder
                     .BuildResponseCancelRequestMessage(1, user.Language)
                     .Returns("cancel action");
@@ -278,6 +286,9 @@
                 .GetResult();
 
             Assert.Equal("cancel action", actionResult.Message.Content);
+            Assert.Equal(2, actionResult.Message.MessageMarkup.MessageActions.Count());
+            Assert.Equal("ActionId=1", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
+            Assert.Equal("ActionId=2", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
         }
 
         [Fact]
@@ -287,6 +298,7 @@
             var user = new User(1, 1, 4, 0, "en-US");
             var messenger = new Messenger(1, "ltid");
             StubUserActions(user.Id);
+            StubUserFuntions(user);
             actionCompiler.Compile(Arg.Any<IEnumerable<Action>>(), Arg.Any<IEnumerable<UserAction>>())
                 .Returns("compiled command");
 
@@ -305,6 +317,7 @@
             var messenger = new Messenger(1, "ltid");
             var user = new User(1, 1, 4, 0, "en-US");
             StubUserActions(user.Id);
+            StubUserFuntions(user);
 
             var actionResult = actionServiceImpl.BuildAction(
                 "command", "action=1", user, messenger)
@@ -325,6 +338,7 @@
             var user = new User(1, 1, 4, 0, "en-US");
             var messenger = new Messenger(1, "ltid");
             StubUserActions(user.Id);
+            StubUserFuntions(user);
 
             messageBuilder.BuildActionName(6, user.Language).Returns("next action name");
 
@@ -345,7 +359,7 @@
                     new List<Function>
                     {
                         new Function { Id = 1, Enabled = true },
-                        new Function { Id = 3, Enabled = true }
+                        new Function { Id = 2, Enabled = true }
                     } as IEnumerable<Function>));
 
         private IList<UserAction> StubUserActions(int userId)

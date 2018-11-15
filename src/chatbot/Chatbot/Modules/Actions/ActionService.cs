@@ -12,6 +12,7 @@
     using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.Settings;
+    using Chatbot.Shared.Configurations;
     using Fanex.Caching;
     using Fanex.Data.Repository;
     using Messenger.Client.Models;
@@ -42,6 +43,7 @@
         private readonly IDictionary<int, IActionCompiler> actionCompilers;
         private readonly SettingService settingService;
         private readonly Func<DateTime> getDateTimeNowFunc;
+        private readonly IChatbotConfigs chatbotConfigs;
 
         public ActionServiceImpl(
             IDynamicRepository dynamicRepository,
@@ -50,6 +52,7 @@
             IDictionary<int, IActionValidator> actionValidators,
             IDictionary<int, IActionCompiler> actionCompilers,
             SettingService settingService,
+            IChatbotConfigs chatbotConfigs,
             Func<DateTime> getDateTimeNowFunc = null)
         {
             this.dynamicRepository = dynamicRepository;
@@ -59,6 +62,7 @@
             this.actionCompilers = actionCompilers;
             this.settingService = settingService;
             this.getDateTimeNowFunc = getDateTimeNowFunc ?? GetDateTimeNow;
+            this.chatbotConfigs = chatbotConfigs;
         }
 
         private static DateTime GetDateTimeNow()
@@ -95,7 +99,7 @@
             UserAction lastAction,
             IList<UserAction> userActions,
             User user,
-            string buttonData, 
+            string buttonData,
             Messenger messenger)
         {
             var actionInfo = ParseActionInfo(buttonData);
@@ -136,7 +140,7 @@
             => !(await settingService
                     .GetFunctions(user.Id)
                     .ConfigureAwait(false)).Any(
-                            func => func.Id == currentAction.FunctionId 
+                            func => func.Id == currentAction.FunctionId
                                     && func.Enabled);
 
         internal async Task<(string, int, ActionResult)> HandleUserReponseByMessage(
@@ -150,8 +154,8 @@
                 || await IsUserFuntionDisabled(user, await GetActionById(lastAction.ActionId).ConfigureAwait(false)).ConfigureAwait(false))
             {
                 return (
-                    string.Empty, 
-                    0, 
+                    string.Empty,
+                    0,
                     await BuildRootActions(user, messageBuilder.BuildRootActionTitle(user.Language)).ConfigureAwait(false));
             }
 
@@ -314,10 +318,14 @@
         private async Task<IEnumerable<Action>> GetAllActions()
             => await cacheService.GetOrSetAsync(
                        AllActionsCacheKey,
-                       () => dynamicRepository
-                                        .Fetch<Action>(new GetAllActionsCriteria()),
+                       LoadAllActions,
                         new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0)))
                         .ConfigureAwait(false);
+
+        private IEnumerable<Action> LoadAllActions()
+            => dynamicRepository
+                .Fetch<Action>(new GetAllActionsCriteria())
+                .Where(action => !chatbotConfigs.IsProduction || action.IsAvailableOnlyOnPro);
 
         private async Task<IDictionary<int, IEnumerable<Action>>> GetActionChains()
         {
@@ -327,18 +335,21 @@
 
             foreach (var endAction in endActions)
             {
-                var tempAction = endAction;
-                var actionChain = new List<Action>();
-
-                while (tempAction != null)
+                if (endAction != null)
                 {
-                    actionChain.Add(tempAction);
+                    var tempAction = endAction;
+                    var actionChain = new List<Action>();
 
-                    tempAction = await GetPrevAction(tempAction.ParentId).ConfigureAwait(false);
+                    while (tempAction != null)
+                    {
+                        actionChain.Add(tempAction);
+
+                        tempAction = await GetPrevAction(tempAction.ParentId).ConfigureAwait(false);
+                    }
+
+                    actionChain.Reverse();
+                    actionChains.Add(endAction.Id, actionChain);
                 }
-
-                actionChain.Reverse();
-                actionChains.Add(endAction.Id, actionChain);
             }
 
             return actionChains;
@@ -446,10 +457,6 @@
         private static bool ActionIsMessage(IEnumerable<Action> nextActions)
             => nextActions.Count() == 1
                             && nextActions.FirstOrDefault().Type == ActionType.Message;
-
-        private Task UpdateUserActionStatus(int userActionId, bool isCompletedOrCancel)
-            => dynamicRepository
-                .ExecuteAsync(new UpdateUserActionStatusCommand(userActionId, isCompletedOrCancel));
 
         public Task ResetUserAction(User user)
             => dynamicRepository.ExecuteAsync(new ResetUserActionCommand(user.Id));

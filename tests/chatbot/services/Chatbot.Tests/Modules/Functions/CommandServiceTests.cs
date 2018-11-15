@@ -204,6 +204,8 @@
                         && function.Others["command"].Equals("cm1")));
         }
 
+
+
         private void SetupSendCommand(int userId, Messenger messenger, User user)
         {
             settingService.GetFunctions(userId).Returns(Task.FromResult(StubFunctions()));

@@ -144,7 +144,7 @@
         {
             var functions = await cacheService.GetOrSetAsync(
                 AllFunctionsCacheKey,
-                () => dynamicRepository.FetchAsync<Function>(new GetAllFunctionsCriteria()).Result,
+                LoadAllFunctions,
                 new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0)))
             .ConfigureAwait(false);
 
@@ -157,6 +157,15 @@
             }
 
             return functions;
+        }
+
+        private IEnumerable<Function> LoadAllFunctions()
+        {
+            var functions = dynamicRepository.FetchAsync<Function>(new GetAllFunctionsCriteria()).Result;
+
+            return functions.Where(function
+                => !chatbotConfigs.IsProduction
+                    || function.Environment == Shared.Constants.Environment.PRO);
         }
 
         public async Task<User> GetUser(int custId, int subAccountId, string language)
@@ -240,19 +249,21 @@
         {
             InputValidator.Validate(nameof(userId), userId);
 
-            var functions = await dynamicRepository
+            var functions = await GetAllFunctions().ConfigureAwait(false);
+            var userFunctions = (await dynamicRepository
                 .FetchAsync<Function>(new GetUserFunctionsCriteria(userId))
-                .ConfigureAwait(false);
+                .ConfigureAwait(false))
+                .Where(userFunction => functions.Any(func => func.Id == userFunction.Id));
 
             if (!string.IsNullOrWhiteSpace(language))
             {
-                foreach (var function in functions)
+                foreach (var function in userFunctions)
                 {
                     function.Name = await GetFunctionName(function.Id, language).ConfigureAwait(false);
                 }
             }
 
-            return functions;
+            return userFunctions;
         }
 
         private async Task<string> GetFunctionName(int functionId, string language)

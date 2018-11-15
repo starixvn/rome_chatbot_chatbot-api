@@ -227,6 +227,7 @@
                         Name = "name"
                     }
                 } as IEnumerable<Function>));
+            SubGetAllActions();
 
             var actualFunctions = settingService.GetFunctions(userId).GetAwaiter().GetResult();
 
@@ -261,11 +262,24 @@
                 {
                     new Resource(1, "function", "en-US","name-en-us")
                 } as IEnumerable<Resource>));
+            SubGetAllActions();
 
             var actualFunctions = settingService.GetFunctions(userId, "en-US").GetAwaiter().GetResult();
 
             Assert.Single(actualFunctions);
             Assert.Equal("name-en-us", actualFunctions.ElementAt(0).Name);
+        }
+
+        private void SubGetAllActions()
+        {
+            cacheService.GetOrSetAsync(
+                            "SettingServiceImpl.AllFunctionsCacheKey",
+                            Arg.Any<Func<IEnumerable<Function>>>(),
+                            Arg.Any<CacheItemOptions>())
+                            .Returns(Task.FromResult(new List<Function>
+                            {
+                    new Function { Id = 1, Environment = 0 }
+                            } as IEnumerable<Function>));
         }
 
         [Fact]
