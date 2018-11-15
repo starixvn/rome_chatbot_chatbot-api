@@ -146,6 +146,7 @@
             string userReponse)
         {
             if (lastAction == null
+                || await IsActionNotExist(lastAction.ActionId).ConfigureAwait(false)
                 || await IsUserFuntionDisabled(user, await GetActionById(lastAction.ActionId).ConfigureAwait(false)).ConfigureAwait(false))
             {
                 return (
