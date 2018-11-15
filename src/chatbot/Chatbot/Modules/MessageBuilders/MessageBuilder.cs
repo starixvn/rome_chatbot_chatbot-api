@@ -211,7 +211,7 @@
             => GetResource(nameof(Languages.RootActionTitle), language);
 
         public string BuildCancelRequestMessage(string language)
-             => GetResource(nameof(Languages.CancelThisRequest), language);
+             => GetResource(nameof(Languages.CancelThisRequest), language).ToUpperInvariant();
 
         public string BuildResponseCancelRequestMessage(int messengerType, string language)
          => string.Join(
