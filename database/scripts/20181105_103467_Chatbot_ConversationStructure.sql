@@ -32,7 +32,7 @@ CREATE TABLE [dbo].[UserAction](
 	[CompiledCommand] [nvarchar](255) NULL,
 	[ChatTime] [datetime] NULL,
 	[Status] [tinyint],
- CONSTRAINT [PK_UserAction] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_UserAction] PRIMARY KEY NONCLUSTERED 
 (
 	[UserActionId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [DATA]
