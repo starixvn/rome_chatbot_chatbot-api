@@ -54,7 +54,7 @@ namespace Chatbot.Models
 
         public IEnumerable<Messenger> MessengerAccounts { get; private set; }
 
-        public IEnumerable<Function> Functions { get; private set; }
+        public IEnumerable<Function> Functions { get; internal set; }
 
         public string Language { get; private set; }
 

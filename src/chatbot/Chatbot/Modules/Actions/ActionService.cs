@@ -41,7 +41,6 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IDictionary<int, IActionValidator> actionValidators;
         private readonly IDictionary<int, IActionCompiler> actionCompilers;
-        private readonly SettingService settingService;
         private readonly Func<DateTime> getDateTimeNowFunc;
         private readonly IChatbotConfigs chatbotConfigs;
 
@@ -52,7 +51,6 @@
             IMessageBuilder messageBuilder,
             IDictionary<int, IActionValidator> actionValidators,
             IDictionary<int, IActionCompiler> actionCompilers,
-            SettingService settingService,
             IChatbotConfigs chatbotConfigs,
             Func<DateTime> getDateTimeNowFunc = null)
 #pragma warning restore S107 // Methods should not have too many parameters
@@ -62,7 +60,6 @@
             this.messageBuilder = messageBuilder;
             this.actionValidators = actionValidators;
             this.actionCompilers = actionCompilers;
-            this.settingService = settingService;
             this.getDateTimeNowFunc = getDateTimeNowFunc ?? GetDateTimeNow;
             this.chatbotConfigs = chatbotConfigs;
         }
@@ -122,7 +119,7 @@
                 var currentAction = await GetActionById(currentActionId).ConfigureAwait(false);
 
                 if (await IsActionNotExist(currentActionId).ConfigureAwait(false)
-                    || await IsUserFuntionDisabled(user, currentAction).ConfigureAwait(false)
+                    || IsUserFuntionDisabled(user, currentAction)
                     || (currentAction.ParentId > 0 && await IsLastActionInvalid(currentActionId, lastAction).ConfigureAwait(false)))
                 {
                     var rootMessage = messageBuilder.BuildRootActionTitle(user.Language);
@@ -138,10 +135,8 @@
             return (compiledCommand, currentActionId, null);
         }
 
-        private async Task<bool> IsUserFuntionDisabled(User user, Action currentAction)
-            => !(await settingService
-                    .GetFunctions(user.Id)
-                    .ConfigureAwait(false)).Any(
+        private static bool IsUserFuntionDisabled(User user, Action currentAction)
+            => !user.Functions.Any(
                             func => func.Id == currentAction.FunctionId
                                     && func.Enabled);
 
@@ -153,7 +148,7 @@
         {
             if (lastAction == null
                 || await IsActionNotExist(lastAction.ActionId).ConfigureAwait(false)
-                || await IsUserFuntionDisabled(user, await GetActionById(lastAction.ActionId).ConfigureAwait(false)).ConfigureAwait(false))
+                || IsUserFuntionDisabled(user, await GetActionById(lastAction.ActionId).ConfigureAwait(false)))
             {
                 return (
                     string.Empty,
@@ -226,11 +221,10 @@
         {
             var messageActions = new List<MessageAction>();
             var rootActions = (await GetAllActions().ConfigureAwait(false)).Where(action => action.ParentId == 0);
-            var userFunctions = await settingService.GetFunctions(user.Id).ConfigureAwait(false);
 
             foreach (var rootAction in rootActions)
             {
-                var userFunction = userFunctions.FirstOrDefault(func => func.Id == rootAction.FunctionId);
+                var userFunction = user.Functions.FirstOrDefault(func => func.Id == rootAction.FunctionId);
 
                 if (userFunction != null && userFunction.Enabled)
                 {

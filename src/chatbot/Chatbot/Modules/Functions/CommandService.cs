@@ -95,7 +95,8 @@
         {
             try
             {
-                var commandFunction = await GetCommandFunction(user.Id, encodedCommand).ConfigureAwait(false);
+                user.Functions = await settingService.GetFunctions(user.Id).ConfigureAwait(false);
+                var commandFunction = GetCommandFunction(user, encodedCommand);
 
                 await Task.WhenAll(
                     messageLogger.LogMessage(
@@ -127,10 +128,9 @@
             return await Task.FromResult(true).ConfigureAwait(false);
         }
 
-        private async Task<Function> GetCommandFunction(int userId, string command)
+        private static Function GetCommandFunction(User user, string command)
         {
-            var userFuntions = await settingService.GetFunctions(userId).ConfigureAwait(false);
-            var commandFunction = userFuntions
+            var commandFunction = user.Functions
                                     .FirstOrDefault(
                                         function => !string.IsNullOrWhiteSpace(command)
                                                     && !string.IsNullOrWhiteSpace(function.Command)

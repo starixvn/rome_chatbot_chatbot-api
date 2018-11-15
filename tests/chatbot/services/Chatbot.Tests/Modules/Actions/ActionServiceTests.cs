@@ -27,7 +27,6 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IDictionary<int, IActionValidator> actionValidators;
         private readonly IDictionary<int, IActionCompiler> actionCompilers;
-        private readonly SettingService settingService;
         private readonly IActionValidator actionValidator;
         private readonly IActionCompiler actionCompiler;
         private readonly Func<DateTime> getDateTimeNowFunc;
@@ -53,7 +52,6 @@
                 { 4, actionCompiler },
                 { 6, actionCompiler }
             };
-            settingService = Substitute.For<SettingService>();
             getDateTimeNowFunc = Substitute.For<Func<DateTime>>();
 
             actionServiceImpl = new ActionServiceImpl(
@@ -62,7 +60,6 @@
                 messageBuilder,
                 actionValidators,
                 actionCompilers,
-                settingService,
                 chatbotConfigs,
                 getDateTimeNowFunc);
 
@@ -353,14 +350,11 @@
         }
 
         private void StubUserFuntions(User user)
-            => settingService
-                .GetFunctions(user.Id)
-                .Returns(Task.FromResult(
-                    new List<Function>
+            => user.Functions = new List<Function>
                     {
                         new Function { Id = 1, Enabled = true },
                         new Function { Id = 2, Enabled = true }
-                    } as IEnumerable<Function>));
+                    };
 
         private IList<UserAction> StubUserActions(int userId)
         {
