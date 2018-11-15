@@ -9,16 +9,12 @@
 
     public static class AddActionHandlerMiddleware
     {
-        private static IChatbotConfigs chatbotConfigs;
-        private static IMessageBuilder messageBuilder;
-        private static CustomerService customerService;
-
         public static void AddActionHandler(this IServiceCollection services)
         {
             var serviceProvider = services.BuildServiceProvider();
-            chatbotConfigs = serviceProvider.GetService<IChatbotConfigs>();
-            messageBuilder = serviceProvider.GetService<IMessageBuilder>();
-            customerService = serviceProvider.GetService<CustomerService>();
+            var chatbotConfigs = serviceProvider.GetService<IChatbotConfigs>();
+            var messageBuilder = serviceProvider.GetService<IMessageBuilder>();
+            var customerService = serviceProvider.GetService<CustomerService>();
 
             services.AddSingleton<IDictionary<int, IActionValidator>>(new Dictionary<int, IActionValidator>
             {
