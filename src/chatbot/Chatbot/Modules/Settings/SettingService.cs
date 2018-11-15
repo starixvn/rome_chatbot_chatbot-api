@@ -10,7 +10,6 @@
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Resources;
     using Chatbot.Modules.Resources.Constants;
-    using Chatbot.Modules.Resources.Models;
     using Chatbot.Modules.SettingLogs;
     using Chatbot.Modules.SettingLogs.Models;
     using Chatbot.Modules.Settings.Params.Db.Commands;
@@ -53,8 +52,6 @@
 
     public class SettingServiceImpl : SettingService
     {
-        private const string DefaultLanguage = "en-US";
-        private const string functionNameByLanguageCacheKey = "SettingServiceImpl.FunctionNameByLanguageCacheKey.{0}";
         private const string AllFunctionsCacheKey = "SettingServiceImpl.AllFunctionsCacheKey";
         private readonly IDynamicRepository dynamicRepository;
         private readonly Func<string> randomNumberFunc;
@@ -267,29 +264,7 @@
         }
 
         private async Task<string> GetFunctionName(int functionId, string language)
-        {
-            var functionLanguages = await cacheService.GetOrSetAsync(
-                        string.Format(functionNameByLanguageCacheKey, functionId),
-                        () => GetFunctionLanguage(functionId).Result,
-                        new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0)))
-                        .ConfigureAwait(false);
-
-            var functionName = functionLanguages
-                .FirstOrDefault(resource => resource.LanguageCode == language)
-                ?.Value;
-
-            if (string.IsNullOrWhiteSpace(functionName))
-            {
-                functionName = functionLanguages
-                .FirstOrDefault(resource => resource.LanguageCode == DefaultLanguage)
-                ?.Value;
-            }
-
-            return functionName;
-        }
-
-        private Task<IEnumerable<Resource>> GetFunctionLanguage(int functionId)
-            => resourceService.GetResources(functionId, ResourceType.Function);
+            => (await resourceService.GetResource(functionId, ResourceType.Function, language).ConfigureAwait(false))?.Value;
 
         public async Task UpdateFunctions(int userId, IEnumerable<Function> functions, UpdateFunctionsLog logData)
         {

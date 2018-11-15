@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using Chatbot.AppResources;
@@ -203,8 +202,7 @@
                             : defaultCultureInfo;
 
         public async Task<string> BuildActionName(int actionId, string language)
-            => (await resourceService.GetResources(actionId, ActionResourceName).ConfigureAwait(false))
-            .FirstOrDefault(resource => resource.LanguageCode == language)?.Value;
+            => (await resourceService.GetResource(actionId, ActionResourceName, language).ConfigureAwait(false))?.Value.ToUpperInvariant();
 
         public string BuildActionTitle(string language)
         => GetResource(nameof(Languages.PleaseSelectOption), language);

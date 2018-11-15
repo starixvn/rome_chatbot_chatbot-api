@@ -10,7 +10,6 @@
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Resources;
-    using Chatbot.Modules.Resources.Models;
     using Chatbot.Modules.SettingLogs;
     using Chatbot.Modules.SettingLogs.Models;
     using Chatbot.Modules.Settings;
@@ -236,38 +235,6 @@
             Assert.Equal(1, firstFunction.Id);
             Assert.Equal("/os", firstFunction.Command);
             Assert.Equal("name", firstFunction.Name);
-        }
-
-        [Fact]
-        public void GetFunctions_AlwaysGetByLanguage_ReturnFunctionListWithName()
-        {
-            var userId = 23343;
-            dynamicRepository
-                .FetchAsync<Function>(Arg.Is<GetUserFunctionsCriteria>(criteria => criteria.UserId == userId))
-                .Returns(Task.FromResult(new List<Function>
-                {
-                    new Function
-                    {
-                        Id = 1,
-                        Command = "/os",
-                        Name = "name"
-                    }
-                } as IEnumerable<Function>));
-
-            cacheService.GetOrSetAsync(
-                "SettingServiceImpl.FunctionNameByLanguageCacheKey.1",
-                Arg.Any<Func<IEnumerable<Resource>>>(),
-                Arg.Any<CacheItemOptions>())
-                .Returns(Task.FromResult(new List<Resource>
-                {
-                    new Resource(1, "function", "en-US","name-en-us")
-                } as IEnumerable<Resource>));
-            SubGetAllActions();
-
-            var actualFunctions = settingService.GetFunctions(userId, "en-US").GetAwaiter().GetResult();
-
-            Assert.Single(actualFunctions);
-            Assert.Equal("name-en-us", actualFunctions.ElementAt(0).Name);
         }
 
         private void SubGetAllActions()
@@ -863,40 +830,6 @@
                 "SettingServiceImpl.AllFunctionsCacheKey",
                 Arg.Any<Func<IEnumerable<Function>>>(),
                 Arg.Any<CacheItemOptions>());
-        }
-
-        [Fact]
-        public void GetAllFunctions_AlwaysGetByLanguage_ReturnFunctionListWithName()
-        {
-            // Arrange
-            cacheService.GetOrSetAsync(
-                "SettingServiceImpl.AllFunctionsCacheKey",
-                Arg.Any<Func<IEnumerable<Function>>>(),
-                Arg.Any<CacheItemOptions>()).Returns(Task.FromResult(new List<Function>
-                {
-                    new Function
-                    {
-                        Id = 1,
-                        Command = "/os",
-                        Name = "name"
-                    }
-                } as IEnumerable<Function>));
-
-            cacheService.GetOrSetAsync(
-                "SettingServiceImpl.FunctionNameByLanguageCacheKey.1",
-                Arg.Any<Func<IEnumerable<Resource>>>(),
-                Arg.Any<CacheItemOptions>())
-                .Returns(Task.FromResult(new List<Resource>
-                {
-                    new Resource(1,  "function", "en-US", "name-en-us")
-                } as IEnumerable<Resource>));
-
-            // Act
-            var actualFunctions = settingService.GetAllFunctions("en-US").GetAwaiter().GetResult();
-
-            // Assert
-            Assert.Single(actualFunctions);
-            Assert.Equal("name-en-us", actualFunctions.ElementAt(0).Name);
         }
     }
 }
