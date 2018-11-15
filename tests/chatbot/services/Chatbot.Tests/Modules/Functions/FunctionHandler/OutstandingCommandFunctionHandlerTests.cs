@@ -48,11 +48,12 @@
         public void Handle_ParameterIsNumer_RunDataHandlerAndSendMessage()
         {
             // Arrange
+            chatbotConfigs.OutstandingMaxTopQuery.Returns(1000);
             var param = new FunctionParam(
                 new User(1, 2, 4, 3, "en-US"),
                 new Function { Id = 1 },
                 new Messenger(1, "sa"),
-                new Dictionary<string, object> { ["parameter"] = 10 });
+                new Dictionary<string, object> { ["parameters"] = new string[] { "10" } });
 
             getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
             customerService.IsAccountClosed(2, 3).Returns(false);
@@ -73,7 +74,7 @@
                 new User(1, 2, 4, 3, "en-US"),
                 new Function { Id = 1 },
                 new Messenger(1, "sa"),
-                new Dictionary<string, object> { ["parameter"] = "abc" });
+                new Dictionary<string, object> { ["parameters"] = new string[] { "abc" } });
 
             getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
             customerService.IsAccountClosed(2, 3).Returns(false);
@@ -97,7 +98,7 @@
                 new User(1, 2, 4, 3, "en-US"),
                 new Function { Id = 1 },
                 new Messenger(1, "sa"),
-                new Dictionary<string, object> { ["parameter"] = "abc" });
+                new Dictionary<string, object> { ["parameters"] = new string[] { "abc" } });
 
             getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
             customerService.IsAccountClosed(2, 3).Returns(false);
@@ -121,7 +122,7 @@
                 new User(1, 2, 4, 3, "en-US"),
                 new Function { Id = 1 },
                 new Messenger(1, "sa"),
-                new Dictionary<string, object> { ["parameter"] = "abc" });
+                new Dictionary<string, object> { ["parameters"] = new string[] { "abc" } });
 
             getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
             customerService.IsAccountClosed(2, 3).Returns(false);

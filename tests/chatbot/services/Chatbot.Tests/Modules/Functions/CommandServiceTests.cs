@@ -163,7 +163,7 @@
             SetupSendCommand(userId, messenger, user);
 
             commandService
-                    .Execute("cm1", "parameter", messenger.Type, messenger.Username)
+                    .Execute("cm1", "buttonData", messenger.Type, messenger.Username)
                     .GetAwaiter()
                     .GetResult();
 
@@ -175,7 +175,7 @@
                 Arg.Is<Messenger>(
                     msg => msg.Type == messenger.Type
                         && msg.Username == messenger.Username),
-                "cm1 parameter",
+                "cm1",
                 0,
                 1);
         }
@@ -201,7 +201,7 @@
                         function.User.Id == userId
                         && function.Function.Id == 1
                         && function.Messenger.Username == messenger.Username
-                        && function.Others["command"] == "cm1"));
+                        && function.Others["command"].Equals("cm1")));
         }
 
         private void SetupSendCommand(int userId, Messenger messenger, User user)

@@ -35,8 +35,6 @@
         private readonly ILogger logger;
         private readonly ActionService actionService;
 
-#pragma warning disable S107 // Methods should not have too many parameters
-
         public CommandServiceImpl(
             SettingService settingService,
             IMessageSender messageSender,
@@ -46,7 +44,6 @@
             IFunctionHandlerFactory functionHandlerFactory,
             ILogger logger,
             ActionService actionService)
-#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.settingService = settingService;
             this.messageSender = messageSender;
