@@ -104,31 +104,6 @@
         }
 
         [Fact]
-        public void Execute_NotFoundCommand_ExecuteSendNotRecognizedCommandMessage()
-        {
-            var userId = 190;
-            var messenger = new Messenger(1, "messengerName");
-            var user = StubUser(userId);
-
-            SetupSendCommand(userId, messenger, user);
-
-            commandService
-                    .Execute("cm", "parameter", messenger.Type, messenger.Username)
-                    .GetAwaiter()
-                    .GetResult();
-
-            messageSender
-                .Received()
-                .SendMessage(
-                userId,
-                Arg.Is<Messenger>(
-                    msg => msg.Type == messenger.Type
-                        && msg.Username == messenger.Username),
-                "NotRecognizedCommandMessage",
-                100);
-        }
-
-        [Fact]
         public void Execute_FunctionIsDisabled_ExecuteSendNotRecognizedCommandMessage1()
         {
             var userId = 190;
@@ -204,7 +179,59 @@
                         && function.Others["command"].Equals("cm1")));
         }
 
+        [Fact]
+        public void Execute_NoRootActionExist_ExecuteSendNotRecognizedCommandMessage()
+        {
+            var userId = 190;
+            var messenger = new Messenger(1, "messengerName");
+            var user = StubUser(userId);
 
+            SetupSendCommand(userId, messenger, user);
+            StubFunctions();
+            actionService.NoRootActionExist().Returns(Task.FromResult(true));
+
+            commandService
+                    .Execute("cm", "parameter", messenger.Type, messenger.Username)
+                    .GetAwaiter()
+                    .GetResult();
+
+            messageSender
+                .Received()
+                .SendMessage(
+                userId,
+                Arg.Is<Messenger>(
+                    msg => msg.Type == messenger.Type
+                        && msg.Username == messenger.Username),
+                "NotRecognizedCommandMessage",
+                100);
+        }
+
+        [Fact]
+        public void Execute_AvtionValidationIsFailed_SendValidationMessage()
+        {
+            var userId = 190;
+            var messenger = new Messenger(1, "messengerName");
+            var user = StubUser(userId);
+
+            SetupSendCommand(userId, messenger, user);
+            StubFunctions();
+
+
+            commandService
+                    .Execute("cm", "parameter", messenger.Type, messenger.Username)
+                    .GetAwaiter()
+                    .GetResult();
+
+            messageSender
+                .Received()
+                .SendMessage(
+                userId,
+                Arg.Is<Messenger>(
+                    msg => msg.Type == messenger.Type
+                        && msg.Username == messenger.Username),
+                "NotRecognizedCommandMessage",
+                100);
+        }
 
         private void SetupSendCommand(int userId, Messenger messenger, User user)
         {

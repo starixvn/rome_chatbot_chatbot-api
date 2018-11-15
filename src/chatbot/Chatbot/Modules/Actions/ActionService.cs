@@ -45,6 +45,7 @@
         private readonly Func<DateTime> getDateTimeNowFunc;
         private readonly IChatbotConfigs chatbotConfigs;
 
+#pragma warning disable S107 // Methods should not have too many parameters
         public ActionServiceImpl(
             IDynamicRepository dynamicRepository,
             ICacheService cacheService,
@@ -54,6 +55,7 @@
             SettingService settingService,
             IChatbotConfigs chatbotConfigs,
             Func<DateTime> getDateTimeNowFunc = null)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.dynamicRepository = dynamicRepository;
             this.cacheService = cacheService;
@@ -297,7 +299,7 @@
             var keyValues = buttonData?.Split('&');
 
             if (keyValues == null
-                || keyValues.Count() == 0)
+                || !keyValues.Any())
             {
                 throw new InvalidOperationException($"Wrong button data format {buttonData}");
             }
