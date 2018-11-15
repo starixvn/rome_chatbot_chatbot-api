@@ -202,7 +202,7 @@
                             : defaultCultureInfo;
 
         public async Task<string> BuildActionName(int actionId, string language)
-            => (await resourceService.GetResource(actionId, ActionResourceName, language).ConfigureAwait(false))?.Value.ToUpperInvariant();
+            => (await resourceService.GetResource(actionId, ActionResourceName, language).ConfigureAwait(false))?.Value;
 
         public string BuildActionTitle(string language)
         => GetResource(nameof(Languages.PleaseSelectOption), language);
@@ -211,7 +211,7 @@
             => GetResource(nameof(Languages.RootActionTitle), language);
 
         public string BuildCancelRequestMessage(string language)
-             => GetResource(nameof(Languages.CancelThisRequest), language).ToUpperInvariant();
+             => GetResource(nameof(Languages.CancelThisRequest), language);
 
         public string BuildResponseCancelRequestMessage(int messengerType, string language)
          => string.Join(

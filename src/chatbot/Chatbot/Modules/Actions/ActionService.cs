@@ -11,7 +11,6 @@
     using Chatbot.Modules.Actions.Params.DB.Criteria;
     using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
-    using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
     using Fanex.Caching;
     using Fanex.Data.Repository;
@@ -45,6 +44,7 @@
         private readonly IChatbotConfigs chatbotConfigs;
 
 #pragma warning disable S107 // Methods should not have too many parameters
+
         public ActionServiceImpl(
             IDynamicRepository dynamicRepository,
             ICacheService cacheService,
@@ -230,7 +230,7 @@
                 {
                     messageActions.Add(new MessageAction
                     {
-                        Label = await messageBuilder.BuildActionName(rootAction.Id, user.Language).ConfigureAwait(false),
+                        Label = (await messageBuilder.BuildActionName(rootAction.Id, user.Language).ConfigureAwait(false)).ToUpperInvariant(),
                         Type = PostbackType,
                         Data = $"ActionId={rootAction.Id}"
                     });
@@ -397,7 +397,7 @@
             {
                 messageActions.Add(new MessageAction
                 {
-                    Label = await messageBuilder.BuildActionName(nextAction.Id, language).ConfigureAwait(false),
+                    Label = (await messageBuilder.BuildActionName(nextAction.Id, language).ConfigureAwait(false)).ToUpperInvariant(),
                     Type = PostbackType,
                     Data = $"ActionId={nextAction.Id}"
                 });
@@ -422,7 +422,7 @@
 
             return new MessageAction
             {
-                Label = messageBuilder.BuildCancelRequestMessage(language),
+                Label = messageBuilder.BuildCancelRequestMessage(language).ToUpperInvariant(),
                 Type = "postback",
                 Data = $"abortActionId={rootAction?.Id}"
             };

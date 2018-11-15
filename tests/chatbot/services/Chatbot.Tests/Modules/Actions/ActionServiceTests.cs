@@ -12,7 +12,6 @@
     using Chatbot.Modules.Actions.Params.DB.Criteria;
     using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
-    using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
     using Fanex.Caching;
     using Fanex.Data.Repository;
@@ -86,7 +85,7 @@
 
             Assert.Equal(2, actionResult.Message.MessageMarkup.MessageActions.Count());
             Assert.Equal("ActionId=1", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
-            Assert.Equal("outstanding label", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Label);
+            Assert.Equal("OUTSTANDING LABEL", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Label);
             Assert.Equal("ActionId=2", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
             Assert.Equal("message title", actionResult.Message.Content);
         }
@@ -125,7 +124,7 @@
                 .Item3;
 
             Assert.Equal("outstanding label", actionResult.Message.Content);
-            Assert.Equal("cancel button", actionResult.Message.MessageMarkup.MessageActions.First().Label);
+            Assert.Equal("CANCEL BUTTON", actionResult.Message.MessageMarkup.MessageActions.First().Label);
         }
 
         [Fact]
@@ -177,9 +176,9 @@
             var messenger = new Messenger(1, "ltid");
 
             actionServiceImpl.HandleUserReponseByButton(
-                userActions.FirstOrDefault(), 
-                userActions, 
-                user, 
+                userActions.FirstOrDefault(),
+                userActions,
+                user,
                 "abort=1",
                 messenger)
                     .GetAwaiter()
@@ -233,7 +232,7 @@
 
             Assert.Equal(2, actionResult.Message.MessageMarkup.MessageActions.Count());
             Assert.Equal("ActionId=1", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
-            Assert.Equal("outstanding label", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Label);
+            Assert.Equal("OUTSTANDING LABEL", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Label);
             Assert.Equal("ActionId=2", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
             Assert.Equal("message title", actionResult.Message.Content);
         }
@@ -250,9 +249,9 @@
                 .Returns("compiled command");
 
             actionServiceImpl.HandleUserReponseByButton(
-                userActions.First(), 
-                userActions, 
-                user, 
+                userActions.First(),
+                userActions,
+                user,
                 "action=4",
                 messenger)
                    .GetAwaiter()
