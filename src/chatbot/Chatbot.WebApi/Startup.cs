@@ -26,7 +26,10 @@ namespace Chatbot.WebApi
     using Fanex.Data;
     using Fanex.Data.Repository;
     using Fanex.Logging;
+    using Fanex.Logging.Extensions.AspNetCore;
+    using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.RabbitMQ;
+    using Fanex.Logging.Sentry;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -37,6 +40,7 @@ namespace Chatbot.WebApi
     using ONEbook.UM.Helpers;
     using ONEbook.UM.Services;
     using ONEbook.UM.Transport;
+    using Sentry;
     using Serilog;
     using Swashbuckle.AspNetCore.Swagger;
 
@@ -57,10 +61,9 @@ namespace Chatbot.WebApi
             services.AddSingleton(_ => Configuration);
             var chatbotConfigs = new ChatbotConfigs(Configuration);
 
-            LogManager
-                    .SetDefaultLogCategory(Configuration["Fanex.Logging:DefaultCategory"])
-                    .Use(new RabbitMQLogging(Configuration["Fanex.Logging:RabbitMQConnectionStrings"]));
-            services.AddSingleton(Logger.Log);
+            InitLogging(services);
+
+            
             services.AddLogging();
             services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
             services.AddSingleton<SettingService, SettingServiceImpl>();
@@ -127,6 +130,35 @@ namespace Chatbot.WebApi
             //});
         }
 
+        private void InitLogging(IServiceCollection services)
+        {
+            var logEngines = new List<ILogEngine>
+            {
+                new RabbitMQLogging(Configuration["Fanex.Logging:RabbitMQConnectionStrings"])
+            };
+
+            var sentryUrl = Configuration["Fanex.Logging:SentryUrl"];
+            if (!string.IsNullOrWhiteSpace(sentryUrl))
+            {
+                logEngines.Add(new SentryLogging(new SentryOptions
+                {
+                    Dsn = new Dsn(sentryUrl)
+                }));
+            }
+
+            LogManager
+                    .SetDefaultLogCategory(Configuration["Fanex.Logging:DefaultCategory"])
+                    .Use(logEngines);
+
+            services.AddSingleton(Logger.Log);
+
+            ExceptionHandler
+                // To use custom config
+                .UseConfig(new LoggingConfiguration()
+                .GetHttpHeaderInfo()
+                .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo));
+        }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -147,6 +179,7 @@ namespace Chatbot.WebApi
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMiddleware(typeof(UnderMaintenanceHandlingMiddleware));
+
             var umConfig = new UMClientConfiguration(Configuration);
 
             UMClientManager
