@@ -26,6 +26,7 @@ namespace Chatbot.WebApi
     using Fanex.Data;
     using Fanex.Data.Repository;
     using Fanex.Logging;
+    using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.AspNetCore;
     using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.RabbitMQ;
