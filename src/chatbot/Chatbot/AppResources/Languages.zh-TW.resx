@@ -301,4 +301,37 @@
   <data name="HiddenDownlinesCount" xml:space="preserve">
     <value>超過 {0} {1}就不會顯示</value>
   </data>
+  <data name="InvalidNumerOfDownlines" xml:space="preserve">
+    <value>旗下的下線必須是數字代號。</value>
+  </data>
+  <data name="InvalidDownline" xml:space="preserve">
+    <value>{0}'不是您的有效下線。</value>
+  </data>
+  <data name="InvalidDirectDownline" xml:space="preserve">
+    <value>{0} 不屬於您的{1}.</value>
+  </data>
+  <data name="RootActionTitle" xml:space="preserve">
+    <value>抱歉，我們無法識別您的請求。请问您的選項是？</value>
+  </data>
+  <data name="PleaseSelectOption" xml:space="preserve">
+    <value>請選擇一個選項。</value>
+  </data>
+  <data name="CancelThisRequest" xml:space="preserve">
+    <value>取消當前請求。</value>
+  </data>
+  <data name="FunctionHasBeenCancelled" xml:space="preserve">
+    <value>當前請求已被取消。</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>對於</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>產品</value>
+  </data>
+  <data name="WhichActionWouldYouLikeToTake" xml:space="preserve">
+    <value>请问您的選項是？</value>
+  </data>
+  <data name="InvalidNumerOfDownlinesRange" xml:space="preserve">
+    <value>旗下的下線必須從 1 至 {0} 的數字。</value>
+  </data>
 </root>

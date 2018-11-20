@@ -385,7 +385,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;{0}&apos; is not your valid {1}..
+        ///   Looks up a localized string similar to {0} is not your valid {1}..
         /// </summary>
         public static string InvalidDirectDownline {
             get {
@@ -394,7 +394,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;{0}&apos; is not your valid downline..
+        ///   Looks up a localized string similar to {0} is not your valid downline..
         /// </summary>
         public static string InvalidDownline {
             get {
@@ -403,7 +403,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number of downline must be numeric..
+        ///   Looks up a localized string similar to Number of downlines must be numeric..
         /// </summary>
         public static string InvalidNumerOfDownlines {
             get {
@@ -412,7 +412,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number of downline must be positive and up to {0}..
+        ///   Looks up a localized string similar to Number of downlines must be from 1 to {0}..
         /// </summary>
         public static string InvalidNumerOfDownlinesRange {
             get {

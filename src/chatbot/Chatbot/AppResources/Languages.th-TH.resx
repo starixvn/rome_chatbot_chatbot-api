@@ -295,4 +295,37 @@
   <data name="UnlinkMessage" xml:space="preserve">
     <value>การยกเลิกบริการสำเร็จ ขอบคุณสำหรับการใช้งาน</value>
   </data>
+  <data name="InvalidNumerOfDownlines" xml:space="preserve">
+    <value>จำนวนดาวน์ไลน์ต้องเป็นตัวเลขเท่านั้น</value>
+  </data>
+  <data name="InvalidDownline" xml:space="preserve">
+    <value>{0}' ไม่ใช่ดาวน์ไลน์ของท่าน</value>
+  </data>
+  <data name="InvalidDirectDownline" xml:space="preserve">
+    <value>{0} ไม่ถูกต้อง {1}</value>
+  </data>
+  <data name="RootActionTitle" xml:space="preserve">
+    <value>ขออภัย เราไม่สามารถรับรู้คำขอของคุณได้ คุณต้องการดำเนินการใด?</value>
+  </data>
+  <data name="PleaseSelectOption" xml:space="preserve">
+    <value>โปรดเลือกตัวเลือก</value>
+  </data>
+  <data name="CancelThisRequest" xml:space="preserve">
+    <value>ยกเลิกคำขอปัจจุบัน</value>
+  </data>
+  <data name="FunctionHasBeenCancelled" xml:space="preserve">
+    <value>คำขอปัจจุบันถูกยกเลิกแล้ว</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>สำหรับ</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>ผลิตภัณฑ์</value>
+  </data>
+  <data name="WhichActionWouldYouLikeToTake" xml:space="preserve">
+    <value>คุณต้องการดำเนินการใด?</value>
+  </data>
+  <data name="InvalidNumerOfDownlinesRange" xml:space="preserve">
+    <value>จำนวนดาวน์ไลน์ต้องเริ่มจาก 1 ถึง {0}' เท่านั้น</value>
+  </data>
 </root>

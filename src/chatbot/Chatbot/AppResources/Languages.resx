@@ -322,13 +322,13 @@
     <value>*Hint: To view your downline's outstanding, please type: /os username</value>
   </data>
   <data name="InvalidNumerOfDownlines" xml:space="preserve">
-    <value>Number of downline must be numeric.</value>
+    <value>Number of downlines must be numeric.</value>
   </data>
   <data name="InvalidDownline" xml:space="preserve">
-    <value>'{0}' is not your valid downline.</value>
+    <value>{0} is not your valid downline.</value>
   </data>
   <data name="InvalidDirectDownline" xml:space="preserve">
-    <value>'{0}' is not your valid {1}.</value>
+    <value>{0} is not your valid {1}.</value>
   </data>
   <data name="RootActionTitle" xml:space="preserve">
     <value>Sorry, we couldn't recognize your request. Which action would you like to take?</value>
@@ -352,6 +352,6 @@
     <value>Which action would you like to take?</value>
   </data>
   <data name="InvalidNumerOfDownlinesRange" xml:space="preserve">
-    <value>Number of downline must be positive and up to {0}.</value>
+    <value>Number of downlines must be from 1 to {0}.</value>
   </data>
 </root>
