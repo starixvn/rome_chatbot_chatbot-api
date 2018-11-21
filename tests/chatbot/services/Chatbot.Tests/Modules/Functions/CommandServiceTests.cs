@@ -267,6 +267,7 @@
                     msg => msg.Type == messenger.Type
                         && msg.Username == messenger.Username),
                 nextStep,
+                null,
                 2);
         }
 
