@@ -44,9 +44,7 @@
                         .UsingJobData(JobDataKey.UserId, userId)
                         .UsingJobData(JobDataKey.FunctionId, functionId)
                         .UsingJobData(JobDataKey.Message, message)
-                        .UsingJobData(
-                            JobDataKey.SelfdestructionPeriod,
-                            selfdestructionPeriod.HasValue ? selfdestructionPeriod.Value : DefaultSelfDestructionPeriod)
+                        .UsingJobData(JobDataKey.SelfdestructionPeriod, selfdestructionPeriod ?? DefaultSelfDestructionPeriod)
                         .Build();
             var trigger = TriggerBuilder
                         .Create()
