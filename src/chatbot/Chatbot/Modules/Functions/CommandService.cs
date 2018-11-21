@@ -233,7 +233,7 @@
                 await SendValidationMessage(user, messenger, actionResult).ConfigureAwait(false);
 
                 await messageSender
-                    .SendMessage(user.Id, messenger, actionResult.Message, actionResult.FunctionId)
+                    .SendMessage(user.Id, messenger, actionResult.Message, user.SelfdestructionPeriod, actionResult.FunctionId)
                     .ConfigureAwait(false);
             }
             else
