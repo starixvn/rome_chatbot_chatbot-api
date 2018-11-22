@@ -1,60 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Functions>
   <Function Name="Setting">
-    <Setting Key="GetFunctionName" SpName="Chatbot_GetFunctionName" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="GetMessenger" SpName="Chatbot_GetMessenger" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="GetFunctionName" SpName="Chatbot_GetFunctionName" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="GetMessenger" SpName="Chatbot_GetMessenger" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Type" DataField="messengertype" />
       <Mapping ObjectProperty="Username" DataField="messengerusername" />
       <Mapping ObjectProperty="GeneratedVerificationCodeTime" DataField="verificationcodedatetime" />
     </Setting>
-    <Setting Key="GetMessengerByUser" SpName="Chatbot_GetMessengerByUser" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="GetMessengerByUser" SpName="Chatbot_GetMessengerByUser" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Type" DataField="messengertype" />
       <Mapping ObjectProperty="Username" DataField="messengerusername" />
       <Mapping ObjectProperty="GeneratedVerificationCodeTime" DataField="verificationcodedatetime" />
     </Setting>
-    <Setting Key="GetUser" SpName="Chatbot_GetUser" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="GetUser" SpName="Chatbot_GetUser" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="userid" />
     </Setting>
-    <Setting Key="GetUserActions" SpName="Chatbot_GetUserLogActions" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="GetUserFunctions" SpName="Chatbot_GetUserFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="GetUserActions" SpName="Chatbot_GetUserLogActions" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="GetUserFunctions" SpName="Chatbot_GetUserFunctions" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="functionid" />
     </Setting>
-    <Setting Key="InsertUserAction" SpName="Chatbot_InsertUserLogAction" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="InsertMessage" SpName="Chatbot_InsertMessage" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="InsertMessengerAccount" SpName="Chatbot_InsertMessengerAccount" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="InsertUser" SpName="Chatbot_InsertUser" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="UpdateMessengerAccountStatus" SpName="Chatbot_UpdateMessengerAccountStatus" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="UpdateUserFunctions" SpName="Chatbot_UpdateUserFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="UpdateUserLanguage" SpName="Chatbot_UpdateUserLanguage" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="ResetUserActionCount" SpName="Chatbot_ResetUserLogActionCount" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="Chatbot_GetMessageLog" SpName="Chatbot_GetMessageLog" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="InsertUserAction" SpName="Chatbot_InsertUserLogAction" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="InsertMessage" SpName="Chatbot_InsertMessage" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="InsertMessengerAccount" SpName="Chatbot_InsertMessengerAccount" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="InsertUser" SpName="Chatbot_InsertUser" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="UpdateMessengerAccountStatus" SpName="Chatbot_UpdateMessengerAccountStatus" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="UpdateUserFunctions" SpName="Chatbot_UpdateUserFunctions" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="UpdateUserLanguage" SpName="Chatbot_UpdateUserLanguage" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="ResetUserActionCount" SpName="Chatbot_ResetUserLogActionCount" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_GetMessageLog" SpName="Chatbot_GetMessageLog" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="logid" />
       <Mapping ObjectProperty="Content" DataField="message" />
     </Setting>
-    <Setting Key="Chatbot_GetUsersByFunctions" SpName="Chatbot_GetUsersByFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="Chatbot_GetUsersByFunctions" SpName="Chatbot_GetUsersByFunctions" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="userid" />
     </Setting>
-    <Setting Key="GetSetting" SpName="Chatbot_GetSetting" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="UpdateSetting" SpName="Chatbot_UpdateSetting" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="Chatbot_GetAllFunctions" SpName="Chatbot_GetAllFunctions" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="GetSetting" SpName="Chatbot_GetSetting" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="UpdateSetting" SpName="Chatbot_UpdateSetting" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_GetAllFunctions" SpName="Chatbot_GetAllFunctions" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="functionid" />
       <Mapping ObjectProperty="Name" DataField="functionname" />
       <Mapping ObjectProperty="Type" DataField="type" />
       <Mapping ObjectProperty="Command" DataField="defaultcommand" />
       <Mapping ObjectProperty="Environment" DataField="environment" />
     </Setting>
-    <Setting Key="Chatbot_GetResource" SpName="Chatbot_GetResource" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_GetResource" SpName="Chatbot_GetResource" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
   </Function>
   <Function Name="Action">
-    <Setting Key="Chatbot_GetUserActionsInChain" SpName="Chatbot_GetUserActionsInChain" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="Chatbot_GetUserActionsInChain" SpName="Chatbot_GetUserActionsInChain" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="useractionid" />
     </Setting>
-    <Setting Key="Chatbot_InsertUserAction" SpName="Chatbot_InsertUserAction" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="Chatbot_UpdateUserActionFullCommand" SpName="Chatbot_UpdateUserActionFullCommand" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="Chatbot_GetAllActions" SpName="Chatbot_GetAllActions" DbName="DB053.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="Chatbot_InsertUserAction" SpName="Chatbot_InsertUserAction" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_UpdateUserActionFullCommand" SpName="Chatbot_UpdateUserActionFullCommand" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_GetAllActions" SpName="Chatbot_GetAllActions" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="actionid" />
     </Setting>
-    <Setting Key="Chatbot_UpdateUserActionStatus" SpName="Chatbot_UpdateUserActionStatus" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="Chatbot_ResetUserActionStatus" SpName="Chatbot_ResetUserActionStatus" DbName="DB053.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_UpdateUserActionStatus" SpName="Chatbot_UpdateUserActionStatus" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_ResetUserActionStatus" SpName="Chatbot_ResetUserActionStatus" DbName="DBAGE.bodb_Chatbot.BODBDownlineNet" />
   </Function>
 </Functions>
