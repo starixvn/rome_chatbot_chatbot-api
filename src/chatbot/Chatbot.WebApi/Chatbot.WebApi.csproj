@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="App_Data\DB053.bodb_Chatbot.BODBDownlineNet.xml">
+    <None Update="App_Data\DBBOT.bodb_Chatbot.BODBDownlineNet.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
