@@ -9,9 +9,10 @@
     using NSubstitute;
     using Xunit;
     using Messenger.Client;
-    using Chatbot.Constants;
-    using Chatbot.Configurations;
+    using Chatbot.Shared.Constants;
+    using Chatbot.Shared.Configurations;
 
+    [Trait("Modules", "MessageSenders")]
     public class MessageSenderTests
     {
         private readonly MessengerFactory messengerFactory;

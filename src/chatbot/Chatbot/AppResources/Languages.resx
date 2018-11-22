@@ -321,4 +321,37 @@
   <data name="HintSpecificDownline" xml:space="preserve">
     <value>*Hint: To view your downline's outstanding, please type: /os username</value>
   </data>
+  <data name="InvalidNumerOfDownlines" xml:space="preserve">
+    <value>Number of downlines must be numeric.</value>
+  </data>
+  <data name="InvalidDownline" xml:space="preserve">
+    <value>{0} is not your valid downline.</value>
+  </data>
+  <data name="InvalidDirectDownline" xml:space="preserve">
+    <value>{0} is not your valid {1}.</value>
+  </data>
+  <data name="RootActionTitle" xml:space="preserve">
+    <value>Sorry, we couldn't recognize your request. Which action would you like to take?</value>
+  </data>
+  <data name="PleaseSelectOption" xml:space="preserve">
+    <value>Please select an option.</value>
+  </data>
+  <data name="CancelThisRequest" xml:space="preserve">
+    <value>Cancel current request</value>
+  </data>
+  <data name="FunctionHasBeenCancelled" xml:space="preserve">
+    <value>The current request has been cancelled.</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>For</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="WhichActionWouldYouLikeToTake" xml:space="preserve">
+    <value>Which action would you like to take?</value>
+  </data>
+  <data name="InvalidNumerOfDownlinesRange" xml:space="preserve">
+    <value>Number of downlines must be from 1 to {0}.</value>
+  </data>
 </root>

@@ -12,6 +12,7 @@
     using NSubstitute;
     using Xunit;
 
+    [Trait("Modules", "Functions/Handlers")]
     public class DefaultFunctionHandlerTests
     {
         private readonly IMessageBuilder subMessageBuilder;

@@ -11,6 +11,7 @@ namespace Chatbot.Tests.Modules.Functions
     using NSubstitute;
     using Xunit;
 
+    [Trait("Modules", "Functions")]
     public class FunctionServiceImplTests
     {
         private readonly SettingService subSettingService;

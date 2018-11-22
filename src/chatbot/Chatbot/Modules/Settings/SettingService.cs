@@ -4,16 +4,18 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Chatbot.Configurations;
-    using Chatbot.Helpers;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.Resources;
+    using Chatbot.Modules.Resources.Constants;
     using Chatbot.Modules.SettingLogs;
     using Chatbot.Modules.SettingLogs.Models;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
+    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Helpers;
     using Fanex.Caching;
     using Fanex.Data.Repository;
 
@@ -50,8 +52,6 @@
 
     public class SettingServiceImpl : SettingService
     {
-        private const string DefaultLanguage = "en-US";
-        private const string functionNameByLanguageCacheKey = "SettingServiceImpl.FunctionNameByLanguageCacheKey.{0}";
         private const string AllFunctionsCacheKey = "SettingServiceImpl.AllFunctionsCacheKey";
         private readonly IDynamicRepository dynamicRepository;
         private readonly Func<string> randomNumberFunc;
@@ -61,6 +61,9 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly SettingLogService settingLogService;
+        private readonly ResourceService resourceService;
+
+#pragma warning disable S107 // Methods should not have too many parameters
 
         public SettingServiceImpl(
             IDynamicRepository dynamicRepository,
@@ -69,8 +72,10 @@
             ICacheService cacheService,
             IChatbotConfigs chatbotConfigs,
             SettingLogService settingLogService,
+            ResourceService resourceService,
             Func<string> randomNumberFunc = null,
             Func<DateTime> getCurrentDateTimeFunc = null)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.dynamicRepository = dynamicRepository;
             this.randomNumberFunc = randomNumberFunc ?? RandomSixDigitsNumber;
@@ -80,6 +85,7 @@
             this.messageBuilder = messageBuilder;
             this.chatbotConfigs = chatbotConfigs;
             this.settingLogService = settingLogService;
+            this.resourceService = resourceService;
         }
 
         public async Task GenerateVerificationCode(int userId, Messenger messenger)
@@ -135,7 +141,7 @@
         {
             var functions = await cacheService.GetOrSetAsync(
                 AllFunctionsCacheKey,
-                () => dynamicRepository.FetchAsync<Function>(new GetAllFunctionsCriteria()).Result,
+                LoadAllFunctions,
                 new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0)))
             .ConfigureAwait(false);
 
@@ -148,6 +154,15 @@
             }
 
             return functions;
+        }
+
+        private IEnumerable<Function> LoadAllFunctions()
+        {
+            var functions = dynamicRepository.FetchAsync<Function>(new GetAllFunctionsCriteria()).Result;
+
+            return functions.Where(function
+                => !chatbotConfigs.IsProduction
+                    || function.Environment == Shared.Constants.Environment.PRO);
         }
 
         public async Task<User> GetUser(int custId, int subAccountId, string language)
@@ -231,45 +246,25 @@
         {
             InputValidator.Validate(nameof(userId), userId);
 
-            var functions = await dynamicRepository
+            var functions = await GetAllFunctions().ConfigureAwait(false);
+            var userFunctions = (await dynamicRepository
                 .FetchAsync<Function>(new GetUserFunctionsCriteria(userId))
-                .ConfigureAwait(false);
+                .ConfigureAwait(false))
+                .Where(userFunction => functions.Any(func => func.Id == userFunction.Id));
 
             if (!string.IsNullOrWhiteSpace(language))
             {
-                foreach (var function in functions)
+                foreach (var function in userFunctions)
                 {
                     function.Name = await GetFunctionName(function.Id, language).ConfigureAwait(false);
                 }
             }
 
-            return functions;
+            return userFunctions;
         }
 
         private async Task<string> GetFunctionName(int functionId, string language)
-        {
-            var functionLanguages = await cacheService.GetOrSetAsync(
-                        string.Format(functionNameByLanguageCacheKey, functionId),
-                        () => GetFunctionLanguage(functionId).Result,
-                        new CacheItemOptions().SetAbsoluteExpiration(new TimeSpan(1, 0, 0)))
-                        .ConfigureAwait(false);
-
-            var functionName = functionLanguages
-                .FirstOrDefault(languageDto => languageDto.LanguageCode == language)
-                ?.FunctionName;
-
-            if (string.IsNullOrWhiteSpace(functionName))
-            {
-                functionName = functionLanguages
-                .FirstOrDefault(languageDto => languageDto.LanguageCode == DefaultLanguage)
-                ?.FunctionName;
-            }
-
-            return functionName;
-        }
-
-        private Task<IEnumerable<FunctionLanguageDto>> GetFunctionLanguage(int functionId)
-            => dynamicRepository.FetchAsync<FunctionLanguageDto>(new GetFunctionNameCriteria(functionId));
+            => (await resourceService.GetResource(functionId, ResourceType.Function, language).ConfigureAwait(false))?.Value;
 
         public async Task UpdateFunctions(int userId, IEnumerable<Function> functions, UpdateFunctionsLog logData)
         {

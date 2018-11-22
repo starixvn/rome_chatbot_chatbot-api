@@ -15,6 +15,7 @@ namespace Chatbot.Tests.Modules.Functions.FunctionHandler
     using NSubstitute;
     using Xunit;
 
+    [Trait("Modules", "Functions/Handlers")]
     public class MessageAnnouncementFunctionHandlerTests
     {
         private readonly IMessageBuilder subMessageBuilder;

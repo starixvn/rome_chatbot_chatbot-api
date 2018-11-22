@@ -6,6 +6,7 @@
     using NSubstitute;
     using Xunit;
 
+    [Trait("Controllers", "Command")]
     public class CommandControllerTests
     {
         private readonly CommandService commandService;
@@ -24,7 +25,7 @@
             var param = new CommandParam
             {
                 Command = "command",
-                Parameter = "parameter",
+                ButtonData = "parameter",
                 MessengerType = 1,
                 MessengerUsername = "username"
             };
@@ -35,7 +36,7 @@
             // Arrange
             commandService.Received().Execute(
                 param.Command,
-                param.Parameter,
+                param.ButtonData,
                 param.MessengerType,
                 param.MessengerUsername);
         }

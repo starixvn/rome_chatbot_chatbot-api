@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using Chatbot.Configurations;
+    using Chatbot.Shared.Configurations;
     using Chatbot.Models;
     using Chatbot.Modules.MessageServices;
     using Chatbot.Modules.MessageServices.Params.Db;
@@ -14,6 +14,7 @@
     using NSubstitute;
     using Xunit;
 
+    [Trait("Modules", "MessageLogger")]
     public class MessageLoggerTests
     {
         private readonly IMessageLogger messageLogger;

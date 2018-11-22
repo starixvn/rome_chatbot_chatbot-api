@@ -7,9 +7,9 @@
     using System.Threading.Tasks;
     using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
-    using Chatbot.Configurations;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.Params;
+    using Chatbot.Shared.Configurations;
     using Microsoft.Extensions.DependencyInjection;
     using Serilog;
 
@@ -51,7 +51,9 @@
                 return await reportService.GetDownlineOutstandingAsync(
                     param.User.CustId,
                     (byte)param.User.CustLevel,
-                    (int)param.Others["CustId"]);
+                    (int)param.Others["CustId"],
+                    (string)param.Others["CustName"],
+                    param.User.Language);
             }
 
             var topQuery = param.Others.ContainsKey("topQuery") ? (int)param.Others["topQuery"] : 50;

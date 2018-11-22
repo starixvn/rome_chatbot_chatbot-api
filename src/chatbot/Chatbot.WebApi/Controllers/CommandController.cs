@@ -23,7 +23,7 @@
         {
             await commandService.Execute(
                 param.Command,
-                param.Parameter,
+                param.ButtonData,
                 param.MessengerType,
                 param.MessengerUsername);
         }

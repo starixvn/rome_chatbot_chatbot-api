@@ -5,6 +5,7 @@
     using Chatbot.Modules.MessageBuilders.Templates;
     using Xunit;
 
+    [Trait("Modules", "Buildes/Templates")]
     public class HeaderTemplateTests
     {
         [Fact]

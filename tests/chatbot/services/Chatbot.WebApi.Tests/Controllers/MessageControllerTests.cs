@@ -12,6 +12,7 @@
     using NSubstitute;
     using Xunit;
 
+    [Trait("Controllers", "Message")]
     public class MessageControllerTests
     {
         private readonly IMessageSender subMessageSender;

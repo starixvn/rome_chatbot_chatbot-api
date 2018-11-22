@@ -1,4 +1,4 @@
-﻿namespace Chatbot.Extensions
+﻿namespace Chatbot.Shared.Extensions
 {
     public static class NumberExtensions
     {

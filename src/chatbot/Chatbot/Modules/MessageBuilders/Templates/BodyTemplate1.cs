@@ -1,43 +1,78 @@
 ﻿namespace Chatbot.Modules.MessageBuilders.Templates
 {
+    using Alpha.Services.Client.Models;
+    using Chatbot.AppResources;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using Alpha.Services.Client.Models;
-    using Chatbot.AppResources;
 
     public class BodyTemplate1 : BodyTemplate
     {
         public override string ToString(object data, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
         {
-            if (!(data is OutstandingDetail outstandingDetail))
+            var outstandingDetail = (OutstandingDetail)data;
+            var isTopXOutstanding = string.IsNullOrWhiteSpace(outstandingDetail.DownlineName);
+            var textContainer = new List<string>();
+
+            AddHeaderMessage(textContainer, isTopXOutstanding, outstandingDetail, cultureInfo, messengerFormatter);
+
+            AddTotalBodyMessage(textContainer, outstandingDetail.Total, messengerFormatter);
+            AddBodyMessage(textContainer, isTopXOutstanding, outstandingDetail.TopOutstandings, messengerFormatter);
+
+            AddHiddenDownlinesCount(textContainer, outstandingDetail, cultureInfo);
+
+            AddHint(textContainer, cultureInfo, messengerFormatter);
+
+            return string.Join(messengerFormatter.NewLine(), textContainer);
+        }
+
+        private void AddHeaderMessage(
+            List<string> textContainer,
+            bool isTopXOutstanding,
+            OutstandingDetail outstandingDetail,
+            CultureInfo cultureInfo,
+            IMessengerFormatter messengerFormatter)
+        {
+            if (!isTopXOutstanding)
             {
-                return base.ToString(data, cultureInfo, messengerFormatter);
+                textContainer.Add($"{GetResource("For", cultureInfo)} {outstandingDetail.DownlineName}");
             }
 
-            var messageHeader = string.Format("{0}  /  {1}  {2}  {3}",
-                GetResource($"CustLevel_{outstandingDetail.CustLevel - 1}", cultureInfo),
+            textContainer.Add(string.Format("{0}  /  {1}  {2}  {3}",
+                GetResource(isTopXOutstanding ? $"CustLevel_{outstandingDetail.CustLevel - 1}" : "Products", cultureInfo),
                 GetResource(nameof(Languages.Member), cultureInfo), messengerFormatter.Point(),
-                GetResource($"CustLevel_{outstandingDetail.CustLevel}", cultureInfo));
+                $"{GetResource($"CustLevel_{outstandingDetail.CustLevel}", cultureInfo)}{messengerFormatter.NewLine()}"));
+            textContainer.Add(GetResource("Total", cultureInfo).ToUpperInvariant());
+        }
 
-            var textContainer = new List<string>
-            {
-                $"{messageHeader}{messengerFormatter.NewLine()}",
-                GetResource("Total", cultureInfo).ToUpperInvariant()
-            };
+        private static void AddTotalBodyMessage(
+            List<string> textContainer,
+            OutstandingModel total,
+            IMessengerFormatter messengerFormatter)
+            => textContainer.Add($"    {GetFormattedValue(total.MemberOutstanding)}  {messengerFormatter.Point()}  {GetFormattedValue(total.Outstanding)}");
 
-            var total = outstandingDetail.Total;
-            textContainer.Add($"    {GetFormattedValue(total.MemberOutstanding)}  {messengerFormatter.Point()}  {GetFormattedValue(total.Outstanding)}");
-
+        private static void AddBodyMessage(
+            List<string> textContainer,
+            bool isTopXOutstanding,
+            IEnumerable<OutstandingModel> outstandings,
+            IMessengerFormatter messengerFormatter)
+        {
             var index = 1;
-            foreach (var outstanding in outstandingDetail.TopOutstandings)
+
+            foreach (var outstanding in outstandings)
             {
-                textContainer.Add($"{index}. {outstanding.CustName}");
+                textContainer.Add(isTopXOutstanding ? $"{index}. {outstanding.Name}" : outstanding.Name);
                 textContainer.Add($"    {GetFormattedValue(outstanding.MemberOutstanding)}  {messengerFormatter.Point()}  {GetFormattedValue(outstanding.Outstanding)}");
 
                 index++;
             }
+        }
 
+        private void AddHiddenDownlinesCount(
+            List<string> textContainer,
+            OutstandingDetail outstandingDetail,
+            CultureInfo cultureInfo)
+        {
             if (outstandingDetail.HiddenDownlinesCount > 0)
             {
                 var hiddenDownlinesMessage = BuildHiddenDownlinesMessage(
@@ -47,20 +82,23 @@
 
                 textContainer.Add(hiddenDownlinesMessage);
             }
-
-            if (IsShowHint())
-            {
-                var hintMessage = BuildHintMessage(cultureInfo);
-                textContainer.Add($"{messengerFormatter.NewLine()}{hintMessage}");
-            }
-
-            return string.Join(messengerFormatter.NewLine(), textContainer);
         }
 
         private string BuildHiddenDownlinesMessage(int count, int custLevel, CultureInfo cultureInfo)
             => string.Format(GetResource(nameof(Languages.HiddenDownlinesCount), cultureInfo),
                 count,
                 GetResource($"CustLevel_{custLevel}", cultureInfo));
+
+        private void AddHint(
+            List<string> textContainer,
+            CultureInfo cultureInfo,
+            IMessengerFormatter messengerFormatter)
+        {
+            if (IsShowHint())
+            {
+                textContainer.Add($"{messengerFormatter.NewLine()}{BuildHintMessage(cultureInfo)}");
+            }
+        }
 
         /// <summary>
         /// Random rate of 20%

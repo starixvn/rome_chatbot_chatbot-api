@@ -3,7 +3,7 @@
 namespace Chatbot.WebApi.Controllers
 {
     using System.Threading.Tasks;
-    using Chatbot.Constants;
+    using Chatbot.Shared.Constants;
     using Chatbot.Models;
     using Chatbot.Modules.MessageSenders;
     using Microsoft.AspNetCore.Mvc;

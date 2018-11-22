@@ -10,6 +10,7 @@
     using ONEbook.UM.Services;
     using Xunit;
 
+    [Trait("Middlewares", "UnderMaintenanceHandling")]
     public class UnderMaintenanceHandlingMiddlewareTests
     {
         private readonly IMaintenanceService maintenanceService;

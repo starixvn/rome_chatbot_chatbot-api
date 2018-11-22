@@ -4,8 +4,8 @@
     using System.Globalization;
     using System.Linq;
     using Chatbot.AppResources;
-    using Chatbot.Helpers;
-    using Extensions;
+    using Chatbot.Shared.Extensions;
+    using Chatbot.Shared.Helpers;
 
     public interface IBodyTemplate
     {

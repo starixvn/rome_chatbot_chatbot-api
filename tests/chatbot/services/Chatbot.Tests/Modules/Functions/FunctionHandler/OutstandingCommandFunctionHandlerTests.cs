@@ -10,10 +10,12 @@
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Shared.Configurations;
     using Fanex.Logging;
     using NSubstitute;
     using Xunit;
 
+    [Trait("Modules", "Functions/Handlers")]
     public class OutstandingCommandFunctionHandlerTests
     {
         private readonly ILogger logger;
@@ -22,6 +24,7 @@
         private readonly CustomerService customerService;
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers;
         private readonly OutstandingCommandFunctionHandler handler;
+        private readonly IChatbotConfigs chatbotConfigs;
 
         public OutstandingCommandFunctionHandlerTests()
         {
@@ -30,12 +33,14 @@
             messageSender = Substitute.For<IMessageSender>();
             customerService = Substitute.For<CustomerService>();
             getDataHandlers = new Dictionary<int, Func<FunctionParam, Task<object>>>();
+            chatbotConfigs = Substitute.For<IChatbotConfigs>();
 
             handler = new OutstandingCommandFunctionHandler(
                 messageBuilder,
                 messageSender,
                 customerService,
                 logger,
+                chatbotConfigs,
                 getDataHandlers);
         }
 
@@ -43,11 +48,12 @@
         public void Handle_ParameterIsNumer_RunDataHandlerAndSendMessage()
         {
             // Arrange
+            chatbotConfigs.OutstandingMaxTopQuery.Returns(1000);
             var param = new FunctionParam(
                 new User(1, 2, 4, 3, "en-US"),
                 new Function { Id = 1 },
                 new Messenger(1, "sa"),
-                new Dictionary<string, object> { ["parameter"] = 10 });
+                new Dictionary<string, object> { ["parameters"] = new string[] { "10" } });
 
             getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
             customerService.IsAccountClosed(2, 3).Returns(false);
@@ -68,7 +74,7 @@
                 new User(1, 2, 4, 3, "en-US"),
                 new Function { Id = 1 },
                 new Messenger(1, "sa"),
-                new Dictionary<string, object> { ["parameter"] = "abc" });
+                new Dictionary<string, object> { ["parameters"] = new string[] { "abc" } });
 
             getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
             customerService.IsAccountClosed(2, 3).Returns(false);
@@ -92,7 +98,7 @@
                 new User(1, 2, 4, 3, "en-US"),
                 new Function { Id = 1 },
                 new Messenger(1, "sa"),
-                new Dictionary<string, object> { ["parameter"] = "abc" });
+                new Dictionary<string, object> { ["parameters"] = new string[] { "abc" } });
 
             getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
             customerService.IsAccountClosed(2, 3).Returns(false);
@@ -116,7 +122,7 @@
                 new User(1, 2, 4, 3, "en-US"),
                 new Function { Id = 1 },
                 new Messenger(1, "sa"),
-                new Dictionary<string, object> { ["parameter"] = "abc" });
+                new Dictionary<string, object> { ["parameters"] = new string[] { "abc" } });
 
             getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
             customerService.IsAccountClosed(2, 3).Returns(false);

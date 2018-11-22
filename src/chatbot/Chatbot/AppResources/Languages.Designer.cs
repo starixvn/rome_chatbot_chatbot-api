@@ -115,6 +115,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel current request.
+        /// </summary>
+        public static string CancelThisRequest {
+            get {
+                return ResourceManager.GetString("CancelThisRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cash.
         /// </summary>
         public static string CashBalance {
@@ -210,6 +219,24 @@ namespace Chatbot.AppResources {
         public static string DefaultErrorMessage {
             get {
                 return ResourceManager.GetString("DefaultErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For.
+        /// </summary>
+        public static string For {
+            get {
+                return ResourceManager.GetString("For", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The current request has been cancelled..
+        /// </summary>
+        public static string FunctionHasBeenCancelled {
+            get {
+                return ResourceManager.GetString("FunctionHasBeenCancelled", resourceCulture);
             }
         }
         
@@ -358,6 +385,42 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is not your valid {1}..
+        /// </summary>
+        public static string InvalidDirectDownline {
+            get {
+                return ResourceManager.GetString("InvalidDirectDownline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is not your valid downline..
+        /// </summary>
+        public static string InvalidDownline {
+            get {
+                return ResourceManager.GetString("InvalidDownline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of downlines must be numeric..
+        /// </summary>
+        public static string InvalidNumerOfDownlines {
+            get {
+                return ResourceManager.GetString("InvalidNumerOfDownlines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of downlines must be from 1 to {0}..
+        /// </summary>
+        public static string InvalidNumerOfDownlinesRange {
+            get {
+                return ResourceManager.GetString("InvalidNumerOfDownlinesRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Master.
         /// </summary>
         public static string Master {
@@ -480,6 +543,33 @@ namespace Chatbot.AppResources {
         public static string Outstanding {
             get {
                 return ResourceManager.GetString("Outstanding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select an option..
+        /// </summary>
+        public static string PleaseSelectOption {
+            get {
+                return ResourceManager.GetString("PleaseSelectOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Products.
+        /// </summary>
+        public static string Products {
+            get {
+                return ResourceManager.GetString("Products", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, we couldn&apos;t recognize your request. Which action would you like to take?.
+        /// </summary>
+        public static string RootActionTitle {
+            get {
+                return ResourceManager.GetString("RootActionTitle", resourceCulture);
             }
         }
         
@@ -624,6 +714,15 @@ namespace Chatbot.AppResources {
         public static string VerificationCode_2 {
             get {
                 return ResourceManager.GetString("VerificationCode_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Which action would you like to take?.
+        /// </summary>
+        public static string WhichActionWouldYouLikeToTake {
+            get {
+                return ResourceManager.GetString("WhichActionWouldYouLikeToTake", resourceCulture);
             }
         }
         

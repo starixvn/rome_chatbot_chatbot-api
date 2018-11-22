@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Threading.Tasks;
-    using Chatbot.Configurations;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
+    using Chatbot.Shared.Configurations;
     using Fanex.Data.Repository;
 
     public interface NotificationService

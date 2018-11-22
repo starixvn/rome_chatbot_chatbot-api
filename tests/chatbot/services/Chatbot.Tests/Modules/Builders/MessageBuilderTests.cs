@@ -4,9 +4,11 @@
     using System.Globalization;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageBuilders.Templates;
+    using Chatbot.Modules.Resources;
     using NSubstitute;
     using Xunit;
 
+    [Trait("Modules", "Builders")]
     public class MessageBuilderTests
     {
         private readonly IDictionary<int, IMessengerFormatter> messengerFormatters;
@@ -14,12 +16,14 @@
         private readonly IDictionary<int, IMessageTemplate> messageTemplates;
         private readonly IMessengerFormatter messengerFormatter;
         private readonly IMessageTemplate messageTemplate;
+        private readonly ResourceService resourceService;
         private readonly MessageBuilder messageBuilder;
 
         public MessageBuilderTests()
         {
             messageTemplate = Substitute.For<IMessageTemplate>();
             messengerFormatter = Substitute.For<IMessengerFormatter>();
+            resourceService = Substitute.For<ResourceService>();
             messengerFormatters = new Dictionary<int, IMessengerFormatter>
             {
                 { 1, messengerFormatter }
@@ -31,7 +35,7 @@
             cultureInfoList = new Dictionary<string, CultureInfo>();
             messengerFormatter.NewLine().Returns("_newline_");
 
-            messageBuilder = new MessageBuilder(cultureInfoList, messageTemplates, messengerFormatters);
+            messageBuilder = new MessageBuilder(cultureInfoList, messageTemplates, messengerFormatters, resourceService);
         }
 
         [Fact]

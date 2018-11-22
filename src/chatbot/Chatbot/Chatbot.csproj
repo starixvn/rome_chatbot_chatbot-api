@@ -13,12 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Alpha.Services.Client" Version="1.0.3" />
+    <PackageReference Include="Alpha.Services.Client" Version="1.0.4" />
     <PackageReference Include="Fanex.Caching" Version="2.2.0-beta2" />
-    <PackageReference Include="Fanex.Data" Version="3.0.0-rc1" />
-    <PackageReference Include="Fanex.Data.Repository" Version="3.0.0-rc1" />
-    <PackageReference Include="Fanex.Logging" Version="2.0.0-beta3" />
-    <PackageReference Include="Messenger.Client" Version="1.0.0-beta6" />
+    <PackageReference Include="Fanex.Data" Version="3.0.0" />
+    <PackageReference Include="Fanex.Data.Repository" Version="3.0.0" />
+    <PackageReference Include="Fanex.Logging" Version="2.0.0-beta7" />
+    <PackageReference Include="Messenger.Client" Version="1.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />

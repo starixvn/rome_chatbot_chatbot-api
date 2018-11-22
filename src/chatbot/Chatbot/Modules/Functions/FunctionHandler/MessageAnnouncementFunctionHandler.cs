@@ -5,12 +5,12 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Services;
-    using Chatbot.Helpers;
     using Chatbot.Models;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
+    using Chatbot.Shared.Helpers;
     using Fanex.Logging;
 
     public class MessageAnnouncementFunctionHandler : DefaultFunctionHandler

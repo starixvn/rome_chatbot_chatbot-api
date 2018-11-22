@@ -5,16 +5,19 @@ namespace Chatbot.Modules.MessageServices
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Chatbot.Configurations;
-    using Chatbot.Helpers;
     using Chatbot.Models;
     using Chatbot.Modules.MessageServices.Params.Db;
     using Chatbot.Modules.Settings.Params.Db.Commands;
+    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Helpers;
     using Fanex.Data.Repository;
+    using MessengerClient = Messenger.Client;
 
     public interface IMessageLogger
     {
         Task LogMessage(int sender, int receiver, Messenger messenger, string message, int status = 0, int functionId = 0);
+
+        Task LogMessage(int sender, int receiver, Messenger messenger, MessengerClient.Models.Message message, int status = 0, int functionId = 0);
 
         Task<IEnumerable<Message>> GetMessageLogs(int userId, DateTime fromDate, DateTime toDate, int functionId = 0, int messengerType = 0);
     }
@@ -61,12 +64,56 @@ namespace Chatbot.Modules.MessageServices
             int status = 0,
             int functionId = 0)
         {
+            await LogMessage(
+                sender,
+                receiver,
+                messenger.Type,
+                messenger.Username,
+                message,
+                status,
+                functionId).ConfigureAwait(false);
+        }
+
+        public async Task LogMessage(int sender, int receiver, Messenger messenger, MessengerClient.Models.Message message, int status = 0, int functionId = 0)
+        {
+            var logMessage = new List<string>
+            {
+                message.Content
+            };
+
+            if (message.MessageMarkup != null)
+            {
+                foreach (var action in message.MessageMarkup.MessageActions)
+                {
+                    logMessage.Add($"<a href='#'>{action.Label}</a>");
+                }
+            }
+
+            await LogMessage(
+               sender,
+               receiver,
+               messenger.Type,
+               messenger.Username,
+               string.Join("<br>", logMessage),
+               status,
+               functionId).ConfigureAwait(false);
+        }
+
+        private async Task LogMessage(
+            int sender,
+            int receiver,
+            int messengerType,
+            string messengerUsername,
+            string message,
+            int status,
+            int functionId)
+        {
             var command = new InsertMessageCommand(
                 sender,
                 receiver,
                 message,
-                messenger.Type,
-                messenger.Username,
+                messengerType,
+                messengerUsername,
                 status,
                 functionId);
 

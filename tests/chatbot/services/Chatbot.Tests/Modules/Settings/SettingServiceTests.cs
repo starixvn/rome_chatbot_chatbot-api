@@ -5,21 +5,23 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Models;
-    using Chatbot.Configurations;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.Resources;
     using Chatbot.Modules.SettingLogs;
     using Chatbot.Modules.SettingLogs.Models;
     using Chatbot.Modules.Settings;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
+    using Chatbot.Shared.Configurations;
     using Fanex.Caching;
     using Fanex.Data.Repository;
     using NSubstitute;
     using Xunit;
 
+    [Trait("Modules", "Settings")]
     public class SettingServiceTests
     {
         private readonly IDynamicRepository dynamicRepository;
@@ -30,6 +32,7 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly SettingLogService settingLogService;
+        private readonly ResourceService resourceService;
 
         private readonly SettingService settingService;
 
@@ -43,6 +46,7 @@
             messageBuilder = Substitute.For<IMessageBuilder>();
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
             settingLogService = Substitute.For<SettingLogService>();
+            resourceService = Substitute.For<ResourceService>();
 
             settingService = new SettingServiceImpl(
                 dynamicRepository,
@@ -51,6 +55,7 @@
                 cacheService,
                 chatbotConfigs,
                 settingLogService,
+                resourceService,
                 randomNumberFunc,
                 getCurrentDateTimeFunc);
         }
@@ -221,6 +226,7 @@
                         Name = "name"
                     }
                 } as IEnumerable<Function>));
+            SubGetAllActions();
 
             var actualFunctions = settingService.GetFunctions(userId).GetAwaiter().GetResult();
 
@@ -231,35 +237,16 @@
             Assert.Equal("name", firstFunction.Name);
         }
 
-        [Fact]
-        public void GetFunctions_AlwaysGetByLanguage_ReturnFunctionListWithName()
+        private void SubGetAllActions()
         {
-            var userId = 23343;
-            dynamicRepository
-                .FetchAsync<Function>(Arg.Is<GetUserFunctionsCriteria>(criteria => criteria.UserId == userId))
-                .Returns(Task.FromResult(new List<Function>
-                {
-                    new Function
-                    {
-                        Id = 1,
-                        Command = "/os",
-                        Name = "name"
-                    }
-                } as IEnumerable<Function>));
-
             cacheService.GetOrSetAsync(
-                "SettingServiceImpl.FunctionNameByLanguageCacheKey.1",
-                Arg.Any<Func<IEnumerable<FunctionLanguageDto>>>(),
-                Arg.Any<CacheItemOptions>())
-                .Returns(Task.FromResult(new List<FunctionLanguageDto>
-                {
-                    new FunctionLanguageDto(1, "name-en-us", "function", "en-US")
-                } as IEnumerable<FunctionLanguageDto>));
-
-            var actualFunctions = settingService.GetFunctions(userId, "en-US").GetAwaiter().GetResult();
-
-            Assert.Single(actualFunctions);
-            Assert.Equal("name-en-us", actualFunctions.ElementAt(0).Name);
+                            "SettingServiceImpl.AllFunctionsCacheKey",
+                            Arg.Any<Func<IEnumerable<Function>>>(),
+                            Arg.Any<CacheItemOptions>())
+                            .Returns(Task.FromResult(new List<Function>
+                            {
+                    new Function { Id = 1, Environment = 0 }
+                            } as IEnumerable<Function>));
         }
 
         [Fact]
@@ -843,40 +830,6 @@
                 "SettingServiceImpl.AllFunctionsCacheKey",
                 Arg.Any<Func<IEnumerable<Function>>>(),
                 Arg.Any<CacheItemOptions>());
-        }
-
-        [Fact]
-        public void GetAllFunctions_AlwaysGetByLanguage_ReturnFunctionListWithName()
-        {
-            // Arrange
-            cacheService.GetOrSetAsync(
-                "SettingServiceImpl.AllFunctionsCacheKey",
-                Arg.Any<Func<IEnumerable<Function>>>(),
-                Arg.Any<CacheItemOptions>()).Returns(Task.FromResult(new List<Function>
-                {
-                    new Function
-                    {
-                        Id = 1,
-                        Command = "/os",
-                        Name = "name"
-                    }
-                } as IEnumerable<Function>));
-
-            cacheService.GetOrSetAsync(
-                "SettingServiceImpl.FunctionNameByLanguageCacheKey.1",
-                Arg.Any<Func<IEnumerable<FunctionLanguageDto>>>(),
-                Arg.Any<CacheItemOptions>())
-                .Returns(Task.FromResult(new List<FunctionLanguageDto>
-                {
-                    new FunctionLanguageDto(1, "name-en-us", "function", "en-US")
-                } as IEnumerable<FunctionLanguageDto>));
-
-            // Act
-            var actualFunctions = settingService.GetAllFunctions("en-US").GetAwaiter().GetResult();
-
-            // Assert
-            Assert.Single(actualFunctions);
-            Assert.Equal("name-en-us", actualFunctions.ElementAt(0).Name);
         }
     }
 }

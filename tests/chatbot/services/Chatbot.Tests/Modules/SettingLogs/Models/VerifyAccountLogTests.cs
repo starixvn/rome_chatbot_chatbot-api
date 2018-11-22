@@ -1,12 +1,13 @@
 ﻿namespace Chatbot.Tests.Modules.SettingLogs.Models
 {
     using System.Collections.Generic;
-    using Chatbot.Constants;
+    using Chatbot.Shared.Constants;
     using Chatbot.Models;
     using Chatbot.Modules.SettingLogs.Constants;
     using Chatbot.Modules.SettingLogs.Models;
     using Xunit;
 
+    [Trait("Modules", "SettingLogs")]
     public class VerifyAccountLogTests
     {
         [Fact]

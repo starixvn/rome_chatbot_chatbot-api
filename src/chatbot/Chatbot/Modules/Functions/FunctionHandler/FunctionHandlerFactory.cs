@@ -4,12 +4,12 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Services;
-    using Chatbot.Configurations;
     using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
+    using Chatbot.Shared.Configurations;
     using Fanex.Logging;
 
     public interface IFunctionHandlerFactory
@@ -59,7 +59,7 @@
 
             if (functionId == chatbotConfigs.OutstandingFunctionId)
             {
-                return new OutstandingCommandFunctionHandler(messageBuilder, messageSender, customerService, logger, getDataHanlders);
+                return new OutstandingCommandFunctionHandler(messageBuilder, messageSender, customerService, logger, chatbotConfigs, getDataHanlders);
             }
 
             return new DefaultFunctionHandler(messageBuilder, messageSender, customerService, logger, getDataHanlders);

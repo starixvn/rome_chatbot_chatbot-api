@@ -6,8 +6,8 @@ namespace Chatbot.WebApi
     using System.Globalization;
     using System.Linq;
     using Alpha.Services.Client.Services;
-    using Chatbot.Configurations;
-    using Chatbot.Constants;
+    using Chatbot.Modules.Actions;
+    using Chatbot.Modules.Actions.Compilers;
     using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.FunctionHandler;
@@ -15,15 +15,22 @@ namespace Chatbot.WebApi
     using Chatbot.Modules.MessageBuilders.Templates;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageServices;
+    using Chatbot.Modules.Resources;
     using Chatbot.Modules.SettingLogs;
     using Chatbot.Modules.Settings;
+    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using Chatbot.WebApi.Filters;
     using Chatbot.WebApi.Middlewares;
     using Fanex.Caching;
     using Fanex.Data;
     using Fanex.Data.Repository;
     using Fanex.Logging;
+    using Fanex.Logging.Extensions;
+    using Fanex.Logging.Extensions.AspNetCore;
+    using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.RabbitMQ;
+    using Fanex.Logging.Sentry;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -34,6 +41,7 @@ namespace Chatbot.WebApi
     using ONEbook.UM.Helpers;
     using ONEbook.UM.Services;
     using ONEbook.UM.Transport;
+    using Sentry;
     using Serilog;
     using Swashbuckle.AspNetCore.Swagger;
 
@@ -54,10 +62,9 @@ namespace Chatbot.WebApi
             services.AddSingleton(_ => Configuration);
             var chatbotConfigs = new ChatbotConfigs(Configuration);
 
-            LogManager
-                    .SetDefaultLogCategory(Configuration["Fanex.Logging:DefaultCategory"])
-                    .Use(new RabbitMQLogging(Configuration["Fanex.Logging:RabbitMQConnectionStrings"]));
-            services.AddSingleton(Logger.Log);
+            InitLogging(services);
+
+            
             services.AddLogging();
             services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
             services.AddSingleton<SettingService, SettingServiceImpl>();
@@ -66,6 +73,7 @@ namespace Chatbot.WebApi
             services.AddSingleton<IMessageBuilder, MessageBuilder>();
             services.AddSingleton<IMessageLogger, MessageLogger>();
             services.AddSingleton<IMessageSender, MessageSender>();
+            services.AddSingleton<ActionService, ActionServiceImpl>();
             services.AddSingleton<CommandService, CommandServiceImpl>();
             services.AddSingleton<IFunctionHandler, DefaultFunctionHandler>();
             services.AddSingleton<IChatbotConfigs>(chatbotConfigs);
@@ -79,6 +87,7 @@ namespace Chatbot.WebApi
             services.AddSingleton<ReportService, ReportServiceImpl>();
             services.AddSingleton<SettingLogService, SettingLogServiceImpl>();
             services.AddSingleton<Alpha.Services.Client.Services.LogService, LogServiceImpl>();
+            services.AddSingleton<ResourceService, ResourceServiceImpl>();
 
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
                 { chatbotConfigs.YesterdayWinLossFunctionId, new MessageTemplate(new HeaderTemplate4(), new BodyTemplate()) },
@@ -93,6 +102,8 @@ namespace Chatbot.WebApi
                 {
                     { MessengerType.Letstalk, new LetstalkFormatter() }
                 });
+            services.AddSingleton<IDictionary<int, IActionCompiler>>(new Dictionary<int, IActionCompiler>());
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IDictionary<string, CultureInfo>>(
                 new Dictionary<string, CultureInfo>
@@ -106,6 +117,7 @@ namespace Chatbot.WebApi
                     { "ko-KR", CultureInfo.CreateSpecificCulture("ko-KR") }
                 });
             services.AddFunctionHandler();
+            services.AddActionHandler();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Chatbot API", Version = "v1" });
@@ -117,6 +129,35 @@ namespace Chatbot.WebApi
             //{
             //    options.AddScheme("HMAC", auth => auth.HandlerType = typeof(HmacAuthenticationHandler));
             //});
+        }
+
+        private void InitLogging(IServiceCollection services)
+        {
+            var logEngines = new List<ILogEngine>
+            {
+                new RabbitMQLogging(Configuration["Fanex.Logging:RabbitMQConnectionStrings"])
+            };
+
+            var sentryUrl = Configuration["Fanex.Logging:SentryUrl"];
+            if (!string.IsNullOrWhiteSpace(sentryUrl))
+            {
+                logEngines.Add(new SentryLogging(new SentryOptions
+                {
+                    Dsn = new Dsn(sentryUrl)
+                }));
+            }
+
+            LogManager
+                    .SetDefaultLogCategory(Configuration["Fanex.Logging:DefaultCategory"])
+                    .Use(logEngines);
+
+            services.AddSingleton(Logger.Log);
+
+            ExceptionHandler
+                // To use custom config
+                .UseConfig(new LoggingConfiguration()
+                .GetHttpHeaderInfo()
+                .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -139,6 +180,7 @@ namespace Chatbot.WebApi
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMiddleware(typeof(UnderMaintenanceHandlingMiddleware));
+
             var umConfig = new UMClientConfiguration(Configuration);
 
             UMClientManager

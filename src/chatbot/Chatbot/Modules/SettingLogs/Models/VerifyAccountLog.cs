@@ -1,9 +1,9 @@
 ﻿namespace Chatbot.Modules.SettingLogs.Models
 {
     using System.Collections.Generic;
-    using Chatbot.Constants;
     using Chatbot.Models;
     using Chatbot.Modules.SettingLogs.Constants;
+    using Chatbot.Shared.Constants;
 
     public class VerifyAccountLog : LogData
     {
