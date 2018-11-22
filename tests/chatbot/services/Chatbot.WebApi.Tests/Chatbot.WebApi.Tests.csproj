@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="CompareNETObjects" Version="4.57.0" />
-    <PackageReference Include="Messenger.Client" Version="1.0.1-beta4" />
+    <PackageReference Include="Messenger.Client" Version="1.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="NSubstitute" Version="3.1.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
