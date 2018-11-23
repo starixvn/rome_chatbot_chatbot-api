@@ -305,7 +305,11 @@
             InputValidator.Validate("Messenger Username", messenger.Username);
             InputValidator.Validate("Messenger Type", messenger.Type);
 
-            var userId = await InsertUser(custId, subAccountId, language, messenger, custLevel).ConfigureAwait(false);
+            var user = await GetUser(custId, subAccountId, language).ConfigureAwait(false);
+
+            var userId = user == null
+                ? await InsertUser(custId, subAccountId, language, messenger, custLevel).ConfigureAwait(false)
+                : user.Id;
 
             var result = await VerifyMessengerAccount(userId, messenger).ConfigureAwait(false);
             if (result.IsNotOk)

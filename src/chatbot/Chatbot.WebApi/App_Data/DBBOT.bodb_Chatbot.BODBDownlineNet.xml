@@ -12,7 +12,7 @@
       <Mapping ObjectProperty="Username" DataField="messengerusername" />
       <Mapping ObjectProperty="GeneratedVerificationCodeTime" DataField="verificationcodedatetime" />
     </Setting>
-    <Setting Key="GetUser" SpName="Chatbot_GetUser_xtest" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="GetUser" SpName="Chatbot_GetUser" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="userid" />
     </Setting>
     <Setting Key="GetUserActions" SpName="Chatbot_GetUserLogActions" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
@@ -31,7 +31,7 @@
       <Mapping ObjectProperty="Id" DataField="logid" />
       <Mapping ObjectProperty="Content" DataField="message" />
     </Setting>
-    <Setting Key="Chatbot_GetUsersByFunctions" SpName="Chatbot_GetUsersByFunctions_xtest" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet">
+    <Setting Key="Chatbot_GetUsersByFunctions" SpName="Chatbot_GetUsersByFunctions" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="userid" />
     </Setting>
     <Setting Key="GetSetting" SpName="Chatbot_GetSetting" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
@@ -44,7 +44,7 @@
       <Mapping ObjectProperty="Environment" DataField="environment" />
     </Setting>
     <Setting Key="Chatbot_GetResource" SpName="Chatbot_GetResource" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
-    <Setting Key="Chatbot_UpdateSelfdestructionPeriod" SpName="Chatbot_UpdateSelfdestructionPeriod_xtest" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_UpdateSelfdestructionPeriod" SpName="Chatbot_UpdateSelfdestructionPeriod" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
   </Function>
   <Function Name="Action">
     <Setting Key="Chatbot_GetUserActionsInChain" SpName="Chatbot_GetUserActionsInChain" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet">
