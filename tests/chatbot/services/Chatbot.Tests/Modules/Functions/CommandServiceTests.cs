@@ -128,6 +128,7 @@
                     msg => msg.Type == messenger.Type
                         && msg.Username == messenger.Username),
                 "NotRecognizedCommandMessage",
+                null,
                 100);
         }
 
@@ -206,6 +207,7 @@
                     msg => msg.Type == messenger.Type
                         && msg.Username == messenger.Username),
                 "NotRecognizedCommandMessage",
+                null,
                 100);
         }
 

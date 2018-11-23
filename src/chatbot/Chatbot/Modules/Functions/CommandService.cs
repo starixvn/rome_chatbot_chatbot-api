@@ -262,6 +262,7 @@
                 user.Id,
                 messenger,
                 messageBuilder.BuildNotRecognizedCommandMessage(user.Language),
+                user.SelfdestructionPeriod,
                 chatbotConfigs.NotRecognizedCommandFunctionId);
 
         private async Task SendErrorMessage(User user, Messenger messenger)

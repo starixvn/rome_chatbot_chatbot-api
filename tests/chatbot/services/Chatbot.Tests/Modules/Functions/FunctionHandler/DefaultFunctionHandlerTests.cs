@@ -66,7 +66,7 @@
             await handler.Handle(param);
 
             // Assert
-            await subMessageSender.Received().SendMessage(1, param.Messenger, "Account is closed", 2);
+            await subMessageSender.Received().SendMessage(1, param.Messenger, "Account is closed", null, 2);
         }
 
         [Fact]
@@ -84,7 +84,7 @@
             await handler.Handle(param);
 
             // Assert
-            await subMessageSender.Received().SendMessage(1, param.Messenger, "Message", 2);
+            await subMessageSender.Received().SendMessage(1, param.Messenger, "Message", null, 2);
         }
     }
 }

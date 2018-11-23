@@ -79,7 +79,12 @@
             {
                 var message = messageBuilder.BuildAccountClosedMessage(param.User.Language);
 
-                return messageSender.SendMessage(param.User.Id, param.Messenger, message, param.Function.Id);
+                return messageSender.SendMessage(
+                    param.User.Id,
+                    param.Messenger,
+                    message,
+                    param.User.SelfdestructionPeriod,
+                    param.Function.Id);
             }
 
             return Task.FromResult(Result.CreateSuccessfulResult());
@@ -89,7 +94,12 @@
         {
             string message = BuildMessage(param.User.Language, param.Function.Id, param.Messenger.Type, data);
 
-            return messageSender.SendMessage(param.User.Id, param.Messenger, message, param.Function.Id);
+            return messageSender.SendMessage(
+                param.User.Id,
+                param.Messenger,
+                message,
+                param.User.SelfdestructionPeriod,
+                param.Function.Id);
         }
 
         protected string BuildMessage(string language, int functionId, int messengerType, object data)

@@ -63,7 +63,7 @@
             handler.Handle(param).ConfigureAwait(false);
 
             // Assert
-            messageSender.Received().SendMessage(1, param.Messenger, "Message", 1);
+            messageSender.Received().SendMessage(1, param.Messenger, "Message", null, 1);
         }
 
         [Fact]
@@ -87,7 +87,7 @@
             handler.Handle(param).ConfigureAwait(false);
 
             // Assert
-            messageSender.Received().SendMessage(1, param.Messenger, "Invalid username", 1);
+            messageSender.Received().SendMessage(1, param.Messenger, "Invalid username", null, 1);
         }
 
         [Fact]
@@ -111,7 +111,7 @@
             handler.Handle(param).ConfigureAwait(false);
 
             // Assert
-            messageSender.Received().SendMessage(1, param.Messenger, "Invalid username", 1);
+            messageSender.Received().SendMessage(1, param.Messenger, "Invalid username", null, 1);
         }
 
         [Fact]
@@ -135,7 +135,7 @@
             handler.Handle(param).ConfigureAwait(false);
 
             // Assert
-            messageSender.Received().SendMessage(1, param.Messenger, "Message", 1);
+            messageSender.Received().SendMessage(1, param.Messenger, "Message", null, 1);
         }
     }
 }

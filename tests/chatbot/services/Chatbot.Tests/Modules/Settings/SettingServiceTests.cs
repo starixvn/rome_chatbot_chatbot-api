@@ -559,7 +559,7 @@
         }
 
         [Fact]
-        public void AddUser_Always_ExecuteInsertUserCommand()
+        public void AddUser_ExistUser_NotCallsInsertUserCommand()
         {
             // Arrange
             var custId = 1323;
@@ -578,11 +578,7 @@
                 .GetAwaiter().GetResult();
 
             // Assert
-            dynamicRepository.Received().ExecuteAsync(Arg.Is<InsertUserCommand>(
-                command => command.CustId == custId
-                            && command.SubAccountId == subAccountId
-                            && command.Language == language
-                            && command.CustLevel == custLevel));
+            dynamicRepository.DidNotReceive().ExecuteAsync(Arg.Any<InsertUserCommand>());
         }
 
         [Fact]
