@@ -15,7 +15,7 @@
 
     public class MessageSender : IMessageSender
     {
-        private const int DefaultSelfDestructionPeriod = 30; //Minutes
+        private const int DefaultSelfDestructionPeriod = 180; //Minutes
         private readonly ISchedulerFactory schedulerFactory;
         private readonly IJobListener jobFailureHandler;
 
