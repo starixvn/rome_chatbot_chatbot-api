@@ -1,6 +1,6 @@
 /*
 	CreatedDate: 20181116@Avlin
-	Task: Add column 
+	Task: Add column [SelfdestructionPeriod] to table [UserInfo]
 	DB: DBBOT/bodb_ChatBot
 */
 
