@@ -212,10 +212,7 @@
         {
             var userFunctions = await settingService.GetFunctions(user.Id).ConfigureAwait(false);
 
-            if (!userFunctions.Any(func =>
-                                        func.Type == CommandFunctionType
-                                        && func.Enabled)
-                || await actionService.NoRootActionExist().ConfigureAwait(false))
+            if (await NoUserFuntionEnabledOrNoActionExisted(userFunctions).ConfigureAwait(false))
             {
                 await SendNotRecognizedCommandMessage(user, messenger).ConfigureAwait(false);
                 return;
@@ -225,6 +222,10 @@
 
             await HandleActionResult(user, messenger, actionResult).ConfigureAwait(false);
         }
+
+        private async Task<bool> NoUserFuntionEnabledOrNoActionExisted(IEnumerable<Function> userFunctions)
+            => !userFunctions.Any(func => func.Type == CommandFunctionType && func.Enabled)
+                            || await actionService.NoRootActionExist().ConfigureAwait(false);
 
         private async Task HandleActionResult(User user, Messenger messenger, Actions.Models.ActionResult actionResult)
         {

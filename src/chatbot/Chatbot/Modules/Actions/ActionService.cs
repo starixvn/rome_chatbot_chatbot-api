@@ -80,9 +80,9 @@
             var lastAction = userActions.Any(userAction => userAction.IsActionCompletedOrCancel)
                 ? null
                 : userActions.LastOrDefault();
-            var isUserChatMessage = string.IsNullOrWhiteSpace(buttonData);
+            var isUserReponseByMessage = string.IsNullOrWhiteSpace(buttonData);
 
-            var handlingActionResult = isUserChatMessage
+            var handlingActionResult = isUserReponseByMessage
                 ? await HandleUserReponseByMessage(lastAction, userActions, user, command).ConfigureAwait(false)
                 : await HandleUserReponseByButton(lastAction, userActions, user, buttonData, messenger).ConfigureAwait(false);
 
@@ -157,17 +157,7 @@
                 || await IsActionNotExist(lastAction.ActionId).ConfigureAwait(false)
                 || IsUserFuntionDisabled(user, await GetActionById(lastAction.ActionId).ConfigureAwait(false)))
             {
-                var functions = await GetFunctionsByKeyword(userReponse, user.Id).ConfigureAwait(false);
-
-                if (functions.Any())
-                {
-                    return (string.Empty, 0, await BuildConfirmKeywordActions(functions, user).ConfigureAwait(false));
-                }
-
-                return (
-                    string.Empty,
-                    0,
-                    await BuildRootActions(user, messageBuilder.BuildRootActionTitle(user.Language)).ConfigureAwait(false));
+                return await HandleUnknownUserResponseMessage(user, userReponse).ConfigureAwait(false);
             }
 
             var currentActionId = lastAction.ActionId;
@@ -187,12 +177,27 @@
             return (compiledCommand, currentActionId, null);
         }
 
+        private async Task<(string, int, ActionResult)> HandleUnknownUserResponseMessage(User user, string userReponse)
+        {
+            var functions = await GetFunctionsByKeyword(userReponse, user.Id).ConfigureAwait(false);
+
+            if (functions.Any())
+            {
+                return (string.Empty, 0, await BuildConfirmKeywordActions(functions, user).ConfigureAwait(false));
+            }
+
+            return (
+                string.Empty,
+                0,
+                await BuildRootActions(user, messageBuilder.BuildRootActionTitle(user.Language)).ConfigureAwait(false));
+        }
+
         private async Task<IEnumerable<Function>> GetFunctionsByKeyword(string userResponse, int userId)
         {
-            var result = new List<Function>();
-            var functions = (await settingService.GetFunctions(userId).ConfigureAwait(false)).Where(f => f.Enabled);
+            var keywordFunctions = new List<Function>();
+            var userFunctions = (await settingService.GetFunctions(userId).ConfigureAwait(false)).Where(f => f.Enabled);
 
-            foreach (var function in functions)
+            foreach (var function in userFunctions)
             {
                 var resources = await GetFunctionKeyworks(function.Id).ConfigureAwait(false);
 
@@ -202,17 +207,40 @@
 
                     var isContainsKeyword = keywords.Any(keyword => userResponse.Contains(keyword, StringComparison.OrdinalIgnoreCase));
 
-                    if (isContainsKeyword && !result.Contains(function))
+                    if (isContainsKeyword && !keywordFunctions.Contains(function))
                     {
-                        result.Add(function);
+                        keywordFunctions.Add(function);
                     }
                 }
             }
 
-            return result;
+            return keywordFunctions;
         }
 
         private async Task<ActionResult> BuildConfirmKeywordActions(IEnumerable<Function> functions, User user)
+        {
+            var messageActions = await BuildSuggestionActions(functions, user).ConfigureAwait(false);
+
+            messageActions.Add(new MessageAction
+            {
+                Label = messageBuilder.BuildNoneOfTheAboveMessage(user.Language).ToUpperInvariant(),
+                Type = PostbackType,
+                Data = string.Empty
+            });
+
+            var message = new MessengerClient.Models.Message
+            {
+                Content = messageBuilder.BuildConfirmKeywordTitle(user.Language),
+                MessageMarkup = new MessageMarkup
+                {
+                    MessageActions = messageActions
+                }
+            };
+
+            return new ActionResult(message, 0);
+        }
+
+        private async Task<List<MessageAction>> BuildSuggestionActions(IEnumerable<Function> functions, User user)
         {
             var messageActions = new List<MessageAction>();
 
@@ -232,23 +260,7 @@
                 }
             }
 
-            messageActions.Add(new MessageAction
-            {
-                Label = messageBuilder.BuildNoneOfTheAboveMessage(user.Language).ToUpperInvariant(),
-                Type = PostbackType,
-                Data = ""
-            });
-
-            var message = new MessengerClient.Models.Message
-            {
-                Content = messageBuilder.BuildConfirmKeywordTitle(user.Language),
-                MessageMarkup = new MessageMarkup
-                {
-                    MessageActions = messageActions
-                }
-            };
-
-            return new ActionResult(message, 0);
+            return messageActions;
         }
 
         private async Task<IEnumerable<Resource>> GetFunctionKeyworks(int functionId)
