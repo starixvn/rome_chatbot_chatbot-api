@@ -50,6 +50,10 @@ namespace Chatbot.Shared.Configurations
         int OutstandingSpecificDirectDownlineActionId { get; }
 
         int OutstandingMaxTopQuery { get; }
+
+        int MasterCopySettingActionId { get; }
+
+        List<int> InputMaxCreditActionIds { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -82,6 +86,10 @@ namespace Chatbot.Shared.Configurations
             IsProduction = GetValue<bool>("Chatbot:IsProduction");
             OutstandingSpecificDirectDownlineActionId = GetValue<int>("Chatbot:OutstandingSpecificDirectDownlineActionId");
             OutstandingMaxTopQuery = GetValue<int>("Chatbot:OutstandingMaxTopQuery");
+
+            MasterCopySettingActionId = GetValue<int>("Chatbot:MasterCopySettingActionId");
+            InputMaxCreditActionIds = configuration.GetSection("Chatbot:InputMaxCreditActionIds").Get<List<int>>()
+                ?? throw new InvalidOperationException($"Missing config for Chatbot:InputMaxCreditActionIds");
         }
 
         public int MaxAddActionTimes { get; }
@@ -125,6 +133,10 @@ namespace Chatbot.Shared.Configurations
         public int OutstandingSpecificDirectDownlineActionId { get; }
 
         public int OutstandingMaxTopQuery { get; }
+
+        public int MasterCopySettingActionId { get; }
+
+        public List<int> InputMaxCreditActionIds { get; }
 
         private T GetValue<T>(string key)
         {

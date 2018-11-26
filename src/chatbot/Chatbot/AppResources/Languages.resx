@@ -360,4 +360,16 @@
   <data name="NoneOfTheAbove" xml:space="preserve">
     <value>None of the above</value>
   </data>
+  <data name="InvalidNumericMessage" xml:space="preserve">
+    <value>{0} is not a numeric value.</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_3" xml:space="preserve">
+    <value>Master Max Credit must be between {0} and {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_2" xml:space="preserve">
+    <value>Agent Max Credit must be between {0} and {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
+    <value>Member Max Credit must be between {0} and {1}</value>
+  </data>
 </root>

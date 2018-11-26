@@ -307,4 +307,13 @@
   <data name="WhichActionWouldYouLikeToTake" xml:space="preserve">
     <value>Bạn muốn thực hiện yêu cầu nào?</value>
   </data>
+  <data name="MaxCreditInvalid_CustLevel_3" xml:space="preserve">
+    <value>Hạn mức tín dụng tối đa của Master phải từ {0} đến {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_2" xml:space="preserve">
+    <value>Hạn mức tín dụng lớn nhất của Agent phải từ {0} đến {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
+    <value>Hạn mức tín dụng được cấp cho Member phải trong khoảng từ {0} đến {1}</value>
+  </data>
 </root>

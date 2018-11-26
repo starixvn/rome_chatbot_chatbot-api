@@ -3,11 +3,9 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Text;
-    using System.Threading.Tasks;
     using Chatbot.AppResources;
     using Chatbot.Modules.MessageBuilders.Templates;
     using Chatbot.Modules.Resources;
-    using Chatbot.Modules.Resources.Constants;
 
     public interface IMessageBuilder
     {
@@ -35,8 +33,6 @@
 
         string BuildInvalidNumerOfDownlineRange(string language, int maxTopQuery);
 
-        Task<string> BuildActionName(int actionId, string language);
-
         string BuildInvalidDownlineMessage(string username, string language);
 
         string BuildActionTitle(string language);
@@ -52,6 +48,10 @@
         string BuildConfirmKeywordTitle(string language);
 
         string BuildNoneOfTheAboveMessage(string language);
+
+        string BuildInvalidNumericMessage(string value, string language);
+
+        string BuildInvalidMaxCreditMessage(int custLevel, decimal maxCredit, string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -186,6 +186,9 @@
                 username,
                 GetResource($"CustLevel_{directDownlineLevel}", language));
 
+        public string BuildInvalidNumericMessage(string value, string language)
+            => string.Format(GetResource(nameof(Languages.InvalidNumericMessage), language), value);
+
         private IMessengerFormatter GetMessengerFormatter(int messengerType)
             => messengerFormatters.ContainsKey(messengerType)
                             ? messengerFormatters[messengerType]
@@ -203,12 +206,6 @@
             => cultureInfoList.ContainsKey(language)
                             ? cultureInfoList[language]
                             : defaultCultureInfo;
-
-        public async Task<string> BuildActionName(int actionId, string language)
-            => (await resourceService.GetResource(
-                    actionId,
-                    ResourceType.Action,
-                    language).ConfigureAwait(false))?.Value.ToUpperInvariant();
 
         public string BuildActionTitle(string language)
         => GetResource(nameof(Languages.PleaseSelectOption), language);
@@ -230,5 +227,8 @@
 
         public string BuildNoneOfTheAboveMessage(string language)
             => GetResource(nameof(Languages.NoneOfTheAbove), language);
+
+        public string BuildInvalidMaxCreditMessage(int custLevel, decimal maxCredit, string language)
+            => string.Format(GetResource($"MaxCreditInvalid_CustLevel_{custLevel}", language), 0, maxCredit);
     }
 }

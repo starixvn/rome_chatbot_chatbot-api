@@ -7,6 +7,7 @@ namespace Chatbot.WebApi
     using System.Linq;
     using Alpha.Services.Client.Services;
     using Chatbot.Modules.Actions;
+    using Chatbot.Modules.Actions.Builders.ActionName;
     using Chatbot.Modules.Actions.Compilers;
     using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions;
@@ -64,7 +65,7 @@ namespace Chatbot.WebApi
 
             InitLogging(services);
 
-            
+
             services.AddLogging();
             services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
             services.AddSingleton<SettingService, SettingServiceImpl>();
@@ -88,6 +89,8 @@ namespace Chatbot.WebApi
             services.AddSingleton<SettingLogService, SettingLogServiceImpl>();
             services.AddSingleton<Alpha.Services.Client.Services.LogService, LogServiceImpl>();
             services.AddSingleton<ResourceService, ResourceServiceImpl>();
+            services.AddSingleton<CopyCustomerService, CopyCustomerServiceImpl>();
+            services.AddSingleton<ActionNameBuilderFactory, ActionNameBuilderFactoryImpl>();
 
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
                 { chatbotConfigs.YesterdayWinLossFunctionId, new MessageTemplate(new HeaderTemplate4(), new BodyTemplate()) },

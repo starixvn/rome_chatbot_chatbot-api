@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Chatbot.Models;
     using Chatbot.Modules.Actions;
+    using Chatbot.Modules.Actions.Builders.ActionName;
     using Chatbot.Modules.Actions.Compilers;
     using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.Actions.Params.DB.Commands;
@@ -36,6 +37,7 @@
         private readonly SettingService settingService;
         private readonly ResourceService resourceService;
         private readonly IChatbotConfigs chatbotConfigs;
+        private readonly ActionNameBuilderFactory actionNameBuilderFactory;
 
         public ActionServiceTests()
         {
@@ -58,6 +60,7 @@
             settingService = Substitute.For<SettingService>();
             resourceService = Substitute.For<ResourceService>();
             getDateTimeNowFunc = Substitute.For<Func<DateTime>>();
+            actionNameBuilderFactory = Substitute.For<ActionNameBuilderFactory>();
 
             actionServiceImpl = new ActionServiceImpl(
                 dynamicRepository,
@@ -68,6 +71,7 @@
                 settingService,
                 resourceService,
                 chatbotConfigs,
+                actionNameBuilderFactory,
                 getDateTimeNowFunc);
 
             actionValidator
@@ -84,7 +88,7 @@
             StubUserFuntions(user);
 
             messageBuilder.BuildRootActionTitle(user.Language).Returns("message title");
-            messageBuilder.BuildActionName(1, user.Language).Returns("outstanding label");
+            actionNameBuilderFactory.GetActionNameBuilder(1).BuildActionName(1, user).Returns("outstanding label");
 
             var actionResult = actionServiceImpl.HandleUserReponseByMessage(null, null, user, "message")
                 .GetAwaiter()
@@ -123,7 +127,7 @@
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             StubUserFuntions(user);
             actionValidator.ValidateAction(4, user, "user reponse").Returns(new Result(1, "failed"));
-            messageBuilder.BuildActionName(4, user.Language).Returns("outstanding label");
+            actionNameBuilderFactory.GetActionNameBuilder(4).BuildActionName(4, user).Returns("outstanding label");
             messageBuilder.BuildCancelRequestMessage("en-US").Returns("cancel button");
 
             var actionResult = actionServiceImpl.HandleUserReponseByMessage(lastUserAction, null, user, "user reponse")
@@ -231,7 +235,7 @@
             var messenger = new Messenger(1, "ltid");
             StubUserFuntions(user);
             messageBuilder.BuildRootActionTitle(user.Language).Returns("message title");
-            messageBuilder.BuildActionName(1, user.Language).Returns("outstanding label");
+            actionNameBuilderFactory.GetActionNameBuilder(1).BuildActionName(1, user).Returns("outstanding label");
 
             var actionResult = actionServiceImpl.HandleUserReponseByButton(null, null, user, "action=4", messenger)
                .GetAwaiter()
@@ -344,7 +348,7 @@
             StubUserActions(user.Id);
             StubUserFuntions(user);
 
-            messageBuilder.BuildActionName(6, user.Language).Returns("next action name");
+            actionNameBuilderFactory.GetActionNameBuilder(6).BuildActionName(6, user).Returns("next action name");
 
             var actionResult = actionServiceImpl.BuildAction(
                 "command", "", user, messenger)
@@ -382,16 +386,16 @@
         {
             var actionsStub = new List<Action>
             {
-                new Action(1, "View Outstanding Report", "/os", 10, 1, 0, false, 0, 1),
-                new Action(2, "View Today Win Loss", "/wl", 20, 2, 0, true, 0, 1),
-                new Action(3, "View Balance Info", "/bal", 30, 3, 0, true, 0, 1),
+                new Action(1, "View Outstanding Report", "/os", 10, 1, 0, false, 0, 1,0),
+                new Action(2, "View Today Win Loss", "/wl", 20, 2, 0, true, 0, 1, 0),
+                new Action(3, "View Balance Info", "/bal", 30, 3, 0, true, 0, 1, 0),
 
-                new Action(4, "Specific Direct Downline", "", 50, 1, 1, false, 0, 1),
-                new Action(5, "Top 50 Outstanding", "50", 40, 1, 1, true, 0, 1),
-                new Action(6, "Please input username", "", 60, 1, 4, true, 0, 2),
+                new Action(4, "Specific Direct Downline", "", 50, 1, 1, false, 0, 1, 0),
+                new Action(5, "Top 50 Outstanding", "50", 40, 1, 1, true, 0, 1, 0),
+                new Action(6, "Please input username", "", 60, 1, 4, true, 0, 2, 0),
 
-                new Action(7, "Top x Outstanding", "", 70, 1, 1, false, 0, 1),
-                 new Action(8, "Please input num of downline", "", 60, 1, 7, true, 0, 2),
+                new Action(7, "Top x Outstanding", "", 70, 1, 1, false, 0, 1, 0),
+                 new Action(8, "Please input num of downline", "", 60, 1, 7, true, 0, 2, 0),
             };
 
             cacheService.GetOrSetAsync(

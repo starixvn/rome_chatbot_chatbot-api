@@ -6,6 +6,7 @@
     using System.Net;
     using System.Threading.Tasks;
     using Chatbot.Models;
+    using Chatbot.Modules.Actions.Builders.ActionName;
     using Chatbot.Modules.Actions.Compilers;
     using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.Actions.Params.DB.Commands;
@@ -49,6 +50,7 @@
         private readonly ResourceService resourceService;
         private readonly Func<DateTime> getDateTimeNowFunc;
         private readonly IChatbotConfigs chatbotConfigs;
+        private readonly ActionNameBuilderFactory actionNameBuilderFactory;
 
         public ActionServiceImpl(
             IDynamicRepository dynamicRepository,
@@ -59,6 +61,7 @@
             SettingService settingService,
             ResourceService resourceService,
             IChatbotConfigs chatbotConfigs,
+            ActionNameBuilderFactory actionNameBuilderFactory,
             Func<DateTime> getDateTimeNowFunc = null)
         {
             this.dynamicRepository = dynamicRepository;
@@ -70,6 +73,7 @@
             this.resourceService = resourceService;
             this.getDateTimeNowFunc = getDateTimeNowFunc ?? GetDateTimeNow;
             this.chatbotConfigs = chatbotConfigs;
+            this.actionNameBuilderFactory = actionNameBuilderFactory;
         }
 
         private static DateTime GetDateTimeNow()
@@ -254,9 +258,11 @@
 
                 if (action != null)
                 {
+                    var actionNameBuilder = actionNameBuilderFactory.GetActionNameBuilder(action.Id);
+
                     messageActions.Add(new MessageAction
                     {
-                        Label = (await messageBuilder.BuildActionName(action.Id, user.Language).ConfigureAwait(false)).ToUpperInvariant(),
+                        Label = (await actionNameBuilder.BuildActionName(action.Id, user).ConfigureAwait(false)).ToUpperInvariant(),
                         Type = PostbackType,
                         Data = $"ActionId={action.Id}"
                     });
@@ -309,7 +315,7 @@
 
         private async Task<ActionResult> BuildWrongValidationResult(int actionId, User user, Result result)
             => new ActionResult(
-                await BuildMessageWithAbortButton(actionId, user.Language).ConfigureAwait(false),
+                await BuildMessageWithAbortButton(actionId, user).ConfigureAwait(false),
                 result.Message,
                 (await GetActionById(actionId).ConfigureAwait(false)).FunctionId);
 
@@ -320,13 +326,14 @@
 
             foreach (var rootAction in rootActions)
             {
+                var actionNameBuilder = actionNameBuilderFactory.GetActionNameBuilder(rootAction.Id);
                 var userFunction = user.Functions.FirstOrDefault(func => func.Id == rootAction.FunctionId);
 
                 if (userFunction != null && userFunction.Enabled)
                 {
                     messageActions.Add(new MessageAction
                     {
-                        Label = (await messageBuilder.BuildActionName(rootAction.Id, user.Language).ConfigureAwait(false)).ToUpperInvariant(),
+                        Label = (await actionNameBuilder.BuildActionName(rootAction.Id, user).ConfigureAwait(false)).ToUpperInvariant(),
                         Type = PostbackType,
                         Data = $"ActionId={rootAction.Id}"
                     });
@@ -468,7 +475,7 @@
         private async Task<MessengerClient.Models.Message> BuildNextMessage(int actionId, User user)
         {
             var nextActions = (await GetAllActions().ConfigureAwait(false))
-                .Where(action => action.ParentId == actionId)
+                .Where(action => action.ParentId == actionId && (action.CustLevel == user.CustLevel || action.CustLevel == 0))
                 .OrderBy(action => action.DisplayOrder);
 
             if (ActionIsMessage(nextActions))
@@ -476,34 +483,36 @@
                 var messageAction = nextActions.FirstOrDefault();
                 await InsertUserAction(user, messageAction.Id, string.Empty, string.Empty).ConfigureAwait(false);
 
-                return await BuildMessageWithAbortButton(messageAction.Id, user.Language).ConfigureAwait(false);
+                return await BuildMessageWithAbortButton(messageAction.Id, user).ConfigureAwait(false);
             }
 
-            return await BuildButtons(actionId, user.Language, nextActions).ConfigureAwait(false);
+            return await BuildButtons(actionId, user, nextActions).ConfigureAwait(false);
         }
 
         private async Task<MessengerClient.Models.Message> BuildButtons(
             int actionId,
-            string language,
+            User user,
             IEnumerable<Action> nextActions)
         {
             var messageActions = new List<MessageAction>();
 
             foreach (var nextAction in nextActions)
             {
+                var actionNameBuilder = actionNameBuilderFactory.GetActionNameBuilder(nextAction.Id);
+
                 messageActions.Add(new MessageAction
                 {
-                    Label = (await messageBuilder.BuildActionName(nextAction.Id, language).ConfigureAwait(false)).ToUpperInvariant(),
+                    Label = (await actionNameBuilder.BuildActionName(nextAction.Id, user).ConfigureAwait(false)).ToUpperInvariant(),
                     Type = PostbackType,
                     Data = $"ActionId={nextAction.Id}"
                 });
             }
 
-            messageActions.Add(await BuildCancelButton(actionId, language).ConfigureAwait(false));
+            messageActions.Add(await BuildCancelButton(actionId, user.Language).ConfigureAwait(false));
 
             return new MessengerClient.Models.Message
             {
-                Content = messageBuilder.BuildActionTitle(language),
+                Content = messageBuilder.BuildActionTitle(user.Language),
                 MessageMarkup = new MessageMarkup
                 {
                     MessageActions = messageActions
@@ -531,20 +540,22 @@
             return await BuildRootActions(user, rootMessage).ConfigureAwait(false);
         }
 
-        private async Task<MessengerClient.Models.Message> BuildMessageWithAbortButton(
-            int actionId,
-            string language)
-            => new MessengerClient.Models.Message
+        private async Task<MessengerClient.Models.Message> BuildMessageWithAbortButton(int actionId, User user)
+        {
+            var actionNameBuilder = actionNameBuilderFactory.GetActionNameBuilder(actionId);
+
+            return new MessengerClient.Models.Message
             {
-                Content = await messageBuilder.BuildActionName(actionId, language).ConfigureAwait(true),
+                Content = await actionNameBuilder.BuildActionName(actionId, user).ConfigureAwait(true),
                 MessageMarkup = new MessageMarkup
                 {
                     MessageActions = new List<MessageAction>
                     {
-                        await BuildCancelButton(actionId, language).ConfigureAwait(false)
+                        await BuildCancelButton(actionId, user.Language).ConfigureAwait(false)
                     }
                 }
             };
+        }
 
         private static bool ActionIsMessage(IEnumerable<Action> nextActions)
             => nextActions.Count() == 1

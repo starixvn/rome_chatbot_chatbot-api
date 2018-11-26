@@ -334,4 +334,13 @@
   <data name="NoneOfTheAbove" xml:space="preserve">
     <value>ไม่มีข้อใดข้างต้น</value>
   </data>
+  <data name="MaxCreditInvalid_CustLevel_3" xml:space="preserve">
+    <value>เครดิตสูงสุดของมาสเตอร์ต้องอยู่ระหว่าง {0} และ {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_2" xml:space="preserve">
+    <value>เครดิตสูงสุดของเอเย่นต้องอยู่ระหว่าง {0} และ {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
+    <value>เครดิตของสมาชิกต้องอยู่ระหว่าง {0} และ {1}</value>
+  </data>
 </root>

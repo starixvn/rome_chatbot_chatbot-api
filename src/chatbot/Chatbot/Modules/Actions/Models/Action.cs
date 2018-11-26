@@ -8,8 +8,6 @@
         {
         }
 
-#pragma warning disable S107 // Methods should not have too many parameters
-
         internal Action(
             int id,
             string name,
@@ -19,8 +17,8 @@
             int parentId,
             bool isEndAction,
             byte status,
-            byte type)
-#pragma warning restore S107 // Methods should not have too many parameters
+            byte type,
+            int custLevel)
         {
             Id = id;
             Name = name;
@@ -31,6 +29,7 @@
             IsEndAction = isEndAction;
             Status = status;
             Type = type;
+            CustLevel = custLevel;
         }
 
         public int Id { get; private set; }
@@ -52,5 +51,7 @@
         public bool IsAvailableOnlyOnPro => Status == Environment.PRO;
 
         public byte Type { get; private set; }
+
+        public int CustLevel { get; private set; }
     }
 }

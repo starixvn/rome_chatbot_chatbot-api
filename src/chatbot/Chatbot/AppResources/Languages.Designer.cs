@@ -412,6 +412,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is not a numeric value..
+        /// </summary>
+        public static string InvalidNumericMessage {
+            get {
+                return ResourceManager.GetString("InvalidNumericMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of downlines must be numeric..
         /// </summary>
         public static string InvalidNumerOfDownlines {
@@ -480,6 +489,33 @@ namespace Chatbot.AppResources {
         public static string MasterTotalCredit {
             get {
                 return ResourceManager.GetString("MasterTotalCredit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Max Credit must be between {0} and {1}.
+        /// </summary>
+        public static string MaxCreditInvalid_CustLevel_1 {
+            get {
+                return ResourceManager.GetString("MaxCreditInvalid_CustLevel_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agent Max Credit must be between {0} and {1}.
+        /// </summary>
+        public static string MaxCreditInvalid_CustLevel_2 {
+            get {
+                return ResourceManager.GetString("MaxCreditInvalid_CustLevel_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Master Max Credit must be between {0} and {1}.
+        /// </summary>
+        public static string MaxCreditInvalid_CustLevel_3 {
+            get {
+                return ResourceManager.GetString("MaxCreditInvalid_CustLevel_3", resourceCulture);
             }
         }
         

@@ -360,4 +360,13 @@
   <data name="NoneOfTheAbove" xml:space="preserve">
     <value>以上皆非</value>
   </data>
+   <data name="MaxCreditInvalid_CustLevel_3" xml:space="preserve">
+    <value>总代理最高信用额应在{0}和{1}之间</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_2" xml:space="preserve">
+    <value>代理最高信用额应在{0}和{1}之间</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
+    <value>会员信用额应在{0}和{1}之间</value>
+  </data>
 </root>

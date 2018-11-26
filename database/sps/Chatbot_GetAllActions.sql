@@ -12,6 +12,7 @@ AS
 	
 	Revisions:
 		- 20181105@Kan: Create new [RedmineId: 103467]
+		- 20181126@Alvin: Get CustomerLevel
 		
 	Parameter's Explanation:
 		- @Example:			NULL		- Explanation [DEFAULT]
@@ -23,7 +24,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-    SELECT ActionId, ActionName, [Type], Command, DisplayOrder, FunctionId, ParentId, IsEndAction, [Status]
+    SELECT ActionId, ActionName, [Type], Command, DisplayOrder, FunctionId, ParentId, IsEndAction, [Status], CustomerLevel as CustLevel
     FROM dbo.Action WITH (NOLOCK)
     WHERE [Status] <> 2;
 END

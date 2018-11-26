@@ -287,16 +287,62 @@
     <value>มี {0} {1} ที่ไม่ได้แสดงผล</value>
   </data>
   <data name="InvalidCustName" xml:space="preserve">
-<<<<<<< HEAD
     <value>ชื่อผู้ใช้งานไม่ถูกต้อง</value>
-=======
-    <value>ขอบพระคุณ</value>
->>>>>>> 103467 - update translations
   </data>
   <data name="MasterOutstanding" xml:space="preserve">
     <value>การเดิมพันที่ยังไม่สิ้นสุดของ ตัวแทนหลัก</value>
   </data>
   <data name="UnlinkMessage" xml:space="preserve">
     <value>การยกเลิกบริการสำเร็จ ขอบคุณสำหรับการใช้งาน</value>
+  </data>
+  <data name="InvalidNumerOfDownlines" xml:space="preserve">
+    <value>จำนวนดาวน์ไลน์ต้องเป็นตัวเลขเท่านั้น</value>
+  </data>
+  <data name="InvalidDownline" xml:space="preserve">
+    <value>{0}' ไม่ใช่ดาวน์ไลน์ของท่าน</value>
+  </data>
+  <data name="InvalidDirectDownline" xml:space="preserve">
+    <value>{0} ไม่ถูกต้อง {1}</value>
+  </data>
+  <data name="RootActionTitle" xml:space="preserve">
+    <value>ขออภัย เราไม่สามารถรับรู้คำขอของคุณได้ คุณต้องการดำเนินการใด?</value>
+  </data>
+  <data name="PleaseSelectOption" xml:space="preserve">
+    <value>โปรดเลือกตัวเลือก</value>
+  </data>
+  <data name="CancelThisRequest" xml:space="preserve">
+    <value>ยกเลิกคำขอปัจจุบัน</value>
+  </data>
+  <data name="FunctionHasBeenCancelled" xml:space="preserve">
+    <value>คำขอปัจจุบันถูกยกเลิกแล้ว</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>สำหรับ</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>ผลิตภัณฑ์</value>
+  </data>
+  <data name="WhichActionWouldYouLikeToTake" xml:space="preserve">
+    <value>คุณต้องการดำเนินการใด?</value>
+  </data>
+  <data name="InvalidNumerOfDownlinesRange" xml:space="preserve">
+    <value>จำนวนดาวน์ไลน์ต้องเริ่มจาก 1 ถึง {0}' เท่านั้น</value>
+  </data>
+<<<<<<< HEAD
+  <data name="ConfirmKeywordTitle" xml:space="preserve">
+    <value>คุณต้องการขอให้มีฟังก์ชั่นต่อไปนี้หรือไม่?</value>
+  </data>
+  <data name="NoneOfTheAbove" xml:space="preserve">
+    <value>ไม่มีข้อใดข้างต้น</value>
+=======
+  <data name="MaxCreditInvalid_CustLevel_3" xml:space="preserve">
+    <value>เครดิตสูงสุดของมาสเตอร์ต้องอยู่ระหว่าง {0} และ {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_2" xml:space="preserve">
+    <value>เครดิตสูงสุดของเอเย่นต้องอยู่ระหว่าง {0} และ {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
+    <value>เครดิตของสมาชิกต้องอยู่ระหว่าง {0} และ {1}</value>
+>>>>>>> 104431 - clone account
   </data>
 </root>

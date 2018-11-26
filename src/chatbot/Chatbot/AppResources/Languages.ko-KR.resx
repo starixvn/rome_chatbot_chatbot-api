@@ -214,4 +214,13 @@
   <data name="Username" xml:space="preserve">
     <value>사용자 이름</value>
   </data>
+  <data name="MaxCreditInvalid_CustLevel_3" xml:space="preserve">
+    <value>마스터 최대 크레딧은 {0}과 {1}사이이여만 합니다. </value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_2" xml:space="preserve">
+    <value>에이전트 최대 크레딧은 {0}과 {1}사이이여만 합니다. </value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
+    <value>멤버  충전 크레딧은 {0}과 {1}사이이여만 합니다. </value>
+  </data>
 </root>
