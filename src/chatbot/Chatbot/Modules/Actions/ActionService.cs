@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Threading.Tasks;
     using Chatbot.Models;
     using Chatbot.Modules.Actions.Compilers;
@@ -205,7 +206,9 @@
                 {
                     var keywords = resource.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-                    var isContainsKeyword = keywords.Any(keyword => userResponse.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+                    var isContainsKeyword = keywords.Any(keyword
+                        => userResponse.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                            || WebUtility.HtmlDecode(userResponse).Contains(keyword, StringComparison.OrdinalIgnoreCase));
 
                     if (isContainsKeyword && !keywordFunctions.Contains(function))
                     {
