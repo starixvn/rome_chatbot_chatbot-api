@@ -372,4 +372,13 @@
   <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
     <value>Member Max Credit must be between {0} and {1}</value>
   </data>
+  <data name="CopyCustomerComfirmation_CustLevel_3" xml:space="preserve">
+    <value>A new master (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action.</value>
+  </data>
+  <data name="CopyCustomerComfirmation_CustLevel_2" xml:space="preserve">
+    <value>A new agent (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action.</value>
+  </data>
+  <data name="CopyCustomerComfirmation_CustLevel_1" xml:space="preserve">
+    <value> A new member (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action.</value>
+  </data>
 </root>

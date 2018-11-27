@@ -7,6 +7,7 @@
     using Chatbot.Models;
     using Chatbot.Modules.Actions;
     using Chatbot.Modules.Actions.Builders.ActionName;
+    using Chatbot.Modules.Actions.Builders.ActionTitle;
     using Chatbot.Modules.Actions.Compilers;
     using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.Actions.Params.DB.Commands;
@@ -38,6 +39,7 @@
         private readonly ResourceService resourceService;
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly ActionNameBuilderFactory actionNameBuilderFactory;
+        private readonly ActionTitleBuilderFactory actionTitleBuilderFactory;
 
         public ActionServiceTests()
         {
@@ -61,6 +63,7 @@
             resourceService = Substitute.For<ResourceService>();
             getDateTimeNowFunc = Substitute.For<Func<DateTime>>();
             actionNameBuilderFactory = Substitute.For<ActionNameBuilderFactory>();
+            actionTitleBuilderFactory = Substitute.For<ActionTitleBuilderFactory>();
 
             actionServiceImpl = new ActionServiceImpl(
                 dynamicRepository,
@@ -72,6 +75,7 @@
                 resourceService,
                 chatbotConfigs,
                 actionNameBuilderFactory,
+                actionTitleBuilderFactory,
                 getDateTimeNowFunc);
 
             actionValidator

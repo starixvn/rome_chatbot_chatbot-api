@@ -5,7 +5,6 @@
     using System.Text;
     using Chatbot.AppResources;
     using Chatbot.Modules.MessageBuilders.Templates;
-    using Chatbot.Modules.Resources;
 
     public interface IMessageBuilder
     {
@@ -52,6 +51,8 @@
         string BuildInvalidNumericMessage(string value, string language);
 
         string BuildInvalidMaxCreditMessage(int custLevel, decimal maxCredit, string language);
+
+        string BuildCopyCustomerConfirmationTitle(int custLevel, string credit, string sourceUsername, string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -77,18 +78,15 @@
         private readonly IDictionary<int, IMessengerFormatter> messengerFormatters;
         private readonly IDictionary<string, CultureInfo> cultureInfoList;
         private readonly IDictionary<int, IMessageTemplate> messageTemplates;
-        private readonly ResourceService resourceService;
 
         public MessageBuilder(
             IDictionary<string, CultureInfo> cultureInfoList,
             IDictionary<int, IMessageTemplate> messageTemplates,
-            IDictionary<int, IMessengerFormatter> messengerFormatters,
-            ResourceService resourceService)
+            IDictionary<int, IMessengerFormatter> messengerFormatters)
         {
             this.cultureInfoList = cultureInfoList;
             this.messageTemplates = messageTemplates;
             this.messengerFormatters = messengerFormatters;
-            this.resourceService = resourceService;
         }
 
         public string BuildCommandResultMessage(
@@ -230,5 +228,8 @@
 
         public string BuildInvalidMaxCreditMessage(int custLevel, decimal maxCredit, string language)
             => string.Format(GetResource($"MaxCreditInvalid_CustLevel_{custLevel}", language), 0, maxCredit);
+
+        public string BuildCopyCustomerConfirmationTitle(int custLevel, string credit, string sourceUsername, string language)
+            => string.Format(GetResource($"CopyCustomerComfirmation_CustLevel_{custLevel}", language), credit, sourceUsername);
     }
 }

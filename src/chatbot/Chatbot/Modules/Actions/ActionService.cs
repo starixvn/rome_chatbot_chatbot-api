@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using Chatbot.Models;
     using Chatbot.Modules.Actions.Builders.ActionName;
+    using Chatbot.Modules.Actions.Builders.ActionTitle;
     using Chatbot.Modules.Actions.Compilers;
     using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.Actions.Params.DB.Commands;
@@ -51,6 +52,7 @@
         private readonly Func<DateTime> getDateTimeNowFunc;
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly ActionNameBuilderFactory actionNameBuilderFactory;
+        private readonly ActionTitleBuilderFactory actionTitleBuilderFactory;
 
         public ActionServiceImpl(
             IDynamicRepository dynamicRepository,
@@ -62,6 +64,7 @@
             ResourceService resourceService,
             IChatbotConfigs chatbotConfigs,
             ActionNameBuilderFactory actionNameBuilderFactory,
+            ActionTitleBuilderFactory actionTitleBuilderFactory,
             Func<DateTime> getDateTimeNowFunc = null)
         {
             this.dynamicRepository = dynamicRepository;
@@ -74,6 +77,7 @@
             this.getDateTimeNowFunc = getDateTimeNowFunc ?? GetDateTimeNow;
             this.chatbotConfigs = chatbotConfigs;
             this.actionNameBuilderFactory = actionNameBuilderFactory;
+            this.actionTitleBuilderFactory = actionTitleBuilderFactory;
         }
 
         private static DateTime GetDateTimeNow()
@@ -103,7 +107,7 @@
 
             return currentAction.IsEndAction
                 ? new ActionResult(compiledCommand, currentAction.FunctionId)
-                : new ActionResult(await BuildNextMessage(currentActionId, user).ConfigureAwait(false), currentAction.FunctionId);
+                : new ActionResult(await BuildNextMessage(currentActionId, user, userActions).ConfigureAwait(false), currentAction.FunctionId);
         }
 
         internal async Task<(string, int, ActionResult)> HandleUserReponseByButton(
@@ -472,7 +476,7 @@
             => (await GetAllActions().ConfigureAwait(false))
                 .FirstOrDefault(action => action.Id == parentId);
 
-        private async Task<MessengerClient.Models.Message> BuildNextMessage(int actionId, User user)
+        private async Task<MessengerClient.Models.Message> BuildNextMessage(int actionId, User user, IList<UserAction> userActions)
         {
             var nextActions = (await GetAllActions().ConfigureAwait(false))
                 .Where(action => action.ParentId == actionId && (action.CustLevel == user.CustLevel || action.CustLevel == 0))
@@ -486,12 +490,13 @@
                 return await BuildMessageWithAbortButton(messageAction.Id, user).ConfigureAwait(false);
             }
 
-            return await BuildButtons(actionId, user, nextActions).ConfigureAwait(false);
+            return await BuildButtons(actionId, user, userActions, nextActions).ConfigureAwait(false);
         }
 
         private async Task<MessengerClient.Models.Message> BuildButtons(
             int actionId,
             User user,
+            IList<UserAction> userActions,
             IEnumerable<Action> nextActions)
         {
             var messageActions = new List<MessageAction>();
@@ -510,9 +515,11 @@
 
             messageActions.Add(await BuildCancelButton(actionId, user.Language).ConfigureAwait(false));
 
+            var actionTitleBuilder = actionTitleBuilderFactory.GetActionTitleBuilder(actionId);
+
             return new MessengerClient.Models.Message
             {
-                Content = messageBuilder.BuildActionTitle(user.Language),
+                Content = actionTitleBuilder.BuildActionTitle(actionId, user, userActions),
                 MessageMarkup = new MessageMarkup
                 {
                     MessageActions = messageActions

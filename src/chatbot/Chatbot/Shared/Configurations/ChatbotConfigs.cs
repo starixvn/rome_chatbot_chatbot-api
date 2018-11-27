@@ -51,9 +51,9 @@ namespace Chatbot.Shared.Configurations
 
         int OutstandingMaxTopQuery { get; }
 
-        int MasterCopySettingActionId { get; }
+        int CopyMasterInputUsernameActionId { get; }
 
-        List<int> InputMaxCreditActionIds { get; }
+        int CopyMasterInputCreditActionId { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -87,9 +87,8 @@ namespace Chatbot.Shared.Configurations
             OutstandingSpecificDirectDownlineActionId = GetValue<int>("Chatbot:OutstandingSpecificDirectDownlineActionId");
             OutstandingMaxTopQuery = GetValue<int>("Chatbot:OutstandingMaxTopQuery");
 
-            MasterCopySettingActionId = GetValue<int>("Chatbot:MasterCopySettingActionId");
-            InputMaxCreditActionIds = configuration.GetSection("Chatbot:InputMaxCreditActionIds").Get<List<int>>()
-                ?? throw new InvalidOperationException($"Missing config for Chatbot:InputMaxCreditActionIds");
+            CopyMasterInputUsernameActionId = GetValue<int>("CopyCustomer:Master:InputUsernameActionId");
+            CopyMasterInputCreditActionId = GetValue<int>("CopyCustomer:Master:InputCreditActionId");
         }
 
         public int MaxAddActionTimes { get; }
@@ -134,9 +133,9 @@ namespace Chatbot.Shared.Configurations
 
         public int OutstandingMaxTopQuery { get; }
 
-        public int MasterCopySettingActionId { get; }
+        public int CopyMasterInputUsernameActionId { get; }
 
-        public List<int> InputMaxCreditActionIds { get; }
+        public int CopyMasterInputCreditActionId { get; }
 
         private T GetValue<T>(string key)
         {

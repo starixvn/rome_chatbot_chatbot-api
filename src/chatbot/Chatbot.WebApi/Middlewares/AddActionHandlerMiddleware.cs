@@ -19,7 +19,7 @@
             services.AddSingleton<IDictionary<int, IActionValidator>>(new Dictionary<int, IActionValidator>
             {
                 [chatbotConfigs.OutstandingSpecificDirectDownlineActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
-                [chatbotConfigs.MasterCopySettingActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
+                [chatbotConfigs.CopyMasterInputUsernameActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
             });
         }
     }

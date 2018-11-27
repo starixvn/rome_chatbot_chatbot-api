@@ -8,6 +8,7 @@ namespace Chatbot.WebApi
     using Alpha.Services.Client.Services;
     using Chatbot.Modules.Actions;
     using Chatbot.Modules.Actions.Builders.ActionName;
+    using Chatbot.Modules.Actions.Builders.ActionTitle;
     using Chatbot.Modules.Actions.Compilers;
     using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions;
@@ -21,6 +22,7 @@ namespace Chatbot.WebApi
     using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Constants;
+    using Chatbot.WebApi.Extensions;
     using Chatbot.WebApi.Filters;
     using Chatbot.WebApi.Middlewares;
     using Fanex.Caching;
@@ -90,7 +92,7 @@ namespace Chatbot.WebApi
             services.AddSingleton<Alpha.Services.Client.Services.LogService, LogServiceImpl>();
             services.AddSingleton<ResourceService, ResourceServiceImpl>();
             services.AddSingleton<CopyCustomerService, CopyCustomerServiceImpl>();
-            services.AddSingleton<ActionNameBuilderFactory, ActionNameBuilderFactoryImpl>();
+
 
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
                 { chatbotConfigs.YesterdayWinLossFunctionId, new MessageTemplate(new HeaderTemplate4(), new BodyTemplate()) },
@@ -121,6 +123,12 @@ namespace Chatbot.WebApi
                 });
             services.AddFunctionHandler();
             services.AddActionHandler();
+
+            services.AddActionNameBuilders();
+            services.AddActionTilteBuilders();
+            services.AddSingleton<ActionNameBuilderFactory, ActionNameBuilderFactoryImpl>();
+            services.AddSingleton<ActionTitleBuilderFactory, ActionTitleBuilderFactoryImpl>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Chatbot API", Version = "v1" });

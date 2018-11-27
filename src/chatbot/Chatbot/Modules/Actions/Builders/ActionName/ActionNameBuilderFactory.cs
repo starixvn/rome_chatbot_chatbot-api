@@ -1,8 +1,7 @@
 ﻿namespace Chatbot.Modules.Actions.Builders.ActionName
 {
-    using Alpha.Services.Client.Services;
+    using System.Collections.Generic;
     using Chatbot.Modules.Resources;
-    using Chatbot.Shared.Configurations;
 
     public interface ActionNameBuilderFactory
     {
@@ -11,28 +10,20 @@
 
     public class ActionNameBuilderFactoryImpl : ActionNameBuilderFactory
     {
-        private readonly IChatbotConfigs chatbotConfigs;
         private readonly ResourceService resourceService;
-        private readonly CopyCustomerService copyCustomerService;
+        private readonly IDictionary<int, IActionNameBuilder> actionNameBuilders;
 
         public ActionNameBuilderFactoryImpl(
-            IChatbotConfigs chatbotConfigs,
             ResourceService resourceService,
-            CopyCustomerService copyCustomerService)
+            IDictionary<int, IActionNameBuilder> actionNameBuilders)
         {
-            this.chatbotConfigs = chatbotConfigs;
             this.resourceService = resourceService;
-            this.copyCustomerService = copyCustomerService;
+            this.actionNameBuilders = actionNameBuilders;
         }
 
         public IActionNameBuilder GetActionNameBuilder(int actionId)
-        {
-            if (chatbotConfigs.InputMaxCreditActionIds.Contains(actionId))
-            {
-                return new InputMaxCreditActionNameBuilder(resourceService, copyCustomerService);
-            }
-
-            return new DefaultActionNameBuilder(resourceService);
-        }
+            => actionNameBuilders.ContainsKey(actionId)
+                ? actionNameBuilders[actionId]
+                : new DefaultActionNameBuilder(resourceService);
     }
 }

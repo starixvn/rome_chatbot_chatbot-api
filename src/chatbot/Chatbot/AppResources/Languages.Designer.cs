@@ -178,6 +178,33 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  A new member (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action..
+        /// </summary>
+        public static string CopyCustomerComfirmation_CustLevel_1 {
+            get {
+                return ResourceManager.GetString("CopyCustomerComfirmation_CustLevel_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new agent (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action..
+        /// </summary>
+        public static string CopyCustomerComfirmation_CustLevel_2 {
+            get {
+                return ResourceManager.GetString("CopyCustomerComfirmation_CustLevel_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new master (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action..
+        /// </summary>
+        public static string CopyCustomerComfirmation_CustLevel_3 {
+            get {
+                return ResourceManager.GetString("CopyCustomerComfirmation_CustLevel_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Currency.
         /// </summary>
         public static string CurrencyName {
