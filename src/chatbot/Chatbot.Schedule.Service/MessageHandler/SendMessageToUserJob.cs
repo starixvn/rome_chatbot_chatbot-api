@@ -24,8 +24,9 @@
             var userId = dataMap.GetInt(JobDataKey.UserId);
             var functionId = dataMap.GetInt(JobDataKey.FunctionId);
             var message = dataMap.GetString(JobDataKey.Message);
+            var selfdestructionPeriod = dataMap.GetInt(JobDataKey.SelfdestructionPeriod);
 
-            var result = await messageService.SendMessage(userId, message, functionId);
+            var result = await messageService.SendMessage(userId, message, selfdestructionPeriod, functionId);
 
             if (result.IsNotOk)
             {

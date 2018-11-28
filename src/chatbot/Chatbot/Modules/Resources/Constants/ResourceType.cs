@@ -4,5 +4,6 @@
     {
         public const string Function = "Function";
         public const string Action = "Action";
+        public const string Keyword = "Keyword";
     }
 }

@@ -44,7 +44,7 @@
         public void Handle_GetDataHandlerDoesNotContainKey_ThrowException()
         {
             // Arrange
-            var param = new FunctionParam(new Models.User(1, 2, 3, 4, "en-US"), new Models.Function { Id = 1 }, new Models.Messenger(), null);
+            var param = new FunctionParam(new Models.User(1, 2, 3, 4, "en-US", null), new Models.Function { Id = 1 }, new Models.Messenger(), null);
             var handler = CreateDefaultFunctionHandler();
 
             // Act & Assert
@@ -55,7 +55,7 @@
         public async Task Handle_IsCustomerClosed_BuildAndSendAccountClosedMessage()
         {
             // Arrange
-            var param = new FunctionParam(new Models.User(1, custId: 2, custLevel: 4, subAccountId: 3, language: "en-US"),
+            var param = new FunctionParam(new Models.User(1, custId: 2, custLevel: 4, subAccountId: 3, language: "en-US", selfdestructionPeriod: null),
                 new Models.Function { Id = 2 }, new Models.Messenger(), null);
             getDataHandlers.Add(2, null);
             subCustomerService.IsAccountClosed(2, 3).Returns(true);
@@ -66,14 +66,14 @@
             await handler.Handle(param);
 
             // Assert
-            await subMessageSender.Received().SendMessage(1, param.Messenger, "Account is closed", 2);
+            await subMessageSender.Received().SendMessage(1, param.Messenger, "Account is closed", null, 2);
         }
 
         [Fact]
         public async Task Handle_IsNormal_RunDataHandlerAndSendMessage()
         {
             // Arrange
-            var param = new FunctionParam(new Models.User(1, custId: 2, custLevel: 4, subAccountId: 3, language: "en-US"),
+            var param = new FunctionParam(new Models.User(1, custId: 2, custLevel: 4, subAccountId: 3, language: "en-US", selfdestructionPeriod: null),
                 new Models.Function { Id = 2 }, new Models.Messenger(1, "sa"), null);
             getDataHandlers.Add(2, async (_) => await Task.FromResult("Message"));
             subCustomerService.IsAccountClosed(2, 3).Returns(false);
@@ -84,7 +84,7 @@
             await handler.Handle(param);
 
             // Assert
-            await subMessageSender.Received().SendMessage(1, param.Messenger, "Message", 2);
+            await subMessageSender.Received().SendMessage(1, param.Messenger, "Message", null, 2);
         }
     }
 }

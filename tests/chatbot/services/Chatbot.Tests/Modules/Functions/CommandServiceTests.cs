@@ -128,6 +128,7 @@
                     msg => msg.Type == messenger.Type
                         && msg.Username == messenger.Username),
                 "NotRecognizedCommandMessage",
+                null,
                 100);
         }
 
@@ -206,6 +207,7 @@
                     msg => msg.Type == messenger.Type
                         && msg.Username == messenger.Username),
                 "NotRecognizedCommandMessage",
+                null,
                 100);
         }
 
@@ -267,6 +269,7 @@
                     msg => msg.Type == messenger.Type
                         && msg.Username == messenger.Username),
                 nextStep,
+                null,
                 2);
         }
 
@@ -317,6 +320,7 @@
                 3,
                 userId + 100,
                 "en-US",
+                null,
                 Enumerable.Empty<Messenger>(),
                 Enumerable.Empty<Function>());
 

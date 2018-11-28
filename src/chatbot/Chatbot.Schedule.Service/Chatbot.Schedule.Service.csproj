@@ -52,9 +52,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Chatbot.Client" Version="1.0.3-beta1" />
+    <PackageReference Include="Chatbot.Client" Version="1.0.5" />
     <PackageReference Include="Chatbot.Client.Transport" Version="1.0.0" />
-    <PackageReference Include="Fanex.Logging.RabbitMQ" Version="1.0.0-beta8" />
+    <PackageReference Include="Fanex.Logging.RabbitMQ" Version="1.0.0-beta82" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
@@ -66,9 +66,5 @@
     <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="2.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Chatbot.Client.Transport\Chatbot.Client.Transport.csproj" />
   </ItemGroup>
 </Project>

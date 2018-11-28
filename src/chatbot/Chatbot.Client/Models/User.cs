@@ -15,6 +15,8 @@ namespace Chatbot.Client.Models
 
         public int CustLevel { get; set; }
 
+        public int? SelfdestructionPeriod { get; set; }
+
         public List<Messenger> MessengerAccounts { get; set; }
 
         public List<Function> Functions { get; set; }

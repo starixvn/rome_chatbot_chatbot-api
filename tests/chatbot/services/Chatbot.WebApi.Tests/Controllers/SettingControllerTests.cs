@@ -147,7 +147,7 @@
             var userId = 1;
             var language = "vi-VN";
             var logParam = CreateDefaultLogParam();
-            var user = new User(1, 2, 2, 0, "en-US");
+            var user = new User(1, 2, 2, 0, "en-US", null);
             settingService.GetUser(userId).Returns(Task.FromResult(user));
             var logData = new UpdateLanguageLog(logParam.ActorId, logParam.CustId, logParam.IP, language, user.Language);
 

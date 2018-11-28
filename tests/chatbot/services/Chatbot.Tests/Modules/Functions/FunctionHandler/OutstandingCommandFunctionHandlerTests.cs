@@ -50,7 +50,7 @@
             // Arrange
             chatbotConfigs.OutstandingMaxTopQuery.Returns(1000);
             var param = new FunctionParam(
-                new User(1, 2, 4, 3, "en-US"),
+                new User(1, 2, 4, 3, "en-US", null),
                 new Function { Id = 1 },
                 new Messenger(1, "sa"),
                 new Dictionary<string, object> { ["parameters"] = new string[] { "10" } });
@@ -63,7 +63,7 @@
             handler.Handle(param).ConfigureAwait(false);
 
             // Assert
-            messageSender.Received().SendMessage(1, param.Messenger, "Message", 1);
+            messageSender.Received().SendMessage(1, param.Messenger, "Message", null, 1);
         }
 
         [Fact]
@@ -71,7 +71,7 @@
         {
             // Arrange
             var param = new FunctionParam(
-                new User(1, 2, 4, 3, "en-US"),
+                new User(1, 2, 4, 3, "en-US", null),
                 new Function { Id = 1 },
                 new Messenger(1, "sa"),
                 new Dictionary<string, object> { ["parameters"] = new string[] { "abc" } });
@@ -87,7 +87,7 @@
             handler.Handle(param).ConfigureAwait(false);
 
             // Assert
-            messageSender.Received().SendMessage(1, param.Messenger, "Invalid username", 1);
+            messageSender.Received().SendMessage(1, param.Messenger, "Invalid username", null, 1);
         }
 
         [Fact]
@@ -95,7 +95,7 @@
         {
             // Arrange
             var param = new FunctionParam(
-                new User(1, 2, 4, 3, "en-US"),
+                new User(1, 2, 4, 3, "en-US", null),
                 new Function { Id = 1 },
                 new Messenger(1, "sa"),
                 new Dictionary<string, object> { ["parameters"] = new string[] { "abc" } });
@@ -111,7 +111,7 @@
             handler.Handle(param).ConfigureAwait(false);
 
             // Assert
-            messageSender.Received().SendMessage(1, param.Messenger, "Invalid username", 1);
+            messageSender.Received().SendMessage(1, param.Messenger, "Invalid username", null, 1);
         }
 
         [Fact]
@@ -119,7 +119,7 @@
         {
             // Arrange
             var param = new FunctionParam(
-                new User(1, 2, 4, 3, "en-US"),
+                new User(1, 2, 4, 3, "en-US", null),
                 new Function { Id = 1 },
                 new Messenger(1, "sa"),
                 new Dictionary<string, object> { ["parameters"] = new string[] { "abc" } });
@@ -135,7 +135,7 @@
             handler.Handle(param).ConfigureAwait(false);
 
             // Assert
-            messageSender.Received().SendMessage(1, param.Messenger, "Message", 1);
+            messageSender.Received().SendMessage(1, param.Messenger, "Message", null, 1);
         }
     }
 }

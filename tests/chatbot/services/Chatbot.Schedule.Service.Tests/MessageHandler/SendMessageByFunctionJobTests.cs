@@ -27,10 +27,11 @@
             IDictionary<string, object> keyValuePairs = new Dictionary<string, object> {
                 { "functionId", 4 },
                 { "userId", 2 },
-                { "message", "Message"}
+                { "message", "Message"},
+                { "selfdestructionPeriod", 15}
             };
             context.JobDetail.JobDataMap.Returns(new JobDataMap(keyValuePairs));
-            messageService.SendMessage(2, "Message", 4).Returns(new Result { Code = 1 });
+            messageService.SendMessage(2, "Message", 15, 4).Returns(new Result { Code = 1 });
 
             // Act && Assert
             Assert.Throws<JobExecutionException>(() => job.Execute(context).GetAwaiter().GetResult());

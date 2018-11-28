@@ -1,16 +1,13 @@
 ﻿namespace Chatbot.Tests.Modules
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageServices;
+    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using Fanex.Logging;
+    using Messenger.Client;
     using NSubstitute;
     using Xunit;
-    using Messenger.Client;
-    using Chatbot.Shared.Constants;
-    using Chatbot.Shared.Configurations;
 
     [Trait("Modules", "MessageSenders")]
     public class MessageSenderTests
@@ -42,7 +39,7 @@
             messengerClient.PushAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(new Messenger.Client.Models.Result());
             messengerFactory.CreateMessengerClient(Arg.Any<int>()).Returns(messengerClient);
 
-            messageSender.SendMessage(userId, messenger, message).GetAwaiter().GetResult();
+            messageSender.SendMessage(userId, messenger, message, null).GetAwaiter().GetResult();
 
             messengerFactory.Received().CreateMessengerClient(messenger.Type);
         }
@@ -57,7 +54,7 @@
             messengerClient.PushAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(failedResult);
             messengerFactory.CreateMessengerClient(Arg.Any<int>()).Returns(messengerClient);
 
-            messageSender.SendMessage(userId, messenger, message).GetAwaiter().GetResult();
+            messageSender.SendMessage(userId, messenger, message, null).GetAwaiter().GetResult();
 
             logger.Received().Error("Deliver message failed: message content\r\nCode: 123, Message: Test Message");
         }
@@ -71,7 +68,7 @@
             messengerClient.PushAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(new Messenger.Client.Models.Result { Status = 1 });
             messengerFactory.CreateMessengerClient(Arg.Any<int>()).Returns(messengerClient);
 
-            messageSender.SendMessage(userId, messenger, message, 3, true).GetAwaiter().GetResult();
+            messageSender.SendMessage(userId, messenger, message, null, 3, true).GetAwaiter().GetResult();
 
             messageLogger.Received().LogMessage(CommonId.BotUserId, userId, messenger, message, 1, 3);
         }
@@ -85,7 +82,7 @@
             messengerClient.PushAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(new Messenger.Client.Models.Result { Status = 1 });
             messengerFactory.CreateMessengerClient(Arg.Any<int>()).Returns(messengerClient);
 
-            var result = messageSender.SendMessage(userId, messenger, message, 3, true).GetAwaiter().GetResult();
+            var result = messageSender.SendMessage(userId, messenger, message, null, 3, true).GetAwaiter().GetResult();
 
             Assert.True(result.IsOk);
         }

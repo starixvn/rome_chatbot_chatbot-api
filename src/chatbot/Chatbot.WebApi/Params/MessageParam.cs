@@ -12,6 +12,8 @@ namespace Chatbot.WebApi.Params
 
         public string Message { get; set; }
 
+        public int? SelfdestructionPeriod { get; set; }
+
         public int FunctionId { get; set; }
     }
 }

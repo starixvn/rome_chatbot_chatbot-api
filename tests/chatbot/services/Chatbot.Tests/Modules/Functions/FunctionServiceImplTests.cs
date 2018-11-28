@@ -1,4 +1,4 @@
-namespace Chatbot.Tests.Modules.Functions
+﻿namespace Chatbot.Tests.Modules.Functions
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -35,11 +35,11 @@ namespace Chatbot.Tests.Modules.Functions
         {
             // Arrange
             var users = new List<User> {
-                    new User(1, 2, 3, 4, "en-US")
+                    new User(1, 2, 3, 4, "en-US", null)
             };
             var expectedFunctionMessages = new List<FunctionMessage>
             {
-                new FunctionMessage(1, "message")
+                new FunctionMessage(1, "message", null)
             };
             subSettingService.GetUsersByFunction(2, 0).Returns(users);
             subFunctionHandlerFactory

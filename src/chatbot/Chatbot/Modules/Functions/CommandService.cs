@@ -196,7 +196,7 @@
 
             if (chatbotConfigs.ReturnRawErrorToMessenger)
             {
-                await messageSender.SendMessage(user.Id, messenger, logMessage.Replace("\r\n", string.Empty)).ConfigureAwait(false);
+                await messageSender.SendMessage(user.Id, messenger, logMessage.Replace("\r\n", string.Empty), user.SelfdestructionPeriod).ConfigureAwait(false);
             }
             else
             {
@@ -212,10 +212,7 @@
         {
             var userFunctions = await settingService.GetFunctions(user.Id).ConfigureAwait(false);
 
-            if (!userFunctions.Any(func =>
-                                        func.Type == CommandFunctionType
-                                        && func.Enabled)
-                || await actionService.NoRootActionExist().ConfigureAwait(false))
+            if (await NoUserFuntionEnabledOrNoActionExisted(userFunctions).ConfigureAwait(false))
             {
                 await SendNotRecognizedCommandMessage(user, messenger).ConfigureAwait(false);
                 return;
@@ -226,6 +223,10 @@
             await HandleActionResult(user, messenger, actionResult).ConfigureAwait(false);
         }
 
+        private async Task<bool> NoUserFuntionEnabledOrNoActionExisted(IEnumerable<Function> userFunctions)
+            => !userFunctions.Any(func => func.Type == CommandFunctionType && func.Enabled)
+                            || await actionService.NoRootActionExist().ConfigureAwait(false);
+
         private async Task HandleActionResult(User user, Messenger messenger, Actions.Models.ActionResult actionResult)
         {
             if (string.IsNullOrWhiteSpace(actionResult.Command))
@@ -233,7 +234,7 @@
                 await SendValidationMessage(user, messenger, actionResult).ConfigureAwait(false);
 
                 await messageSender
-                    .SendMessage(user.Id, messenger, actionResult.Message, actionResult.FunctionId)
+                    .SendMessage(user.Id, messenger, actionResult.Message, user.SelfdestructionPeriod, actionResult.FunctionId)
                     .ConfigureAwait(false);
             }
             else
@@ -262,20 +263,21 @@
                 user.Id,
                 messenger,
                 messageBuilder.BuildNotRecognizedCommandMessage(user.Language),
+                user.SelfdestructionPeriod,
                 chatbotConfigs.NotRecognizedCommandFunctionId);
 
         private async Task SendErrorMessage(User user, Messenger messenger)
         {
             var message = messageBuilder.BuildErrorMessage(user.Language);
 
-            await messageSender.SendMessage(user.Id, messenger, message).ConfigureAwait(false);
+            await messageSender.SendMessage(user.Id, messenger, message, user.SelfdestructionPeriod).ConfigureAwait(false);
         }
 
         private async Task SendServiceUnavailableMessage(int messengerType, string messengerName)
         {
             var message = messageBuilder.BuildServiceIsUnavailableMessage(messengerType);
 
-            await messageSender.SendMessage(new Messenger(messengerType, messengerName), message, logToDatabase: false).ConfigureAwait(false);
+            await messageSender.SendMessage(new Messenger(messengerType, messengerName), message, null, logToDatabase: false).ConfigureAwait(false);
         }
 
         private static (string, string[]) SplitCommand(string command)

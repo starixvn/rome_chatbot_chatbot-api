@@ -48,6 +48,8 @@
         Task<IEnumerable<Messenger>> GetMessengers(int userId, bool isEnabledOnly = false);
 
         Task Unsubscribe(int userId, Messenger messenger, UnlinkAccountLog logData);
+
+        Task UpdateSelfdestructionPeriod(int userId, int minutes, UpdateSelfdestructionPeriodLog logData);
     }
 
     public class SettingServiceImpl : SettingService
@@ -111,14 +113,14 @@
                 verificationCode,
                 chatbotConfigs.VerificationCodeExpiredTimeInMinutes);
 
-            await messageSender.SendMessage(user.Id, messenger, message).ConfigureAwait(false);
+            await messageSender.SendMessage(user.Id, messenger, message, user.SelfdestructionPeriod).ConfigureAwait(false);
         }
 
         private async Task SendWelcomeMessage(User user, Messenger messenger)
         {
             var message = messageBuilder.BuildWelcomeMessage(user.Language, messenger.Type);
 
-            await messageSender.SendMessage(user.Id, messenger, message).ConfigureAwait(false);
+            await messageSender.SendMessage(user.Id, messenger, message, user.SelfdestructionPeriod).ConfigureAwait(false);
         }
 
         private async Task InsertMessengerWithVerificationCode(
@@ -193,6 +195,7 @@
                 user.CustLevel,
                 user.SubAccountId,
                 user.Language,
+                user.SelfdestructionPeriod,
                 messengerAccounts,
                 functions);
         }
@@ -238,6 +241,7 @@
                 user.CustLevel,
                 user.SubAccountId,
                 user.Language,
+                user.SelfdestructionPeriod,
                 Enumerable.Empty<Messenger>(),
                 Enumerable.Empty<Function>());
         }
@@ -301,7 +305,11 @@
             InputValidator.Validate("Messenger Username", messenger.Username);
             InputValidator.Validate("Messenger Type", messenger.Type);
 
-            var userId = await InsertUser(custId, subAccountId, language, messenger, custLevel).ConfigureAwait(false);
+            var user = await GetUser(custId, subAccountId, language).ConfigureAwait(false);
+
+            var userId = user == null
+                ? await InsertUser(custId, subAccountId, language, messenger, custLevel).ConfigureAwait(false)
+                : user.Id;
 
             var result = await VerifyMessengerAccount(userId, messenger).ConfigureAwait(false);
             if (result.IsNotOk)
@@ -556,7 +564,16 @@
 
             var message = messageBuilder.BuildUnlinkMessage(user.Language);
 
-            await messageSender.SendMessage(user.Id, messenger, message).ConfigureAwait(false);
+            await messageSender.SendMessage(user.Id, messenger, message, user.SelfdestructionPeriod).ConfigureAwait(false);
+        }
+
+        public async Task UpdateSelfdestructionPeriod(int userId, int minutes, UpdateSelfdestructionPeriodLog logData)
+        {
+            var command = new UpdateSelfdestructionPeriodCommand(userId, minutes);
+
+            await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
+
+            settingLogService.WriteLog(logData);
         }
     }
 }

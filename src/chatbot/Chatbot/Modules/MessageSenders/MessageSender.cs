@@ -1,5 +1,6 @@
 ﻿namespace Chatbot.Modules.MessageSenders
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -13,13 +14,13 @@
 
     public interface IMessageSender
     {
-        Task<Result> SendMessage(Messenger messenger, string message, int functionId = 0, bool logToDatabase = true);
+        Task<Result> SendMessage(Messenger messenger, string message, int? selfdestructionPeriod, int functionId = 0, bool logToDatabase = true);
 
-        Task<Result> SendMessage(int userId, string message, IEnumerable<Messenger> messengers, int functionId = 0, bool logToDatabase = true);
+        Task<Result> SendMessage(int userId, string message, IEnumerable<Messenger> messengers, int? selfdestructionPeriod, int functionId = 0, bool logToDatabase = true);
 
-        Task<Result> SendMessage(int userId, Messenger messenger, string message, int functionId = 0, bool logToDatabase = true);
+        Task<Result> SendMessage(int userId, Messenger messenger, string message, int? selfdestructionPeriod, int functionId = 0, bool logToDatabase = true);
 
-        Task<Result> SendMessage(int userId, Messenger messenger, MessengerClient.Models.Message message, int functionId = 0, bool logToDatabase = true);
+        Task<Result> SendMessage(int userId, Messenger messenger, MessengerClient.Models.Message message, int? selfdestructionPeriod, int functionId = 0, bool logToDatabase = true);
 
         Task<bool> IsMessengerAccountNotExisted(Messenger messenger);
     }
@@ -43,10 +44,10 @@
             this.chatbotConfigs = chatbotConfigs;
         }
 
-        public async Task<Result> SendMessage(Messenger messenger, string message, int functionId = 0, bool logToDatabase = true)
-            => await SendMessage(0, messenger, message, functionId).ConfigureAwait(false);
+        public async Task<Result> SendMessage(Messenger messenger, string message, int? selfdestructionPeriod, int functionId = 0, bool logToDatabase = true)
+            => await SendMessage(0, messenger, message, selfdestructionPeriod, functionId, logToDatabase).ConfigureAwait(false);
 
-        public async Task<Result> SendMessage(int userId, Messenger messenger, string message, int functionId = 0, bool logToDatabase = true)
+        public async Task<Result> SendMessage(int userId, Messenger messenger, string message, int? selfdestructionPeriod, int functionId = 0, bool logToDatabase = true)
         {
             MessengerClient.Models.Result result;
 
@@ -64,7 +65,14 @@
             else
             {
                 var client = messengerFactory.CreateMessengerClient(messenger.Type);
-                result = await client.PushAsync(messenger.Username, message).ConfigureAwait(false);
+
+                DateTime? expiredTime = null;
+                if (selfdestructionPeriod.HasValue)
+                {
+                    expiredTime = DateTime.Now.AddMinutes(selfdestructionPeriod.Value);
+                }
+
+                result = await client.PushAsync(messenger.Username, message, expiredTime).ConfigureAwait(false);
             }
 
             if (result.IsNotOk)
@@ -102,13 +110,13 @@
             return !profileResult.Item2;
         }
 
-        public async Task<Result> SendMessage(int userId, string message, IEnumerable<Messenger> messengers, int functionId = 0, bool logToDatabase = true)
+        public async Task<Result> SendMessage(int userId, string message, IEnumerable<Messenger> messengers, int? selfdestructionPeriod, int functionId = 0, bool logToDatabase = true)
         {
             var results = new List<Result>();
 
             foreach (var messenger in messengers)
             {
-                results.Add(await SendMessage(userId, messenger, message, functionId, logToDatabase).ConfigureAwait(false));
+                results.Add(await SendMessage(userId, messenger, message, selfdestructionPeriod, functionId, logToDatabase).ConfigureAwait(false));
             }
 
             return results.All(result => result.IsOk)
@@ -116,7 +124,7 @@
                 : new Result(1);
         }
 
-        public async Task<Result> SendMessage(int userId, Messenger messenger, MessengerClient.Models.Message message, int functionId = 0, bool logToDatabase = true)
+        public async Task<Result> SendMessage(int userId, Messenger messenger, MessengerClient.Models.Message message, int? selfdestructionPeriod, int functionId = 0, bool logToDatabase = true)
         {
             MessengerClient.Models.Result result;
 
@@ -135,7 +143,13 @@
             {
                 var client = messengerFactory.CreateMessengerClient(messenger.Type);
 
-                result = await client.PushAsync(new List<string> { messenger.Username }, message).ConfigureAwait(false);
+                DateTime? expiredTime = null;
+                if (selfdestructionPeriod.HasValue)
+                {
+                    expiredTime = DateTime.Now.AddMinutes(selfdestructionPeriod.Value);
+                }
+
+                result = await client.PushAsync(new List<string> { messenger.Username }, message, expiredTime).ConfigureAwait(false);
             }
 
             if (result.IsNotOk)

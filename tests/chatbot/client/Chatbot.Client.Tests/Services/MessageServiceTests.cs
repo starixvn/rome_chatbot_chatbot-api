@@ -26,8 +26,9 @@
             var userId = 1;
             var message = "message";
             var functionId = 2;
+            int? selfdestructionPeriod = 30;
 
-            messageService.SendMessage(userId, message, functionId).GetAwaiter().GetResult();
+            messageService.SendMessage(userId, message, selfdestructionPeriod, functionId).GetAwaiter().GetResult();
 
             Func<object, bool> assert = data =>
             {
@@ -35,10 +36,12 @@
                 var actualMessage = type.GetProperty("message").GetValue(data);
                 var actualUserId = (int)type.GetProperty("userId").GetValue(data);
                 var actualFunctionId = (int)type.GetProperty("functionId").GetValue(data);
+                var actualSelfdestructionPeriod = (int)type.GetProperty("selfdestructionPeriod").GetValue(data);
 
-                return actualMessage == message
+                return actualMessage.Equals(message)
                     && actualUserId == userId
-                    && actualFunctionId == functionId;
+                    && actualFunctionId == functionId
+                    && actualSelfdestructionPeriod == selfdestructionPeriod;
             };
 
             restClient.Received().ExecutePostAsync<Result>(

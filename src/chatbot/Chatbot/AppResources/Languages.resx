@@ -354,4 +354,10 @@
   <data name="InvalidNumerOfDownlinesRange" xml:space="preserve">
     <value>Number of downlines must be from 1 to {0}.</value>
   </data>
+  <data name="ConfirmKeywordTitle" xml:space="preserve">
+    <value>Do you want to request any of the following function(s)?</value>
+  </data>
+  <data name="NoneOfTheAbove" xml:space="preserve">
+    <value>None of the above</value>
+  </data>
 </root>

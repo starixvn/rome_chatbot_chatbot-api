@@ -1,10 +1,11 @@
-﻿/*<info serverAlias="DBAGE-bodb_ChatBot" executers="bodbDownlineNet" viewers="vnteam" selecters=""></info>*/
-
+﻿/*<info serverAlias="DBBOT-bodb_ChatBot" executers="bodbDownlineNet" viewers="vnteam" selecters=""></info>*/
 USE [bodb_ChatBot]
 GO
+
 /****** Object:  StoredProcedure [dbo].[InsertUser]     Script Date: 7/27/2018 4:19:28 PM ******/
 SET ANSI_NULLS ON
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
 
@@ -15,6 +16,7 @@ GO
 	
 	Revisions:
 		- 20180727@Ricky.Nguyen:	Initial
+		- 20181123@Alvin.Nguyen:    Remove update language and enable function settings for exist user
 		
 	Parameter's Explaination:
 		- @Example:			NULL		- Explaination [DEFAULT]
@@ -22,58 +24,32 @@ GO
 	Developer's Notes:
 		- Notes
 */
-
-ALTER PROCEDURE [dbo].[Chatbot_InsertUser]
-				@CustId				INT
-			,	@SubAccountId		INT
-			,	@Language			CHAR(5)
-			,	@CustLevel			TINYINT
-
-			,	@UserId				INT	= 0		OUTPUT				
-		
+ALTER PROCEDURE [dbo].[Chatbot_InsertUser] @CustId INT
+	,@SubAccountId INT
+	,@Language CHAR(5)
+	,@CustLevel TINYINT
+	,@UserId INT = 0 OUTPUT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT	@UserId = UserId 
-	FROM	dbo.UserInfo WITH (NOLOCK) 
-	WHERE	CustId = @CustId AND SubAccId = @SubAccountId
+	INSERT INTO [dbo].[UserInfo] (
+		[CustId]
+		,[SubAccId]
+		,[Language]
+		,[CustomerLevel]
+		)
+	VALUES (
+		@CustId
+		,@SubAccountId
+		,@Language
+		,@CustLevel
+		)
 
+	SET @UserId = SCOPE_IDENTITY()
 
-	IF(@UserId > 0)
-		BEGIN
-			UPDATE  dbo.UserInfo WITH (ROWLOCK, UPDLOCK)
-			SET     Language = @Language
-			WHERE	UserId = @UserId
-
-			UPDATE  dbo.UserFunctionSetting WITH (ROWLOCK, UPDLOCK)
-			SET     Enabled = 1
-			WHERE	UserId = @UserId
-		END
-	ELSE
-		BEGIN
-			INSERT INTO [dbo].[UserInfo]
-           ([CustId]
-           ,[SubAccId]
-           ,[Language]
-		   ,[CustomerLevel])
-			VALUES
-				   (@CustId
-				   ,@SubAccountId
-				   ,@Language
-				   ,@CustLevel)
-		   
-			SET @UserId = SCOPE_IDENTITY()
-
-			EXEC [dbo].[Chatbot_InsertUserFunctions] @UserId
-		END
+	EXEC [dbo].[Chatbot_InsertUserFunctions] @UserId
 END
-
 GO
-
-GRANT EXECUTE ON  [dbo].[Chatbot_InsertUser] TO bodbDownlineNet;  
-
-GO
-
 
 

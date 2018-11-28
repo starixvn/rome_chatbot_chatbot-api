@@ -32,17 +32,17 @@
             context.JobDetail.JobDataMap.Returns(new JobDataMap(keyValuePairs));
             messageService.GetFunctionMessages(4).Returns(
                 new List<FunctionMessage> {
-                   new FunctionMessage {Message = "Message", UserId = 1},
-                   new FunctionMessage {Message = "Message1", UserId = 2}
+                   new FunctionMessage {Message = "Message", UserId = 1, SelfdestructionPeriod=30},
+                   new FunctionMessage {Message = "Message1", UserId = 2, SelfdestructionPeriod=30}
                 });
 
             // Act
             await notificationJob.Execute(context);
 
             // Assert
-            await messageSender.Received().SendMessageToUser(1, 4, "Message");
-            await messageSender.Received().SendMessageToUser(2, 4, "Message1");
-            await messageSender.Received(2).SendMessageToUser(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>());
+            await messageSender.Received().SendMessageToUser(1, 4, "Message", 30);
+            await messageSender.Received().SendMessageToUser(2, 4, "Message1", 30);
+            await messageSender.Received(2).SendMessageToUser(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int?>());
         }
     }
 }

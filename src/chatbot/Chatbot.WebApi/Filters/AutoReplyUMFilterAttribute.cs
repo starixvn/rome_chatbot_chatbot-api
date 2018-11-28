@@ -47,6 +47,7 @@
                                 command.MessengerType,
                                 command.MessengerUsername),
                             umMessage,
+                            null,
                             logToDatabase: false);
 
                         await HandleUnderMaintenance(context.HttpContext, umMessage);

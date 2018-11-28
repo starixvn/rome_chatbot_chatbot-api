@@ -35,7 +35,11 @@
 
                 Parallel.ForEach(functionMessages, async (functionMessage) =>
                 {
-                    await messageSender.SendMessageToUser(functionMessage.UserId, functionId, functionMessage.Message);
+                    await messageSender.SendMessageToUser(
+                        functionMessage.UserId,
+                        functionId,
+                        functionMessage.Message,
+                        functionMessage.SelfdestructionPeriod);
                 });
             }
             catch (ChatbotClientException ex)

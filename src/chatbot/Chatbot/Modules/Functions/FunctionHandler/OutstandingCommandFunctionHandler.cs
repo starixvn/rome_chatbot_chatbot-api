@@ -71,14 +71,24 @@
         {
             var message = messageBuilder.BuildInvalidNumerOfDownlineRange(param.User.Language, maxTopQuery);
 
-            return messageSender.SendMessage(param.User.Id, param.Messenger, message, param.Function.Id);
+            return messageSender.SendMessage(
+                param.User.Id,
+                param.Messenger,
+                message,
+                param.User.SelfdestructionPeriod,
+                param.Function.Id);
         }
 
         private Task<Result> BuildAndSendInvalidCustNameMessage(FunctionParam param)
         {
             var message = messageBuilder.BuildInvalidCustNameMessage(param.User.Language);
 
-            return messageSender.SendMessage(param.User.Id, param.Messenger, message, param.Function.Id);
+            return messageSender.SendMessage(
+                param.User.Id,
+                param.Messenger,
+                message,
+                param.User.SelfdestructionPeriod,
+                param.Function.Id);
         }
 
         private static bool IsDirectDownline(int custLevel, int downlineLevel)

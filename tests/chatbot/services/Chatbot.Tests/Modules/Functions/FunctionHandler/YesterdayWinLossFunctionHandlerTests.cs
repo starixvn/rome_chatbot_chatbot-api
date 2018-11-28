@@ -61,10 +61,10 @@
 
             // Act
             var functionMessages = await handler.GetFunctionMessages(
-                new FunctionParam(null, new Function { Id = 4 }, null, null, new List<User> { new User(2, 1, 1, 1, "en-US") }));
+                new FunctionParam(null, new Function { Id = 4 }, null, null, new List<User> { new User(2, 1, 1, 1, "en-US", null) }));
 
             // Assert
-            var expectedFunctionMessages = new List<FunctionMessage> { new FunctionMessage(2, "Message") };
+            var expectedFunctionMessages = new List<FunctionMessage> { new FunctionMessage(2, "Message", null) };
             Assert.True(comparer.Compare(expectedFunctionMessages, functionMessages).AreEqual);
         }
 
@@ -79,7 +79,7 @@
 
             // Act
             var functionMessages = await handler.GetFunctionMessages(
-                new FunctionParam(null, new Function { Id = 4 }, null, null, new List<User> { new User(2, 1, 1, 1, "en-US") }));
+                new FunctionParam(null, new Function { Id = 4 }, null, null, new List<User> { new User(2, 1, 1, 1, "en-US", null) }));
 
             // Assert
             var expectedFunctionMessages = new List<FunctionMessage>();

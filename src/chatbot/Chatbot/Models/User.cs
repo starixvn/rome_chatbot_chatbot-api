@@ -16,13 +16,15 @@ namespace Chatbot.Models
             int custId,
             int custLevel,
             int subAccountId,
-            string language)
+            string language,
+            int? selfdestructionPeriod)
             : this(
                   id,
                   custId,
                   custLevel,
                   subAccountId,
                   language,
+                  selfdestructionPeriod,
                   Enumerable.Empty<Messenger>(),
                   Enumerable.Empty<Function>())
         {
@@ -34,6 +36,7 @@ namespace Chatbot.Models
             int custLevel,
             int subAccountId,
             string language,
+            int? selfdestructionPeriod,
             IEnumerable<Messenger> messengerAccounts,
             IEnumerable<Function> functions)
         {
@@ -44,6 +47,7 @@ namespace Chatbot.Models
             MessengerAccounts = messengerAccounts;
             Functions = functions;
             CustLevel = custLevel;
+            SelfdestructionPeriod = selfdestructionPeriod;
         }
 
         public int Id { get; private set; }
@@ -59,5 +63,7 @@ namespace Chatbot.Models
         public string Language { get; private set; }
 
         public int CustLevel { get; }
+
+        public int? SelfdestructionPeriod { get; }
     }
 }

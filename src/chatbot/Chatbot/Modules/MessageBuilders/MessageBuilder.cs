@@ -7,6 +7,7 @@
     using Chatbot.AppResources;
     using Chatbot.Modules.MessageBuilders.Templates;
     using Chatbot.Modules.Resources;
+    using Chatbot.Modules.Resources.Constants;
 
     public interface IMessageBuilder
     {
@@ -47,6 +48,10 @@
         string BuildCancelRequestMessage(string language);
 
         string BuildResponseCancelRequestMessage(int messengerType, string language);
+
+        string BuildConfirmKeywordTitle(string language);
+
+        string BuildNoneOfTheAboveMessage(string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -65,8 +70,6 @@
             "zh-CN",
             "zh-TW"
         };
-
-        private const string ActionResourceName = "Action";
 
         private static readonly CultureInfo defaultCultureInfo = CultureInfo.CreateSpecificCulture("en-US");
         private static readonly IMessageTemplate defaultTemplate = new MessageTemplate(new HeaderTemplate(), new BodyTemplate());
@@ -202,7 +205,10 @@
                             : defaultCultureInfo;
 
         public async Task<string> BuildActionName(int actionId, string language)
-            => (await resourceService.GetResource(actionId, ActionResourceName, language).ConfigureAwait(false))?.Value;
+            => (await resourceService.GetResource(
+                    actionId,
+                    ResourceType.Action,
+                    language).ConfigureAwait(false))?.Value.ToUpperInvariant();
 
         public string BuildActionTitle(string language)
         => GetResource(nameof(Languages.PleaseSelectOption), language);
@@ -218,5 +224,11 @@
                 GetMessengerFormatter(messengerType).NewLine(),
                 GetResource(nameof(Languages.FunctionHasBeenCancelled), language),
                 GetResource(nameof(Languages.WhichActionWouldYouLikeToTake), language));
+
+        public string BuildConfirmKeywordTitle(string language)
+            => GetResource(nameof(Languages.ConfirmKeywordTitle), language);
+
+        public string BuildNoneOfTheAboveMessage(string language)
+            => GetResource(nameof(Languages.NoneOfTheAbove), language);
     }
 }

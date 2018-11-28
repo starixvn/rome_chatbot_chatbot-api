@@ -169,6 +169,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to request any of the following function(s)?.
+        /// </summary>
+        public static string ConfirmKeywordTitle {
+            get {
+                return ResourceManager.GetString("ConfirmKeywordTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Currency.
         /// </summary>
         public static string CurrencyName {
@@ -534,6 +543,15 @@ namespace Chatbot.AppResources {
         public static string NoData {
             get {
                 return ResourceManager.GetString("NoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None of the above.
+        /// </summary>
+        public static string NoneOfTheAbove {
+            get {
+                return ResourceManager.GetString("NoneOfTheAbove", resourceCulture);
             }
         }
         
