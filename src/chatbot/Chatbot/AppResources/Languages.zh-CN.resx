@@ -354,4 +354,10 @@
   <data name="InvalidNumerOfDownlinesRange" xml:space="preserve">
     <value>旗下的下线必须从 1 至 {0} 的数字。</value>
   </data>
+  <data name="ConfirmKeywordTitle" xml:space="preserve">
+    <value>请问您是否需要以下功能？</value>
+  </data>
+  <data name="NoneOfTheAbove" xml:space="preserve">
+    <value>以上皆非</value>
+  </data>
 </root>

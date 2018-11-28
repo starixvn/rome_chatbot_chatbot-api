@@ -328,4 +328,10 @@
   <data name="InvalidNumerOfDownlinesRange" xml:space="preserve">
     <value>จำนวนดาวน์ไลน์ต้องเริ่มจาก 1 ถึง {0}' เท่านั้น</value>
   </data>
+  <data name="ConfirmKeywordTitle" xml:space="preserve">
+    <value>คุณต้องการขอให้มีฟังก์ชั่นต่อไปนี้หรือไม่?</value>
+  </data>
+  <data name="NoneOfTheAbove" xml:space="preserve">
+    <value>ไม่มีข้อใดข้างต้น</value>
+  </data>
 </root>

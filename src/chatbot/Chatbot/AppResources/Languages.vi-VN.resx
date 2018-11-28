@@ -268,4 +268,10 @@
   <data name="HintSpecificDownline" xml:space="preserve">
     <value>*Gợi ý: để xem tiền chưa xử lý của tài khoản cấp dưới, vui lòng nhập: /os tên tài khoản</value>
   </data>
+  <data name="ConfirmKeywordTitle" xml:space="preserve">
+    <value>Bạn có muốn yêu cầu một trong những tính năng sau?</value>
+  </data>
+  <data name="NoneOfTheAbove" xml:space="preserve">
+    <value>Không yêu cầu</value>
+  </data>
 </root>
