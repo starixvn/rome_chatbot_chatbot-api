@@ -7,8 +7,6 @@ namespace Chatbot.WebApi
     using System.Linq;
     using Alpha.Services.Client.Services;
     using Chatbot.Modules.Actions;
-    using Chatbot.Modules.Actions.Builders.ActionName;
-    using Chatbot.Modules.Actions.Builders.ActionTitle;
     using Chatbot.Modules.Actions.Compilers;
     using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions;
@@ -101,6 +99,7 @@ namespace Chatbot.WebApi
                 { chatbotConfigs.NormalAnnouncementFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { chatbotConfigs.SystemUpdateFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { chatbotConfigs.OutstandingFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate1()) },
+                { chatbotConfigs.CopyCustomerFunctionId, new MessageTemplate(null, new BodyTemplate9()) }
             });
             services.AddSingleton<IDictionary<int, IMessengerFormatter>>(
                 new Dictionary<int, IMessengerFormatter>
@@ -123,11 +122,7 @@ namespace Chatbot.WebApi
                 });
             services.AddFunctionHandler();
             services.AddActionHandler();
-
-            services.AddActionNameBuilders();
-            services.AddActionTilteBuilders();
-            services.AddSingleton<ActionNameBuilderFactory, ActionNameBuilderFactoryImpl>();
-            services.AddSingleton<ActionTitleBuilderFactory, ActionTitleBuilderFactoryImpl>();
+            services.AddActionBuilders();
 
             services.AddSwaggerGen(c =>
             {

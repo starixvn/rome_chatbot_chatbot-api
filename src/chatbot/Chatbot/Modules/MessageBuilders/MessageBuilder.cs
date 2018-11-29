@@ -5,6 +5,7 @@
     using System.Text;
     using Chatbot.AppResources;
     using Chatbot.Modules.MessageBuilders.Templates;
+    using Chatbot.Shared.Extensions;
 
     public interface IMessageBuilder
     {
@@ -227,7 +228,7 @@
             => GetResource(nameof(Languages.NoneOfTheAbove), language);
 
         public string BuildInvalidMaxCreditMessage(int custLevel, decimal maxCredit, string language)
-            => string.Format(GetResource($"MaxCreditInvalid_CustLevel_{custLevel}", language), 0, maxCredit);
+            => string.Format(GetResource($"MaxCreditInvalid_CustLevel_{custLevel}", language), 0, maxCredit.ToFormattedNumber());
 
         public string BuildCopyCustomerConfirmationTitle(int custLevel, string credit, string sourceUsername, string language)
             => string.Format(GetResource($"CopyCustomerComfirmation_CustLevel_{custLevel}", language), credit, sourceUsername);

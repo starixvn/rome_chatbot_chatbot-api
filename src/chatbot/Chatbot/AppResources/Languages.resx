@@ -381,4 +381,7 @@
   <data name="CopyCustomerComfirmation_CustLevel_1" xml:space="preserve">
     <value> A new member (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action.</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
 </root>

@@ -5,6 +5,7 @@
     using Chatbot.Models;
     using Chatbot.Modules.Resources;
     using Chatbot.Modules.Resources.Constants;
+    using Chatbot.Shared.Extensions;
 
     public class InputMaxCreditActionNameBuilder : IActionNameBuilder
     {
@@ -24,7 +25,7 @@
             var pt = await copyCustomerService.GetPT(user.CustId, (byte)user.CustLevel).ConfigureAwait(false);
             var resource = await resourceService.GetResource(actionId, ResourceType.Action, user.Language).ConfigureAwait(false);
 
-            return string.Format(resource.Value, pt.MaxCredit);
+            return string.Format(resource.Value, pt.MaxCredit.ToFormattedNumber());
         }
     }
 }

@@ -15,12 +15,15 @@
             var chatbotConfigs = serviceProvider.GetService<IChatbotConfigs>();
             var messageBuilder = serviceProvider.GetService<IMessageBuilder>();
             var customerService = serviceProvider.GetService<CustomerService>();
+            var copyCustomerService = serviceProvider.GetService<CopyCustomerService>();
 
-            services.AddSingleton<IDictionary<int, IActionValidator>>(new Dictionary<int, IActionValidator>
-            {
-                [chatbotConfigs.OutstandingSpecificDirectDownlineActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
-                [chatbotConfigs.CopyMasterInputUsernameActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
-            });
+            services.AddSingleton<IDictionary<int, IActionValidator>>(
+                new Dictionary<int, IActionValidator>
+                {
+                    [chatbotConfigs.OutstandingSpecificDirectDownlineActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
+                    [chatbotConfigs.CopyMasterInputUsernameActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
+                    [chatbotConfigs.CopyMasterInputCreditActionId] = new MaxCreditValidator(messageBuilder, copyCustomerService)
+                });
         }
     }
 }

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
     using Chatbot.Modules.Funtions.Params;
@@ -132,5 +133,13 @@
 
             logger.Error(logMessage);
         }
+
+        protected static bool IsValidDirectDownline(int custLevel, DownlineInfo downlineInfo)
+            => downlineInfo != null
+                && downlineInfo.CustId > 0
+                && IsDirectDownline(custLevel, downlineInfo.RoleId);
+
+        private static bool IsDirectDownline(int custLevel, int downlineLevel)
+            => (custLevel - downlineLevel) == 1;
     }
 }

@@ -10,6 +10,7 @@
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using Microsoft.Extensions.DependencyInjection;
     using Serilog;
 
@@ -19,6 +20,7 @@
         private static MessageService messageService;
         private static AnnouncementService announcementService;
         private static NotificationService chatBotMessageService;
+        private static CopyCustomerService copyCustomerService;
         private static IChatbotConfigs chatbotConfigs;
 
         public static void AddFunctionHandler(this IServiceCollection services)
@@ -29,18 +31,20 @@
             messageService = serviceProvider.GetService<MessageService>();
             chatBotMessageService = serviceProvider.GetService<NotificationService>();
             announcementService = serviceProvider.GetService<AnnouncementService>();
+            copyCustomerService = serviceProvider.GetService<CopyCustomerService>();
 
             services.AddSingleton<IDictionary<int, Func<FunctionParam, Task<object>>>>(
                 new Dictionary<int, Func<FunctionParam, Task<object>>>
                 {
-                    { chatbotConfigs.OutstandingFunctionId, GetOutstanding },
-                    { chatbotConfigs.WinlossFunctionId, GetWinLoss },
-                    { chatbotConfigs.BalanceFunctionId, GetBalanceInfo },
-                    { chatbotConfigs.YesterdayWinLossFunctionId, GetYesterdayWinLoss },
-                    { chatbotConfigs.PersonalMessageFunctionId, GetPersonalMessage },
-                    { chatbotConfigs.SpecialAnnouncementFunctionId, GetSpecialAnnouncement },
-                    { chatbotConfigs.NormalAnnouncementFunctionId, GetNormalAnnouncement },
-                    { chatbotConfigs.SystemUpdateFunctionId, GetSystemUpdate },
+                    [chatbotConfigs.OutstandingFunctionId] = GetOutstanding,
+                    [chatbotConfigs.WinlossFunctionId] = GetWinLoss,
+                    [chatbotConfigs.BalanceFunctionId] = GetBalanceInfo,
+                    [chatbotConfigs.YesterdayWinLossFunctionId] = GetYesterdayWinLoss,
+                    [chatbotConfigs.PersonalMessageFunctionId] = GetPersonalMessage,
+                    [chatbotConfigs.SpecialAnnouncementFunctionId] = GetSpecialAnnouncement,
+                    [chatbotConfigs.NormalAnnouncementFunctionId] = GetNormalAnnouncement,
+                    [chatbotConfigs.SystemUpdateFunctionId] = GetSystemUpdate,
+                    [chatbotConfigs.CopyCustomerFunctionId] = CopyCustomer
                 });
         }
 
@@ -111,6 +115,27 @@
             WriteLogWhenHaveMessage(customers, messages);
 
             return messages;
+        }
+
+        private static async Task<object> CopyCustomer(FunctionParam param)
+        {
+            var parameters = param.Others["parameters"] as string[];
+            var credit = decimal.Parse(parameters[1]);
+            var maxCredit = param.User.CustLevel == CustomerLevel.Master ? decimal.Parse(parameters[2]) : 0;
+            var username = param.Others["UserName"].ToString();
+            var sourceCustId = (int)param.Others["SourceCustId"];
+
+            var copyCustomerParam = new Params.CopyCustomerParam(
+                param.User.CustId,
+                (byte)param.User.CustLevel,
+                username,
+                credit,
+                maxCredit,
+                sourceCustId,
+                param.User.Language,
+                string.Empty);
+
+            return await copyCustomerService.Copy(copyCustomerParam);
         }
 
         private static IEnumerable<Customer> GetCustomers(FunctionParam param)

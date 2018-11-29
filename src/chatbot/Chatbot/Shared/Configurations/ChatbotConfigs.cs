@@ -35,6 +35,8 @@ namespace Chatbot.Shared.Configurations
 
         int SystemUpdateFunctionId { get; }
 
+        int CopyCustomerFunctionId { get; }
+
         string SpDirectory { get; }
 
         List<int> MessageAndAnnoucementFunctionIds { get; }
@@ -78,6 +80,7 @@ namespace Chatbot.Shared.Configurations
             SpecialAnnouncementFunctionId = GetValue<int>("Chatbot:SpecialAnnouncementFunctionId");
             NormalAnnouncementFunctionId = GetValue<int>("Chatbot:NormalAnnouncementFunctionId");
             SystemUpdateFunctionId = GetValue<int>("Chatbot:SystemUpdateFunctionId");
+            CopyCustomerFunctionId = GetValue<int>("Chatbot:CopyCustomerFunctionId");
             MessageAndAnnoucementFunctionIds = configuration.GetSection("Chatbot:MessageAndAnnoucementFunctionIds").Get<List<int>>()
                  ?? throw new InvalidOperationException($"Missing config for Chatbot:MessageAndAnnoucementFunctionIds");
             NotRecognizedCommandFunctionId = GetValue<int>("Chatbot:NotRecognizedCommandFunctionId");
@@ -114,6 +117,8 @@ namespace Chatbot.Shared.Configurations
         public int NormalAnnouncementFunctionId { get; }
 
         public int SystemUpdateFunctionId { get; }
+
+        public int CopyCustomerFunctionId { get; }
 
         public bool ReturnRawErrorToMessenger { get; }
 

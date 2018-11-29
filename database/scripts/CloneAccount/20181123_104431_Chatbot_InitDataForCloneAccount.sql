@@ -30,3 +30,9 @@ UNION ALL
 SELECT 8, 'From which master do you want to copy setting?', 2, '', 0, 9, 7, 0, 1, 4
 UNION ALL
 SELECT 9, 'How much credit do you want to offer your new master?' + CHAR(13) + CHAR(10) + 'You can offer up to {0}.', 2, '', 0, 9, 8, 0, 1, 4
+UNION ALL
+SELECT 10, 'Yes', 1, '', 0, 9, 9, 1, 1, 4
+
+INSERT INTO dbo.[Resource] ([Key], [Type], [LanguageCode], [Value])
+SELECT ActionId, 'Action', 'en-US', ActionName FROM dbo.[Action]
+WHERE ActionId=10

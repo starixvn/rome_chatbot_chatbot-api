@@ -4,13 +4,13 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Services;
-    using Chatbot.Shared.Configurations;
     using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
+    using Chatbot.Shared.Configurations;
     using Fanex.Logging;
     using NSubstitute;
     using Xunit;
@@ -23,6 +23,7 @@
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> subDictionary;
         private readonly IChatbotConfigs subChatbotConfigs;
         private readonly CustomerService subCustomerService;
+        private readonly CopyCustomerService subCopyCustomerService;
         private readonly SettingService subSettingService;
         private readonly ILogger subLogger;
 
@@ -34,6 +35,7 @@
             subChatbotConfigs = Substitute.For<IChatbotConfigs>();
             subCustomerService = Substitute.For<CustomerService>();
             subSettingService = Substitute.For<SettingService>();
+            subCopyCustomerService = Substitute.For<CopyCustomerService>();
             subLogger = Substitute.For<ILogger>();
             subChatbotConfigs.MessageAndAnnoucementFunctionIds.Returns(new List<int> { 2, 3, 4 });
             subChatbotConfigs.YesterdayWinLossFunctionId.Returns(6);
@@ -49,6 +51,7 @@
                 subChatbotConfigs,
                 subCustomerService,
                 subSettingService,
+                subCopyCustomerService,
                 subLogger);
         }
 

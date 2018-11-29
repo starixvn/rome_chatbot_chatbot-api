@@ -25,6 +25,7 @@
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly CustomerService customerService;
         private readonly SettingService settingService;
+        private readonly CopyCustomerService copyCustomerService;
         private readonly ILogger logger;
 
         public FunctionHandlerFactory(
@@ -34,6 +35,7 @@
             IChatbotConfigs chatbotConfigs,
             CustomerService customerService,
             SettingService settingService,
+            CopyCustomerService copyCustomerService,
             ILogger logger)
         {
             this.messageBuilder = messageBuilder;
@@ -41,6 +43,7 @@
             this.getDataHanlders = getDataHanlders;
             this.customerService = customerService;
             this.settingService = settingService;
+            this.copyCustomerService = copyCustomerService;
             this.logger = logger;
             this.chatbotConfigs = chatbotConfigs ?? throw new ArgumentNullException(nameof(chatbotConfigs));
         }
@@ -60,6 +63,11 @@
             if (functionId == chatbotConfigs.OutstandingFunctionId)
             {
                 return new OutstandingCommandFunctionHandler(messageBuilder, messageSender, customerService, logger, chatbotConfigs, getDataHanlders);
+            }
+
+            if (functionId == chatbotConfigs.CopyCustomerFunctionId)
+            {
+                return new CopyCustomerFunctionHandler(messageBuilder, messageSender, customerService, copyCustomerService, logger, getDataHanlders);
             }
 
             return new DefaultFunctionHandler(messageBuilder, messageSender, customerService, logger, getDataHanlders);

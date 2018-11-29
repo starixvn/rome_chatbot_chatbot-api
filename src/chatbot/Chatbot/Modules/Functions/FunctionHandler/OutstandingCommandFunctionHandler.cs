@@ -51,9 +51,7 @@
                         var downlineInfo = await customerService.GetDownlineInfo(param.User.CustId, parameter)
                             .ConfigureAwait(false);
 
-                        if (downlineInfo == null ||
-                            downlineInfo.CustId == 0 ||
-                            !IsDirectDownline(param.User.CustLevel, downlineInfo.RoleId))
+                        if (!IsValidDirectDownline(param.User.CustLevel, downlineInfo))
                         {
                             return await BuildAndSendInvalidCustNameMessage(param).ConfigureAwait(false);
                         }
@@ -90,8 +88,5 @@
                 param.User.SelfdestructionPeriod,
                 param.Function.Id);
         }
-
-        private static bool IsDirectDownline(int custLevel, int downlineLevel)
-            => (custLevel - downlineLevel) == 1;
     }
 }
