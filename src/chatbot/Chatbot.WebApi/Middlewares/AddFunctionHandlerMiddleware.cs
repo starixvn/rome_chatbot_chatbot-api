@@ -123,6 +123,7 @@
             var maxCredit = param.User.CustLevel == Models.CustLevel.Master.Value ? decimal.Parse(parameters[2]) : 0;
             var username = param.Others["UserName"].ToString();
             var sourceCustId = (int)param.Others["SourceCustId"];
+            var sourceUsername = param.Others["SourceUserName"].ToString();
 
             var copyCustomerParam = new Params.CopyCustomerParam(
                 param.User.CustId,
@@ -131,6 +132,7 @@
                 credit,
                 maxCredit,
                 sourceCustId,
+                sourceUsername,
                 param.User.Language,
                 string.Empty);
 

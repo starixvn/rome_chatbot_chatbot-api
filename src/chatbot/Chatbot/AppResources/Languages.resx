@@ -387,4 +387,16 @@
   <data name="CopyCustomerInformMessage" xml:space="preserve">
     <value>The creation process might take several minutes. I will inform you once it's completed.</value>
   </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_1" xml:space="preserve">
+    <value>A new member has been copied from {0}.</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_2" xml:space="preserve">
+    <value>A new agent has been copied from {0}.</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_3" xml:space="preserve">
+    <value>A new master has been copied from {0}.</value>
+  </data>
+  <data name="HintMessage" xml:space="preserve">
+    <value>*Hint: for quick command,  please type: </value>
+  </data>
 </root>

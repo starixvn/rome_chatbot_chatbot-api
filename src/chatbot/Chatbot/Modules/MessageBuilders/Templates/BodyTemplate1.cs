@@ -1,10 +1,10 @@
 ﻿namespace Chatbot.Modules.MessageBuilders.Templates
 {
-    using Alpha.Services.Client.Models;
-    using Chatbot.AppResources;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using Alpha.Services.Client.Models;
+    using Chatbot.AppResources;
 
     public class BodyTemplate1 : BodyTemplate
     {
@@ -98,16 +98,6 @@
             {
                 textContainer.Add($"{messengerFormatter.NewLine()}{BuildHintMessage(cultureInfo)}");
             }
-        }
-
-        /// <summary>
-        /// Random rate of 20%
-        /// </summary>
-        /// <returns></returns>
-        private static bool IsShowHint()
-        {
-            var random = new Random();
-            return random.Next(0, 5) == 0;
         }
 
         private string BuildHintMessage(CultureInfo cultureInfo)

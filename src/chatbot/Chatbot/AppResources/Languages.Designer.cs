@@ -214,6 +214,33 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A new member has been copied from {0}..
+        /// </summary>
+        public static string CopyCustomerSuccessMessage_CustLevel_1 {
+            get {
+                return ResourceManager.GetString("CopyCustomerSuccessMessage_CustLevel_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new agent has been copied from {0}..
+        /// </summary>
+        public static string CopyCustomerSuccessMessage_CustLevel_2 {
+            get {
+                return ResourceManager.GetString("CopyCustomerSuccessMessage_CustLevel_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new master has been copied from {0}..
+        /// </summary>
+        public static string CopyCustomerSuccessMessage_CustLevel_3 {
+            get {
+                return ResourceManager.GetString("CopyCustomerSuccessMessage_CustLevel_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Currency.
         /// </summary>
         public static string CurrencyName {
@@ -381,6 +408,15 @@ namespace Chatbot.AppResources {
         public static string HiddenDownlinesCount {
             get {
                 return ResourceManager.GetString("HiddenDownlinesCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to *Hint: for quick command,  please type: .
+        /// </summary>
+        public static string HintMessage {
+            get {
+                return ResourceManager.GetString("HintMessage", resourceCulture);
             }
         }
         

@@ -319,4 +319,7 @@
   <data name="Password" xml:space="preserve">
     <value>Mật khẩu</value>
   </data>
+  <data name="HintMessage" xml:space="preserve">
+    <value>*Gợi ý: để xem nhanh, vui lòng nhập:</value>
+  </data>
 </root>

@@ -352,4 +352,7 @@
   <data name="Password" xml:space="preserve">
     <value>密碼</value>
   </data>
+  <data name="HintMessage" xml:space="preserve">
+    <value>*提示：快速指令，請輸入：</value>
+  </data>
 </root>

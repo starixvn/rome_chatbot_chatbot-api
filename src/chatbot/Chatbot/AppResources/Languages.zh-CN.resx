@@ -372,4 +372,7 @@
   <data name="Password" xml:space="preserve">
     <value>密码</value>
   </data>
+  <data name="HintMessage" xml:space="preserve">
+    <value>*提示：快速指令，请输入：</value>
+  </data>
 </root>

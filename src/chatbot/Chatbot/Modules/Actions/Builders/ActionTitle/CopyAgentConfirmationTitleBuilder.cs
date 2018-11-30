@@ -25,7 +25,7 @@
             var credit = userActions.FirstOrDefault(a => a.ActionId == chatbotConfigs.CopyAgentInputCreditActionId)?.UserResponse;
             var username = userActions.FirstOrDefault(a => a.ActionId == chatbotConfigs.CopyAgentInputUsernameActionId)?.UserResponse;
 
-            return messageBuilder.BuildCopyCustomerConfirmationTitle(user.CustLevel - 1, credit, username, user.Language);
+            return messageBuilder.BuildCopyCustomerConfirmationTitle(CustLevel.Agent.Value, credit, username, user.Language);
         }
     }
 }

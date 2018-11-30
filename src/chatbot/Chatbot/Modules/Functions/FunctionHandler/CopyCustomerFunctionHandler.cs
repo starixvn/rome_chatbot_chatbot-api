@@ -59,6 +59,7 @@
             var customer = await customerService.GetCustomer(param.User.CustId).ConfigureAwait(false);
             param.Others.Add(nameof(customer.UserName), $"{customer.UserName}{pt.Suffix}");
             param.Others.Add("SourceCustId", downlineInfo.CustId);
+            param.Others.Add("SourceUserName", sourceUsername);
 
             await BuildAndSendCopyCustomerInformMessage(param).ConfigureAwait(false);
 

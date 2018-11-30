@@ -11,6 +11,7 @@
             decimal credit,
             decimal maxCredit,
             int sourceCustId,
+            string sourceUsername,
             string language,
             string ip)
         {
@@ -20,6 +21,7 @@
             Credit = credit;
             MaxCredit = maxCredit;
             SourceCustId = sourceCustId;
+            SourceUsername = sourceUsername;
             Language = language;
             IP = ip;
         }
@@ -35,6 +37,8 @@
         public decimal MaxCredit { get; }
 
         public int SourceCustId { get; }
+
+        public string SourceUsername { get; }
 
         public string Language { get; }
 
