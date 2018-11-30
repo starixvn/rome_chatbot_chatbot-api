@@ -56,6 +56,16 @@ namespace Chatbot.Shared.Configurations
         int CopyMasterInputUsernameActionId { get; }
 
         int CopyMasterInputCreditActionId { get; }
+
+        int CopyAgentInputUsernameActionId { get; }
+
+        int CopyAgentInputCreditActionId { get; }
+
+        int CopyAgentInputMemberCreditActionId { get; }
+
+        int CopyMemberInputUsernameActionId { get; }
+
+        int CopyMemberInputCreditActionId { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -92,6 +102,11 @@ namespace Chatbot.Shared.Configurations
 
             CopyMasterInputUsernameActionId = GetValue<int>("CopyCustomer:Master:InputUsernameActionId");
             CopyMasterInputCreditActionId = GetValue<int>("CopyCustomer:Master:InputCreditActionId");
+            CopyAgentInputUsernameActionId = GetValue<int>("CopyCustomer:Agent:InputUsernameActionId");
+            CopyAgentInputCreditActionId = GetValue<int>("CopyCustomer:Agent:InputCreditActionId");
+            CopyAgentInputMemberCreditActionId = GetValue<int>("CopyCustomer:Agent:InputMemberCreditActionId");
+            CopyMemberInputUsernameActionId = GetValue<int>("CopyCustomer:Member:InputUsernameActionId");
+            CopyMemberInputCreditActionId = GetValue<int>("CopyCustomer:Member:InputCreditActionId");
         }
 
         public int MaxAddActionTimes { get; }
@@ -141,6 +156,16 @@ namespace Chatbot.Shared.Configurations
         public int CopyMasterInputUsernameActionId { get; }
 
         public int CopyMasterInputCreditActionId { get; }
+
+        public int CopyAgentInputUsernameActionId { get; }
+
+        public int CopyAgentInputCreditActionId { get; }
+
+        public int CopyAgentInputMemberCreditActionId { get; }
+
+        public int CopyMemberInputUsernameActionId { get; }
+
+        public int CopyMemberInputCreditActionId { get; }
 
         private T GetValue<T>(string key)
         {

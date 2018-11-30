@@ -54,6 +54,8 @@
         string BuildInvalidMaxCreditMessage(int custLevel, decimal maxCredit, string language);
 
         string BuildCopyCustomerConfirmationTitle(int custLevel, string credit, string sourceUsername, string language);
+
+        string BuildCopyCustomerInformMessage(string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -232,5 +234,8 @@
 
         public string BuildCopyCustomerConfirmationTitle(int custLevel, string credit, string sourceUsername, string language)
             => string.Format(GetResource($"CopyCustomerComfirmation_CustLevel_{custLevel}", language), credit, sourceUsername);
+
+        public string BuildCopyCustomerInformMessage(string language)
+            => GetResource(nameof(Languages.CopyCustomerInformMessage), language);
     }
 }

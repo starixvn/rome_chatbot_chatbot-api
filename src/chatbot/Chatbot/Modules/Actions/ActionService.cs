@@ -173,10 +173,10 @@
 
             if (actionValidators.Keys.Contains(currentActionId))
             {
-                var validationResult = actionValidators[currentActionId].ValidateAction(currentActionId, user, userReponse);
+                var validationResult = actionValidators[currentActionId].ValidateAction(user, userReponse, userActions);
                 if (validationResult.IsNotOk)
                 {
-                    return (string.Empty, currentActionId, await BuildWrongValidationResult(currentActionId, user, validationResult).ConfigureAwait(false));
+                    return (string.Empty, currentActionId, await BuildWrongValidationResult(currentActionId, user, userActions, validationResult).ConfigureAwait(false));
                 }
             }
 
@@ -258,7 +258,10 @@
             foreach (var function in functions)
             {
                 var action = (await GetAllActions().ConfigureAwait(false))
-                .FirstOrDefault(a => a.ParentId == 0 && a.FunctionId == function.Id);
+                    .FirstOrDefault(a
+                        => a.ParentId == 0
+                            && a.FunctionId == function.Id
+                            && (a.CustLevel == user.CustLevel || a.CustLevel == 0));
 
                 if (action != null)
                 {
@@ -317,16 +320,17 @@
             return !actionChain.Any(action => action.Id == lastAction.ActionId);
         }
 
-        private async Task<ActionResult> BuildWrongValidationResult(int actionId, User user, Result result)
+        private async Task<ActionResult> BuildWrongValidationResult(int actionId, User user, IList<UserAction> userActions, Result result)
             => new ActionResult(
-                await BuildMessageWithAbortButton(actionId, user).ConfigureAwait(false),
+                await BuildMessageWithAbortButton(actionId, user, userActions).ConfigureAwait(false),
                 result.Message,
                 (await GetActionById(actionId).ConfigureAwait(false)).FunctionId);
 
         internal async Task<MessengerClient.Models.Message> BuildRootActionsMessage(User user, string rootMessage)
         {
             var messageActions = new List<MessageAction>();
-            var rootActions = (await GetAllActions().ConfigureAwait(false)).Where(action => action.ParentId == 0);
+            var rootActions = (await GetAllActions().ConfigureAwait(false))
+                .Where(action => action.ParentId == 0 && (action.CustLevel == user.CustLevel || action.CustLevel == 0));
 
             foreach (var rootAction in rootActions)
             {
@@ -487,7 +491,7 @@
                 var messageAction = nextActions.FirstOrDefault();
                 await InsertUserAction(user, messageAction.Id, string.Empty, string.Empty).ConfigureAwait(false);
 
-                return await BuildMessageWithAbortButton(messageAction.Id, user).ConfigureAwait(false);
+                return await BuildMessageWithAbortButton(messageAction.Id, user, userActions).ConfigureAwait(false);
             }
 
             return await BuildButtons(actionId, user, userActions, nextActions).ConfigureAwait(false);
@@ -519,7 +523,7 @@
 
             return new MessengerClient.Models.Message
             {
-                Content = actionTitleBuilder.BuildActionTitle(actionId, user, userActions),
+                Content = actionTitleBuilder.BuildActionTitle(user, userActions),
                 MessageMarkup = new MessageMarkup
                 {
                     MessageActions = messageActions
@@ -547,13 +551,13 @@
             return await BuildRootActions(user, rootMessage).ConfigureAwait(false);
         }
 
-        private async Task<MessengerClient.Models.Message> BuildMessageWithAbortButton(int actionId, User user)
+        private async Task<MessengerClient.Models.Message> BuildMessageWithAbortButton(int actionId, User user, IList<UserAction> userActions)
         {
             var actionNameBuilder = actionNameBuilderFactory.GetActionNameBuilder(actionId);
 
             return new MessengerClient.Models.Message
             {
-                Content = await actionNameBuilder.BuildActionName(actionId, user).ConfigureAwait(true),
+                Content = await actionNameBuilder.BuildActionName(actionId, user, userActions).ConfigureAwait(true),
                 MessageMarkup = new MessageMarkup
                 {
                     MessageActions = new List<MessageAction>

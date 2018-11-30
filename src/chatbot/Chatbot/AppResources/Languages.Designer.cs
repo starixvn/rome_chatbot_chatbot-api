@@ -205,6 +205,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The creation process might take several minutes. I will inform you once it&apos;s completed..
+        /// </summary>
+        public static string CopyCustomerInformMessage {
+            get {
+                return ResourceManager.GetString("CopyCustomerInformMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Currency.
         /// </summary>
         public static string CurrencyName {

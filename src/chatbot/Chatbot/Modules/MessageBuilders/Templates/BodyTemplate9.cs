@@ -14,7 +14,7 @@
 
             if (!copyCustomerResult.IsSuccess)
             {
-                return GetResource($"Error_{copyCustomerResult.Code}", cultureInfo);
+                return copyCustomerResult.Message;
             }
 
             var textContainer = new List<string>

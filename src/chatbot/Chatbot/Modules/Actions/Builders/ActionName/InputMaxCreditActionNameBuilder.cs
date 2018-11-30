@@ -1,8 +1,10 @@
 ﻿namespace Chatbot.Modules.Actions.Builders.ActionName
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
+    using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.Resources;
     using Chatbot.Modules.Resources.Constants;
     using Chatbot.Shared.Extensions;
@@ -20,7 +22,7 @@
             this.copyCustomerService = copyCustomerService;
         }
 
-        public async Task<string> BuildActionName(int actionId, User user)
+        public async Task<string> BuildActionName(int actionId, User user, IList<UserAction> userActions = null)
         {
             var pt = await copyCustomerService.GetPT(user.CustId, (byte)user.CustLevel).ConfigureAwait(false);
             var resource = await resourceService.GetResource(actionId, ResourceType.Action, user.Language).ConfigureAwait(false);

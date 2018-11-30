@@ -349,4 +349,7 @@
   <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
     <value>會員信用額應在{0}和{1}之間</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>密碼</value>
+  </data>
 </root>

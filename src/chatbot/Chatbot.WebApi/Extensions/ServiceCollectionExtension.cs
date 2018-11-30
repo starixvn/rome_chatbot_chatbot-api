@@ -22,13 +22,18 @@
             services.AddSingleton<IDictionary<int, IActionNameBuilder>>(
                 new Dictionary<int, IActionNameBuilder>
                 {
-                    [chatbotConfigs.CopyMasterInputCreditActionId] = new InputMaxCreditActionNameBuilder(resourceService, copyCustomerService)
+                    [chatbotConfigs.CopyMasterInputCreditActionId] = new InputMaxCreditActionNameBuilder(resourceService, copyCustomerService),
+                    [chatbotConfigs.CopyAgentInputCreditActionId] = new InputMaxCreditActionNameBuilder(resourceService, copyCustomerService),
+                    [chatbotConfigs.CopyAgentInputMemberCreditActionId] = new InputMemberMaxCreditActionNameBuilder(resourceService, chatbotConfigs),
+                    [chatbotConfigs.CopyMemberInputCreditActionId] = new InputMaxCreditActionNameBuilder(resourceService, copyCustomerService)
                 });
 
             services.AddSingleton<IDictionary<int, IActionTitleBuilder>>(
                 new Dictionary<int, IActionTitleBuilder>
                 {
-                    [chatbotConfigs.CopyMasterInputCreditActionId] = new CopyAgentConfirmationTitleBuilder(chatbotConfigs, messageBuilder)
+                    [chatbotConfigs.CopyMasterInputCreditActionId] = new CopyMasterConfirmationTitleBuilder(chatbotConfigs, messageBuilder),
+                    [chatbotConfigs.CopyAgentInputMemberCreditActionId] = new CopyAgentConfirmationTitleBuilder(chatbotConfigs, messageBuilder),
+                    [chatbotConfigs.CopyMemberInputCreditActionId] = new CopyMemberConfirmationTitleBuilder(chatbotConfigs, messageBuilder)
                 });
 
             services.AddSingleton<ActionNameBuilderFactory, ActionNameBuilderFactoryImpl>();

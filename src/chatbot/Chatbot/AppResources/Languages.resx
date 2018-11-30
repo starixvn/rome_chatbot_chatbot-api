@@ -384,4 +384,7 @@
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="CopyCustomerInformMessage" xml:space="preserve">
+    <value>The creation process might take several minutes. I will inform you once it's completed.</value>
+  </data>
 </root>

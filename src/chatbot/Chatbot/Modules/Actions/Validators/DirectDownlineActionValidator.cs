@@ -1,7 +1,9 @@
 ﻿namespace Chatbot.Modules.Actions.Validators
 {
+    using System.Collections.Generic;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
+    using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.MessageBuilders;
 
     public class DirectDownlineActionValidator : IActionValidator
@@ -17,7 +19,7 @@
             this.customerService = customerService;
         }
 
-        public Result ValidateAction(int actionId, User user, string userResponse)
+        public Result ValidateAction(User user, string userResponse, IList<UserAction> userActions)
         {
             if (!string.IsNullOrWhiteSpace(userResponse))
             {

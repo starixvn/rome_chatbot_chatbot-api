@@ -10,7 +10,6 @@
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Shared.Configurations;
-    using Chatbot.Shared.Constants;
     using Microsoft.Extensions.DependencyInjection;
     using Serilog;
 
@@ -121,7 +120,7 @@
         {
             var parameters = param.Others["parameters"] as string[];
             var credit = decimal.Parse(parameters[1]);
-            var maxCredit = param.User.CustLevel == CustomerLevel.Master ? decimal.Parse(parameters[2]) : 0;
+            var maxCredit = param.User.CustLevel == Models.CustLevel.Master.Value ? decimal.Parse(parameters[2]) : 0;
             var username = param.Others["UserName"].ToString();
             var sourceCustId = (int)param.Others["SourceCustId"];
 

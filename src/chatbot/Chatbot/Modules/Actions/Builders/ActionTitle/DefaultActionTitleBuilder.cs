@@ -14,7 +14,7 @@
             this.messageBuilder = messageBuilder;
         }
 
-        public string BuildActionTitle(int actionId, User user, IList<UserAction> userActions)
+        public string BuildActionTitle(User user, IList<UserAction> userActions)
             => messageBuilder.BuildActionTitle(user.Language);
     }
 }

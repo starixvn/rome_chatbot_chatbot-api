@@ -20,10 +20,10 @@
             this.messageBuilder = messageBuilder;
         }
 
-        public string BuildActionTitle(int actionId, User user, IList<UserAction> userActions)
+        public string BuildActionTitle(User user, IList<UserAction> userActions)
         {
-            var credit = userActions.FirstOrDefault(a => a.ActionId == chatbotConfigs.CopyMasterInputCreditActionId).UserResponse;
-            var username = userActions.FirstOrDefault(a => a.ActionId == chatbotConfigs.CopyMasterInputUsernameActionId).UserResponse;
+            var credit = userActions.FirstOrDefault(a => a.ActionId == chatbotConfigs.CopyAgentInputCreditActionId)?.UserResponse;
+            var username = userActions.FirstOrDefault(a => a.ActionId == chatbotConfigs.CopyAgentInputUsernameActionId)?.UserResponse;
 
             return messageBuilder.BuildCopyCustomerConfirmationTitle(user.CustLevel - 1, credit, username, user.Language);
         }

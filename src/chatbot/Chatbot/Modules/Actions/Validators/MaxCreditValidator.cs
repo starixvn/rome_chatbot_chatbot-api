@@ -1,7 +1,9 @@
 ﻿namespace Chatbot.Modules.Actions.Validators
 {
+    using System.Collections.Generic;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
+    using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.MessageBuilders;
 
     public class MaxCreditValidator : IActionValidator
@@ -17,10 +19,10 @@
             this.copyCustomerService = copyCustomerService;
         }
 
-        public Result ValidateAction(int actionId, User user, string userResponse)
+        public Result ValidateAction(User user, string userResponse, IList<UserAction> userActions)
         {
             if (!string.IsNullOrWhiteSpace(userResponse)
-                && int.TryParse(userResponse, out int number))
+                && decimal.TryParse(userResponse, out decimal number))
             {
                 var pt = copyCustomerService.GetPT(user.CustId, (byte)user.CustLevel)
                     .GetAwaiter().GetResult();

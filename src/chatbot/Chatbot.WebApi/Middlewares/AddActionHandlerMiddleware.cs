@@ -22,7 +22,12 @@
                 {
                     [chatbotConfigs.OutstandingSpecificDirectDownlineActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
                     [chatbotConfigs.CopyMasterInputUsernameActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
-                    [chatbotConfigs.CopyMasterInputCreditActionId] = new MaxCreditValidator(messageBuilder, copyCustomerService)
+                    [chatbotConfigs.CopyMasterInputCreditActionId] = new MaxCreditValidator(messageBuilder, copyCustomerService),
+                    [chatbotConfigs.CopyAgentInputUsernameActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
+                    [chatbotConfigs.CopyAgentInputCreditActionId] = new MaxCreditValidator(messageBuilder, copyCustomerService),
+                    [chatbotConfigs.CopyAgentInputMemberCreditActionId] = new MemberMaxCreditValidator(messageBuilder, chatbotConfigs),
+                    [chatbotConfigs.CopyMemberInputUsernameActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
+                    [chatbotConfigs.CopyMemberInputCreditActionId] = new MaxCreditValidator(messageBuilder, copyCustomerService)
                 });
         }
     }

@@ -6,6 +6,6 @@
 
     public interface IActionTitleBuilder
     {
-        string BuildActionTitle(int actionId, User user, IList<UserAction> userActions);
+        string BuildActionTitle(User user, IList<UserAction> userActions);
     }
 }

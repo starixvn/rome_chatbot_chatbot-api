@@ -25,14 +25,32 @@ GO
 
 -----Insert Data-----
 INSERT INTO [dbo].[Action] (ActionId, ActionName, Type, Command, DisplayOrder, FunctionId, ParentId, IsEndAction, Status, CustomerLevel)
-SELECT 7, 'Create new master from existing Account', 1, '/copy', 40, 9, 0, 0, 1, 4
+SELECT 7, 'Create new master from existing account', 1, '/copy', 40, 9, 0, 0, 1, 4
 UNION ALL
 SELECT 8, 'From which master do you want to copy setting?', 2, '', 0, 9, 7, 0, 1, 4
 UNION ALL
 SELECT 9, 'How much credit do you want to offer your new master?' + CHAR(13) + CHAR(10) + 'You can offer up to {0}.', 2, '', 0, 9, 8, 0, 1, 4
 UNION ALL
 SELECT 10, 'Yes', 1, '', 0, 9, 9, 1, 1, 4
+UNION ALL
+SELECT 11, 'Create new agent from existing account', 1, '/copy', 70, 9, 0, 0, 1, 3
+UNION ALL
+SELECT 12, 'From which agent do you want to copy setting?', 2, '', 0, 9, 11, 0, 1, 3
+UNION ALL
+SELECT 13, 'How much credit do you want to offer your new agent?' + CHAR(13) + CHAR(10) + 'You can offer up to {0}.', 2, '', 0, 9, 12, 0, 1, 3
+UNION ALL
+SELECT 14,  'Please input the max credit that the new agent can offer to his/her members?' + CHAR(13) + CHAR(10) + 'You can offer up to {0}.', 2, '', 0, 9, 13, 0, 1, 3
+UNION ALL
+SELECT 15, 'Yes', 1, '', 0, 9, 14, 1, 1, 3
+UNION ALL
+SELECT 16, 'Create new member from existing account', 1, '/copy', 80, 9, 0, 0, 1, 2
+UNION ALL
+SELECT 17, 'From which member do you want to copy setting?', 2, '', 0, 9, 16, 0, 1, 2
+UNION ALL
+SELECT 18, 'How much credit do you want to offer your new member?' + CHAR(13) + CHAR(10) + 'You can offer up to {0}.', 2, '', 0, 9, 17, 0, 1, 2
+UNION ALL
+SELECT 19, 'Yes', 1, '', 0, 9, 18, 1, 1, 2
 
 INSERT INTO dbo.[Resource] ([Key], [Type], [LanguageCode], [Value])
 SELECT ActionId, 'Action', 'en-US', ActionName FROM dbo.[Action]
-WHERE ActionId=10
+WHERE ActionId BETWEEN 7 AND 19

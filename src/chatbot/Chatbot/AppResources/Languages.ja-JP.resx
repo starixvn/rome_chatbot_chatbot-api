@@ -151,4 +151,7 @@
   <data name="Username" xml:space="preserve">
     <value>ユーザー名</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>パスワード</value>
+  </data>
 </root>

@@ -8,7 +8,6 @@
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
-    using Chatbot.Shared.Constants;
     using Fanex.Logging;
 
     public class CopyCustomerFunctionHandler : DefaultFunctionHandler
@@ -51,22 +50,24 @@
                 return await BuildAndSendInvalidMaxCreditMessage(pt.MaxCredit, param.User.CustLevel - 1, param).ConfigureAwait(false);
             }
 
-            if (param.User.CustLevel == CustomerLevel.Master
+            if (param.User.CustLevel == CustLevel.Master.Value
                 && decimal.Parse(rawParameters[2]) > credit)
             {
-                return await BuildAndSendInvalidMaxCreditMessage(credit, CustomerLevel.Member, param).ConfigureAwait(false);
+                return await BuildAndSendInvalidMaxCreditMessage(credit, CustLevel.Member.Value, param).ConfigureAwait(false);
             }
 
             var customer = await customerService.GetCustomer(param.User.CustId).ConfigureAwait(false);
             param.Others.Add(nameof(customer.UserName), $"{customer.UserName}{pt.Suffix}");
             param.Others.Add("SourceCustId", downlineInfo.CustId);
 
+            await BuildAndSendCopyCustomerInformMessage(param).ConfigureAwait(false);
+
             return await base.RunHandler(param).ConfigureAwait(false);
         }
 
         private async Task<Result> ValidateRawParamerters(string[] rawParameters, FunctionParam param)
         {
-            var numberOfRequiredParams = param.User.CustLevel == CustomerLevel.Master ? 3 : 2;
+            var numberOfRequiredParams = param.User.CustLevel == CustLevel.Master.Value ? 3 : 2;
 
             if (rawParameters.Length <= 0 || rawParameters.Length != numberOfRequiredParams)
             {
@@ -84,7 +85,8 @@
                 return await BuildAndSendBuildInvalidNumericMessage(rawParameters[1], param).ConfigureAwait(false);
             }
 
-            if (param.User.CustLevel == CustomerLevel.Master && !Decimal.TryParse(rawParameters[2], out decimal givenMemberCredit))
+            if (param.User.CustLevel == CustLevel.Master.Value
+                && !Decimal.TryParse(rawParameters[2], out decimal givenMemberCredit))
             {
                 return await BuildAndSendBuildInvalidNumericMessage(rawParameters[2], param).ConfigureAwait(false);
             }
@@ -138,6 +140,18 @@
                 message,
                 param.User.SelfdestructionPeriod,
                 param.Function.Id);
+        }
+
+        private async Task BuildAndSendCopyCustomerInformMessage(FunctionParam param)
+        {
+            var message = messageBuilder.BuildCopyCustomerInformMessage(param.User.Language);
+
+            await messageSender.SendMessage(
+                param.User.Id,
+                param.Messenger,
+                message,
+                param.User.SelfdestructionPeriod,
+                param.Function.Id).ConfigureAwait(false);
         }
     }
 }

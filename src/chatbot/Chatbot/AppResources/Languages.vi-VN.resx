@@ -316,4 +316,7 @@
   <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
     <value>Hạn mức tín dụng được cấp cho Member phải trong khoảng từ {0} đến {1}</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mật khẩu</value>
+  </data>
 </root>

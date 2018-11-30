@@ -223,4 +223,7 @@
   <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
     <value>멤버  충전 크레딧은 {0}과 {1}사이이여만 합니다. </value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>비밀번호</value>
+  </data>
 </root>

@@ -79,7 +79,7 @@
                 getDateTimeNowFunc);
 
             actionValidator
-                .ValidateAction(Arg.Any<int>(), Arg.Any<User>(), Arg.Any<string>())
+                .ValidateAction(Arg.Any<User>(), Arg.Any<string>(), Arg.Any<IList<UserAction>>())
                 .Returns(Result.CreateSuccessfulResult());
         }
 
@@ -113,7 +113,7 @@
             var user = new User(1, 1, 4, 0, "en-US", null);
             StubUserFuntions(user);
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
-            actionValidator.ValidateAction(4, user, "user reponse").Returns(new Result(1, "failed"));
+            actionValidator.ValidateAction(user, "user reponse", Arg.Any<IList<UserAction>>()).Returns(new Result(1, "failed"));
 
             var actionResult = actionServiceImpl.HandleUserReponseByMessage(lastUserAction, null, user, "user reponse")
                 .GetAwaiter()
@@ -130,7 +130,7 @@
             var user = new User(1, 1, 4, 0, "en-US", null);
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             StubUserFuntions(user);
-            actionValidator.ValidateAction(4, user, "user reponse").Returns(new Result(1, "failed"));
+            actionValidator.ValidateAction(user, "user reponse", Arg.Any<IList<UserAction>>()).Returns(new Result(1, "failed"));
             actionNameBuilderFactory.GetActionNameBuilder(4).BuildActionName(4, user).Returns("outstanding label");
             messageBuilder.BuildCancelRequestMessage("en-US").Returns("cancel button");
 
@@ -352,7 +352,8 @@
             StubUserActions(user.Id);
             StubUserFuntions(user);
 
-            actionNameBuilderFactory.GetActionNameBuilder(6).BuildActionName(6, user).Returns("next action name");
+            actionNameBuilderFactory.GetActionNameBuilder(6).BuildActionName(6, user, Arg.Any<IList<UserAction>>())
+                .Returns("next action name");
 
             var actionResult = actionServiceImpl.BuildAction(
                 "command", "", user, messenger)

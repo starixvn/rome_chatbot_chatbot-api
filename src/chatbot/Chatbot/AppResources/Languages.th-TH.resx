@@ -343,4 +343,7 @@
   <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
     <value>เครดิตของสมาชิกต้องอยู่ระหว่าง {0} และ {1}</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>รหัสผ่าน</value>
+  </data>
 </root>

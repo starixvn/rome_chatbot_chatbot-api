@@ -39,7 +39,7 @@
                 .Returns(invalidDirectDownlineMessage);
 
             // Act
-            var actualResult = validator.ValidateAction(1, new User(), userResponse);
+            var actualResult = validator.ValidateAction(new User(), userResponse, null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
@@ -60,7 +60,7 @@
             var expectedResult = Result.CreateErrorResult(invalidDirectDownlineMessage);
 
             // Act
-            var actualResult = validator.ValidateAction(1, new User(), "abc");
+            var actualResult = validator.ValidateAction(new User(), "abc", null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
@@ -88,7 +88,7 @@
             var expectedResult = Result.CreateErrorResult(invalidDirectDownlineMessage);
 
             // Act
-            var actualResult = validator.ValidateAction(1, user, "abc");
+            var actualResult = validator.ValidateAction(user, "abc", null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
@@ -112,7 +112,7 @@
             var expectedResult = Result.CreateSuccessfulResult();
 
             // Act
-            var actualResult = validator.ValidateAction(1, user, "abc");
+            var actualResult = validator.ValidateAction(user, "abc", null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
