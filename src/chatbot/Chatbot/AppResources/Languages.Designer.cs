@@ -61,6 +61,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please kindly confirm your action:.
+        /// </summary>
+        public static string ActionConfirmation {
+            get {
+                return ResourceManager.GetString("ActionConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Agent.
         /// </summary>
         public static string Agent {
@@ -772,6 +781,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please confirm if you want to {0}.
+        /// </summary>
+        public static string ReConfirmMessage {
+            get {
+                return ResourceManager.GetString("ReConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, we couldn&apos;t recognize your request. Which action would you like to take?.
         /// </summary>
         public static string RootActionTitle {
@@ -939,6 +957,15 @@ namespace Chatbot.AppResources {
         public static string WinLossAbbr {
             get {
                 return ResourceManager.GetString("WinLossAbbr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
         

@@ -95,15 +95,15 @@
             messageBuilder.BuildRootActionTitle(user.Language).Returns("message title");
             actionNameBuilderFactory.GetActionNameBuilder(1).BuildActionName(1, user).Returns("outstanding label");
 
-            var actionResult = actionServiceImpl.HandleUserReponseByMessage(null, null, user, "message", messenger)
+            var actionResult = actionServiceImpl.HandleUserReponseByMessage(user, "message", messenger)
                 .GetAwaiter()
                 .GetResult()
                 .Item3;
 
             Assert.Equal(2, actionResult.Message.MessageMarkup.MessageActions.Count());
-            Assert.Equal("ActionId=1", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
             Assert.Equal("OUTSTANDING LABEL", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Label);
-            Assert.Equal("ActionId=2", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
+            Assert.Equal("{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":false,\"CompiledCommand\":\"\"}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
+            Assert.Equal("{\"ActionId\":2,\"UserActions\":null,\"IsCancel\":false,\"CompiledCommand\":\"/wl\"}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
             Assert.Equal("message title", actionResult.Message.Content);
         }
 
@@ -113,12 +113,13 @@
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US", null);
             var messenger = new Messenger(1, "ltid");
+            StubUserActions(user.Id);
             StubUserFuntions(user);
-            var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             actionValidator.ValidateAction(user, "user reponse", Arg.Any<IList<UserAction>>(), messenger)
                 .Returns(new Result(1, "failed"));
 
-            var actionResult = actionServiceImpl.HandleUserReponseByMessage(lastUserAction, null, user, "user reponse", messenger)
+            var actionResult = actionServiceImpl.HandleUserReponseByMessage(
+                user, "user reponse", messenger)
                 .GetAwaiter()
                 .GetResult()
                 .Item3;
@@ -132,14 +133,17 @@
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US", null);
             var messenger = new Messenger(1, "ltid");
-            var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             StubUserFuntions(user);
             actionValidator.ValidateAction(user, "user reponse", Arg.Any<IList<UserAction>>(), messenger)
                 .Returns(new Result(1, "failed"));
+            StubUserActions(user.Id);
             actionNameBuilderFactory.GetActionNameBuilder(4).BuildActionName(4, user).Returns("outstanding label");
             messageBuilder.BuildCancelRequestMessage("en-US").Returns("cancel button");
 
-            var actionResult = actionServiceImpl.HandleUserReponseByMessage(lastUserAction, null, user, "user reponse", messenger)
+            var actionResult = actionServiceImpl.HandleUserReponseByMessage(
+                user,
+                "user reponse",
+                messenger)
                 .GetAwaiter()
                 .GetResult()
                 .Item3;
@@ -154,14 +158,13 @@
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US", null);
             var messenger = new Messenger(1, "ltid");
-            var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
-            var userActions = StubUserActions(user.Id);
+            StubUserActions(user.Id);
             StubUserFuntions(user);
             actionCompiler.Compile(Arg.Any<IEnumerable<Action>>(), Arg.Any<IEnumerable<UserAction>>())
                 .Returns("compiled command");
 
             var compiledCommand = actionServiceImpl.HandleUserReponseByMessage(
-                lastUserAction, userActions, user, "user reponse", messenger)
+                user, "user reponse", messenger)
                 .GetAwaiter()
                 .GetResult()
                 .Item1;
@@ -175,14 +178,16 @@
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US", null);
             var messenger = new Messenger(1, "ltid");
-            var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
-            var userActions = StubUserActions(user.Id);
+            StubUserActions(user.Id);
             StubUserFuntions(user);
-            actionCompiler.Compile(Arg.Any<IEnumerable<Action>>(), Arg.Any<IEnumerable<UserAction>>())
+            actionCompiler
+                .Compile(Arg.Any<IEnumerable<Action>>(), Arg.Any<IEnumerable<UserAction>>())
                 .Returns("compiled command");
 
             var lastActionId = actionServiceImpl.HandleUserReponseByMessage(
-                lastUserAction, userActions, user, "user reponse", messenger)
+                user,
+                "user reponse",
+                messenger)
                 .GetAwaiter()
                 .GetResult()
                 .Item2;
@@ -195,14 +200,12 @@
         {
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US", null);
-            var userActions = StubUserActions(user.Id);
+            StubUserActions(user.Id);
             var messenger = new Messenger(1, "ltid");
 
             actionServiceImpl.HandleUserReponseByButton(
-                userActions.FirstOrDefault(),
-                userActions,
                 user,
-                "abort=1",
+                "{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":true,\"CompiledCommand\":\"\"}",
                 messenger)
                     .GetAwaiter()
                     .GetResult();
@@ -219,17 +222,15 @@
         {
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US", null);
-            var userActions = StubUserActions(user.Id);
+            StubUserActions(user.Id);
             var messenger = new Messenger(1, "ltid");
             messageBuilder
                 .BuildResponseCancelRequestMessage(1, user.Language)
                 .Returns("cancel action");
 
             var actionResult = actionServiceImpl.HandleUserReponseByButton(
-                userActions.FirstOrDefault(),
-                userActions,
                 user,
-                "abort=1",
+                "{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":true,\"CompiledCommand\":\"\"}",
                 messenger)
                     .GetAwaiter()
                     .GetResult()
@@ -239,7 +240,7 @@
         }
 
         [Fact]
-        public void HandleUserReponseByButton_LastActonIsInvalid_ReturnRootActions()
+        public void HandleUserReponseByButton_ButtonHistoryIsClick_InsertHistoryActionToDatabase()
         {
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US", null);
@@ -248,16 +249,24 @@
             messageBuilder.BuildRootActionTitle(user.Language).Returns("message title");
             actionNameBuilderFactory.GetActionNameBuilder(1).BuildActionName(1, user).Returns("outstanding label");
 
-            var actionResult = actionServiceImpl.HandleUserReponseByButton(null, null, user, "action=4", messenger)
-               .GetAwaiter()
-               .GetResult()
-               .Item3;
+            var actionResult = actionServiceImpl.HandleUserReponseByButton(
+                user,
+                "{\"ActionId\":4,\"UserActions\":[{\"Id\":1,\"ActionId\":1,\"UserResponse\":\"123\",\"ChatTime\":\"2018-12-04T13:58:17.273015+07:00\",\"CompiledCommand\":\"compile-1\",\"Status\":1,\"IsActionValid\":true},{\"Id\":2,\"ActionId\":4,\"UserResponse\":\"test\",\"ChatTime\":\"2018-12-04T13:58:17.2734022+07:00\",\"CompiledCommand\":\"compile-2\",\"Status\":1,\"IsActionValid\":true}],\"IsCancel\":false,\"CompiledCommand\":\"\"}",
+                messenger)
+                   .GetAwaiter()
+                   .GetResult()
+                   .Item3;
 
-            Assert.Equal(2, actionResult.Message.MessageMarkup.MessageActions.Count());
-            Assert.Equal("ActionId=1", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
-            Assert.Equal("OUTSTANDING LABEL", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Label);
-            Assert.Equal("ActionId=2", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
-            Assert.Equal("message title", actionResult.Message.Content);
+            dynamicRepository.Received().ExecuteAsync(Arg.Is<InsertUserActionCommand>(
+               command => command.UserId == 1
+                           && command.ActionId == 1
+                           && command.UserResponse == "123"
+                           && command.CompiledCommand == "compile-1"));
+            dynamicRepository.Received().ExecuteAsync(Arg.Is<InsertUserActionCommand>(
+               command => command.UserId == 1
+                           && command.ActionId == 4
+                           && command.UserResponse == "test"
+                           && command.CompiledCommand == "compile-2"));
         }
 
         [Fact]
@@ -267,15 +276,13 @@
             var messenger = new Messenger(1, "ltid");
             StubActions();
             StubUserFuntions(user);
-            var userActions = StubUserActions(user.Id);
+            StubUserActions(user.Id);
             actionCompiler.Compile(Arg.Any<IEnumerable<Action>>(), Arg.Any<IEnumerable<UserAction>>())
                 .Returns("compiled command");
 
             actionServiceImpl.HandleUserReponseByButton(
-                userActions.First(),
-                userActions,
                 user,
-                "action=4",
+                "{\"ActionId\":4,\"UserActions\":[{\"Id\":1,\"ActionId\":1,\"UserResponse\":\"\",\"ChatTime\":\"2018-12-04T13:58:17.273015+07:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true},{\"Id\":2,\"ActionId\":4,\"UserResponse\":\"\",\"ChatTime\":\"2018-12-04T13:58:17.2734022+07:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true}],\"IsCancel\":false,\"CompiledCommand\":\"\"}",
                 messenger)
                    .GetAwaiter()
                    .GetResult();
@@ -300,14 +307,14 @@
                     .Returns("cancel action");
 
             var actionResult = actionServiceImpl
-                .BuildAction("cancel", "abort=1", user, messenger)
+                .BuildAction("cancel", "{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":true,\"CompiledCommand\":null}", user, messenger)
                 .GetAwaiter()
                 .GetResult();
 
             Assert.Equal("cancel action", actionResult.Message.Content);
             Assert.Equal(2, actionResult.Message.MessageMarkup.MessageActions.Count());
-            Assert.Equal("ActionId=1", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
-            Assert.Equal("ActionId=2", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
+            Assert.Equal("{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":false,\"CompiledCommand\":\"\"}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
+            Assert.Equal("{\"ActionId\":2,\"UserActions\":null,\"IsCancel\":false,\"CompiledCommand\":\"/wl\"}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
         }
 
         [Fact]
@@ -316,13 +323,13 @@
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US", null);
             var messenger = new Messenger(1, "ltid");
-            StubUserActions(user.Id);
+            StubUserActionsWithLastActionIsMessage(user.Id);
             StubUserFuntions(user);
             actionCompiler.Compile(Arg.Any<IEnumerable<Action>>(), Arg.Any<IEnumerable<UserAction>>())
                 .Returns("compiled command");
 
             var actionResult = actionServiceImpl.BuildAction(
-                "command", "action=6", user, messenger)
+                "command", string.Empty, user, messenger)
                 .GetAwaiter()
                 .GetResult();
 
@@ -339,15 +346,23 @@
             StubUserFuntions(user);
 
             var actionResult = actionServiceImpl.BuildAction(
-                "command", "action=1", user, messenger)
+                "command", "{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":false,\"CompiledCommand\":null}", user, messenger)
                 .GetAwaiter()
                 .GetResult();
 
             Assert.Equal(4, actionResult.Message.MessageMarkup.MessageActions.Count());
-            Assert.Equal("ActionId=5", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
-            Assert.Equal("ActionId=4", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
-            Assert.Equal("ActionId=7", actionResult.Message.MessageMarkup.MessageActions.ElementAt(2).Data);
-            Assert.Equal("abortActionId=1", actionResult.Message.MessageMarkup.MessageActions.ElementAt(3).Data);
+            Assert.Equal(
+                "{\"ActionId\":5,\"UserActions\":[{\"Id\":1,\"ActionId\":1,\"UserResponse\":\"\",\"ChatTime\":\"1989-05-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true},{\"Id\":2,\"ActionId\":4,\"UserResponse\":\"\",\"ChatTime\":\"1989-06-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true}],\"IsCancel\":false,\"CompiledCommand\":\"/os 50\"}",
+                actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
+            Assert.Equal(
+                "{\"ActionId\":4,\"UserActions\":[{\"Id\":1,\"ActionId\":1,\"UserResponse\":\"\",\"ChatTime\":\"1989-05-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true},{\"Id\":2,\"ActionId\":4,\"UserResponse\":\"\",\"ChatTime\":\"1989-06-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true}],\"IsCancel\":false,\"CompiledCommand\":\"\"}",
+                actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
+            Assert.Equal(
+                "{\"ActionId\":7,\"UserActions\":[{\"Id\":1,\"ActionId\":1,\"UserResponse\":\"\",\"ChatTime\":\"1989-05-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true},{\"Id\":2,\"ActionId\":4,\"UserResponse\":\"\",\"ChatTime\":\"1989-06-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true}],\"IsCancel\":false,\"CompiledCommand\":\"\"}",
+                actionResult.Message.MessageMarkup.MessageActions.ElementAt(2).Data);
+            Assert.Equal(
+                "{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":true,\"CompiledCommand\":null}",
+                actionResult.Message.MessageMarkup.MessageActions.ElementAt(3).Data);
         }
 
         [Fact]
@@ -369,7 +384,7 @@
 
             Assert.Equal("next action name", actionResult.Message.Content);
             Assert.Single(actionResult.Message.MessageMarkup.MessageActions);
-            Assert.Equal("abortActionId=1", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
+            Assert.Equal("{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":true,\"CompiledCommand\":null}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
         }
 
         private void StubUserFuntions(User user)
@@ -383,8 +398,24 @@
         {
             var userActions = new List<UserAction>
             {
-                new UserAction(1, userId, 1, string.Empty, DateTime.Now),
-                new UserAction(2, userId, 4, string.Empty, DateTime.Now)
+                new UserAction(1, userId, 1, string.Empty, new DateTime(1989, 5, 28)),
+                new UserAction(2, userId, 4, string.Empty, new DateTime(1989, 6, 28))
+            };
+
+            dynamicRepository
+                .FetchAsync<UserAction>(Arg.Is<GetActionByUserCriteria>(criteria => criteria.UserId == userId))
+                .Returns(Task.FromResult(userActions as IEnumerable<UserAction>));
+
+            return userActions;
+        }
+
+        private IList<UserAction> StubUserActionsWithLastActionIsMessage(int userId)
+        {
+            var userActions = new List<UserAction>
+            {
+                new UserAction(1, userId, 1, string.Empty, new DateTime(1989, 5, 28)),
+                new UserAction(2, userId, 4, string.Empty, new DateTime(1989, 6, 28)),
+                new UserAction(3, userId, 6, string.Empty, new DateTime(1989, 7, 28))
             };
 
             dynamicRepository
@@ -398,16 +429,16 @@
         {
             var actionsStub = new List<Action>
             {
-                new Action(1, "View Outstanding Report", "/os", 10, 1, 0, false, 0, 1,0),
-                new Action(2, "View Today Win Loss", "/wl", 20, 2, 0, true, 0, 1, 0),
-                new Action(3, "View Balance Info", "/bal", 30, 3, 0, true, 0, 1, 0),
+                new Action(1, "View Outstanding Report", "/os", 10, 1, 0, false, 0, 1, 0, 0),
+                new Action(2, "View Today Win Loss", "/wl", 20, 2, 0, true, 0, 1, 0, 0),
+                new Action(3, "View Balance Info", "/bal", 30, 3, 0, true, 0, 1, 0, 0),
 
-                new Action(4, "Specific Direct Downline", "", 50, 1, 1, false, 0, 1, 0),
-                new Action(5, "Top 50 Outstanding", "50", 40, 1, 1, true, 0, 1, 0),
-                new Action(6, "Please input username", "", 60, 1, 4, true, 0, 2, 0),
+                new Action(4, "Specific Direct Downline", "", 50, 1, 1, false, 0, 1, 0, 0),
+                new Action(5, "Top 50 Outstanding", "50", 40, 1, 1, true, 0, 1, 0, 0),
+                new Action(6, "Please input username", "", 60, 1, 4, true, 0, 2, 0, 0),
 
-                new Action(7, "Top x Outstanding", "", 70, 1, 1, false, 0, 1, 0),
-                 new Action(8, "Please input num of downline", "", 60, 1, 7, true, 0, 2, 0),
+                new Action(7, "Top x Outstanding", "", 70, 1, 1, false, 0, 1, 0, 0),
+                new Action(8, "Please input num of downline", "", 60, 1, 7, true, 0, 2, 0, 0),
             };
 
             cacheService.GetOrSetAsync(

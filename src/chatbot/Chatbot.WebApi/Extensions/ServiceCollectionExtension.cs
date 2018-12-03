@@ -29,9 +29,9 @@
             services.AddSingleton<IDictionary<int, IActionTitleBuilder>>(
                 new Dictionary<int, IActionTitleBuilder>
                 {
-                    [chatbotConfigs.CopyMasterInputCreditActionId] = new CopyMasterConfirmationTitleBuilder(chatbotConfigs),
-                    [chatbotConfigs.CopyAgentInputMemberCreditActionId] = new CopyAgentConfirmationTitleBuilder(chatbotConfigs),
-                    [chatbotConfigs.CopyMemberInputCreditActionId] = new CopyMemberConfirmationTitleBuilder(chatbotConfigs)
+                    [chatbotConfigs.CopyMasterInputCreditActionId] = new ConfirmActionTitleBuilder(),
+                    [chatbotConfigs.CopyAgentInputMemberCreditActionId] = new ConfirmActionTitleBuilder(),
+                    [chatbotConfigs.CopyMemberInputCreditActionId] = new ConfirmActionTitleBuilder()
                 });
 
             services.AddSingleton<ActionNameBuilderFactory, ActionNameBuilderFactoryImpl>();

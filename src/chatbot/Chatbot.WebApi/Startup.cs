@@ -14,7 +14,7 @@ namespace Chatbot.WebApi
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageBuilders.Templates;
     using Chatbot.Modules.MessageSenders;
-    using Chatbot.Modules.MessageServices;
+    using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.Resources;
     using Chatbot.Modules.SettingLogs;
     using Chatbot.Modules.Settings;

@@ -18,7 +18,8 @@
             bool isEndAction,
             byte status,
             byte type,
-            int custLevel)
+            int custLevel,
+            int backToActionId)
         {
             Id = id;
             Name = name;
@@ -30,6 +31,7 @@
             Status = status;
             Type = type;
             CustLevel = custLevel;
+            BackToActionId = backToActionId;
         }
 
         public int Id { get; private set; }
@@ -53,5 +55,11 @@
         public byte Type { get; private set; }
 
         public int CustLevel { get; private set; }
+        
+        public bool IsNotRootAction() => ParentId > 0;
+
+        public bool IsNotNextActionOf(int actionId) => IsNotRootAction() && ParentId != actionId;
+
+        public int BackToActionId { get; private set; }
     }
 }

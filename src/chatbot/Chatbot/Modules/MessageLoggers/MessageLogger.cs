@@ -1,12 +1,12 @@
 ﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Chatbot.Tests")]
 
-namespace Chatbot.Modules.MessageServices
+namespace Chatbot.Modules.MessageLoggers
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Chatbot.Models;
-    using Chatbot.Modules.MessageServices.Params.Db;
+    using Chatbot.Modules.MessageLoggers.Params.Db;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Helpers;
@@ -85,7 +85,7 @@ namespace Chatbot.Modules.MessageServices
             {
                 foreach (var action in message.MessageMarkup.MessageActions)
                 {
-                    logMessage.Add($"<a href='#'>{action.Label}</a>");
+                    logMessage.Add($"<a href='#' data-hidden='{action.Data}'>{action.Label}</a>");
                 }
             }
 

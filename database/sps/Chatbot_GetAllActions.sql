@@ -13,6 +13,7 @@ AS
 	Revisions:
 		- 20181105@Kan: Create new [RedmineId: 103467]
 		- 20181126@Alvin: Get CustomerLevel
+		- 20181206@Ricky: Get BackToActionId
 		
 	Parameter's Explanation:
 		- @Example:			NULL		- Explanation [DEFAULT]
@@ -24,7 +25,18 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-    SELECT ActionId, ActionName, [Type], Command, DisplayOrder, FunctionId, ParentId, IsEndAction, [Status], CustomerLevel as CustLevel
+    SELECT 
+		ActionId, 
+		ActionName, 
+		[Type], 
+		Command, 
+		DisplayOrder, 
+		FunctionId, 
+		ParentId, 
+		IsEndAction, 
+		[Status], 
+		CustomerLevel as CustLevel, 
+		[BackToActionId]
     FROM dbo.Action WITH (NOLOCK)
     WHERE [Status] <> 2;
 END

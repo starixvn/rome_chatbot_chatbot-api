@@ -1,6 +1,7 @@
 ﻿namespace Chatbot.Modules.Actions.Models
 {
     using System;
+    using Newtonsoft.Json;
 
     public class UserAction
     {
@@ -26,20 +27,26 @@
             Status = status;
         }
 
+        [JsonProperty]
         public int Id { get; private set; }
 
+        [JsonIgnore]
         public int UserId { get; private set; }
 
+        [JsonProperty]
         public int ActionId { get; private set; }
 
+        [JsonProperty]
         public string UserResponse { get; set; }
 
+        [JsonProperty]
         public DateTime ChatTime { get; private set; }
 
+        [JsonProperty]
         public string CompiledCommand { get; set; }
 
         public byte Status { get; private set; }
 
-        public bool IsActionCompletedOrCancel => Status == 0;
+        public bool IsActionValid => Status == ActionValidCode;
     }
 }

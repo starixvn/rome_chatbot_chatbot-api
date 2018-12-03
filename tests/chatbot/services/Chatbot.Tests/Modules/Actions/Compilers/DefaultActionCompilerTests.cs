@@ -35,16 +35,16 @@
         {
             var actions = new List<Action>
             {
-                new Action(1, "View Outstanding Report", "/os", 10, 1, 0, false, 0, 1, 0),
-                new Action(2, "View Today Win Loss", "/wl", 20, 2, 0, true, 0, 1, 0),
-                new Action(3, "View Balance Info", "/bal", 30, 3, 0, true, 0, 1, 0),
+                new Action(1, "View Outstanding Report", "/os", 10, 1, 0, false, 0, 1, 0, 0),
+                new Action(2, "View Today Win Loss", "/wl", 20, 2, 0, true, 0, 1, 0, 0),
+                new Action(3, "View Balance Info", "/bal", 30, 3, 0, true, 0, 1, 0, 0),
 
-                new Action(4, "Specific Direct Downline", "", 50, 1, 1, false, 0, 1, 0),
-                new Action(5, "Top 50 Outstanding", "50", 40, 1, 1, true, 0, 1, 0),
-                new Action(6, "Please input username", "", 60, 1, 4, true, 0, 2, 0),
+                new Action(4, "Specific Direct Downline", "", 50, 1, 1, false, 0, 1, 0, 0),
+                new Action(5, "Top 50 Outstanding", "50", 40, 1, 1, true, 0, 1, 0, 0),
+                new Action(6, "Please input username", "", 60, 1, 4, true, 0, 2, 0, 0),
 
-                new Action(7, "Top x Outstanding", "", 70, 1, 1, false, 0, 1, 0),
-                 new Action(8, "Please input num of downline", "", 60, 1, 7, true, 0, 2, 0),
+                new Action(7, "Top x Outstanding", "", 70, 1, 1, false, 0, 1, 0, 0),
+                 new Action(8, "Please input num of downline", "", 60, 1, 7, true, 0, 2, 0, 0),
             };
             var userActions = new List<UserAction>
             {

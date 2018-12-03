@@ -75,6 +75,8 @@ namespace Chatbot.Shared.Configurations
 
         int CopyCustomerLimitPerDay { get; }
 
+        int InsertUpdateFunctionType { get; }
+
         int CopyCustomerActionId { get; }
     }
 
@@ -183,6 +185,7 @@ namespace Chatbot.Shared.Configurations
         public int CopyMemberInputCreditActionId { get; }
 
         public int CopyCustomerLimitPerDay { get; }
+        public int InsertUpdateFunctionType { get; } = 3;
 
         public int CopyCustomerActionId { get; }
 
@@ -194,11 +197,18 @@ namespace Chatbot.Shared.Configurations
 
         private T GetValue<T>(string key)
         {
-            var value = configuration[key];
+            try
+            {
+                var value = configuration[key];
 
-            TypeConverter typeConverter = TypeDescriptor.GetConverter(typeof(T));
+                TypeConverter typeConverter = TypeDescriptor.GetConverter(typeof(T));
 
-            return (T)typeConverter.ConvertFromString(value);
+                return (T)typeConverter.ConvertFromString(value);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidCastException($"Key: {key}", ex);
+            }
         }
     }
 }

@@ -8,8 +8,8 @@
     public class BodyTemplate5 : IBodyTemplate
     {
         private const string TabChar = "\t";
-        private static readonly string[] NewLineHtmlTags = new[] { "<br>", "<br />" };
-        private static readonly string[] ParagraphHtmlTags = new[] { "</p>", "</ p>", "< /p>" };
+        private static readonly string[] NewLineHtmlTags = { "<br>", "<br />" };
+        private static readonly string[] ParagraphHtmlTags = { "</p>", "</ p>", "< /p>" };
 
         public string ToString(object data, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
         {

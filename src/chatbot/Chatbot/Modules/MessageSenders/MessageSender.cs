@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Chatbot.Models;
-    using Chatbot.Modules.MessageServices;
+    using Chatbot.Modules.MessageLoggers;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Constants;
     using Fanex.Logging;
