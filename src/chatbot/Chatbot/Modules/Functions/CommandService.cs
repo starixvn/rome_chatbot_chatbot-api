@@ -253,7 +253,7 @@
             if (!string.IsNullOrWhiteSpace(actionResult.ValidationFailedMessage))
             {
                 await messageSender
-                    .SendMessage(user.Id, messenger, actionResult.ValidationFailedMessage, actionResult.FunctionId)
+                    .SendMessage(user.Id, messenger, actionResult.ValidationFailedMessage, user.SelfdestructionPeriod, actionResult.FunctionId)
                     .ConfigureAwait(false);
             }
         }

@@ -274,4 +274,37 @@
   <data name="NoneOfTheAbove" xml:space="preserve">
     <value>Không yêu cầu</value>
   </data>
+  <data name="RootActionTitle" xml:space="preserve">
+    <value>Rất tiếc, chúng tôi không nhận ra yêu cầu của bạn. Bạn muốn thực hiện yêu cầu nào?</value>
+  </data>
+  <data name="PleaseSelectOption" xml:space="preserve">
+    <value>Vui lòng chọn một lựa chọn</value>
+  </data>
+  <data name="CancelThisRequest" xml:space="preserve">
+    <value>Hủy yêu cầu hiện tại</value>
+  </data>
+  <data name="FunctionHasBeenCancelled" xml:space="preserve">
+    <value>Yêu cầu hiện tại đã hủy</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>Cho</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Sản phẩm</value>
+  </data>
+  <data name="InvalidNumerOfDownlines" xml:space="preserve">
+    <value>Số lượng cấp dưới phải là số</value>
+  </data>
+  <data name="InvalidDirectDownline" xml:space="preserve">
+    <value>{0} không phải là {1} hợp lệ của bạn.</value>
+  </data>
+  <data name="InvalidDownline" xml:space="preserve">
+    <value>{0} không phải là cấp dưới hợp lệ của bạn.</value>
+  </data>
+  <data name="InvalidNumerOfDownlinesRange" xml:space="preserve">
+    <value>Số lượng cấp dưới phải từ 1 đến {0}</value>
+  </data>
+  <data name="WhichActionWouldYouLikeToTake" xml:space="preserve">
+    <value>Bạn muốn thực hiện yêu cầu nào?</value>
+  </data>
 </root>
