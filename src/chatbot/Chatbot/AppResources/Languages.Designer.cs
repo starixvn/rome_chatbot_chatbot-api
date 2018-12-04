@@ -178,29 +178,11 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  A new member (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action..
+        ///   Looks up a localized string similar to A new agent (credit: {0}, max member credit: {1})  is being created by copying setting from {2}. Please kindly confirm this action..
         /// </summary>
-        public static string CopyCustomerComfirmation_CustLevel_1 {
+        public static string CopyAgentComfirmation {
             get {
-                return ResourceManager.GetString("CopyCustomerComfirmation_CustLevel_1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A new agent (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action..
-        /// </summary>
-        public static string CopyCustomerComfirmation_CustLevel_2 {
-            get {
-                return ResourceManager.GetString("CopyCustomerComfirmation_CustLevel_2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A new master (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action..
-        /// </summary>
-        public static string CopyCustomerComfirmation_CustLevel_3 {
-            get {
-                return ResourceManager.GetString("CopyCustomerComfirmation_CustLevel_3", resourceCulture);
+                return ResourceManager.GetString("CopyAgentComfirmation", resourceCulture);
             }
         }
         
@@ -210,6 +192,15 @@ namespace Chatbot.AppResources {
         public static string CopyCustomerInformMessage {
             get {
                 return ResourceManager.GetString("CopyCustomerInformMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, you have reached the limit of {0} accounts created via Letstalk today..
+        /// </summary>
+        public static string CopyCustomerReachedLimitMessage {
+            get {
+                return ResourceManager.GetString("CopyCustomerReachedLimitMessage", resourceCulture);
             }
         }
         
@@ -237,6 +228,33 @@ namespace Chatbot.AppResources {
         public static string CopyCustomerSuccessMessage_CustLevel_3 {
             get {
                 return ResourceManager.GetString("CopyCustomerSuccessMessage_CustLevel_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new master (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action..
+        /// </summary>
+        public static string CopyMasterComfirmation {
+            get {
+                return ResourceManager.GetString("CopyMasterComfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new member (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action..
+        /// </summary>
+        public static string CopyMemberComfirmation {
+            get {
+                return ResourceManager.GetString("CopyMemberComfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credit.
+        /// </summary>
+        public static string credit {
+            get {
+                return ResourceManager.GetString("credit", resourceCulture);
             }
         }
         
@@ -588,6 +606,15 @@ namespace Chatbot.AppResources {
         public static string MaxCreditInvalid_CustLevel_3 {
             get {
                 return ResourceManager.GetString("MaxCreditInvalid_CustLevel_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Member Credit.
+        /// </summary>
+        public static string maxMemberCredit {
+            get {
+                return ResourceManager.GetString("maxMemberCredit", resourceCulture);
             }
         }
         

@@ -92,7 +92,7 @@
             var isUserReponseByMessage = string.IsNullOrWhiteSpace(buttonData);
 
             var handlingActionResult = isUserReponseByMessage
-                ? await HandleUserReponseByMessage(lastAction, userActions, user, command).ConfigureAwait(false)
+                ? await HandleUserReponseByMessage(lastAction, userActions, user, command, messenger).ConfigureAwait(false)
                 : await HandleUserReponseByButton(lastAction, userActions, user, buttonData, messenger).ConfigureAwait(false);
 
             // Exception cases
@@ -160,7 +160,8 @@
             UserAction lastAction,
             IList<UserAction> userActions,
             User user,
-            string userReponse)
+            string userReponse,
+            Messenger messenger)
         {
             if (lastAction == null
                 || await IsActionNotExist(lastAction.ActionId).ConfigureAwait(false)
@@ -173,7 +174,7 @@
 
             if (actionValidators.Keys.Contains(currentActionId))
             {
-                var validationResult = actionValidators[currentActionId].ValidateAction(user, userReponse, userActions);
+                var validationResult = actionValidators[currentActionId].ValidateAction(user, userReponse, userActions, messenger);
                 if (validationResult.IsNotOk)
                 {
                     return (string.Empty, currentActionId, await BuildWrongValidationResult(currentActionId, user, userActions, validationResult).ConfigureAwait(false));

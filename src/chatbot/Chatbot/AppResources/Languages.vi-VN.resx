@@ -322,4 +322,7 @@
   <data name="HintMessage" xml:space="preserve">
     <value>*Gợi ý: để xem nhanh, vui lòng nhập:</value>
   </data>
+  <data name="credit" xml:space="preserve">
+    <value>Hạn mức tín dụng</value>
+  </data>
 </root>

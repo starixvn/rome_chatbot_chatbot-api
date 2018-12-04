@@ -19,7 +19,7 @@
             this.copyCustomerService = copyCustomerService;
         }
 
-        public Result ValidateAction(User user, string userResponse, IList<UserAction> userActions)
+        public Result ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
         {
             if (!string.IsNullOrWhiteSpace(userResponse)
                 && decimal.TryParse(userResponse, out decimal number))

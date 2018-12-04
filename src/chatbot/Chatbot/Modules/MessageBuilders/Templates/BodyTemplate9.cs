@@ -2,11 +2,11 @@
 {
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
     using System.Text;
     using Alpha.Services.Client.Models;
     using Chatbot.AppResources;
     using Chatbot.Models;
+    using Chatbot.Shared.Extensions;
     using Chatbot.Shared.Helpers;
 
     public class BodyTemplate9 : BodyTemplate
@@ -21,25 +21,35 @@
             }
 
             var successMessage = string.Format(
-                GetResource($"CopyCustomerSuccessMessage_CustLevel_{result.CustLevel}", cultureInfo),
+                StaticResources.Get($"CopyCustomerSuccessMessage_CustLevel_{result.CustLevel}", cultureInfo),
                 result.SourceUsername);
 
             var textContainer = new List<string>
             {
                 $"{successMessage}{messengerFormatter.NewLine()}",
-                $"{GetResource(nameof(Languages.Username),cultureInfo)}: {result.CustName}",
-                $"{GetResource(nameof(Languages.Password),cultureInfo)}: {result.Password}",
-                IsShowHint() ? BuildHintCommand(result, cultureInfo, messengerFormatter) : string.Empty
+                $"{StaticResources.Get(nameof(Languages.Username), cultureInfo)}: {result.CustName}",
+                $"{StaticResources.Get(nameof(Languages.Password), cultureInfo)}: {result.Password}",
+                $"{StaticResources.Get(nameof(Languages.credit), cultureInfo)}: {result.Credit.ToFormattedNumber()}",
             };
 
-            return string.Join(messengerFormatter.NewLine(), textContainer.Where(s => !string.IsNullOrEmpty(s)));
+            if (result.CustLevel == CustLevel.Agent.Value)
+            {
+                textContainer.Add($"{StaticResources.Get(nameof(Languages.maxMemberCredit), cultureInfo)}: {result.MaxCredit.ToFormattedNumber()}");
+            }
+
+            if (IsShowHint())
+            {
+                textContainer.Add(BuildHintCommand(result, cultureInfo, messengerFormatter));
+            }
+
+            return string.Join(messengerFormatter.NewLine(), textContainer);
         }
 
-        private string BuildHintCommand(CopyCustomerResult result, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
+        private static string BuildHintCommand(CopyCustomerResult result, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
         {
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(messengerFormatter.NewLine());
-            stringBuilder.Append($"{GetResource(nameof(Languages.HintMessage), cultureInfo)}{messengerFormatter.NewLine()}");
+            stringBuilder.Append($"{StaticResources.Get(nameof(Languages.HintMessage), cultureInfo)}{messengerFormatter.NewLine()}");
 
             var hintCommand = result.CustLevel == CustLevel.Agent.Value
                   ? $"/copy {result.SourceUsername} {result.Credit} {result.MaxCredit}"

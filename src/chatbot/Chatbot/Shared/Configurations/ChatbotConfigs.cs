@@ -53,9 +53,13 @@ namespace Chatbot.Shared.Configurations
 
         int OutstandingMaxTopQuery { get; }
 
+        int CopyMasterActionId { get; }
+
         int CopyMasterInputUsernameActionId { get; }
 
         int CopyMasterInputCreditActionId { get; }
+
+        int CopyAgentActionId { get; }
 
         int CopyAgentInputUsernameActionId { get; }
 
@@ -63,9 +67,15 @@ namespace Chatbot.Shared.Configurations
 
         int CopyAgentInputMemberCreditActionId { get; }
 
+        int CopyMemberActionId { get; }
+
         int CopyMemberInputUsernameActionId { get; }
 
         int CopyMemberInputCreditActionId { get; }
+
+        int CopyCustomerLimitPerDay { get; }
+
+        int CopyCustomerActionId { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -100,13 +110,18 @@ namespace Chatbot.Shared.Configurations
             OutstandingSpecificDirectDownlineActionId = GetValue<int>("Chatbot:OutstandingSpecificDirectDownlineActionId");
             OutstandingMaxTopQuery = GetValue<int>("Chatbot:OutstandingMaxTopQuery");
 
+            CopyMasterActionId = GetValue<int>("CopyCustomer:Master:RootActionId");
             CopyMasterInputUsernameActionId = GetValue<int>("CopyCustomer:Master:InputUsernameActionId");
             CopyMasterInputCreditActionId = GetValue<int>("CopyCustomer:Master:InputCreditActionId");
+            CopyAgentActionId = GetValue<int>("CopyCustomer:Agent:RootActionId");
             CopyAgentInputUsernameActionId = GetValue<int>("CopyCustomer:Agent:InputUsernameActionId");
             CopyAgentInputCreditActionId = GetValue<int>("CopyCustomer:Agent:InputCreditActionId");
             CopyAgentInputMemberCreditActionId = GetValue<int>("CopyCustomer:Agent:InputMemberCreditActionId");
+            CopyMemberActionId = GetValue<int>("CopyCustomer:Member:RootActionId");
             CopyMemberInputUsernameActionId = GetValue<int>("CopyCustomer:Member:InputUsernameActionId");
             CopyMemberInputCreditActionId = GetValue<int>("CopyCustomer:Member:InputCreditActionId");
+            CopyCustomerLimitPerDay = GetValue<int>("CopyCustomer:LimitPerDay");
+            CopyCustomerActionId = GetValue<int>("CopyCustomer:ActionId");
         }
 
         public int MaxAddActionTimes { get; }
@@ -166,6 +181,16 @@ namespace Chatbot.Shared.Configurations
         public int CopyMemberInputUsernameActionId { get; }
 
         public int CopyMemberInputCreditActionId { get; }
+
+        public int CopyCustomerLimitPerDay { get; }
+
+        public int CopyCustomerActionId { get; }
+
+        public int CopyMasterActionId { get; }
+
+        public int CopyAgentActionId { get; }
+
+        public int CopyMemberActionId { get; }
 
         private T GetValue<T>(string key)
         {

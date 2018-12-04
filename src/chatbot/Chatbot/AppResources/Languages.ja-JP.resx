@@ -154,4 +154,7 @@
   <data name="Password" xml:space="preserve">
     <value>パスワード</value>
   </data>
+  <data name="credit" xml:space="preserve">
+    <value>貸付金額</value>
+  </data>
 </root>

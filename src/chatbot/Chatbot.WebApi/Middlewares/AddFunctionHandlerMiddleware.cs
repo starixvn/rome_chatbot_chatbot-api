@@ -9,6 +9,7 @@
     using Alpha.Services.Client.Services;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.Params;
+    using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
     using Microsoft.Extensions.DependencyInjection;
     using Serilog;
@@ -20,6 +21,7 @@
         private static AnnouncementService announcementService;
         private static NotificationService chatBotMessageService;
         private static CopyCustomerService copyCustomerService;
+        private static SettingService settingService;
         private static IChatbotConfigs chatbotConfigs;
 
         public static void AddFunctionHandler(this IServiceCollection services)
@@ -31,6 +33,7 @@
             chatBotMessageService = serviceProvider.GetService<NotificationService>();
             announcementService = serviceProvider.GetService<AnnouncementService>();
             copyCustomerService = serviceProvider.GetService<CopyCustomerService>();
+            settingService = serviceProvider.GetService<SettingService>();
 
             services.AddSingleton<IDictionary<int, Func<FunctionParam, Task<object>>>>(
                 new Dictionary<int, Func<FunctionParam, Task<object>>>
@@ -136,7 +139,18 @@
                 param.User.Language,
                 string.Empty);
 
-            return await copyCustomerService.Copy(copyCustomerParam);
+            var result = await copyCustomerService.Copy(copyCustomerParam);
+
+            if (result.IsSuccess)
+            {
+                await settingService.IncreaseUserActionCount(
+                    param.User.Id,
+                    chatbotConfigs.CopyCustomerLimitPerDay,
+                    param.Messenger.Type,
+                    param.Messenger.Username);
+            }
+
+            return result;
         }
 
         private static IEnumerable<Customer> GetCustomers(FunctionParam param)

@@ -5,6 +5,7 @@
     using System.Globalization;
     using Alpha.Services.Client.Models;
     using Chatbot.AppResources;
+    using Chatbot.Shared.Helpers;
 
     public class BodyTemplate1 : BodyTemplate
     {
@@ -26,7 +27,7 @@
             return string.Join(messengerFormatter.NewLine(), textContainer);
         }
 
-        private void AddHeaderMessage(
+        private static void AddHeaderMessage(
             List<string> textContainer,
             bool isTopXOutstanding,
             OutstandingDetail outstandingDetail,
@@ -35,14 +36,14 @@
         {
             if (!isTopXOutstanding)
             {
-                textContainer.Add($"{GetResource("For", cultureInfo)} {outstandingDetail.DownlineName}");
+                textContainer.Add($"{StaticResources.Get("For", cultureInfo)} {outstandingDetail.DownlineName}");
             }
 
             textContainer.Add(string.Format("{0}  /  {1}  {2}  {3}",
-                GetResource(isTopXOutstanding ? $"CustLevel_{outstandingDetail.CustLevel - 1}" : "Products", cultureInfo),
-                GetResource(nameof(Languages.Member), cultureInfo), messengerFormatter.Point(),
-                $"{GetResource($"CustLevel_{outstandingDetail.CustLevel}", cultureInfo)}{messengerFormatter.NewLine()}"));
-            textContainer.Add(GetResource("Total", cultureInfo).ToUpperInvariant());
+                StaticResources.Get(isTopXOutstanding ? $"CustLevel_{outstandingDetail.CustLevel - 1}" : "Products", cultureInfo),
+                StaticResources.Get(nameof(Languages.Member), cultureInfo), messengerFormatter.Point(),
+                $"{StaticResources.Get($"CustLevel_{outstandingDetail.CustLevel}", cultureInfo)}{messengerFormatter.NewLine()}"));
+            textContainer.Add(StaticResources.Get("Total", cultureInfo).ToUpperInvariant());
         }
 
         private static void AddTotalBodyMessage(
@@ -68,7 +69,7 @@
             }
         }
 
-        private void AddHiddenDownlinesCount(
+        private static void AddHiddenDownlinesCount(
             List<string> textContainer,
             OutstandingDetail outstandingDetail,
             CultureInfo cultureInfo)
@@ -84,12 +85,12 @@
             }
         }
 
-        private string BuildHiddenDownlinesMessage(int count, int custLevel, CultureInfo cultureInfo)
-            => string.Format(GetResource(nameof(Languages.HiddenDownlinesCount), cultureInfo),
+        private static string BuildHiddenDownlinesMessage(int count, int custLevel, CultureInfo cultureInfo)
+            => string.Format(StaticResources.Get(nameof(Languages.HiddenDownlinesCount), cultureInfo),
                 count,
-                GetResource($"CustLevel_{custLevel}", cultureInfo));
+                StaticResources.Get($"CustLevel_{custLevel}", cultureInfo));
 
-        private void AddHint(
+        private static void AddHint(
             List<string> textContainer,
             CultureInfo cultureInfo,
             IMessengerFormatter messengerFormatter)
@@ -100,15 +101,15 @@
             }
         }
 
-        private string BuildHintMessage(CultureInfo cultureInfo)
+        private static string BuildHintMessage(CultureInfo cultureInfo)
         {
             var random = new Random();
             if (random.Next(0, 2) == 0)
             {
-                return GetResource(nameof(Languages.HintTopOutstanding), cultureInfo);
+                return StaticResources.Get(nameof(Languages.HintTopOutstanding), cultureInfo);
             }
 
-            return GetResource(nameof(Languages.HintSpecificDownline), cultureInfo);
+            return StaticResources.Get(nameof(Languages.HintSpecificDownline), cultureInfo);
         }
     }
 }

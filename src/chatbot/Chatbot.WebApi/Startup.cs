@@ -121,7 +121,7 @@ namespace Chatbot.WebApi
                     { "ko-KR", CultureInfo.CreateSpecificCulture("ko-KR") }
                 });
             services.AddFunctionHandler();
-            services.AddActionHandler();
+            services.AddActionValidators();
             services.AddActionBuilders();
 
             services.AddSwaggerGen(c =>

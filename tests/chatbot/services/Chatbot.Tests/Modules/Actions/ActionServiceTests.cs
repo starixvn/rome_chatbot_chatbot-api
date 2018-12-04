@@ -79,7 +79,7 @@
                 getDateTimeNowFunc);
 
             actionValidator
-                .ValidateAction(Arg.Any<User>(), Arg.Any<string>(), Arg.Any<IList<UserAction>>())
+                .ValidateAction(Arg.Any<User>(), Arg.Any<string>(), Arg.Any<IList<UserAction>>(), Arg.Any<Messenger>())
                 .Returns(Result.CreateSuccessfulResult());
         }
 
@@ -87,6 +87,7 @@
         public void HandleUserReponseByMessage_LastActionIsNull_ReturnUserRootActions()
         {
             var user = new User(1, 1, 4, 0, "en-US", null);
+            var messenger = new Messenger(1, "ltid");
 
             StubActions();
             StubUserFuntions(user);
@@ -94,7 +95,7 @@
             messageBuilder.BuildRootActionTitle(user.Language).Returns("message title");
             actionNameBuilderFactory.GetActionNameBuilder(1).BuildActionName(1, user).Returns("outstanding label");
 
-            var actionResult = actionServiceImpl.HandleUserReponseByMessage(null, null, user, "message")
+            var actionResult = actionServiceImpl.HandleUserReponseByMessage(null, null, user, "message", messenger)
                 .GetAwaiter()
                 .GetResult()
                 .Item3;
@@ -111,11 +112,13 @@
         {
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US", null);
+            var messenger = new Messenger(1, "ltid");
             StubUserFuntions(user);
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
-            actionValidator.ValidateAction(user, "user reponse", Arg.Any<IList<UserAction>>()).Returns(new Result(1, "failed"));
+            actionValidator.ValidateAction(user, "user reponse", Arg.Any<IList<UserAction>>(), messenger)
+                .Returns(new Result(1, "failed"));
 
-            var actionResult = actionServiceImpl.HandleUserReponseByMessage(lastUserAction, null, user, "user reponse")
+            var actionResult = actionServiceImpl.HandleUserReponseByMessage(lastUserAction, null, user, "user reponse", messenger)
                 .GetAwaiter()
                 .GetResult()
                 .Item3;
@@ -128,13 +131,15 @@
         {
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US", null);
+            var messenger = new Messenger(1, "ltid");
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             StubUserFuntions(user);
-            actionValidator.ValidateAction(user, "user reponse", Arg.Any<IList<UserAction>>()).Returns(new Result(1, "failed"));
+            actionValidator.ValidateAction(user, "user reponse", Arg.Any<IList<UserAction>>(), messenger)
+                .Returns(new Result(1, "failed"));
             actionNameBuilderFactory.GetActionNameBuilder(4).BuildActionName(4, user).Returns("outstanding label");
             messageBuilder.BuildCancelRequestMessage("en-US").Returns("cancel button");
 
-            var actionResult = actionServiceImpl.HandleUserReponseByMessage(lastUserAction, null, user, "user reponse")
+            var actionResult = actionServiceImpl.HandleUserReponseByMessage(lastUserAction, null, user, "user reponse", messenger)
                 .GetAwaiter()
                 .GetResult()
                 .Item3;
@@ -148,6 +153,7 @@
         {
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US", null);
+            var messenger = new Messenger(1, "ltid");
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             var userActions = StubUserActions(user.Id);
             StubUserFuntions(user);
@@ -155,7 +161,7 @@
                 .Returns("compiled command");
 
             var compiledCommand = actionServiceImpl.HandleUserReponseByMessage(
-                lastUserAction, userActions, user, "user reponse")
+                lastUserAction, userActions, user, "user reponse", messenger)
                 .GetAwaiter()
                 .GetResult()
                 .Item1;
@@ -168,6 +174,7 @@
         {
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US", null);
+            var messenger = new Messenger(1, "ltid");
             var lastUserAction = new UserAction(1, 1, 4, "user reponse", DateTime.Now);
             var userActions = StubUserActions(user.Id);
             StubUserFuntions(user);
@@ -175,7 +182,7 @@
                 .Returns("compiled command");
 
             var lastActionId = actionServiceImpl.HandleUserReponseByMessage(
-                lastUserAction, userActions, user, "user reponse")
+                lastUserAction, userActions, user, "user reponse", messenger)
                 .GetAwaiter()
                 .GetResult()
                 .Item2;

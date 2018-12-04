@@ -226,4 +226,7 @@
   <data name="Password" xml:space="preserve">
     <value>비밀번호</value>
   </data>
+  <data name="credit" xml:space="preserve">
+    <value>포인트</value>
+  </data>
 </root>

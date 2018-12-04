@@ -22,14 +22,14 @@
 
             if (!keyValues.Keys.Any())
             {
-                return GetResource(nameof(Languages.NoData), cultureInfo);
+                return StaticResources.Get(nameof(Languages.NoData), cultureInfo);
             }
 
             foreach (var keyValue in keyValues)
             {
                 if (keyValue.Value != null)
                 {
-                    textContainer.Add($"{GetResource(keyValue.Key, cultureInfo)}:");
+                    textContainer.Add($"{StaticResources.Get(keyValue.Key, cultureInfo)}:");
                     textContainer.Add($"    {GetFormattedValue(keyValue.Value)}");
                 }
             }
@@ -56,9 +56,6 @@
 
             return value.ToString();
         }
-
-        protected virtual string GetResource(string key, CultureInfo cultureInfo)
-            => Languages.ResourceManager.GetString(key, cultureInfo);
 
         /// <summary>
         /// Random rate of 20%

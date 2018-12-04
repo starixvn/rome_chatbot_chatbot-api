@@ -97,7 +97,7 @@
             var message = messageBuilder.BuildUnderMaintenanceMessage(1, "2:00", "3:00");
 
             Assert.Equal(
-                "Sorry, the system is under maintenance from 2:00 to 3:00 GMT+8. Please come back later._newline__newline_Sorry, the system is under maintenance from 2:00 to 3:00 GMT+8. Please come back later._newline__newline_Sorry, the system is under maintenance from 2:00 to 3:00 GMT+8. Please come back later._newline__newline_",
+                "Sorry, the system is under maintenance from 2:00 to 3:00 GMT+8. Please come back later._newline__newline_很抱歉，服务器正在维护中，维护时间从2:00至3:00 (GMT+8)。请稍后访问。_newline__newline_很抱歉，伺服器正在進行維護，維護時間從2:00至3:00 (GMT+8)。請稍候再試。_newline__newline_",
                 message);
         }
 
@@ -159,7 +159,7 @@
             var message = messageBuilder.BuildServiceIsUnavailableMessage(messageType);
 
             // Assert
-            Assert.Equal("Sorry, you haven't registered for this chatbot service yet!_newline__newline_Sorry, you haven't registered for this chatbot service yet!_newline__newline_Sorry, you haven't registered for this chatbot service yet!_newline__newline_Sorry, you haven't registered for this chatbot service yet!_newline__newline_", message);
+            Assert.Equal("Sorry, you haven't registered for this chatbot service yet!_newline__newline_对不起，您尚未注册Chatbot服务!_newline__newline_對不起，您尚未註冊Chatbot服務!_newline__newline_Xin lỗi, bạn chưa đăng ký dịch vụ chatbot này!_newline__newline_", message);
         }
 
         [Fact]

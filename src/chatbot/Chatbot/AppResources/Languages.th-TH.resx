@@ -349,4 +349,7 @@
   <data name="HintMessage" xml:space="preserve">
     <value>*หมายเหตุ：คำสั่งแบบรวดเร็ว กรุณาพิมพ์ </value>
   </data>
+  <data name="credit" xml:space="preserve">
+    <value>เครดิต</value>
+  </data>
 </root>

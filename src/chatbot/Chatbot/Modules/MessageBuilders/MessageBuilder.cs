@@ -6,6 +6,7 @@
     using Chatbot.AppResources;
     using Chatbot.Modules.MessageBuilders.Templates;
     using Chatbot.Shared.Extensions;
+    using Chatbot.Shared.Helpers;
 
     public interface IMessageBuilder
     {
@@ -53,9 +54,9 @@
 
         string BuildInvalidMaxCreditMessage(int custLevel, decimal maxCredit, string language);
 
-        string BuildCopyCustomerConfirmationTitle(int custLevel, string credit, string sourceUsername, string language);
-
         string BuildCopyCustomerInformMessage(string language);
+
+        string BuildCopyCustomerReachedLimitMessage(int limit, string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -100,7 +101,7 @@
         {
             if (data == null)
             {
-                return GetResource(nameof(Languages.NoData), language);
+                return StaticResources.Get(nameof(Languages.NoData), language);
             }
 
             var template = GetTemplate(functionId);
@@ -113,23 +114,23 @@
         public string BuildVerificationCodeMessage(string language, int messengerType, string verificationCode, int expiredVerificationCodeInMinutes)
             => string.Join(
                 GetMessengerFormatter(messengerType).NewLine(),
-                string.Format(GetResource(nameof(Languages.VerificationCode_1), language), verificationCode),
-                string.Format(GetResource(nameof(Languages.VerificationCode_2), language), expiredVerificationCodeInMinutes));
+                string.Format(StaticResources.Get(nameof(Languages.VerificationCode_1), language), verificationCode),
+                string.Format(StaticResources.Get(nameof(Languages.VerificationCode_2), language), expiredVerificationCodeInMinutes));
 
         public string BuildErrorMessage(string language)
-            => GetResource(nameof(Languages.DefaultErrorMessage), language);
+            => StaticResources.Get(nameof(Languages.DefaultErrorMessage), language);
 
         public string BuildNotRecognizedCommandMessage(string language)
-            => GetResource(nameof(Languages.CommandIsNotRecognized), language);
+            => StaticResources.Get(nameof(Languages.CommandIsNotRecognized), language);
 
         public string BuildWelcomeMessage(string language, int messengerType)
             => string.Join(
                 GetMessengerFormatter(messengerType).NewLine(),
-                GetResource(nameof(Languages.InformingVerifiedMessage_1), language),
-                GetResource(nameof(Languages.InformingVerifiedMessage_2), language));
+                StaticResources.Get(nameof(Languages.InformingVerifiedMessage_1), language),
+                StaticResources.Get(nameof(Languages.InformingVerifiedMessage_2), language));
 
         public string BuildAccountClosedMessage(string language)
-            => GetResource(nameof(Languages.YourAccountIsClosed), language);
+            => StaticResources.Get(nameof(Languages.YourAccountIsClosed), language);
 
         public string BuildUnderMaintenanceMessage(int messengerType, string from, string to)
         {
@@ -137,7 +138,7 @@
 
             foreach (var langCode in underMaintenanceLanguageCodes)
             {
-                var message = string.Format(GetResource(nameof(Languages.UnderMaintenance), langCode), from, to);
+                var message = string.Format(StaticResources.Get(nameof(Languages.UnderMaintenance), langCode), from, to);
                 stringBuilder
                     .Append(message)
                     .Append(GetMessengerFormatter(messengerType).NewLine())
@@ -154,7 +155,7 @@
             foreach (var langCode in unavailableLanguageCodes)
             {
                 stringBuilder
-                    .Append(GetResource(nameof(Languages.ServiceNotAvailable), langCode))
+                    .Append(StaticResources.Get(nameof(Languages.ServiceNotAvailable), langCode))
                     .Append(GetMessengerFormatter(messengerType).NewLine())
                     .Append(GetMessengerFormatter(messengerType).NewLine());
             }
@@ -163,32 +164,32 @@
         }
 
         public string BuildInvalidCustNameMessage(string language)
-            => GetResource(nameof(Languages.InvalidCustName), language);
+            => StaticResources.Get(nameof(Languages.InvalidCustName), language);
 
         public string BuildUnlinkMessage(string language)
-            => GetResource(nameof(Languages.UnlinkMessage), language);
+            => StaticResources.Get(nameof(Languages.UnlinkMessage), language);
 
         public string BuildInvalidNumerOfDownline(string language)
-            => GetResource(nameof(Languages.InvalidNumerOfDownlines), language);
+            => StaticResources.Get(nameof(Languages.InvalidNumerOfDownlines), language);
 
         public string BuildInvalidNumerOfDownlineRange(string language, int maxTopQuery)
             => string.Format(
-                GetResource(nameof(Languages.InvalidNumerOfDownlinesRange), language),
+                StaticResources.Get(nameof(Languages.InvalidNumerOfDownlinesRange), language),
                 maxTopQuery);
 
         public string BuildInvalidDownlineMessage(string username, string language)
             => string.Format(
-                GetResource(nameof(Languages.InvalidDownline), language),
+                StaticResources.Get(nameof(Languages.InvalidDownline), language),
                 username);
 
         public string BuildInvalidDirectDownlineMessage(string username, int directDownlineLevel, string language)
             => string.Format(
-                GetResource(nameof(Languages.InvalidDirectDownline), language),
+                StaticResources.Get(nameof(Languages.InvalidDirectDownline), language),
                 username,
-                GetResource($"CustLevel_{directDownlineLevel}", language));
+                StaticResources.Get($"CustLevel_{directDownlineLevel}", language));
 
         public string BuildInvalidNumericMessage(string value, string language)
-            => string.Format(GetResource(nameof(Languages.InvalidNumericMessage), language), value);
+            => string.Format(StaticResources.Get(nameof(Languages.InvalidNumericMessage), language), value);
 
         private IMessengerFormatter GetMessengerFormatter(int messengerType)
             => messengerFormatters.ContainsKey(messengerType)
@@ -200,42 +201,39 @@
                ? messageTemplates[functionId]
                : defaultTemplate;
 
-        private string GetResource(string key, string language)
-            => Languages.ResourceManager.GetString(key, GetCultureInfo(language));
-
         private CultureInfo GetCultureInfo(string language)
             => cultureInfoList.ContainsKey(language)
                             ? cultureInfoList[language]
                             : defaultCultureInfo;
 
         public string BuildActionTitle(string language)
-        => GetResource(nameof(Languages.PleaseSelectOption), language);
+            => StaticResources.Get(nameof(Languages.PleaseSelectOption), language);
 
         public string BuildRootActionTitle(string language)
-            => GetResource(nameof(Languages.RootActionTitle), language);
+            => StaticResources.Get(nameof(Languages.RootActionTitle), language);
 
         public string BuildCancelRequestMessage(string language)
-             => GetResource(nameof(Languages.CancelThisRequest), language);
+             => StaticResources.Get(nameof(Languages.CancelThisRequest), language);
 
         public string BuildResponseCancelRequestMessage(int messengerType, string language)
          => string.Join(
                 GetMessengerFormatter(messengerType).NewLine(),
-                GetResource(nameof(Languages.FunctionHasBeenCancelled), language),
-                GetResource(nameof(Languages.WhichActionWouldYouLikeToTake), language));
+                StaticResources.Get(nameof(Languages.FunctionHasBeenCancelled), language),
+                StaticResources.Get(nameof(Languages.WhichActionWouldYouLikeToTake), language));
 
         public string BuildConfirmKeywordTitle(string language)
-            => GetResource(nameof(Languages.ConfirmKeywordTitle), language);
+            => StaticResources.Get(nameof(Languages.ConfirmKeywordTitle), language);
 
         public string BuildNoneOfTheAboveMessage(string language)
-            => GetResource(nameof(Languages.NoneOfTheAbove), language);
+            => StaticResources.Get(nameof(Languages.NoneOfTheAbove), language);
 
         public string BuildInvalidMaxCreditMessage(int custLevel, decimal maxCredit, string language)
-            => string.Format(GetResource($"MaxCreditInvalid_CustLevel_{custLevel}", language), 0, maxCredit.ToFormattedNumber());
-
-        public string BuildCopyCustomerConfirmationTitle(int custLevel, string credit, string sourceUsername, string language)
-            => string.Format(GetResource($"CopyCustomerComfirmation_CustLevel_{custLevel}", language), credit, sourceUsername);
+            => string.Format(StaticResources.Get($"MaxCreditInvalid_CustLevel_{custLevel}", language), 0, maxCredit.ToFormattedNumber());
 
         public string BuildCopyCustomerInformMessage(string language)
-            => GetResource(nameof(Languages.CopyCustomerInformMessage), language);
+            => StaticResources.Get(nameof(Languages.CopyCustomerInformMessage), language);
+
+        public string BuildCopyCustomerReachedLimitMessage(int limit, string language)
+            => string.Format(StaticResources.Get(nameof(Languages.CopyCustomerReachedLimitMessage), language), limit);
     }
 }

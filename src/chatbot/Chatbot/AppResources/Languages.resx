@@ -372,14 +372,14 @@
   <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
     <value>Member Max Credit must be between {0} and {1}</value>
   </data>
-  <data name="CopyCustomerComfirmation_CustLevel_3" xml:space="preserve">
+  <data name="CopyMasterComfirmation" xml:space="preserve">
     <value>A new master (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action.</value>
   </data>
-  <data name="CopyCustomerComfirmation_CustLevel_2" xml:space="preserve">
-    <value>A new agent (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action.</value>
+  <data name="CopyAgentComfirmation" xml:space="preserve">
+    <value>A new agent (credit: {0}, max member credit: {1})  is being created by copying setting from {2}. Please kindly confirm this action.</value>
   </data>
-  <data name="CopyCustomerComfirmation_CustLevel_1" xml:space="preserve">
-    <value> A new member (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action.</value>
+  <data name="CopyMemberComfirmation" xml:space="preserve">
+    <value>A new member (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action.</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
@@ -398,5 +398,14 @@
   </data>
   <data name="HintMessage" xml:space="preserve">
     <value>*Hint: for quick command,  please type: </value>
+  </data>
+  <data name="credit" xml:space="preserve">
+    <value>Credit</value>
+  </data>
+  <data name="maxMemberCredit" xml:space="preserve">
+    <value>Max Member Credit</value>
+  </data>
+  <data name="CopyCustomerReachedLimitMessage" xml:space="preserve">
+    <value>Sorry, you have reached the limit of {0} accounts created via Letstalk today.</value>
   </data>
 </root>

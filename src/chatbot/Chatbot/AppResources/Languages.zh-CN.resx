@@ -375,4 +375,7 @@
   <data name="HintMessage" xml:space="preserve">
     <value>*提示：快速指令，请输入：</value>
   </data>
+  <data name="credit" xml:space="preserve">
+    <value>信用额度</value>
+  </data>
 </root>
