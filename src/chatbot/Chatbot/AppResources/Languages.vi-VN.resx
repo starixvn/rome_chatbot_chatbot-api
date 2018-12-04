@@ -137,7 +137,7 @@
     <value>Tiền tệ</value>
   </data>
   <data name="NoData" xml:space="preserve">
-    <value>Thông tin chưa được cập nhật</value>
+    <value>Thông tin không tồn tại</value>
   </data>
   <data name="DefaultErrorMessage" xml:space="preserve">
     <value>Oh …hệ thống đang bi lỗi,Vui lòng báo với người quản lý</value>
