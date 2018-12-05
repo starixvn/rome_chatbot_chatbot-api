@@ -36,8 +36,6 @@
 
         string BuildInvalidDownlineMessage(string username, string language);
 
-        string BuildActionTitle(string language);
-
         string BuildInvalidDirectDownlineMessage(string username, int directDownlineLevel, string language);
 
         string BuildRootActionTitle(string language);
@@ -205,9 +203,6 @@
             => cultureInfoList.ContainsKey(language)
                             ? cultureInfoList[language]
                             : defaultCultureInfo;
-
-        public string BuildActionTitle(string language)
-            => StaticResources.Get(nameof(Languages.PleaseSelectOption), language);
 
         public string BuildRootActionTitle(string language)
             => StaticResources.Get(nameof(Languages.RootActionTitle), language);

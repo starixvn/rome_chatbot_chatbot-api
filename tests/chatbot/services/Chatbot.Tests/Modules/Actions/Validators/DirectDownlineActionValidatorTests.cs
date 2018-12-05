@@ -9,6 +9,7 @@
     using KellermanSoftware.CompareNetObjects;
     using NSubstitute;
     using Xunit;
+    using Result = Models.Result;
 
     public class DirectDownlineActionValidatorTests
     {

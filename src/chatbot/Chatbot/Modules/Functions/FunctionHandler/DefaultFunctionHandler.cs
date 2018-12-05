@@ -10,6 +10,7 @@
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Fanex.Logging;
+    using Result = Models.Result;
 
     public interface IFunctionHandler
     {

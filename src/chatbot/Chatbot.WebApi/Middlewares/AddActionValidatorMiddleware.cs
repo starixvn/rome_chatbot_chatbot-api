@@ -30,9 +30,9 @@
                     [chatbotConfigs.CopyAgentInputMemberCreditActionId] = new MemberMaxCreditValidator(messageBuilder, chatbotConfigs),
                     [chatbotConfigs.CopyMemberInputUsernameActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
                     [chatbotConfigs.CopyMemberInputCreditActionId] = new MaxCreditValidator(messageBuilder, copyCustomerService),
-                    [chatbotConfigs.CopyMasterActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, settingService, chatbotConfigs),
-                    [chatbotConfigs.CopyAgentActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, settingService, chatbotConfigs),
-                    [chatbotConfigs.CopyMemberActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, settingService, chatbotConfigs)
+                    [chatbotConfigs.CopyMasterActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, settingService, copyCustomerService, chatbotConfigs),
+                    [chatbotConfigs.CopyAgentActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, settingService, copyCustomerService, chatbotConfigs),
+                    [chatbotConfigs.CopyMemberActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, settingService, copyCustomerService, chatbotConfigs)
                 });
         }
     }

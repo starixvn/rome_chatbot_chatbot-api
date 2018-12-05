@@ -1,20 +1,14 @@
 ﻿namespace Chatbot.Modules.Actions.Builders.ActionTitle
 {
     using System.Collections.Generic;
+    using Chatbot.AppResources;
     using Chatbot.Models;
     using Chatbot.Modules.Actions.Models;
-    using Chatbot.Modules.MessageBuilders;
+    using Chatbot.Shared.Helpers;
 
     public class DefaultActionTitleBuilder : IActionTitleBuilder
     {
-        private readonly IMessageBuilder messageBuilder;
-
-        public DefaultActionTitleBuilder(IMessageBuilder messageBuilder)
-        {
-            this.messageBuilder = messageBuilder;
-        }
-
         public string BuildActionTitle(User user, IList<UserAction> userActions)
-            => messageBuilder.BuildActionTitle(user.Language);
+            => StaticResources.Get(nameof(Languages.PleaseSelectOption), user.Language);
     }
 }

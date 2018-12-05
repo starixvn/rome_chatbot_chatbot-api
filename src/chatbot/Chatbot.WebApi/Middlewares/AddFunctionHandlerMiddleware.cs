@@ -145,7 +145,7 @@
             {
                 await settingService.IncreaseUserActionCount(
                     param.User.Id,
-                    chatbotConfigs.CopyCustomerLimitPerDay,
+                    chatbotConfigs.CopyCustomerActionId,
                     param.Messenger.Type,
                     param.Messenger.Username);
             }
