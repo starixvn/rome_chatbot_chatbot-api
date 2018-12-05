@@ -6,6 +6,6 @@
 
     public interface IActionValidator
     {
-        Result ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger);
+        ActionValidationResult ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger);
     }
 }

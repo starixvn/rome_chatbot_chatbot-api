@@ -27,7 +27,7 @@
             this.copyCustomerService = copyCustomerService;
         }
 
-        public Result ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
+        public ActionValidationResult ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
         {
             if (user.CustLevel == CustLevel.Agent.Value)
             {
@@ -36,7 +36,7 @@
 
                 if (!validateResult.IsSuccess)
                 {
-                    return Result.CreateErrorResult(validateResult.Message);
+                    return ActionValidationResult.CreateErrorValidationResult(validateResult.Message);
                 }
             }
 
@@ -50,13 +50,14 @@
 
             if (isReachedLimitOfCopyCustomer)
             {
-                return Result.CreateErrorResult(
+                return ActionValidationResult.CreateErrorValidationResult(
                     messageBuilder.BuildCopyCustomerReachedLimitMessage(
                         chatbotConfigs.CopyCustomerLimitPerDay,
-                        user.Language));
+                        user.Language),
+                    true);
             }
 
-            return Result.CreateSuccessfulResult();
+            return ActionValidationResult.CreateSuccessfulValidationResult();
         }
     }
 }

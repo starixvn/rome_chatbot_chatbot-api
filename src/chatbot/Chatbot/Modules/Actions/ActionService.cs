@@ -26,7 +26,6 @@
     using Action = Models.Action;
 
     using MessengerClient = Messenger.Client;
-    using Result = Chatbot.Models.Result;
 
     public interface ActionService
     {
@@ -143,6 +142,15 @@
                         string.Empty,
                         currentActionId,
                         await BuildRootActions(user, rootMessage).ConfigureAwait(false));
+                }
+
+                if (actionValidators.Keys.Contains(currentActionId))
+                {
+                    var validationResult = actionValidators[currentActionId].ValidateAction(user, buttonData, userActions, messenger);
+                    if (validationResult.IsNotOk)
+                    {
+                        return (string.Empty, currentActionId, await BuildWrongValidationResult(currentActionId, user, userActions, validationResult).ConfigureAwait(false));
+                    }
                 }
 
                 compiledCommand = await HandleButtonAction(currentAction, userActions, user).ConfigureAwait(false);
@@ -321,9 +329,9 @@
             return !actionChain.Any(action => action.Id == lastAction.ActionId);
         }
 
-        private async Task<ActionResult> BuildWrongValidationResult(int actionId, User user, IList<UserAction> userActions, Result result)
+        private async Task<ActionResult> BuildWrongValidationResult(int actionId, User user, IList<UserAction> userActions, ActionValidationResult result)
             => new ActionResult(
-                await BuildMessageWithAbortButton(actionId, user, userActions).ConfigureAwait(false),
+                !result.ForcedCancelRequest ? await BuildMessageWithAbortButton(actionId, user, userActions).ConfigureAwait(false) : null,
                 result.Message,
                 (await GetActionById(actionId).ConfigureAwait(false)).FunctionId);
 

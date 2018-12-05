@@ -20,7 +20,7 @@
             this.chatbotConfigs = chatbotConfigs;
         }
 
-        public Result ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
+        public ActionValidationResult ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
         {
             if (!string.IsNullOrWhiteSpace(userResponse)
                 && decimal.TryParse(userResponse, out decimal number))
@@ -31,13 +31,14 @@
 
                 if (number > agentMaxCredit)
                 {
-                    return Result.CreateErrorResult(messageBuilder.BuildInvalidMaxCreditMessage(CustLevel.Member.Value, agentMaxCredit, user.Language));
+                    return ActionValidationResult.CreateErrorValidationResult(
+                        messageBuilder.BuildInvalidMaxCreditMessage(CustLevel.Member.Value, agentMaxCredit, user.Language));
                 }
 
-                return Result.CreateSuccessfulResult();
+                return ActionValidationResult.CreateSuccessfulValidationResult();
             }
 
-            return Result.CreateErrorResult(messageBuilder.BuildInvalidNumericMessage(userResponse, user.Language));
+            return ActionValidationResult.CreateErrorValidationResult(messageBuilder.BuildInvalidNumericMessage(userResponse, user.Language));
         }
     }
 }

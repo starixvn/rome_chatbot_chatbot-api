@@ -19,7 +19,7 @@
             this.customerService = customerService;
         }
 
-        public Result ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
+        public ActionValidationResult ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
         {
             if (!string.IsNullOrWhiteSpace(userResponse))
             {
@@ -28,11 +28,11 @@
 
                 if (downlineInfo != null && downlineInfo.CustId > 0)
                 {
-                    return Result.CreateSuccessfulResult();
+                    return ActionValidationResult.CreateSuccessfulValidationResult();
                 }
             }
 
-            return Result.CreateErrorResult(
+            return ActionValidationResult.CreateErrorValidationResult(
                 messageBuilder.BuildInvalidDownlineMessage(userResponse, user.Language));
         }
     }

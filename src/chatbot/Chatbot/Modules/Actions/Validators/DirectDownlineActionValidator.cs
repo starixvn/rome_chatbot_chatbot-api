@@ -19,7 +19,7 @@
             this.customerService = customerService;
         }
 
-        public Result ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
+        public ActionValidationResult ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
         {
             if (!string.IsNullOrWhiteSpace(userResponse))
             {
@@ -30,11 +30,11 @@
                     && downlineInfo.CustId > 0
                     && IsDirectDownline(user.CustLevel, downlineInfo.RoleId))
                 {
-                    return Result.CreateSuccessfulResult();
+                    return ActionValidationResult.CreateSuccessfulValidationResult();
                 }
             }
 
-            return Result.CreateErrorResult(
+            return ActionValidationResult.CreateErrorValidationResult(
                 messageBuilder.BuildInvalidDirectDownlineMessage(
                     userResponse,
                     user.CustLevel - 1,

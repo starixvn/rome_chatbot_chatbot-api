@@ -582,7 +582,7 @@
             var addUserLogActions = await GetUserAction(userId, messengerType, string.Empty, actionId).ConfigureAwait(false);
             var numOfAddTime = addUserLogActions.Sum(action => action.CountTimes);
 
-            return numOfAddTime > limit;
+            return numOfAddTime >= limit;
         }
     }
 }

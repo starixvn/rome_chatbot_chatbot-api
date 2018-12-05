@@ -19,7 +19,7 @@
             this.copyCustomerService = copyCustomerService;
         }
 
-        public Result ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
+        public ActionValidationResult ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
         {
             if (!string.IsNullOrWhiteSpace(userResponse)
                 && decimal.TryParse(userResponse, out decimal number))
@@ -29,13 +29,14 @@
 
                 if (number > pt.MaxCredit)
                 {
-                    return Result.CreateErrorResult(messageBuilder.BuildInvalidMaxCreditMessage(user.CustLevel - 1, pt.MaxCredit, user.Language));
+                    return ActionValidationResult.CreateErrorValidationResult(
+                        messageBuilder.BuildInvalidMaxCreditMessage(user.CustLevel - 1, pt.MaxCredit, user.Language));
                 }
 
-                return Result.CreateSuccessfulResult();
+                return ActionValidationResult.CreateSuccessfulValidationResult();
             }
 
-            return Result.CreateErrorResult(messageBuilder.BuildInvalidNumericMessage(userResponse, user.Language));
+            return ActionValidationResult.CreateErrorValidationResult(messageBuilder.BuildInvalidNumericMessage(userResponse, user.Language));
         }
     }
 }
