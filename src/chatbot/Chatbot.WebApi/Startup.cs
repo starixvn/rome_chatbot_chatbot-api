@@ -99,7 +99,8 @@ namespace Chatbot.WebApi
                 { chatbotConfigs.NormalAnnouncementFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { chatbotConfigs.SystemUpdateFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { chatbotConfigs.OutstandingFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate1()) },
-                { chatbotConfigs.CopyCustomerFunctionId, new MessageTemplate(null, new BodyTemplate9()) }
+                { chatbotConfigs.CopyCustomerFunctionId, new MessageTemplate(null, new BodyTemplate9()) },
+                { chatbotConfigs.BalanceFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate3()) }
             });
             services.AddSingleton<IDictionary<int, IMessengerFormatter>>(
                 new Dictionary<int, IMessengerFormatter>

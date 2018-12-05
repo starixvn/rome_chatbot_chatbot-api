@@ -95,7 +95,7 @@
             var functionHandler = factory.CreateFunctionHandler(1);
 
             // Assert
-            Assert.IsType<OutstandingCommandFunctionHandler>(functionHandler);
+            Assert.IsType<OutstandingFunctionHandler>(functionHandler);
         }
 
         [Fact]

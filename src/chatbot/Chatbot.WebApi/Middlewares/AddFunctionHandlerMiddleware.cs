@@ -71,7 +71,17 @@
             => await reportService.GetWinLossAsync(param.User.CustId, (byte)param.User.CustLevel, DateTime.Now.Date);
 
         private static async Task<object> GetBalanceInfo(FunctionParam param)
-            => await reportService.GetBalanceInfoAsync(param.User.CustId);
+        {
+            if (param.Others.ContainsKey("topQuery"))
+            {
+                return await reportService.GetBalancesAsync(
+                    param.User.CustId,
+                    (byte)param.User.CustLevel,
+                    (int)param.Others["topQuery"]);
+            }
+
+            return await reportService.GetBalanceInfoAsync(param.User.CustId);
+        }
 
         private static async Task<object> GetYesterdayWinLoss(FunctionParam param)
             => await reportService.GetWinLossAsync(param.User.CustId, (byte)param.User.CustLevel, DateTime.Now.AddDays(-1).Date);

@@ -325,4 +325,7 @@
   <data name="credit" xml:space="preserve">
     <value>Hạn mức tín dụng</value>
   </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>Hôm qua</value>
+  </data>
 </root>

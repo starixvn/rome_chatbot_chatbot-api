@@ -157,4 +157,7 @@
   <data name="credit" xml:space="preserve">
     <value>貸付金額</value>
   </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>昨日</value>
+  </data>
 </root>

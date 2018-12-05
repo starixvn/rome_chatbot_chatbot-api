@@ -85,11 +85,6 @@
             }
         }
 
-        private static string BuildHiddenDownlinesMessage(int count, int custLevel, CultureInfo cultureInfo)
-            => string.Format(StaticResources.Get(nameof(Languages.HiddenDownlinesCount), cultureInfo),
-                count,
-                StaticResources.Get($"CustLevel_{custLevel}", cultureInfo));
-
         private static void AddHint(
             List<string> textContainer,
             CultureInfo cultureInfo,

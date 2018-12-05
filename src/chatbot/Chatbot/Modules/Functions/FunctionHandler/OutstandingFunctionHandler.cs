@@ -11,16 +11,17 @@
     using Fanex.Logging;
     using Result = Models.Result;
 
-    public class OutstandingCommandFunctionHandler : DefaultFunctionHandler
+    public class OutstandingFunctionHandler : DefaultFunctionHandler
     {
         private readonly IChatbotConfigs chatbotConfigs;
 
-        public OutstandingCommandFunctionHandler(
+        public OutstandingFunctionHandler(
+            IChatbotConfigs chatbotConfigs,
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
             CustomerService customerService,
+
             ILogger logger,
-            IChatbotConfigs chatbotConfigs,
             IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers = null)
             : base(messageBuilder, messageSender, customerService, logger, getDataHandlers)
         {
@@ -63,18 +64,6 @@
             }
 
             return await base.RunHandler(param).ConfigureAwait(false);
-        }
-
-        private Task<Result> BuildAndSendInvalidNumerOfDownlineRangeMessage(FunctionParam param, int maxTopQuery)
-        {
-            var message = messageBuilder.BuildInvalidNumerOfDownlineRange(param.User.Language, maxTopQuery);
-
-            return messageSender.SendMessage(
-                param.User.Id,
-                param.Messenger,
-                message,
-                param.User.SelfdestructionPeriod,
-                param.Function.Id);
         }
 
         private Task<Result> BuildAndSendInvalidCustNameMessage(FunctionParam param)

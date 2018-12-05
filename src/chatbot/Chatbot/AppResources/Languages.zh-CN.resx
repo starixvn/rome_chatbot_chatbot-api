@@ -378,4 +378,7 @@
   <data name="credit" xml:space="preserve">
     <value>信用额度</value>
   </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>昨天</value>
+  </data>
 </root>

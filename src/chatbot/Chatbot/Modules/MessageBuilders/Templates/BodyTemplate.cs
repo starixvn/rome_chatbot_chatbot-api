@@ -66,5 +66,10 @@
             var random = new Random();
             return random.Next(0, 5) == 0;
         }
+
+        protected static string BuildHiddenDownlinesMessage(int count, int custLevel, CultureInfo cultureInfo)
+            => string.Format(StaticResources.Get(nameof(Languages.HiddenDownlinesCount), cultureInfo),
+                count,
+                StaticResources.Get($"CustLevel_{custLevel}", cultureInfo));
     }
 }

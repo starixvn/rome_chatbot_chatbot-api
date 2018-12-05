@@ -62,12 +62,17 @@
 
             if (functionId == chatbotConfigs.OutstandingFunctionId)
             {
-                return new OutstandingCommandFunctionHandler(messageBuilder, messageSender, customerService, logger, chatbotConfigs, getDataHanlders);
+                return new OutstandingFunctionHandler(chatbotConfigs, messageBuilder, messageSender, customerService, logger, getDataHanlders);
             }
 
             if (functionId == chatbotConfigs.CopyCustomerFunctionId)
             {
                 return new CopyCustomerFunctionHandler(messageBuilder, messageSender, customerService, copyCustomerService, logger, getDataHanlders);
+            }
+
+            if (functionId == chatbotConfigs.BalanceFunctionId)
+            {
+                return new BalanceFunctionHandler(chatbotConfigs, messageBuilder, messageSender, customerService, logger, getDataHanlders);
             }
 
             return new DefaultFunctionHandler(messageBuilder, messageSender, customerService, logger, getDataHanlders);

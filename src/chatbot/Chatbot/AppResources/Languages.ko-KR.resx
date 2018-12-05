@@ -229,4 +229,7 @@
   <data name="credit" xml:space="preserve">
     <value>포인트</value>
   </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>어제</value>
+  </data>
 </root>

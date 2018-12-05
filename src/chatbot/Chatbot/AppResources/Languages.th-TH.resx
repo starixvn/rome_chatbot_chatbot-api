@@ -352,4 +352,7 @@
   <data name="credit" xml:space="preserve">
     <value>เครดิต</value>
   </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>เมื่อวาน</value>
+  </data>
 </root>

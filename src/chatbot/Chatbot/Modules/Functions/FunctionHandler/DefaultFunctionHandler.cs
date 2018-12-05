@@ -142,5 +142,17 @@
 
         private static bool IsDirectDownline(int custLevel, int downlineLevel)
             => (custLevel - downlineLevel) == 1;
+
+        protected Task<Result> BuildAndSendInvalidNumerOfDownlineRangeMessage(FunctionParam param, int maxTopQuery)
+        {
+            var message = messageBuilder.BuildInvalidNumerOfDownlineRange(param.User.Language, maxTopQuery);
+
+            return messageSender.SendMessage(
+                param.User.Id,
+                param.Messenger,
+                message,
+                param.User.SelfdestructionPeriod,
+                param.Function.Id);
+        }
     }
 }

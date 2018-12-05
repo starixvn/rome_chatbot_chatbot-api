@@ -408,4 +408,7 @@
   <data name="CopyCustomerReachedLimitMessage" xml:space="preserve">
     <value>Sorry, you have reached the limit of {0} accounts created via Letstalk today.</value>
   </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>Yesterday</value>
+  </data>
 </root>
