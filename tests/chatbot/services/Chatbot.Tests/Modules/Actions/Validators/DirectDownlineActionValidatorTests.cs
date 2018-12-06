@@ -4,12 +4,12 @@
     using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
+    using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
     using KellermanSoftware.CompareNetObjects;
     using NSubstitute;
     using Xunit;
-    using Result = Models.Result;
 
     public class DirectDownlineActionValidatorTests
     {
@@ -35,7 +35,7 @@
         {
             // Arrange
             var invalidDirectDownlineMessage = "Invalid direct downline";
-            var expectedResult = Result.CreateErrorResult(invalidDirectDownlineMessage);
+            var expectedResult = ActionValidationResult.CreateErrorValidationResult(invalidDirectDownlineMessage);
             messageBuilder.BuildInvalidDirectDownlineMessage(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<string>())
                 .Returns(invalidDirectDownlineMessage);
 
@@ -58,7 +58,7 @@
             messageBuilder.BuildInvalidDirectDownlineMessage(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<string>())
                 .Returns(invalidDirectDownlineMessage);
 
-            var expectedResult = Result.CreateErrorResult(invalidDirectDownlineMessage);
+            var expectedResult = ActionValidationResult.CreateErrorValidationResult(invalidDirectDownlineMessage);
 
             // Act
             var actualResult = validator.ValidateAction(new User(), "abc", null, null);
@@ -86,7 +86,7 @@
             messageBuilder.BuildInvalidDirectDownlineMessage(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<string>())
                 .Returns(invalidDirectDownlineMessage);
 
-            var expectedResult = Result.CreateErrorResult(invalidDirectDownlineMessage);
+            var expectedResult = ActionValidationResult.CreateErrorValidationResult(invalidDirectDownlineMessage);
 
             // Act
             var actualResult = validator.ValidateAction(user, "abc", null, null);
@@ -110,7 +110,7 @@
             customerService.GetDownlineInfo(Arg.Any<int>(), Arg.Any<string>())
                 .Returns(Task.FromResult(downlineInfo));
 
-            var expectedResult = Result.CreateSuccessfulResult();
+            var expectedResult = ActionValidationResult.CreateSuccessfulValidationResult();
 
             // Act
             var actualResult = validator.ValidateAction(user, "abc", null, null);

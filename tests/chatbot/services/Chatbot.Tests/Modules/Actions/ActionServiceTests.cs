@@ -80,7 +80,7 @@
 
             actionValidator
                 .ValidateAction(Arg.Any<User>(), Arg.Any<string>(), Arg.Any<IList<UserAction>>(), Arg.Any<Messenger>())
-                .Returns(Result.CreateSuccessfulResult());
+                .Returns(ActionValidationResult.CreateSuccessfulValidationResult());
         }
 
         [Fact]
@@ -102,8 +102,8 @@
 
             Assert.Equal(2, actionResult.Message.MessageMarkup.MessageActions.Count());
             Assert.Equal("OUTSTANDING LABEL", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Label);
-            Assert.Equal("{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":false,\"CompiledCommand\":\"\"}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
-            Assert.Equal("{\"ActionId\":2,\"UserActions\":null,\"IsCancel\":false,\"CompiledCommand\":\"/wl\"}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
+            Assert.Equal("{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":false,\"CompiledCommand\":\"\",\"SentTime\":\"0001-01-01T00:00:00\",\"IsConfirmButton\":false,\"Label\":null}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
+            Assert.Equal("{\"ActionId\":2,\"UserActions\":null,\"IsCancel\":false,\"CompiledCommand\":\"/wl\",\"SentTime\":\"0001-01-01T00:00:00\",\"IsConfirmButton\":false,\"Label\":null}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
             Assert.Equal("message title", actionResult.Message.Content);
         }
 
@@ -116,7 +116,7 @@
             StubUserActions(user.Id);
             StubUserFuntions(user);
             actionValidator.ValidateAction(user, "user reponse", Arg.Any<IList<UserAction>>(), messenger)
-                .Returns(new Result(1, "failed"));
+                .Returns(new ActionValidationResult(1, "failed"));
 
             var actionResult = actionServiceImpl.HandleUserReponseByMessage(
                 user, "user reponse", messenger)
@@ -135,9 +135,9 @@
             var messenger = new Messenger(1, "ltid");
             StubUserFuntions(user);
             actionValidator.ValidateAction(user, "user reponse", Arg.Any<IList<UserAction>>(), messenger)
-                .Returns(new Result(1, "failed"));
+                .Returns(new ActionValidationResult(1, "failed"));
             StubUserActions(user.Id);
-            actionNameBuilderFactory.GetActionNameBuilder(4).BuildActionName(4, user).Returns("outstanding label");
+            actionNameBuilderFactory.GetActionNameBuilder(4).BuildActionName(4, user, Arg.Any<IList<UserAction>>()).Returns("outstanding label");
             messageBuilder.BuildCancelRequestMessage("en-US").Returns("cancel button");
 
             var actionResult = actionServiceImpl.HandleUserReponseByMessage(
@@ -242,6 +242,7 @@
         [Fact]
         public void HandleUserReponseByButton_ButtonHistoryIsClick_InsertHistoryActionToDatabase()
         {
+            // Arrange
             StubActions();
             var user = new User(1, 1, 4, 0, "en-US", null);
             var messenger = new Messenger(1, "ltid");
@@ -249,14 +250,13 @@
             messageBuilder.BuildRootActionTitle(user.Language).Returns("message title");
             actionNameBuilderFactory.GetActionNameBuilder(1).BuildActionName(1, user).Returns("outstanding label");
 
-            var actionResult = actionServiceImpl.HandleUserReponseByButton(
+            // Act
+            actionServiceImpl.HandleUserReponseByButton(
                 user,
                 "{\"ActionId\":4,\"UserActions\":[{\"Id\":1,\"ActionId\":1,\"UserResponse\":\"123\",\"ChatTime\":\"2018-12-04T13:58:17.273015+07:00\",\"CompiledCommand\":\"compile-1\",\"Status\":1,\"IsActionValid\":true},{\"Id\":2,\"ActionId\":4,\"UserResponse\":\"test\",\"ChatTime\":\"2018-12-04T13:58:17.2734022+07:00\",\"CompiledCommand\":\"compile-2\",\"Status\":1,\"IsActionValid\":true}],\"IsCancel\":false,\"CompiledCommand\":\"\"}",
-                messenger)
-                   .GetAwaiter()
-                   .GetResult()
-                   .Item3;
+                messenger).ConfigureAwait(false);
 
+            // Assert
             dynamicRepository.Received().ExecuteAsync(Arg.Is<InsertUserActionCommand>(
                command => command.UserId == 1
                            && command.ActionId == 1
@@ -313,8 +313,8 @@
 
             Assert.Equal("cancel action", actionResult.Message.Content);
             Assert.Equal(2, actionResult.Message.MessageMarkup.MessageActions.Count());
-            Assert.Equal("{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":false,\"CompiledCommand\":\"\"}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
-            Assert.Equal("{\"ActionId\":2,\"UserActions\":null,\"IsCancel\":false,\"CompiledCommand\":\"/wl\"}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
+            Assert.Equal("{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":false,\"CompiledCommand\":\"\",\"SentTime\":\"0001-01-01T00:00:00\",\"IsConfirmButton\":false,\"Label\":null}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
+            Assert.Equal("{\"ActionId\":2,\"UserActions\":null,\"IsCancel\":false,\"CompiledCommand\":\"/wl\",\"SentTime\":\"0001-01-01T00:00:00\",\"IsConfirmButton\":false,\"Label\":null}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
         }
 
         [Fact]
@@ -352,16 +352,16 @@
 
             Assert.Equal(4, actionResult.Message.MessageMarkup.MessageActions.Count());
             Assert.Equal(
-                "{\"ActionId\":5,\"UserActions\":[{\"Id\":1,\"ActionId\":1,\"UserResponse\":\"\",\"ChatTime\":\"1989-05-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true},{\"Id\":2,\"ActionId\":4,\"UserResponse\":\"\",\"ChatTime\":\"1989-06-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true}],\"IsCancel\":false,\"CompiledCommand\":\"/os 50\"}",
+                "{\"ActionId\":5,\"UserActions\":[{\"Id\":1,\"ActionId\":1,\"UserResponse\":\"\",\"ChatTime\":\"1989-05-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true},{\"Id\":2,\"ActionId\":4,\"UserResponse\":\"\",\"ChatTime\":\"1989-06-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true}],\"IsCancel\":false,\"CompiledCommand\":\"/os 50\",\"SentTime\":\"0001-01-01T00:00:00\",\"IsConfirmButton\":false,\"Label\":\"\"}",
                 actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
             Assert.Equal(
-                "{\"ActionId\":4,\"UserActions\":[{\"Id\":1,\"ActionId\":1,\"UserResponse\":\"\",\"ChatTime\":\"1989-05-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true},{\"Id\":2,\"ActionId\":4,\"UserResponse\":\"\",\"ChatTime\":\"1989-06-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true}],\"IsCancel\":false,\"CompiledCommand\":\"\"}",
+                "{\"ActionId\":4,\"UserActions\":[{\"Id\":1,\"ActionId\":1,\"UserResponse\":\"\",\"ChatTime\":\"1989-05-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true},{\"Id\":2,\"ActionId\":4,\"UserResponse\":\"\",\"ChatTime\":\"1989-06-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true}],\"IsCancel\":false,\"CompiledCommand\":\"\",\"SentTime\":\"0001-01-01T00:00:00\",\"IsConfirmButton\":false,\"Label\":\"\"}",
                 actionResult.Message.MessageMarkup.MessageActions.ElementAt(1).Data);
             Assert.Equal(
-                "{\"ActionId\":7,\"UserActions\":[{\"Id\":1,\"ActionId\":1,\"UserResponse\":\"\",\"ChatTime\":\"1989-05-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true},{\"Id\":2,\"ActionId\":4,\"UserResponse\":\"\",\"ChatTime\":\"1989-06-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true}],\"IsCancel\":false,\"CompiledCommand\":\"\"}",
+                "{\"ActionId\":7,\"UserActions\":[{\"Id\":1,\"ActionId\":1,\"UserResponse\":\"\",\"ChatTime\":\"1989-05-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true},{\"Id\":2,\"ActionId\":4,\"UserResponse\":\"\",\"ChatTime\":\"1989-06-28T00:00:00\",\"CompiledCommand\":null,\"Status\":1,\"IsActionValid\":true}],\"IsCancel\":false,\"CompiledCommand\":\"\",\"SentTime\":\"0001-01-01T00:00:00\",\"IsConfirmButton\":false,\"Label\":\"\"}",
                 actionResult.Message.MessageMarkup.MessageActions.ElementAt(2).Data);
             Assert.Equal(
-                "{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":true,\"CompiledCommand\":null}",
+                "{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":true,\"CompiledCommand\":null,\"SentTime\":\"0001-01-01T00:00:00\",\"IsConfirmButton\":false,\"Label\":null}",
                 actionResult.Message.MessageMarkup.MessageActions.ElementAt(3).Data);
         }
 
@@ -384,7 +384,8 @@
 
             Assert.Equal("next action name", actionResult.Message.Content);
             Assert.Single(actionResult.Message.MessageMarkup.MessageActions);
-            Assert.Equal("{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":true,\"CompiledCommand\":null}", actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
+            Assert.Equal("{\"ActionId\":1,\"UserActions\":null,\"IsCancel\":true,\"CompiledCommand\":null,\"SentTime\":\"0001-01-01T00:00:00\",\"IsConfirmButton\":false,\"Label\":null}",
+                actionResult.Message.MessageMarkup.MessageActions.ElementAt(0).Data);
         }
 
         private void StubUserFuntions(User user)

@@ -633,6 +633,7 @@
             var user = new User(userId, custId, 2, subAccountId, language, null);
             var custLevel = 1;
             var logData = new LinkAccountLog(custId, custId, "127.0.0.1", messenger);
+            chatbotConfigs.MaxAddActionTimes.Returns(10);
             SetupAddUserSuccessful(custId, subAccountId, language, userId, user);
 
             messageSender.IsMessengerAccountNotExisted(messenger).Returns(Task.FromResult(true));
@@ -660,6 +661,7 @@
             var custLevel = 3;
             var user = new User(userId, custId, custLevel, subAccountId, language, null);
             var logData = new LinkAccountLog(custId, custId, "127.0.0.1", messenger);
+            chatbotConfigs.MaxAddActionTimes.Returns(10);
             SetupAddUserSuccessful(custId, subAccountId, language, userId, user);
 
             dynamicRepository
@@ -691,6 +693,7 @@
             var messenger = new Messenger(1, "messenger type", true);
             var user = new User(userId, custId, custLevel, subAccountId, language, null);
             var logData = new LinkAccountLog(custId, custId, "127.0.0.1", messenger);
+            chatbotConfigs.MaxAddActionTimes.Returns(10);
             SetupAddUserSuccessful(custId, subAccountId, language, userId, user);
 
             // Act
