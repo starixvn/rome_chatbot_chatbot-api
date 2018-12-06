@@ -4,6 +4,7 @@
     using System.Globalization;
     using System.Text;
     using Chatbot.AppResources;
+    using Chatbot.Models;
     using Chatbot.Modules.MessageBuilders.Templates;
     using Chatbot.Shared.Extensions;
     using Chatbot.Shared.Helpers;
@@ -55,6 +56,8 @@
         string BuildCopyCustomerInformMessage(string language);
 
         string BuildCopyCustomerReachedLimitMessage(int limit, string language);
+
+        string BuildCopyCustomerInstructionMessage(string username, int custLevel, int messengerType, string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -72,6 +75,13 @@
             "en-US",
             "zh-CN",
             "zh-TW"
+        };
+
+        private static readonly IDictionary<int, string> CopyCustomerCommandFormats = new Dictionary<int, string>
+        {
+            [CustLevel.Master.Value] = "/copy {0}01 1000",
+            [CustLevel.Agent.Value] = "/copy {0}01 1000 100",
+            [CustLevel.Member.Value] = "/copy {0}001 1000"
         };
 
         private static readonly CultureInfo defaultCultureInfo = CultureInfo.CreateSpecificCulture("en-US");
@@ -230,5 +240,13 @@
 
         public string BuildCopyCustomerReachedLimitMessage(int limit, string language)
             => string.Format(StaticResources.Get(nameof(Languages.CopyCustomerReachedLimitMessage), language), limit);
+
+        public string BuildCopyCustomerInstructionMessage(string username, int custLevel, int messengerType, string language)
+            => string.Join(
+                GetMessengerFormatter(messengerType).NewLine(),
+                StaticResources.Get(nameof(Languages.InstructionMessage), language),
+                StaticResources.Get($"InstructionCopyCustomerCommand_CustLevel_{custLevel}", language),
+                StaticResources.Get(nameof(Languages.Example), language),
+                string.Format(CopyCustomerCommandFormats[custLevel], username));
     }
 }

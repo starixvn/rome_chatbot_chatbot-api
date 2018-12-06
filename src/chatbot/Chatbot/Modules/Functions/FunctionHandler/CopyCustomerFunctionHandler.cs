@@ -37,6 +37,12 @@
         protected override async Task<Result> RunHandler(FunctionParam param)
         {
             var rawParameters = param.Others["parameters"] as string[];
+            var customer = await customerService.GetCustomer(param.User.CustId).ConfigureAwait(false);
+
+            if (!IsEnoughParamerters(rawParameters, param.User.CustLevel))
+            {
+                return await BuildAndSendCopyCustomerInstructionMessage(customer.UserName, param).ConfigureAwait(false);
+            }
 
             var validateRawParametersResult = await ValidateRawParamerters(rawParameters, param).ConfigureAwait(false);
             if (validateRawParametersResult.IsNotOk)
@@ -80,7 +86,6 @@
                 return await BuildAndSendInvalidMaxCreditMessage(credit, CustLevel.Member.Value, param).ConfigureAwait(false);
             }
 
-            var customer = await customerService.GetCustomer(param.User.CustId).ConfigureAwait(false);
             param.Others.Add(nameof(customer.UserName), $"{customer.UserName}{pt.Suffix}");
             param.Others.Add("SourceCustId", downlineInfo.CustId);
             param.Others.Add("SourceUserName", sourceUsername);
@@ -90,15 +95,20 @@
             return await base.RunHandler(param).ConfigureAwait(false);
         }
 
-        private Task<Result> ValidateRawParamerters(string[] rawParameters, FunctionParam param)
+        private static bool IsEnoughParamerters(string[] rawParameters, int custLevel)
         {
-            var numberOfRequiredParams = param.User.CustLevel == CustLevel.Master.Value ? 3 : 2;
+            var numberOfRequiredParams = custLevel == CustLevel.Master.Value ? 3 : 2;
 
             if (rawParameters.Length <= 0 || rawParameters.Length != numberOfRequiredParams)
             {
-                return Task.FromResult(Result.CreateErrorResult(messageBuilder.BuildNotRecognizedCommandMessage(param.User.Language)));
+                return false;
             }
 
+            return true;
+        }
+
+        private Task<Result> ValidateRawParamerters(string[] rawParameters, FunctionParam param)
+        {
             var sourceUsername = rawParameters[0];
             if (string.IsNullOrWhiteSpace(sourceUsername))
             {
@@ -187,6 +197,22 @@
                 message,
                 param.User.SelfdestructionPeriod,
                 param.Function.Id).ConfigureAwait(false);
+        }
+
+        private Task<Result> BuildAndSendCopyCustomerInstructionMessage(string createrUsername, FunctionParam param)
+        {
+            var message = messageBuilder.BuildCopyCustomerInstructionMessage(
+                createrUsername,
+                param.User.CustLevel - 1,
+                param.Messenger.Type,
+                param.User.Language);
+
+            return messageSender.SendMessage(
+                param.User.Id,
+                param.Messenger,
+                message,
+                param.User.SelfdestructionPeriod,
+                param.Function.Id);
         }
     }
 }

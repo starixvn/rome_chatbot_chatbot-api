@@ -411,4 +411,19 @@
   <data name="yesterday" xml:space="preserve">
     <value>Yesterday</value>
   </data>
+  <data name="InstructionMessage" xml:space="preserve">
+    <value>Please input the command by the following syntax</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_3" xml:space="preserve">
+    <value>/copy &lt;source master&gt; &lt;master credit&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_2" xml:space="preserve">
+    <value>/copy &lt;source agent&gt; &lt;agent credit&gt; &lt;member max credit&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_1" xml:space="preserve">
+    <value>/copy &lt;source member&gt; &lt;member credit&gt;</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>Example:</value>
+  </data>
 </root>

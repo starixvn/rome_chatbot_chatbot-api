@@ -313,6 +313,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Example:.
+        /// </summary>
+        public static string Example {
+            get {
+                return ResourceManager.GetString("Example", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For.
         /// </summary>
         public static string For {
@@ -471,6 +480,42 @@ namespace Chatbot.AppResources {
         public static string InformingVerifiedMessage_2 {
             get {
                 return ResourceManager.GetString("InformingVerifiedMessage_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /copy &lt;source member&gt; &lt;member credit&gt;.
+        /// </summary>
+        public static string InstructionCopyCustomerCommand_CustLevel_1 {
+            get {
+                return ResourceManager.GetString("InstructionCopyCustomerCommand_CustLevel_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /copy &lt;source agent&gt; &lt;agent credit&gt; &lt;member max credit&gt;.
+        /// </summary>
+        public static string InstructionCopyCustomerCommand_CustLevel_2 {
+            get {
+                return ResourceManager.GetString("InstructionCopyCustomerCommand_CustLevel_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /copy &lt;source master&gt; &lt;master credit&gt;.
+        /// </summary>
+        public static string InstructionCopyCustomerCommand_CustLevel_3 {
+            get {
+                return ResourceManager.GetString("InstructionCopyCustomerCommand_CustLevel_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please input the command by the following syntax.
+        /// </summary>
+        public static string InstructionMessage {
+            get {
+                return ResourceManager.GetString("InstructionMessage", resourceCulture);
             }
         }
         
