@@ -67,7 +67,7 @@
 
             if (functionId == chatbotConfigs.CopyCustomerFunctionId)
             {
-                return new CopyCustomerFunctionHandler(messageBuilder, messageSender, customerService, copyCustomerService, logger, getDataHanlders);
+                return new CopyCustomerFunctionHandler(chatbotConfigs, messageBuilder, messageSender, settingService, customerService, copyCustomerService, logger, getDataHanlders);
             }
 
             if (functionId == chatbotConfigs.BalanceFunctionId)

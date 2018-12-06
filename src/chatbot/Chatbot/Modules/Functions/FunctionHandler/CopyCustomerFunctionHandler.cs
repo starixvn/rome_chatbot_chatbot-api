@@ -8,32 +8,56 @@
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.Settings;
+    using Chatbot.Shared.Configurations;
     using Fanex.Logging;
 
     public class CopyCustomerFunctionHandler : DefaultFunctionHandler
     {
+        private readonly IChatbotConfigs chatbotConfigs;
+        private readonly SettingService settingService;
         private readonly CopyCustomerService copyCustomerService;
 
         public CopyCustomerFunctionHandler(
+            IChatbotConfigs chatbotConfigs,
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
+            SettingService settingService,
             CustomerService customerService,
             CopyCustomerService copyCustomerService,
             ILogger logger,
             IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers = null)
             : base(messageBuilder, messageSender, customerService, logger, getDataHandlers)
         {
+            this.chatbotConfigs = chatbotConfigs;
             this.copyCustomerService = copyCustomerService;
+            this.settingService = settingService;
         }
 
         protected override async Task<Result> RunHandler(FunctionParam param)
         {
             var rawParameters = param.Others["parameters"] as string[];
 
-            var validateResult = await ValidateRawParamerters(rawParameters, param).ConfigureAwait(false);
-            if (validateResult.IsNotOk)
+            var validateRawParametersResult = await ValidateRawParamerters(rawParameters, param).ConfigureAwait(false);
+            if (validateRawParametersResult.IsNotOk)
             {
-                return validateResult;
+                return await messageSender.SendMessage(
+                    param.User.Id,
+                    param.Messenger,
+                    validateRawParametersResult.Message,
+                    param.User.SelfdestructionPeriod,
+                    param.Function.Id).ConfigureAwait(false);
+            }
+
+            var validateReachedLimitResult = await ValidateReachedLitmitOfCopyCustomer(param).ConfigureAwait(false);
+            if (validateReachedLimitResult.IsNotOk)
+            {
+                return await messageSender.SendMessage(
+                    param.User.Id,
+                    param.Messenger,
+                    validateReachedLimitResult.Message,
+                    param.User.SelfdestructionPeriod,
+                    param.Function.Id).ConfigureAwait(false);
             }
 
             var sourceUsername = rawParameters[0];
@@ -66,57 +90,67 @@
             return await base.RunHandler(param).ConfigureAwait(false);
         }
 
-        private async Task<Result> ValidateRawParamerters(string[] rawParameters, FunctionParam param)
+        private Task<Result> ValidateRawParamerters(string[] rawParameters, FunctionParam param)
         {
             var numberOfRequiredParams = param.User.CustLevel == CustLevel.Master.Value ? 3 : 2;
 
             if (rawParameters.Length <= 0 || rawParameters.Length != numberOfRequiredParams)
             {
-                return await BuildAndSendNotRecognizedCommandMessage(param).ConfigureAwait(false);
+                return Task.FromResult(Result.CreateErrorResult(messageBuilder.BuildNotRecognizedCommandMessage(param.User.Language)));
             }
 
             var sourceUsername = rawParameters[0];
             if (string.IsNullOrWhiteSpace(sourceUsername))
             {
-                return await BuildAndSendInvalidDirectDownlineMessage(sourceUsername, param).ConfigureAwait(false);
+                return Task.FromResult(Result.CreateErrorResult(
+                    messageBuilder.BuildInvalidDirectDownlineMessage(
+                        sourceUsername,
+                        param.User.CustLevel - 1,
+                        param.User.Language)));
             }
 
             if (!Decimal.TryParse(rawParameters[1], out decimal credit))
             {
-                return await BuildAndSendBuildInvalidNumericMessage(rawParameters[1], param).ConfigureAwait(false);
+                return Task.FromResult(Result.CreateErrorResult(messageBuilder.BuildInvalidNumericMessage(rawParameters[1], param.User.Language)));
             }
 
             if (param.User.CustLevel == CustLevel.Master.Value
                 && !Decimal.TryParse(rawParameters[2], out decimal givenMemberCredit))
             {
-                return await BuildAndSendBuildInvalidNumericMessage(rawParameters[2], param).ConfigureAwait(false);
+                return Task.FromResult(Result.CreateErrorResult(messageBuilder.BuildInvalidNumericMessage(rawParameters[2], param.User.Language)));
+            }
+
+            return Task.FromResult(Result.CreateSuccessfulResult());
+        }
+
+        private async Task<Result> ValidateReachedLitmitOfCopyCustomer(FunctionParam param)
+        {
+            if (param.User.CustLevel == CustLevel.Agent.Value)
+            {
+                var validateResult = await copyCustomerService.ValidateMaxNewMember(param.User.CustId, param.User.Language)
+                    .ConfigureAwait(false);
+
+                if (!validateResult.IsSuccess)
+                {
+                    return Result.CreateErrorResult(validateResult.Message);
+                }
+            }
+
+            var isReachedLimitOfCopyCustomer = await settingService.IsUserReachedTheLimitOfActionInDay(
+                param.User.Id,
+                param.Messenger.Type,
+                chatbotConfigs.CopyCustomerActionId,
+                chatbotConfigs.CopyCustomerLimitPerDay).ConfigureAwait(false);
+
+            if (isReachedLimitOfCopyCustomer)
+            {
+                return Result.CreateErrorResult(
+                    messageBuilder.BuildCopyCustomerReachedLimitMessage(
+                        chatbotConfigs.CopyCustomerLimitPerDay,
+                        param.User.Language));
             }
 
             return Result.CreateSuccessfulResult();
-        }
-
-        private Task<Result> BuildAndSendNotRecognizedCommandMessage(FunctionParam param)
-        {
-            var message = messageBuilder.BuildNotRecognizedCommandMessage(param.User.Language);
-
-            return messageSender.SendMessage(
-                param.User.Id,
-                param.Messenger,
-                message,
-                param.User.SelfdestructionPeriod,
-                param.Function.Id);
-        }
-
-        private Task<Result> BuildAndSendBuildInvalidNumericMessage(string value, FunctionParam param)
-        {
-            var message = messageBuilder.BuildInvalidNumericMessage(value, param.User.Language);
-
-            return messageSender.SendMessage(
-                param.User.Id,
-                param.Messenger,
-                message,
-                param.User.SelfdestructionPeriod,
-                param.Function.Id);
         }
 
         private Task<Result> BuildAndSendInvalidDirectDownlineMessage(string username, FunctionParam param)
