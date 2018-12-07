@@ -66,7 +66,12 @@
                 return;
             }
 
-            var encodedCommand = WebUtility.HtmlEncode(command);
+            var encodedCommand = WebUtility.HtmlEncode(
+                string.Join(
+                    " ", 
+                    command.Split(
+                        default(string[]), 
+                        StringSplitOptions.RemoveEmptyEntries)));
 
             var messengerDto = await settingService
                 .GetMessenger(messengerType, messengerUsername)
