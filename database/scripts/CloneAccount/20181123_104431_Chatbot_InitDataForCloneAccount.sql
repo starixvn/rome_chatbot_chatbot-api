@@ -1,4 +1,4 @@
-/*
+﻿/*
 	CreatedDate: 20181123@Alvin
 	Task: Insert Clone Account Function Setting
 	DB: DBBOT/bodb_ChatBot
@@ -12,7 +12,7 @@ SELECT 9, 'Create new member from existing account', 3, '/copy', 1
 
 -----FunctionSetting-----
 INSERT INTO dbo.UserFunctionSetting ([UserId], [FunctionId], [Command], [Enabled])
-SELECT UserId, 9, '/copy', 0 FROM UserInfo
+SELECT UserId, 9, '/copy', 1 FROM UserInfo
 
 -----Resource-----
 INSERT INTO dbo.Resource ([Key], [Type], [LanguageCode], [Value])
@@ -80,3 +80,9 @@ SELECT 26, 'Top 200 Balance Info', 1, '200', 110, 3, 24, 1, 1, 0, 0
 INSERT INTO dbo.[Resource] ([Key], [Type], [LanguageCode], [Value])
 SELECT ActionId, 'Action', 'en-US', ActionName FROM dbo.[Action]
 WHERE ActionId BETWEEN 24 AND 26
+
+-----Keywords for Clone Account---------
+INSERT INTO dbo.Resource ([Key],Type,LanguageCode,Value)
+SELECT 9, 'Keyword', 'en-US', 'copy,new,create,clone,account,downline,acc,update'
+UNION ALL 
+SELECT 9, 'Keyword', 'vi-VN', 'tạo,mới,sao chép,tài khoản,sẵn,tồn tại,bản sao'

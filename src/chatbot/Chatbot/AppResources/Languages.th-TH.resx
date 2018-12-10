@@ -355,4 +355,7 @@
   <data name="yesterday" xml:space="preserve">
     <value>เมื่อวาน</value>
   </data>
+  <data name="Yes" xml:space="preserve">
+    <value>ตกลง</value>
+  </data>
 </root>

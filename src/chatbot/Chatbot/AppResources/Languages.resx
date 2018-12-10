@@ -372,15 +372,6 @@
   <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
     <value>Member Max Credit must be between {0} and {1}</value>
   </data>
-  <data name="CopyMasterComfirmation" xml:space="preserve">
-    <value>A new master (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action.</value>
-  </data>
-  <data name="CopyAgentComfirmation" xml:space="preserve">
-    <value>A new agent (credit: {0}, max member credit: {1})  is being created by copying setting from {2}. Please kindly confirm this action.</value>
-  </data>
-  <data name="CopyMemberComfirmation" xml:space="preserve">
-    <value>A new member (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action.</value>
-  </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
@@ -406,7 +397,7 @@
     <value>Max Member Credit</value>
   </data>
   <data name="CopyCustomerReachedLimitMessage" xml:space="preserve">
-    <value>Sorry, you have reached the limit for creating new accoutn via Letstalk today ({0} accounts per day).</value>
+    <value>Sorry, you have reached the limit for creating new account via Letstalk today ({0} accounts per day).</value>
   </data>
   <data name="yesterday" xml:space="preserve">
     <value>Yesterday</value>

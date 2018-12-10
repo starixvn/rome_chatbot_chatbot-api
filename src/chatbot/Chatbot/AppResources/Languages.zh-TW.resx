@@ -361,4 +361,7 @@
   <data name="yesterday" xml:space="preserve">
     <value>昨天</value>
   </data>
+  <data name="Yes" xml:space="preserve">
+    <value>是</value>
+  </data>
 </root>

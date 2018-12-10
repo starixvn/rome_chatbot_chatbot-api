@@ -166,9 +166,9 @@
         }
 
         private async Task<(string, int, ActionResult)> HandleCompiledCommand(
-            User user, 
-            ButtonData buttonData,  
-            Action currentAction, 
+            User user,
+            ButtonData buttonData,
+            Action currentAction,
             IList<UserAction> userActions)
         {
             var functionType = user.Functions
@@ -206,9 +206,9 @@
 
             var reConfirmMessage = resourceService.GetStaticResource(nameof(Languages.ReConfirmMessage), user.Language);
             var message = await CreateMessageWithButtons(
-                action.Id, 
-                user, 
-                userActions, 
+                action.Id,
+                user,
+                userActions,
                 messageActions,
                 string.Format(reConfirmMessage, buttonData.Label)).ConfigureAwait(false);
             message.ExpiredTime = DateTime.Now.AddMinutes(expiredMinutesForConfirmMessage);
@@ -375,7 +375,7 @@
                 {
                     foreach (var userAction in actualUserActions)
                     {
-                        if (currentAction.BackToActionId == 0 
+                        if (currentAction.BackToActionId == 0
                             || currentAction.BackToActionId >= userAction.ActionId)
                         {
                             await InsertUserAction(user, userAction.ActionId, userAction.UserResponse, userAction.CompiledCommand).ConfigureAwait(false);
@@ -635,13 +635,13 @@
                 });
             }
 
-            return await CreateMessageWithButtons(actionId, user, userActions, messageActions);
+            return await CreateMessageWithButtons(actionId, user, userActions, messageActions).ConfigureAwait(false);
         }
 
         private async Task<MessengerClient.Models.Message> CreateMessageWithButtons(
-            int actionId, 
-            User user, 
-            IList<UserAction> userActions, 
+            int actionId,
+            User user,
+            IList<UserAction> userActions,
             List<MessageAction> messageActions,
             string titleMessage = null)
         {

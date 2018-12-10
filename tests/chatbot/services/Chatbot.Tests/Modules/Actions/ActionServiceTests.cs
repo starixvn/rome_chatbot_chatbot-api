@@ -395,7 +395,7 @@
                         new Function { Id = 2, Enabled = true }
                     };
 
-        private IList<UserAction> StubUserActions(int userId)
+        private void StubUserActions(int userId)
         {
             var userActions = new List<UserAction>
             {
@@ -406,11 +406,9 @@
             dynamicRepository
                 .FetchAsync<UserAction>(Arg.Is<GetActionByUserCriteria>(criteria => criteria.UserId == userId))
                 .Returns(Task.FromResult(userActions as IEnumerable<UserAction>));
-
-            return userActions;
         }
 
-        private IList<UserAction> StubUserActionsWithLastActionIsMessage(int userId)
+        private void StubUserActionsWithLastActionIsMessage(int userId)
         {
             var userActions = new List<UserAction>
             {
@@ -422,8 +420,6 @@
             dynamicRepository
                 .FetchAsync<UserAction>(Arg.Is<GetActionByUserCriteria>(criteria => criteria.UserId == userId))
                 .Returns(Task.FromResult(userActions as IEnumerable<UserAction>));
-
-            return userActions;
         }
 
         private void StubActions()

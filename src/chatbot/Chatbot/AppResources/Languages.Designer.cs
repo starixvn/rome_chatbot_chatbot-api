@@ -187,15 +187,6 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A new agent (credit: {0}, max member credit: {1})  is being created by copying setting from {2}. Please kindly confirm this action..
-        /// </summary>
-        public static string CopyAgentComfirmation {
-            get {
-                return ResourceManager.GetString("CopyAgentComfirmation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Your request is being processed now, please wait....
         /// </summary>
         public static string CopyCustomerInformMessage {
@@ -205,7 +196,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, you have reached the limit for creating new accoutn via Letstalk today ({0} accounts per day)..
+        ///   Looks up a localized string similar to Sorry, you have reached the limit for creating new account via Letstalk today ({0} accounts per day)..
         /// </summary>
         public static string CopyCustomerReachedLimitMessage {
             get {
@@ -237,24 +228,6 @@ namespace Chatbot.AppResources {
         public static string CopyCustomerSuccessMessage_CustLevel_3 {
             get {
                 return ResourceManager.GetString("CopyCustomerSuccessMessage_CustLevel_3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A new master (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action..
-        /// </summary>
-        public static string CopyMasterComfirmation {
-            get {
-                return ResourceManager.GetString("CopyMasterComfirmation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A new member (credit: {0})  is being created by copying setting from {1}. Please kindly confirm this action..
-        /// </summary>
-        public static string CopyMemberComfirmation {
-            get {
-                return ResourceManager.GetString("CopyMemberComfirmation", resourceCulture);
             }
         }
         
