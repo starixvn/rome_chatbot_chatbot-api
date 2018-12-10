@@ -65,3 +65,18 @@ SELECT 23, 'Reinput credit for copying #actionid_20', 1, '', 0, 9, 21, 0, 1, 2, 
 INSERT INTO dbo.[Resource] ([Key], [Type], [LanguageCode], [Value])
 SELECT ActionId, 'Action', 'en-US', ActionName FROM dbo.[Action]
 WHERE ActionId BETWEEN 7 AND 23
+
+-----New Balance Info-----
+DELETE FROM [dbo].[Action] WHERE ActionId BETWEEN 24 AND 26
+DELETE FROM [dbo].[Resource] WHERE [Type] = 'Action' AND [Key] BETWEEN 24 AND 26
+
+INSERT INTO [dbo].[Action] (ActionId, ActionName, Type, Command, DisplayOrder, FunctionId, ParentId, IsEndAction, Status, CustomerLevel, BackToActionId)
+SELECT 24, 'View Balance Info Report', 1, '/bal', 90, 3, 0, 0, 1, 0, 0
+UNION ALL
+SELECT 25, 'My Balance Info', 1, '', 100, 3, 24, 1, 1, 0, 0
+UNION ALL
+SELECT 26, 'Top 200 Balance Info', 1, '200', 110, 3, 24, 1, 1, 0, 0
+
+INSERT INTO dbo.[Resource] ([Key], [Type], [LanguageCode], [Value])
+SELECT ActionId, 'Action', 'en-US', ActionName FROM dbo.[Action]
+WHERE ActionId BETWEEN 24 AND 26
