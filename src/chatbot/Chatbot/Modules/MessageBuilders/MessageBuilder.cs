@@ -58,6 +58,8 @@
         string BuildCopyCustomerReachedLimitMessage(int limit, string language);
 
         string BuildCopyCustomerInstructionMessage(string username, int custLevel, int messengerType, string language);
+
+        string BuildConfirmUpdateAction(string actionName, int messengerType, string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -248,5 +250,11 @@
                 StaticResources.Get($"InstructionCopyCustomerCommand_CustLevel_{custLevel}", language),
                 StaticResources.Get(nameof(Languages.Example), language),
                 string.Format(CopyCustomerCommandFormats[custLevel], username));
+
+        public string BuildConfirmUpdateAction(string actionName, int messengerType, string language)
+            => string.Join(
+                GetMessengerFormatter(messengerType).NewLine(),
+                StaticResources.Get(nameof(Languages.Yes), language),
+                actionName);
     }
 }

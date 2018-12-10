@@ -334,7 +334,7 @@
     <value>Sorry, we couldn't recognize your request. Which action would you like to take?</value>
   </data>
   <data name="PleaseSelectOption" xml:space="preserve">
-    <value>Please select an option.</value>
+    <value>Please select your expected action:</value>
   </data>
   <data name="CancelThisRequest" xml:space="preserve">
     <value>Cancel current request</value>
@@ -385,7 +385,7 @@
     <value>Password</value>
   </data>
   <data name="CopyCustomerInformMessage" xml:space="preserve">
-    <value>The creation process might take several minutes. I will inform you once it's completed.</value>
+    <value>Your request is being processed now, please wait...</value>
   </data>
   <data name="CopyCustomerSuccessMessage_CustLevel_1" xml:space="preserve">
     <value>A new member has been copied from {0}.</value>
@@ -406,7 +406,7 @@
     <value>Max Member Credit</value>
   </data>
   <data name="CopyCustomerReachedLimitMessage" xml:space="preserve">
-    <value>Sorry, you have reached the limit of {0} accounts created via Letstalk today.</value>
+    <value>Sorry, you have reached the limit for creating new accoutn via Letstalk today ({0} accounts per day).</value>
   </data>
   <data name="yesterday" xml:space="preserve">
     <value>Yesterday</value>
@@ -420,7 +420,6 @@
   <data name="InstructionCopyCustomerCommand_CustLevel_3" xml:space="preserve">
     <value>/copy &lt;source master&gt; &lt;master credit&gt;</value>
      </data>
-
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>

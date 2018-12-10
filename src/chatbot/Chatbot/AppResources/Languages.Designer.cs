@@ -196,7 +196,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The creation process might take several minutes. I will inform you once it&apos;s completed..
+        ///   Looks up a localized string similar to Your request is being processed now, please wait....
         /// </summary>
         public static string CopyCustomerInformMessage {
             get {
@@ -205,7 +205,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorry, you have reached the limit of {0} accounts created via Letstalk today..
+        ///   Looks up a localized string similar to Sorry, you have reached the limit for creating new accoutn via Letstalk today ({0} accounts per day)..
         /// </summary>
         public static string CopyCustomerReachedLimitMessage {
             get {
@@ -763,7 +763,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select an option..
+        ///   Looks up a localized string similar to Please select your expected action:.
         /// </summary>
         public static string PleaseSelectOption {
             get {
