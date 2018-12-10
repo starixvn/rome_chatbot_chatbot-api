@@ -53,6 +53,8 @@ namespace Chatbot.Shared.Configurations
 
         int OutstandingMaxTopQuery { get; }
 
+        int BalanceMaxTopQuery { get; }
+
         int CopyMasterActionId { get; }
 
         int CopyMasterInputUsernameActionId { get; }
@@ -111,6 +113,7 @@ namespace Chatbot.Shared.Configurations
             IsProduction = GetValue<bool>("Chatbot:IsProduction");
             OutstandingSpecificDirectDownlineActionId = GetValue<int>("Chatbot:OutstandingSpecificDirectDownlineActionId");
             OutstandingMaxTopQuery = GetValue<int>("Chatbot:OutstandingMaxTopQuery");
+            BalanceMaxTopQuery = GetValue<int>("Chatbot:BalanceMaxTopQuery");
 
             CopyMasterActionId = GetValue<int>("CopyCustomer:Master:RootActionId");
             CopyMasterInputUsernameActionId = GetValue<int>("CopyCustomer:Master:InputUsernameActionId");
@@ -194,6 +197,8 @@ namespace Chatbot.Shared.Configurations
         public int CopyAgentActionId { get; }
 
         public int CopyMemberActionId { get; }
+
+        public int BalanceMaxTopQuery { get; }
 
         private T GetValue<T>(string key)
         {

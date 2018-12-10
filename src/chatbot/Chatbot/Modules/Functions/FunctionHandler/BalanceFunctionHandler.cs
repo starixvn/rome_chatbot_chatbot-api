@@ -33,9 +33,9 @@
 
             if (!string.IsNullOrEmpty(parameter) && int.TryParse(parameter, out int topQuery))
             {
-                if (topQuery < 0 || topQuery > chatbotConfigs.OutstandingMaxTopQuery)
+                if (topQuery < 0 || topQuery > chatbotConfigs.BalanceMaxTopQuery)
                 {
-                    return await BuildAndSendInvalidNumerOfDownlineRangeMessage(param, chatbotConfigs.OutstandingMaxTopQuery)
+                    return await BuildAndSendInvalidNumerOfDownlineRangeMessage(param, chatbotConfigs.BalanceMaxTopQuery)
                         .ConfigureAwait(false);
                 }
 

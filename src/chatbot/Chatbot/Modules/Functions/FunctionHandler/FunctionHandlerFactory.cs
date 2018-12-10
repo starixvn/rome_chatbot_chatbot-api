@@ -75,11 +75,6 @@
                 return new BalanceFunctionHandler(chatbotConfigs, messageBuilder, messageSender, customerService, logger, getDataHanlders);
             }
 
-            if (functionId == chatbotConfigs.BalanceFunctionId)
-            {
-                return new BalanceFunctionHandler(chatbotConfigs, messageBuilder, messageSender, customerService, logger, getDataHanlders);
-            }
-
             return new DefaultFunctionHandler(messageBuilder, messageSender, customerService, logger, getDataHanlders);
         }
     }
