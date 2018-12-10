@@ -124,6 +124,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to *Hint: To quickly view Balance Info of 100 downlines, please type: /bal 100.
+        /// </summary>
+        public static string BalanceTopQueryHint {
+            get {
+                return ResourceManager.GetString("BalanceTopQueryHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel current request.
         /// </summary>
         public static string CancelThisRequest {

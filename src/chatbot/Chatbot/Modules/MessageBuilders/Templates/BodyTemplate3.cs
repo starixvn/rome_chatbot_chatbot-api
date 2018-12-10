@@ -13,12 +13,17 @@
 
         public override string ToString(object data, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
         {
-            if (data is BalanceTotal balanceTotal)
-            {
-                return BuildTopDownlinesBodyMessage(balanceTotal, cultureInfo, messengerFormatter);
-            }
+            var bodyMessage = string.Empty;
 
-            return base.ToString(data, cultureInfo, messengerFormatter);
+            bodyMessage = data is BalanceTotal balanceTotal
+                ? BuildTopDownlinesBodyMessage(balanceTotal, cultureInfo, messengerFormatter)
+                : base.ToString(data, cultureInfo, messengerFormatter);
+
+            var newLine = messengerFormatter.NewLine();
+
+            return IsShowHint()
+                ? $"{bodyMessage}{newLine}{newLine}{BuildHint(cultureInfo)}"
+                : bodyMessage;
         }
 
         private static string BuildTopDownlinesBodyMessage(BalanceTotal balanceTotal, CultureInfo cultureInfo, IMessengerFormatter messengerFormatter)
@@ -69,5 +74,8 @@
 
             return string.Join(messengerFormatter.NewLine(), textContainer);
         }
+
+        private static string BuildHint(CultureInfo culture)
+            => StaticResources.Get(nameof(Languages.BalanceTopQueryHint), culture);
     }
 }

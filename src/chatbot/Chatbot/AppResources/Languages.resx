@@ -426,4 +426,7 @@
   <data name="Example" xml:space="preserve">
     <value>Example:</value>
   </data>
+  <data name="BalanceTopQueryHint" xml:space="preserve">
+    <value>*Hint: To quickly view Balance Info of 100 downlines, please type: /bal 100</value>
+  </data>
 </root>

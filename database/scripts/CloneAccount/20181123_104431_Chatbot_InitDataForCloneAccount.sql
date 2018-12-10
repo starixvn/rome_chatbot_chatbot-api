@@ -83,6 +83,6 @@ WHERE ActionId BETWEEN 24 AND 26
 
 -----Keywords for Clone Account---------
 INSERT INTO dbo.Resource ([Key],Type,LanguageCode,Value)
-SELECT 9, 'Keyword', 'en-US', 'copy,new,create,clone,account,downline,acc,update'
+SELECT 9, 'Keyword', 'en-US', N'copy,new,create,clone,account,downline,acc,update'
 UNION ALL 
-SELECT 9, 'Keyword', 'vi-VN', 'tạo,mới,sao chép,tài khoản,sẵn,tồn tại,bản sao'
+SELECT 9, 'Keyword', 'vi-VN', N'tạo,mới,sao chép,tài khoản,sẵn,tồn tại,bản sao'
