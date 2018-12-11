@@ -29,7 +29,7 @@
 
                 var agentMaxCredit = decimal.Parse(previousResponse);
 
-                if (number > agentMaxCredit)
+                if (number < 0 || number > agentMaxCredit)
                 {
                     return ActionValidationResult.CreateErrorValidationResult(
                         messageBuilder.BuildInvalidMaxCreditMessage(CustLevel.Member.Value, agentMaxCredit, user.Language));

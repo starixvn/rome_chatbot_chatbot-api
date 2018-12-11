@@ -27,7 +27,7 @@
                 var pt = copyCustomerService.GetPT(user.CustId, (byte)user.CustLevel)
                     .GetAwaiter().GetResult();
 
-                if (number > pt.MaxCredit)
+                if (number < 0 || number > pt.MaxCredit)
                 {
                     return ActionValidationResult.CreateErrorValidationResult(
                         messageBuilder.BuildInvalidMaxCreditMessage(user.CustLevel - 1, pt.MaxCredit, user.Language));

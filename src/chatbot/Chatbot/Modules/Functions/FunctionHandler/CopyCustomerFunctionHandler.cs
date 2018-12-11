@@ -75,7 +75,7 @@
 
             var pt = await copyCustomerService.GetPT(param.User.CustId, (byte)param.User.CustLevel).ConfigureAwait(false);
             var credit = decimal.Parse(rawParameters[1]);
-            if (credit > pt.MaxCredit)
+            if (credit < 0 || credit > pt.MaxCredit)
             {
                 return await BuildAndSendInvalidMaxCreditMessage(pt.MaxCredit, param.User.CustLevel - 1, param).ConfigureAwait(false);
             }
