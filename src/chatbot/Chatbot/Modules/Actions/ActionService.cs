@@ -40,7 +40,6 @@
 
     public class ActionServiceImpl : ActionService
     {
-        private const int expiredMinutesForConfirmMessage = 2;
         private const string PostbackType = "postback";
         private const string AllActionsCacheKey = "Chatbot.Modules.Actions.AllActions";
         private readonly IDynamicRepository dynamicRepository;
@@ -211,7 +210,7 @@
                 userActions,
                 messageActions,
                 string.Format(reConfirmMessage, buttonData.Label)).ConfigureAwait(false);
-            message.ExpiredTime = DateTime.Now.AddMinutes(expiredMinutesForConfirmMessage);
+            message.ExpiredTime = DateTime.Now.AddMinutes(chatbotConfigs.ExpiredMinutesForConfirmMessage);
 
             return new ActionResult(message, action.FunctionId);
         }

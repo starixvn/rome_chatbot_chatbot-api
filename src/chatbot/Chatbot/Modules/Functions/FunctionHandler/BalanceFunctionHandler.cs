@@ -27,7 +27,7 @@
             this.chatbotConfigs = chatbotConfigs;
         }
 
-        protected override async Task<Result> RunHandler(FunctionParam param)
+        protected internal override async Task<Result> RunHandler(FunctionParam param)
         {
             var parameter = GetParameter(param);
 

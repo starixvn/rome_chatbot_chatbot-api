@@ -34,7 +34,7 @@
             this.settingService = settingService;
         }
 
-        protected override async Task<Result> RunHandler(FunctionParam param)
+        protected internal override async Task<Result> RunHandler(FunctionParam param)
         {
             var rawParameters = param.Others["parameters"] as string[];
             var customer = await customerService.GetCustomer(param.User.CustId).ConfigureAwait(false);

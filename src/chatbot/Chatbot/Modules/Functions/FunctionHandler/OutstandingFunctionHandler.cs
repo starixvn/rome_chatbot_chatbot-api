@@ -28,7 +28,7 @@
             this.chatbotConfigs = chatbotConfigs;
         }
 
-        protected override async Task<Result> RunHandler(FunctionParam param)
+        protected internal override async Task<Result> RunHandler(FunctionParam param)
         {
             var rawParameter = param.Others["parameters"] as string[];
             if (rawParameter.Length > 0)

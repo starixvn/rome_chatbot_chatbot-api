@@ -60,7 +60,7 @@
             return await RunHandler(param).ConfigureAwait(false);
         }
 
-        protected virtual async Task<Result> RunHandler(FunctionParam param)
+        protected internal virtual async Task<Result> RunHandler(FunctionParam param)
         {
             var data = await getDataHandlers[param.Function.Id](param).ConfigureAwait(false);
 

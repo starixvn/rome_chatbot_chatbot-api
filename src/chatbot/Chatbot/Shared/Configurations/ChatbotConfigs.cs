@@ -80,6 +80,8 @@ namespace Chatbot.Shared.Configurations
         int InsertUpdateFunctionType { get; }
 
         int CopyCustomerActionId { get; }
+
+        int ExpiredMinutesForConfirmMessage { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -114,6 +116,7 @@ namespace Chatbot.Shared.Configurations
             OutstandingSpecificDirectDownlineActionId = GetValue<int>("Chatbot:OutstandingSpecificDirectDownlineActionId");
             OutstandingMaxTopQuery = GetValue<int>("Chatbot:OutstandingMaxTopQuery");
             BalanceMaxTopQuery = GetValue<int>("Chatbot:BalanceMaxTopQuery");
+            ExpiredMinutesForConfirmMessage = GetValue<int>("Chatbot:ExpiredMinutesForConfirmMessage");
 
             CopyMasterActionId = GetValue<int>("CopyCustomer:Master:RootActionId");
             CopyMasterInputUsernameActionId = GetValue<int>("CopyCustomer:Master:InputUsernameActionId");
@@ -199,6 +202,8 @@ namespace Chatbot.Shared.Configurations
         public int CopyMemberActionId { get; }
 
         public int BalanceMaxTopQuery { get; }
+
+        public int ExpiredMinutesForConfirmMessage { get; }
 
         private T GetValue<T>(string key)
         {

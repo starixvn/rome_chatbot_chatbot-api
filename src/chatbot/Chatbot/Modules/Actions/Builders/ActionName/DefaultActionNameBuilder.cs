@@ -41,7 +41,7 @@
 
                     if (preUserAction != null)
                     {
-                        return resourceValue.Replace(
+                        resourceValue = resourceValue.Replace(
                             ActionIdPattern + match.Value,
                             FormatUserReponse(preUserAction.UserResponse));
                     }
