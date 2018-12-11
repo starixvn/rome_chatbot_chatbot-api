@@ -39,5 +39,20 @@
             // Assert
             copyCustomerService.Received().GetPT(user.CustId, (byte)user.CustLevel);
         }
+
+        [Fact]
+        public void BuildActionName_Always_CallsGetResource()
+        {
+            // Arrange
+            var user = new User(1, 1, 2, 0, "en-US", 15);
+            resourceService.GetResource(1, ResourceType.Action, user.Language)
+                .Returns(Task.FromResult(new Resource(1, ResourceType.Action, "en-US", "Action name")));
+
+            // Act
+            inputMaxCreditActionNameBuilder.BuildActionName(1, user, null).ConfigureAwait(false);
+
+            // Assert
+            resourceService.Received().GetResource(1, ResourceType.Action, user.Language);
+        }
     }
 }
