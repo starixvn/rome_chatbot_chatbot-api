@@ -235,21 +235,27 @@
                 return await HandleUnknownUserResponseMessage(user, userReponse).ConfigureAwait(false);
             }
 
-            var currentActionId = lastAction.ActionId;
+            var currentAction = await GetActionById(lastAction.ActionId).ConfigureAwait(false);
+            var hasValidated = currentAction.Type == ActionType.Message
+                && !string.IsNullOrWhiteSpace(lastAction.UserResponse);
 
-            if (actionValidators.Keys.Contains(currentActionId))
+            if (!hasValidated && actionValidators.Keys.Contains(currentAction.Id))
             {
-                var validationResult = actionValidators[currentActionId].ValidateAction(user, userReponse, userActions, messenger);
+                var validationResult = actionValidators[currentAction.Id].ValidateAction(user, userReponse, userActions, messenger);
                 if (validationResult.IsNotOk)
                 {
-                    return (string.Empty, currentActionId, await BuildWrongValidationResult(currentActionId, user, userActions, validationResult).ConfigureAwait(false));
+                    return (string.Empty, currentAction.Id, await BuildWrongValidationResult(currentAction.Id, user, userActions, validationResult).ConfigureAwait(false));
                 }
             }
 
             var compiledCommand = await CompileCommand(userActions, userReponse).ConfigureAwait(false);
-            await UpdateUserAction(lastAction.Id, userReponse, compiledCommand).ConfigureAwait(false);
 
-            return (compiledCommand, currentActionId, null);
+            if (!hasValidated)
+            {
+                await UpdateUserAction(lastAction.Id, userReponse, compiledCommand).ConfigureAwait(false);
+            }
+
+            return (compiledCommand, currentAction.Id, null);
         }
 
         private async Task<(string, int, ActionResult)> HandleUnknownUserResponseMessage(User user, string userReponse)
@@ -302,7 +308,12 @@
             {
                 Label = messageBuilder.BuildNoneOfTheAboveMessage(user.Language).ToUpperInvariant(),
                 Type = PostbackType,
-                Data = string.Empty
+                Data = JsonConvert.SerializeObject(new ButtonData
+                {
+                    ActionId = 0,
+                    IsCancel = true,
+                    SentTime = getDateTimeNowFunc()
+                })
             });
 
             var message = new MessengerClient.Models.Message
