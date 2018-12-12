@@ -23,6 +23,7 @@ namespace Chatbot.Models
         public const byte SuperLevel = 4;
         public const byte MasterLevel = 3;
         public const byte AgentLevel = 2;
+        public const byte MemberLevel = 1;
 
         public CustLevel()
         {

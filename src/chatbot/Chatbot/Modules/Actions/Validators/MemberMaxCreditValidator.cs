@@ -32,7 +32,7 @@
                 if (number < 0 || number > agentMaxCredit)
                 {
                     return ActionValidationResult.CreateErrorValidationResult(
-                        messageBuilder.BuildInvalidMaxCreditMessage(CustLevel.Member.Value, agentMaxCredit, user.Language));
+                        messageBuilder.BuildInvalidMaxCreditMessage(CustLevel.MemberLevel, agentMaxCredit, user.Language));
                 }
 
                 return ActionValidationResult.CreateSuccessfulValidationResult();

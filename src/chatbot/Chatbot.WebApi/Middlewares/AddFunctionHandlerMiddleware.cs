@@ -133,7 +133,7 @@
         {
             var parameters = param.Others["parameters"] as string[];
             var credit = decimal.Parse(parameters[1]);
-            var maxCredit = param.User.CustLevel == Models.CustLevel.Master.Value ? decimal.Parse(parameters[2]) : 0;
+            var maxCredit = param.User.CustLevel == Models.CustLevel.MasterLevel ? decimal.Parse(parameters[2]) : 0;
             var username = param.Others["UserName"].ToString();
             var sourceCustId = (int)param.Others["SourceCustId"];
             var sourceUsername = param.Others["SourceUserName"].ToString();

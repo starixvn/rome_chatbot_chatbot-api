@@ -80,10 +80,10 @@
                 return await BuildAndSendInvalidMaxCreditMessage(pt.MaxCredit, param.User.CustLevel - 1, param).ConfigureAwait(false);
             }
 
-            if (param.User.CustLevel == CustLevel.Master.Value
+            if (param.User.CustLevel == CustLevel.MasterLevel
                 && decimal.Parse(rawParameters[2]) > credit)
             {
-                return await BuildAndSendInvalidMaxCreditMessage(credit, CustLevel.Member.Value, param).ConfigureAwait(false);
+                return await BuildAndSendInvalidMaxCreditMessage(credit, CustLevel.MemberLevel, param).ConfigureAwait(false);
             }
 
             param.Others.Add(nameof(customer.UserName), $"{customer.UserName}{pt.Suffix}");
@@ -97,7 +97,7 @@
 
         private static bool IsEnoughParamerters(string[] rawParameters, int custLevel)
         {
-            var numberOfRequiredParams = custLevel == CustLevel.Master.Value ? 3 : 2;
+            var numberOfRequiredParams = custLevel == CustLevel.MasterLevel ? 3 : 2;
 
             if (rawParameters.Length <= 0 || rawParameters.Length != numberOfRequiredParams)
             {
@@ -124,7 +124,7 @@
                 return Task.FromResult(Result.CreateErrorResult(messageBuilder.BuildInvalidNumericMessage(rawParameters[1], param.User.Language)));
             }
 
-            if (param.User.CustLevel == CustLevel.Master.Value
+            if (param.User.CustLevel == CustLevel.MasterLevel
                 && !Decimal.TryParse(rawParameters[2], out decimal givenMemberCredit))
             {
                 return Task.FromResult(Result.CreateErrorResult(messageBuilder.BuildInvalidNumericMessage(rawParameters[2], param.User.Language)));
@@ -135,7 +135,7 @@
 
         private async Task<Result> ValidateReachedLitmitOfCopyCustomer(FunctionParam param)
         {
-            if (param.User.CustLevel == CustLevel.Agent.Value)
+            if (param.User.CustLevel == CustLevel.AgentLevel)
             {
                 var validateResult = await copyCustomerService.ValidateMaxNewMember(param.User.CustId, param.User.Language)
                     .ConfigureAwait(false);

@@ -1,10 +1,10 @@
 ﻿namespace Chatbot.Tests.Modules.SettingLogs.Models
 {
     using System.Collections.Generic;
-    using Chatbot.Shared.Constants;
     using Chatbot.Models;
     using Chatbot.Modules.SettingLogs.Constants;
     using Chatbot.Modules.SettingLogs.Models;
+    using Chatbot.Shared.Constants;
     using Xunit;
 
     [Trait("Modules", "SettingLogs")]

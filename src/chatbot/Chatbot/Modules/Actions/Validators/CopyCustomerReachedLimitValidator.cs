@@ -29,14 +29,14 @@
 
         public ActionValidationResult ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
         {
-            if (user.CustLevel == CustLevel.Agent.Value)
+            if (user.CustLevel == CustLevel.AgentLevel)
             {
                 var validateResult = copyCustomerService.ValidateMaxNewMember(user.CustId, user.Language)
                     .GetAwaiter().GetResult();
 
                 if (!validateResult.IsSuccess)
                 {
-                    return ActionValidationResult.CreateErrorValidationResult(validateResult.Message);
+                    return ActionValidationResult.CreateErrorValidationResult(validateResult.Message, true);
                 }
             }
 

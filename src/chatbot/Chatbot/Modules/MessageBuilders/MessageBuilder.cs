@@ -81,9 +81,9 @@
 
         private static readonly IDictionary<int, string> CopyCustomerCommandFormats = new Dictionary<int, string>
         {
-            [CustLevel.Master.Value] = "/copy {0}01 1000",
-            [CustLevel.Agent.Value] = "/copy {0}01 1000 100",
-            [CustLevel.Member.Value] = "/copy {0}001 1000"
+            [CustLevel.MasterLevel] = "/copy {0}01 1000",
+            [CustLevel.AgentLevel] = "/copy {0}01 1000 100",
+            [CustLevel.MemberLevel] = "/copy {0}001 1000"
         };
 
         private static readonly CultureInfo defaultCultureInfo = CultureInfo.CreateSpecificCulture("en-US");

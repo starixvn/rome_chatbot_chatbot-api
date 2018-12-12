@@ -32,7 +32,7 @@
                 $"{StaticResources.Get(nameof(Languages.credit), cultureInfo)}: {result.Credit.ToFormattedNumber()}",
             };
 
-            if (result.CustLevel == CustLevel.Agent.Value)
+            if (result.CustLevel == CustLevel.AgentLevel)
             {
                 textContainer.Add($"{StaticResources.Get(nameof(Languages.maxMemberCredit), cultureInfo)}: {result.MaxCredit.ToFormattedNumber()}");
             }
@@ -51,7 +51,7 @@
             stringBuilder.Append(messengerFormatter.NewLine());
             stringBuilder.Append($"{StaticResources.Get(nameof(Languages.HintMessage), cultureInfo)}{messengerFormatter.NewLine()}");
 
-            var hintCommand = result.CustLevel == CustLevel.Agent.Value
+            var hintCommand = result.CustLevel == CustLevel.AgentLevel
                   ? $"/copy {result.SourceUsername} {result.Credit} {result.MaxCredit}"
                   : $"/copy {result.SourceUsername} {result.Credit}";
             stringBuilder.Append(hintCommand);
