@@ -19,9 +19,9 @@ INSERT INTO dbo.Resource ([Key], [Type], [LanguageCode], [Value])
 SELECT 9, 'Function', 'en-US', 'Create new member from existing account'
 
 -----Action-----
-ALTER TABLE [dbo].[Action] ADD CustomerLevel TINYINT NOT NULL DEFAULT 0
+ALTER TABLE [dbo].[Action] ADD CustomerLevel TINYINT NOT NULL CONSTRAINT DF_Action_CustomerLevel DEFAULT 0
 GO
-ALTER TABLE [dbo].[Action] ADD BackToActionId INT NOT NULL DEFAULT 0
+ALTER TABLE [dbo].[Action] ADD BackToActionId INT NOT NULL CONSTRAINT DF_Action_BackToActionId DEFAULT 0
 GO
 
 ----Delete OLD data if it exists----

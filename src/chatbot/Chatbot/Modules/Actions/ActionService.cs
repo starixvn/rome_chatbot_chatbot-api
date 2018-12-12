@@ -117,49 +117,46 @@
             var currentActionId = buttonData.ActionId;
             var compiledCommand = string.Empty;
 
-            if (currentActionId > 0)
+            if (isCancelRequest)
             {
-                if (isCancelRequest)
-                {
-                    return (
-                        string.Empty,
-                        currentActionId,
-                        await HandleCancelRequest(user, messenger.Type).ConfigureAwait(false));
-                }
-
-                var currentAction = await GetActionById(currentActionId).ConfigureAwait(false);
-
-                if (await IsActionNotExist(currentActionId).ConfigureAwait(false)
-                    || IsUserFuntionDisabled(user, currentAction))
-                {
-                    var rootMessage = messageBuilder.BuildRootActionTitle(user.Language);
-                    return (
-                        string.Empty,
-                        currentActionId,
-                        await BuildRootActions(user, rootMessage).ConfigureAwait(false));
-                }
-
-                var userActions = await GetUserActions(user).ConfigureAwait(false);
-
-                if (actionValidators.Keys.Contains(currentActionId))
-                {
-                    var validationResult = actionValidators[currentActionId].ValidateAction(user, string.Empty, userActions, messenger);
-                    if (validationResult.IsNotOk)
-                    {
-                        return (string.Empty, currentActionId, await BuildWrongValidationResult(currentActionId, user, userActions, validationResult).ConfigureAwait(false));
-                    }
-                }
-
-                if (!string.IsNullOrWhiteSpace(buttonData.CompiledCommand))
-                {
-                    return await HandleCompiledCommand(user, buttonData, currentAction, userActions).ConfigureAwait(false);
-                }
-
-                compiledCommand = await HandleButtonAction(currentAction, userActions, user, buttonData).ConfigureAwait(false);
-                currentActionId = currentAction.BackToActionId > 0
-                    ? currentAction.BackToActionId
-                    : currentActionId;
+                return (
+                    string.Empty,
+                    currentActionId,
+                    await HandleCancelRequest(user, messenger.Type).ConfigureAwait(false));
             }
+
+            var currentAction = await GetActionById(currentActionId).ConfigureAwait(false);
+
+            if (await IsActionNotExist(currentActionId).ConfigureAwait(false)
+                || IsUserFuntionDisabled(user, currentAction))
+            {
+                var rootMessage = messageBuilder.BuildRootActionTitle(user.Language);
+                return (
+                    string.Empty,
+                    currentActionId,
+                    await BuildRootActions(user, rootMessage).ConfigureAwait(false));
+            }
+
+            var userActions = await GetUserActions(user).ConfigureAwait(false);
+
+            if (actionValidators.Keys.Contains(currentActionId))
+            {
+                var validationResult = actionValidators[currentActionId].ValidateAction(user, string.Empty, userActions, messenger);
+                if (validationResult.IsNotOk)
+                {
+                    return (string.Empty, currentActionId, await BuildWrongValidationResult(currentActionId, user, userActions, validationResult).ConfigureAwait(false));
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(buttonData.CompiledCommand))
+            {
+                return await HandleCompiledCommand(user, buttonData, currentAction, userActions).ConfigureAwait(false);
+            }
+
+            compiledCommand = await HandleButtonAction(currentAction, userActions, user, buttonData).ConfigureAwait(false);
+            currentActionId = currentAction.BackToActionId > 0
+                ? currentAction.BackToActionId
+                : currentActionId;
 
             return (compiledCommand, currentActionId, null);
         }
@@ -310,8 +307,6 @@
                 Type = PostbackType,
                 Data = JsonConvert.SerializeObject(new ButtonData
                 {
-                    ActionId = 0,
-                    IsCancel = true,
                     SentTime = getDateTimeNowFunc()
                 })
             });
@@ -515,8 +510,7 @@
 
             var buttonData = JsonConvert.DeserializeObject<ButtonData>(buttonDataText);
 
-            if (buttonData == null
-                || buttonData.ActionId == 0)
+            if (buttonData == null)
             {
                 throw new InvalidOperationException($"Wrong button data format {buttonDataText}");
             }
