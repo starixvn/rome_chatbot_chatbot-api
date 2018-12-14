@@ -83,5 +83,45 @@
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
         }
+
+        [Fact]
+        public void ValidateAction_UserResponseIsGreaterThanMaxCredit_ReturnsErrorValidationResult()
+        {
+            // Arrange
+            var userResponse = "2";
+            var user = new User(1, 1, 3, 0, "en-US", null);
+            var pt = new CustomerPTInfo { MaxCredit = 1 };
+            copyCustomerService.GetPT(user.CustId, (byte)user.CustLevel)
+                .Returns(Task.FromResult(pt));
+            messageBuilder.BuildInvalidMaxCreditMessage(user.CustLevel - 1, pt.MaxCredit, user.Language)
+                .Returns("InvalidMaxCreditMessage");
+
+            var expectedResult = ActionValidationResult.CreateErrorValidationResult("InvalidMaxCreditMessage");
+
+            // Act
+            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null);
+
+            // Assert
+            Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
+        }
+
+        [Fact]
+        public void ValidateAction_UserResponseIsValid_ReturnsSuccessfulValidationResult()
+        {
+            // Arrange
+            var userResponse = "2";
+            var user = new User(1, 1, 3, 0, "en-US", null);
+            var pt = new CustomerPTInfo { MaxCredit = 3 };
+            copyCustomerService.GetPT(user.CustId, (byte)user.CustLevel)
+                .Returns(Task.FromResult(pt));
+
+            var expectedResult = ActionValidationResult.CreateSuccessfulValidationResult();
+
+            // Act
+            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null);
+
+            // Assert
+            Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
+        }
     }
 }
