@@ -28,5 +28,15 @@
 
             Assert.True(result);
         }
+
+        [Fact]
+        public void GetSettingKey_Always_ReturnsCorrectValue()
+        {
+            // Act
+            var command = new UpdateUserLanguageCommand(0, string.Empty);
+
+            // Assert
+            Assert.Equal("UpdateUserLanguage", command.GetSettingKey());
+        }
     }
 }

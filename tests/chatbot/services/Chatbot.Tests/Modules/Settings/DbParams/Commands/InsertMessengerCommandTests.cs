@@ -34,5 +34,15 @@
 
             Assert.True(result);
         }
+
+        [Fact]
+        public void GetSettingKey_Always_ReturnsCorrectValue()
+        {
+            // Act
+            var command = new InsertMessengerCommand(0, 0, string.Empty, string.Empty);
+
+            // Assert
+            Assert.Equal("InsertMessengerAccount", command.GetSettingKey());
+        }
     }
 }

@@ -80,10 +80,13 @@
                 return await BuildAndSendInvalidMaxCreditMessage(pt.MaxCredit, param.User.CustLevel - 1, param).ConfigureAwait(false);
             }
 
-            if (param.User.CustLevel == CustLevel.MasterLevel
-                && decimal.Parse(rawParameters[2]) > credit)
+            if (param.User.CustLevel == CustLevel.MasterLevel)
             {
-                return await BuildAndSendInvalidMaxCreditMessage(credit, CustLevel.MemberLevel, param).ConfigureAwait(false);
+                var memberCredit = decimal.Parse(rawParameters[2]);
+                if (memberCredit < 0 || memberCredit > credit)
+                {
+                    return await BuildAndSendInvalidMaxCreditMessage(credit, CustLevel.MemberLevel, param).ConfigureAwait(false);
+                }
             }
 
             param.Others.Add(nameof(customer.UserName), $"{customer.UserName}{pt.Suffix}");

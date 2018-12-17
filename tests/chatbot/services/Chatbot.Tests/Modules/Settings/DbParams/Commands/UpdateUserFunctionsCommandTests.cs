@@ -57,5 +57,15 @@
 
             Assert.Equal("<ROOT><Function UserId=\"1\" FunctionId=\"1\" Command=\"cm1\" Enable=\"True\"/> <Function UserId=\"1\" FunctionId=\"2\" Command=\"cm2\" Enable=\"False\"/> </ROOT>", actualFormattedXml);
         }
+
+        [Fact]
+        public void GetSettingKey_Always_ReturnsCorrectValue()
+        {
+            // Act
+            var command = new UpdateUserFunctionsCommand(0, Enumerable.Empty<Function>());
+
+            // Assert
+            Assert.Equal("UpdateUserFunctions", command.GetSettingKey());
+        }
     }
 }

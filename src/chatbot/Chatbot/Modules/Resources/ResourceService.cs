@@ -2,10 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
-    using Chatbot.AppResources;
     using Chatbot.Modules.Resources.Models;
     using Chatbot.Modules.Resources.Params.Db.Criteria;
     using Fanex.Caching;
@@ -16,10 +14,6 @@
         Task<Resource> GetResource(int key, string type, string language);
 
         Task<IEnumerable<Resource>> GetResources(int key, string type);
-
-        string GetStaticResource(string key, string language);
-
-        string GetStaticResource(string key, CultureInfo culture);
     }
 
     public class ResourceServiceImpl : ResourceService
@@ -50,11 +44,5 @@
                 $"{ResourceCacheKey}.{type}.{key}",
                 () => dynamicRepository.Fetch<Resource>(new GetResourceCriteria(key, type)),
                 new CacheItemOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1))).ConfigureAwait(false);
-
-        public string GetStaticResource(string key, string language)
-            => Languages.ResourceManager.GetString(key, CultureInfo.CreateSpecificCulture(language));
-
-        public string GetStaticResource(string key, CultureInfo culture)
-            => Languages.ResourceManager.GetString(key, culture);
     }
 }

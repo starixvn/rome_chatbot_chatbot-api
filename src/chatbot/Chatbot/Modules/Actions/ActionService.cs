@@ -20,6 +20,7 @@
     using Chatbot.Modules.Resources.Models;
     using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Helpers;
     using Fanex.Caching;
     using Fanex.Data.Repository;
     using Messenger.Client.Models;
@@ -195,12 +196,12 @@
             buttonData.IsConfirmButton = true;
             messageActions.Add(new MessageAction
             {
-                Label = resourceService.GetStaticResource(nameof(Languages.Yes), user.Language),
+                Label = StaticResources.Get(nameof(Languages.Yes), user.Language),
                 Type = PostbackType,
                 Data = JsonConvert.SerializeObject(buttonData)
             });
 
-            var reConfirmMessage = resourceService.GetStaticResource(nameof(Languages.ReConfirmMessage), user.Language);
+            var reConfirmMessage = StaticResources.Get(nameof(Languages.ReConfirmMessage), user.Language);
             var message = await CreateMessageWithButtons(
                 action.Id,
                 user,

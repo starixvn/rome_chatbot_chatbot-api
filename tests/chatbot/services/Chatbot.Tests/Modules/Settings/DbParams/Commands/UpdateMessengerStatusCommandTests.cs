@@ -33,5 +33,15 @@
 
             Assert.True(result);
         }
+
+        [Fact]
+        public void GetSettingKey_Always_ReturnsCorrectValue()
+        {
+            // Act
+            var command = new UpdateMessengerStatusCommand(0, 0, string.Empty, false);
+
+            // Assert
+            Assert.Equal("UpdateMessengerAccountStatus", command.GetSettingKey());
+        }
     }
 }
