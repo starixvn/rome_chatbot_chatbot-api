@@ -30,7 +30,8 @@
 
         private static string BuildName(IList<UserAction> userActions, string resourceValue)
         {
-            var actionIdMatches = ActionIdRegex.Matches(resourceValue);
+            var actionName = resourceValue;
+            var actionIdMatches = ActionIdRegex.Matches(actionName);
 
             if (actionIdMatches.Any() && userActions != null)
             {
@@ -41,14 +42,14 @@
 
                     if (preUserAction != null)
                     {
-                        resourceValue = resourceValue.Replace(
+                        actionName = actionName.Replace(
                             ActionIdPattern + match.Value,
                             FormatUserReponse(preUserAction.UserResponse));
                     }
                 }
             }
 
-            return resourceValue;
+            return actionName;
         }
 
         private static string FormatUserReponse(string text)
