@@ -1,6 +1,7 @@
 ﻿namespace Chatbot.Tests.Modules.Actions.Builders.ActionName
 {
     using System.Threading.Tasks;
+    using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
     using Chatbot.Modules.Actions.Builders.ActionName;
@@ -30,6 +31,8 @@
         {
             // Arrange
             var user = new User(1, 1, 2, 0, "en-US", 15);
+            copyCustomerService.GetPT(user.CustId, (byte)user.CustLevel)
+                .Returns(Task.FromResult(new CustomerPTInfo { MaxCredit = 1000 }));
             resourceService.GetResource(1, ResourceType.Action, user.Language)
                 .Returns(Task.FromResult(new Resource(1, ResourceType.Action, "en-US", "Action name")));
 
@@ -45,6 +48,8 @@
         {
             // Arrange
             var user = new User(1, 1, 2, 0, "en-US", 15);
+            copyCustomerService.GetPT(user.CustId, (byte)user.CustLevel)
+                .Returns(Task.FromResult(new CustomerPTInfo { MaxCredit = 1000 }));
             resourceService.GetResource(1, ResourceType.Action, user.Language)
                 .Returns(Task.FromResult(new Resource(1, ResourceType.Action, "en-US", "Action name")));
 

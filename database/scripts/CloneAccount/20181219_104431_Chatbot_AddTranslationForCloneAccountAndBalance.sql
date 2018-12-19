@@ -7,7 +7,7 @@ USE bodb_ChatBot
 GO
 
 INSERT INTO dbo.[Resource] ([Key], [Type], [LanguageCode], [Value])
-SELECT 9, 'Function', 'zh-CN', N'從現有的賬號復制新的會員。'
+SELECT 9, 'Function', 'zh-CN', N'从现有的账号复制新的会员。'
 UNION ALL
 SELECT 9, 'Function', 'zh-TW', N'從現有的賬號復制新的會員。'
 UNION ALL
