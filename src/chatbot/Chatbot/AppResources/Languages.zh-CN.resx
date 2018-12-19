@@ -384,4 +384,40 @@
   <data name="Yes" xml:space="preserve">
     <value>是</value>
   </data>
+  <data name="InvalidNumericMessage" xml:space="preserve">
+    <value>{0} 不是数值。</value>
+  </data>
+  <data name="CopyCustomerInformMessage" xml:space="preserve">
+    <value>您的要求正在处理中，请稍候…</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_1" xml:space="preserve">
+    <value>已从 {0} 复制新的会员。</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_2" xml:space="preserve">
+    <value>已从 {0} 复制新的代理。</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_3" xml:space="preserve">
+    <value>已从 {0} 复制新的总代理。</value>
+  </data>
+  <data name="maxMemberCredit" xml:space="preserve">
+    <value>会员最高信用额</value>
+  </data>
+  <data name="CopyCustomerReachedLimitMessage" xml:space="preserve">
+    <value>抱歉，您今天已达到通过Letstalk 创建新账号的限制。（每天{0}个账号 ）</value>
+  </data>
+  <data name="InstructionMessage" xml:space="preserve">
+    <value>请在字句后输入指令</value>
+  </data>
+  <data name="ActionConfirmation" xml:space="preserve">
+    <value>请确认您的动作：</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>例子：</value>
+  </data>
+  <data name="ReConfirmMessage" xml:space="preserve">
+    <value>请确认您是否要 {0}</value>
+  </data>
+  <data name="BalanceTopQueryHint" xml:space="preserve">
+    <value>提示：若要快速查看前100名下线的余额资料， 请输入: /bal 100</value>
+  </data>
 </root>

@@ -358,4 +358,40 @@
   <data name="Yes" xml:space="preserve">
     <value>ตกลง</value>
   </data>
+  <data name="InvalidNumericMessage" xml:space="preserve">
+    <value>{0} ไม่ใช่ค่าตัวเลข</value>
+  </data>
+  <data name="CopyCustomerInformMessage" xml:space="preserve">
+    <value>กำลังประมวลผลคำขอของคุณตอนนี้โปรดรอสักครู่ …</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_1" xml:space="preserve">
+    <value>คัดลอกสมาชิกใหม่จาก {0} แล้ว</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_2" xml:space="preserve">
+    <value>คัดลอกเอเย่นต์ใหม่จาก {0} แล้ว</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_3" xml:space="preserve">
+    <value>คัดลอกมาสเตอร์ใหม่จาก {0} แล้ว</value>
+  </data>
+  <data name="maxMemberCredit" xml:space="preserve">
+    <value>เครดิตสมาชิกสูงสุด</value>
+  </data>
+  <data name="CopyCustomerReachedLimitMessage" xml:space="preserve">
+    <value>ขออภัยคุณบัญชีใหม่ใน Letstalk เกินกำหนดจำนวนต่อวัน  ({0} บัญชี ต่อวัน).</value>
+  </data>
+  <data name="InstructionMessage" xml:space="preserve">
+    <value>กรุณากรอกคำสั่งตามหลังประโยค</value>
+  </data>
+  <data name="ActionConfirmation" xml:space="preserve">
+    <value>โปรดยืนยันการดำเนินการของคุณ:</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>ตัวอย่าง:</value>
+  </data>
+  <data name="ReConfirmMessage" xml:space="preserve">
+    <value>โปรดยืนยันหากคุณต้องการจะ {0}</value>
+  </data>
+  <data name="BalanceTopQueryHint" xml:space="preserve">
+    <value>* คำแนะนำ: เพื่อความรวดเร็วในการดูยอดคงเหลือของสมาชิก 100ท่านแรก แค่พิมพ์ : /bal 100</value>
+  </data>
 </root>
