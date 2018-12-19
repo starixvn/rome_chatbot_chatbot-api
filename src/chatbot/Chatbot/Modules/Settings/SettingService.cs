@@ -552,11 +552,16 @@
 
         public async Task Unsubscribe(int userId, Messenger messenger, UnlinkAccountLog logData)
         {
+            var isVerified = await IsUserAlreadySettingUpAccount(userId).ConfigureAwait(false);
+
             await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, false).ConfigureAwait(false);
 
             settingLogService.WriteLog(logData);
 
-            await SendUnlinkMessage(userId, messenger).ConfigureAwait(false);
+            if (isVerified)
+            {
+                await SendUnlinkMessage(userId, messenger).ConfigureAwait(false);
+            }
         }
 
         private async Task SendUnlinkMessage(int userId, Messenger messenger)
