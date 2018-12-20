@@ -394,4 +394,13 @@
   <data name="BalanceTopQueryHint" xml:space="preserve">
     <value>* คำแนะนำ: เพื่อความรวดเร็วในการดูยอดคงเหลือของสมาชิก 100ท่านแรก แค่พิมพ์ : /bal 100</value>
   </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_3" xml:space="preserve">
+    <value>/copy &lt;ตัวแทนหลักของคุณ&gt; &lt;เครดิตของตัวแทนหลัก&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_2" xml:space="preserve">
+    <value>/copy &lt;ตัวแทนของคุณ&gt; &lt;เครดิตของตัวแทน&gt; &lt;เครดิตสมาชิกสูงสุด&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_1" xml:space="preserve">
+    <value>/copy &lt;สมาชิกของคุณ&gt; &lt;เครดิตของสมาชิก&gt;</value>
+  </data>
 </root>

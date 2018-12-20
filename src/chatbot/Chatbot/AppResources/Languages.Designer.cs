@@ -475,7 +475,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /copy &lt;source member&gt; &lt;member credit&gt;.
+        ///   Looks up a localized string similar to /copy &lt;your member&gt; &lt;member credit&gt;.
         /// </summary>
         public static string InstructionCopyCustomerCommand_CustLevel_1 {
             get {
@@ -484,7 +484,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /copy &lt;source agent&gt; &lt;agent credit&gt; &lt;member max credit&gt;.
+        ///   Looks up a localized string similar to /copy &lt;your agent&gt; &lt;agent credit&gt; &lt;max member credit&gt;.
         /// </summary>
         public static string InstructionCopyCustomerCommand_CustLevel_2 {
             get {
@@ -493,7 +493,7 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /copy &lt;source master&gt; &lt;master credit&gt;.
+        ///   Looks up a localized string similar to /copy &lt;your master&gt; &lt;master credit&gt;.
         /// </summary>
         public static string InstructionCopyCustomerCommand_CustLevel_3 {
             get {

@@ -331,4 +331,49 @@
   <data name="Yes" xml:space="preserve">
     <value>Có</value>
   </data>
+  <data name="InvalidNumericMessage" xml:space="preserve">
+    <value>{0} không phải là ký tự số.</value>
+  </data>
+  <data name="CopyCustomerInformMessage" xml:space="preserve">
+    <value>Yêu cầu của bạn đang được xử lý, vui lòng đợi ...</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_1" xml:space="preserve">
+    <value>Một tài khoản Member mới được sao chép từ {0}.</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_2" xml:space="preserve">
+    <value>Một tài khoản Agent mới được sao chép từ {0}.</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_3" xml:space="preserve">
+    <value>Một tài khoản Master mới được sao chép từ {0}.</value>
+  </data>
+  <data name="maxMemberCredit" xml:space="preserve">
+    <value>Mức tín dụng tối đa cho tài khoản Member</value>
+  </data>
+  <data name="CopyCustomerReachedLimitMessage" xml:space="preserve">
+    <value>Xin lỗi, bạn chỉ được phép tạo tối đa {0} tài khoản mỗi ngày qua Letstalk.</value>
+  </data>
+  <data name="InstructionMessage" xml:space="preserve">
+    <value>Vui lòng nhập câu lệnh theo cú pháp sau:</value>
+  </data>
+  <data name="ActionConfirmation" xml:space="preserve">
+    <value>Vui lòng xác nhận yêu cầu của bạn</value>
+  </data>
+  <data name="ReConfirmMessage" xml:space="preserve">
+    <value>Vui lòng xác nhận bạn muốn {0}</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>Ví dụ:</value>
+  </data>
+  <data name="BalanceTopQueryHint" xml:space="preserve">
+    <value>*Gợi ý: để xem nhanh thông tin Top 100 tài khoản cấp dưới, vui lòng nhập: /bal 100</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_3" xml:space="preserve">
+    <value>/copy &lt;master của bạn&gt; &lt;mức tín dụng master&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_2" xml:space="preserve">
+    <value>/copy &lt;agent của bạn&gt; &lt;mức tín dụng agent&gt; &lt;Mức tín dụng tối đa cho tài khoản Member&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_1" xml:space="preserve">
+    <value>/copy &lt;member của bạn&gt; &lt;mức tín dụng member&gt;</value>
+  </data>
 </root>

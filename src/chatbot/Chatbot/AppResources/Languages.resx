@@ -409,19 +409,19 @@
     <value>Please kindly confirm your action:</value>
   </data>
   <data name="InstructionCopyCustomerCommand_CustLevel_3" xml:space="preserve">
-    <value>/copy &lt;source master&gt; &lt;master credit&gt;</value>
+    <value>/copy &lt;your master&gt; &lt;master credit&gt;</value>
      </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
   <data name="InstructionCopyCustomerCommand_CustLevel_2" xml:space="preserve">
-    <value>/copy &lt;source agent&gt; &lt;agent credit&gt; &lt;member max credit&gt;</value>
+    <value>/copy &lt;your agent&gt; &lt;agent credit&gt; &lt;max member credit&gt;</value>
     </data>
   <data name="ReConfirmMessage" xml:space="preserve">
     <value>Please confirm if you want to {0}</value>
   </data>
   <data name="InstructionCopyCustomerCommand_CustLevel_1" xml:space="preserve">
-    <value>/copy &lt;source member&gt; &lt;member credit&gt;</value>
+    <value>/copy &lt;your member&gt; &lt;member credit&gt;</value>
   </data>
   <data name="Example" xml:space="preserve">
     <value>Example:</value>

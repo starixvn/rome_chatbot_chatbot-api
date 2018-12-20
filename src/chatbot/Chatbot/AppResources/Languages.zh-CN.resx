@@ -420,4 +420,13 @@
   <data name="BalanceTopQueryHint" xml:space="preserve">
     <value>提示：若要快速查看前100名下线的余额资料， 请输入: /bal 100</value>
   </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_3" xml:space="preserve">
+    <value>/copy &lt;您的总代理&gt; &lt;总代理的信用额度&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_2" xml:space="preserve">
+    <value>/copy &lt;您的代理&gt; &lt;代理的信用额度&gt; &lt;会员最高信用额&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_1" xml:space="preserve">
+    <value>/copy &lt;您的会员&gt; &lt;会员的信用额度&gt;</value>
+  </data>
 </root>
