@@ -17,3 +17,9 @@ UNION ALL
 SELECT 9, 'Keyword', 'zh-CN', N'新增,新,复制,更新'
 UNION ALL
 SELECT 9, 'Keyword', 'zh-TW', N'新增,新,複製,更新'
+GO
+
+UPDATE dbo.Resource
+SET [Value] = N'tạo,mới,sao chép,tài khoản,sẵn,tồn tại,bản sao,tao,moi,sao chep,saochep,taomoi,san,tontai,ton tai,ban sao,bansao'
+WHERE [Key] = 9 AND [Type] = 'Keyword' AND LanguageCode = 'vi-VN'
+GO
