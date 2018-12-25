@@ -106,15 +106,15 @@
         protected override async Task<Result> BuildAndSendMessage(FunctionParam param, object data)
         {
             string messageToSend = BuildMessage(param.User.Language, param.Function.Id, param.Messenger.Type, data);
-            string messageToLog = string.Empty;
+            string messageToLog = messageToSend;
 
             if (messageToSend.Contains("##"))
             {
-                var passwordIndex = messageToSend.IndexOf("##", StringComparison.OrdinalIgnoreCase);
+                var passwordIndex = messageToSend.IndexOf("##", StringComparison.OrdinalIgnoreCase) + 2;
                 var passwordIndexLastIndex = messageToSend
-                    .Substring(passwordIndex + 2)
+                    .Substring(passwordIndex)
                     .IndexOf("#", StringComparison.OrdinalIgnoreCase);
-                var password = messageToSend.Substring(passwordIndex, passwordIndexLastIndex - passwordIndex);
+                var password = messageToSend.Substring(passwordIndex, passwordIndexLastIndex);
 
                 messageToLog = messageToSend.Replace(password, "******").Replace("#", string.Empty);
                 messageToSend = messageToSend.Replace("#", string.Empty);
