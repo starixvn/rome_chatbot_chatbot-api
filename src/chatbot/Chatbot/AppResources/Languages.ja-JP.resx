@@ -151,4 +151,13 @@
   <data name="Username" xml:space="preserve">
     <value>ユーザー名</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>パスワード</value>
+  </data>
+  <data name="credit" xml:space="preserve">
+    <value>貸付金額</value>
+  </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>昨日</value>
+  </data>
 </root>

@@ -1,8 +1,5 @@
 ﻿namespace Chatbot.Tests.Modules.Settings.DbParams.Commands
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Xunit;
 
@@ -35,6 +32,16 @@
                 custLevel).IsValid();
 
             Assert.True(result);
+        }
+
+        [Fact]
+        public void GetSettingKey_Always_ReturnsCorrectValue()
+        {
+            // Act
+            var command = new InsertUserCommand(0, 0, string.Empty, 0);
+
+            // Assert
+            Assert.Equal("InsertUser", command.GetSettingKey());
         }
     }
 }

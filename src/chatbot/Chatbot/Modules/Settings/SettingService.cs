@@ -50,6 +50,10 @@
         Task Unsubscribe(int userId, Messenger messenger, UnlinkAccountLog logData);
 
         Task UpdateSelfdestructionPeriod(int userId, int minutes, UpdateSelfdestructionPeriodLog logData);
+
+        Task IncreaseUserActionCount(int userId, int actionId, int messengerType, string messengerUsername);
+
+        Task<bool> IsUserReachedTheLimitOfActionInDay(int userId, int messengerType, int actionId, int limit);
     }
 
     public class SettingServiceImpl : SettingService
@@ -376,15 +380,12 @@
             return command.UserId;
         }
 
-        private async Task<bool> IsUserAddAccountOverMaxTimeInDay(
-            int userId,
-            int messengerType)
-        {
-            var addUserLogActions = await GetUserAction(userId, messengerType, string.Empty, chatbotConfigs.AddAccountActionId).ConfigureAwait(false);
-            var numOfAddTime = addUserLogActions.Sum(action => action.CountTimes);
-
-            return numOfAddTime > chatbotConfigs.MaxAddActionTimes;
-        }
+        private async Task<bool> IsUserAddAccountOverMaxTimeInDay(int userId, int messengerType)
+            => await IsUserReachedTheLimitOfActionInDay(
+                userId,
+                messengerType,
+                chatbotConfigs.AddAccountActionId,
+                chatbotConfigs.MaxAddActionTimes).ConfigureAwait(false);
 
         private async Task<IEnumerable<UserActionDto>> GetUserAction(
             int userId,
@@ -509,7 +510,7 @@
             return failedAction?.CountTimes ?? 0;
         }
 
-        private async Task IncreaseUserActionCount(
+        public async Task IncreaseUserActionCount(
             int userId,
             int actionId,
             int messengerType,
@@ -551,11 +552,16 @@
 
         public async Task Unsubscribe(int userId, Messenger messenger, UnlinkAccountLog logData)
         {
+            var isVerified = await IsUserAlreadySettingUpAccount(userId).ConfigureAwait(false);
+
             await UpdateMessengerStatus(userId, messenger.Type, messenger.Username, false).ConfigureAwait(false);
 
             settingLogService.WriteLog(logData);
 
-            await SendUnlinkMessage(userId, messenger).ConfigureAwait(false);
+            if (isVerified)
+            {
+                await SendUnlinkMessage(userId, messenger).ConfigureAwait(false);
+            }
         }
 
         private async Task SendUnlinkMessage(int userId, Messenger messenger)
@@ -574,6 +580,14 @@
             await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
 
             settingLogService.WriteLog(logData);
+        }
+
+        public async Task<bool> IsUserReachedTheLimitOfActionInDay(int userId, int messengerType, int actionId, int limit)
+        {
+            var addUserLogActions = await GetUserAction(userId, messengerType, string.Empty, actionId).ConfigureAwait(false);
+            var numOfAddTime = addUserLogActions.Sum(action => action.CountTimes);
+
+            return numOfAddTime >= limit;
         }
     }
 }

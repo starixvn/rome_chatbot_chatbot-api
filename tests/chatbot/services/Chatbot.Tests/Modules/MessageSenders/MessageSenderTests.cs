@@ -1,7 +1,7 @@
 ﻿namespace Chatbot.Tests.Modules
 {
     using Chatbot.Modules.MessageSenders;
-    using Chatbot.Modules.MessageServices;
+    using Chatbot.Modules.MessageLoggers;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Constants;
     using Fanex.Logging;

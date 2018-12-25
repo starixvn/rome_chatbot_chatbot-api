@@ -1,5 +1,6 @@
 ﻿namespace Chatbot.Modules.MessageBuilders.Templates
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
@@ -21,14 +22,14 @@
 
             if (!keyValues.Keys.Any())
             {
-                return GetResource(nameof(Languages.NoData), cultureInfo);
+                return StaticResources.Get(nameof(Languages.NoData), cultureInfo);
             }
 
             foreach (var keyValue in keyValues)
             {
                 if (keyValue.Value != null)
                 {
-                    textContainer.Add($"{GetResource(keyValue.Key, cultureInfo)}:");
+                    textContainer.Add($"{StaticResources.Get(keyValue.Key, cultureInfo)}:");
                     textContainer.Add($"    {GetFormattedValue(keyValue.Value)}");
                 }
             }
@@ -56,7 +57,19 @@
             return value.ToString();
         }
 
-        protected virtual string GetResource(string key, CultureInfo cultureInfo)
-            => Languages.ResourceManager.GetString(key, cultureInfo);
+        /// <summary>
+        /// Random rate of 20%
+        /// </summary>
+        /// <returns></returns>
+        protected static bool IsShowHint()
+        {
+            var random = new Random();
+            return random.Next(0, 5) == 0;
+        }
+
+        protected static string BuildHiddenDownlinesMessage(int count, int custLevel, CultureInfo cultureInfo)
+            => string.Format(StaticResources.Get(nameof(Languages.HiddenDownlinesCount), cultureInfo),
+                count,
+                StaticResources.Get($"CustLevel_{custLevel}", cultureInfo));
     }
 }

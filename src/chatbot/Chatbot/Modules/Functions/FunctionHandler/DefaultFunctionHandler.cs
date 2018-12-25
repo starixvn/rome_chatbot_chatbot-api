@@ -3,12 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Fanex.Logging;
+    using Result = Models.Result;
 
     public interface IFunctionHandler
     {
@@ -58,7 +60,7 @@
             return await RunHandler(param).ConfigureAwait(false);
         }
 
-        protected virtual async Task<Result> RunHandler(FunctionParam param)
+        protected internal virtual async Task<Result> RunHandler(FunctionParam param)
         {
             var data = await getDataHandlers[param.Function.Id](param).ConfigureAwait(false);
 
@@ -90,16 +92,16 @@
             return Task.FromResult(Result.CreateSuccessfulResult());
         }
 
-        protected Task<Result> BuildAndSendMessage(FunctionParam param, object data)
+        protected virtual async Task<Result> BuildAndSendMessage(FunctionParam param, object data)
         {
             string message = BuildMessage(param.User.Language, param.Function.Id, param.Messenger.Type, data);
 
-            return messageSender.SendMessage(
+            return await messageSender.SendMessage(
                 param.User.Id,
                 param.Messenger,
                 message,
                 param.User.SelfdestructionPeriod,
-                param.Function.Id);
+                param.Function.Id).ConfigureAwait(false);
         }
 
         protected string BuildMessage(string language, int functionId, int messengerType, object data)
@@ -131,6 +133,26 @@
                                     ex.ToString());
 
             logger.Error(logMessage);
+        }
+
+        protected static bool IsValidDirectDownline(int custLevel, DownlineInfo downlineInfo)
+            => downlineInfo != null
+                && downlineInfo.CustId > 0
+                && IsDirectDownline(custLevel, downlineInfo.RoleId);
+
+        private static bool IsDirectDownline(int custLevel, int downlineLevel)
+            => (custLevel - downlineLevel) == 1;
+
+        protected Task<Result> BuildAndSendInvalidNumerOfDownlineRangeMessage(FunctionParam param, int maxTopQuery)
+        {
+            var message = messageBuilder.BuildInvalidNumerOfDownlineRange(param.User.Language, maxTopQuery);
+
+            return messageSender.SendMessage(
+                param.User.Id,
+                param.Messenger,
+                message,
+                param.User.SelfdestructionPeriod,
+                param.Function.Id);
         }
     }
 }

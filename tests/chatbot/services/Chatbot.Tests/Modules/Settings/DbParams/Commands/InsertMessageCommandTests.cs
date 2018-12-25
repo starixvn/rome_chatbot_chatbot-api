@@ -41,5 +41,15 @@
 
             Assert.True(result);
         }
+
+        [Fact]
+        public void GetSettingKey_Always_ReturnsCorrectValue()
+        {
+            // Act
+            var command = new InsertMessageCommand(0, 0, string.Empty, 0, string.Empty, 0, 0);
+
+            // Assert
+            Assert.Equal("InsertMessage", command.GetSettingKey());
+        }
     }
 }

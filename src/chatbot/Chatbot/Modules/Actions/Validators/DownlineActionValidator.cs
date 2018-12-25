@@ -1,7 +1,9 @@
 ﻿namespace Chatbot.Modules.Actions.Validators
 {
+    using System.Collections.Generic;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
+    using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.MessageBuilders;
 
     public class DownlineActionValidator : IActionValidator
@@ -17,7 +19,7 @@
             this.customerService = customerService;
         }
 
-        public Result ValidateAction(int actionId, User user, string userResponse)
+        public ActionValidationResult ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
         {
             if (!string.IsNullOrWhiteSpace(userResponse))
             {
@@ -26,11 +28,11 @@
 
                 if (downlineInfo != null && downlineInfo.CustId > 0)
                 {
-                    return Result.CreateSuccessfulResult();
+                    return ActionValidationResult.CreateSuccessfulValidationResult();
                 }
             }
 
-            return Result.CreateErrorResult(
+            return ActionValidationResult.CreateErrorValidationResult(
                 messageBuilder.BuildInvalidDownlineMessage(userResponse, user.Language));
         }
     }

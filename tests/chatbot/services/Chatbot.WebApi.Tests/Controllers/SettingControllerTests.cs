@@ -275,6 +275,32 @@
             settingService.Received().GetAllFunctions(language);
         }
 
+        [Fact]
+        public void UpdateSelfdestructionPeriod_Alway_CallsUpdateSelfdestructionPeriod()
+        {
+            // Arrange
+            var userId = 1;
+            var minutes = 15;
+            var logParam = CreateDefaultLogParam();
+            var user = new User(1, 1, 2, 0, "en-US", null);
+            settingService.GetUser(userId).Returns(user);
+            var logData = new UpdateSelfdestructionPeriodLog(
+                logParam.ActorId,
+                logParam.CustId,
+                logParam.IP,
+                minutes,
+                user.SelfdestructionPeriod);
+
+            // Act
+            settingController.UpdateSelfdestructionPeriod(userId, minutes, logParam).ConfigureAwait(false);
+
+            // Assert
+            settingService.Received().UpdateSelfdestructionPeriod(
+                userId,
+                minutes,
+                Arg.Is<UpdateSelfdestructionPeriodLog>(l => compareLogic.Compare(l, logData).AreEqual));
+        }
+
         private static LogParam CreateDefaultLogParam()
             => new LogParam
             {

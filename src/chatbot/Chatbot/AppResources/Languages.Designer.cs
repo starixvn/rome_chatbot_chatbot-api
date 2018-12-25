@@ -61,6 +61,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please kindly confirm your action:.
+        /// </summary>
+        public static string ActionConfirmation {
+            get {
+                return ResourceManager.GetString("ActionConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Agent.
         /// </summary>
         public static string Agent {
@@ -111,6 +120,15 @@ namespace Chatbot.AppResources {
         public static string AgentTotalCredit {
             get {
                 return ResourceManager.GetString("AgentTotalCredit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to *Hint: To quickly view Balance Info of 100 downlines, please type: /bal 100.
+        /// </summary>
+        public static string BalanceTopQueryHint {
+            get {
+                return ResourceManager.GetString("BalanceTopQueryHint", resourceCulture);
             }
         }
         
@@ -178,6 +196,60 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your request is being processed now, please wait....
+        /// </summary>
+        public static string CopyCustomerInformMessage {
+            get {
+                return ResourceManager.GetString("CopyCustomerInformMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, you have reached the limit for creating new account via Letstalk today ({0} accounts per day)..
+        /// </summary>
+        public static string CopyCustomerReachedLimitMessage {
+            get {
+                return ResourceManager.GetString("CopyCustomerReachedLimitMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new member has been copied from {0}..
+        /// </summary>
+        public static string CopyCustomerSuccessMessage_CustLevel_1 {
+            get {
+                return ResourceManager.GetString("CopyCustomerSuccessMessage_CustLevel_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new agent has been copied from {0}..
+        /// </summary>
+        public static string CopyCustomerSuccessMessage_CustLevel_2 {
+            get {
+                return ResourceManager.GetString("CopyCustomerSuccessMessage_CustLevel_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new master has been copied from {0}..
+        /// </summary>
+        public static string CopyCustomerSuccessMessage_CustLevel_3 {
+            get {
+                return ResourceManager.GetString("CopyCustomerSuccessMessage_CustLevel_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credit.
+        /// </summary>
+        public static string credit {
+            get {
+                return ResourceManager.GetString("credit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Currency.
         /// </summary>
         public static string CurrencyName {
@@ -228,6 +300,15 @@ namespace Chatbot.AppResources {
         public static string DefaultErrorMessage {
             get {
                 return ResourceManager.GetString("DefaultErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Example:.
+        /// </summary>
+        public static string Example {
+            get {
+                return ResourceManager.GetString("Example", resourceCulture);
             }
         }
         
@@ -349,6 +430,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to *Hint: for quick command,  please type: .
+        /// </summary>
+        public static string HintMessage {
+            get {
+                return ResourceManager.GetString("HintMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to *Hint: To view your downline&apos;s outstanding, please type: /os username.
         /// </summary>
         public static string HintSpecificDownline {
@@ -385,6 +475,42 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /copy &lt;your member&gt; &lt;member credit&gt;.
+        /// </summary>
+        public static string InstructionCopyCustomerCommand_CustLevel_1 {
+            get {
+                return ResourceManager.GetString("InstructionCopyCustomerCommand_CustLevel_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /copy &lt;your agent&gt; &lt;agent credit&gt; &lt;max member credit&gt;.
+        /// </summary>
+        public static string InstructionCopyCustomerCommand_CustLevel_2 {
+            get {
+                return ResourceManager.GetString("InstructionCopyCustomerCommand_CustLevel_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /copy &lt;your master&gt; &lt;master credit&gt;.
+        /// </summary>
+        public static string InstructionCopyCustomerCommand_CustLevel_3 {
+            get {
+                return ResourceManager.GetString("InstructionCopyCustomerCommand_CustLevel_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please input the command by the following syntax.
+        /// </summary>
+        public static string InstructionMessage {
+            get {
+                return ResourceManager.GetString("InstructionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid username..
         /// </summary>
         public static string InvalidCustName {
@@ -408,6 +534,15 @@ namespace Chatbot.AppResources {
         public static string InvalidDownline {
             get {
                 return ResourceManager.GetString("InvalidDownline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is not a numeric value..
+        /// </summary>
+        public static string InvalidNumericMessage {
+            get {
+                return ResourceManager.GetString("InvalidNumericMessage", resourceCulture);
             }
         }
         
@@ -480,6 +615,42 @@ namespace Chatbot.AppResources {
         public static string MasterTotalCredit {
             get {
                 return ResourceManager.GetString("MasterTotalCredit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Member Max Credit must be between {0} and {1}.
+        /// </summary>
+        public static string MaxCreditInvalid_CustLevel_1 {
+            get {
+                return ResourceManager.GetString("MaxCreditInvalid_CustLevel_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agent Max Credit must be between {0} and {1}.
+        /// </summary>
+        public static string MaxCreditInvalid_CustLevel_2 {
+            get {
+                return ResourceManager.GetString("MaxCreditInvalid_CustLevel_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Master Max Credit must be between {0} and {1}.
+        /// </summary>
+        public static string MaxCreditInvalid_CustLevel_3 {
+            get {
+                return ResourceManager.GetString("MaxCreditInvalid_CustLevel_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Member Credit.
+        /// </summary>
+        public static string maxMemberCredit {
+            get {
+                return ResourceManager.GetString("maxMemberCredit", resourceCulture);
             }
         }
         
@@ -565,7 +736,16 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select an option..
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select your expected action:.
         /// </summary>
         public static string PleaseSelectOption {
             get {
@@ -579,6 +759,15 @@ namespace Chatbot.AppResources {
         public static string Products {
             get {
                 return ResourceManager.GetString("Products", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please confirm if you want to {0}.
+        /// </summary>
+        public static string ReConfirmMessage {
+            get {
+                return ResourceManager.GetString("ReConfirmMessage", resourceCulture);
             }
         }
         
@@ -750,6 +939,24 @@ namespace Chatbot.AppResources {
         public static string WinLossAbbr {
             get {
                 return ResourceManager.GetString("WinLossAbbr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yesterday.
+        /// </summary>
+        public static string yesterday {
+            get {
+                return ResourceManager.GetString("yesterday", resourceCulture);
             }
         }
         

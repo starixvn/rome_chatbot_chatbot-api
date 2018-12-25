@@ -7,8 +7,8 @@
     using System.Threading.Tasks;
     using Chatbot.Shared.Configurations;
     using Chatbot.Models;
-    using Chatbot.Modules.MessageServices;
-    using Chatbot.Modules.MessageServices.Params.Db;
+    using Chatbot.Modules.MessageLoggers;
+    using Chatbot.Modules.MessageLoggers.Params.Db;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Fanex.Data.Repository;
     using NSubstitute;

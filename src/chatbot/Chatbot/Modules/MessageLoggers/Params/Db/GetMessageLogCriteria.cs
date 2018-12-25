@@ -1,4 +1,4 @@
-﻿namespace Chatbot.Modules.MessageServices.Params.Db
+﻿namespace Chatbot.Modules.MessageLoggers.Params.Db
 {
     using System;
     using Fanex.Data.Repository;

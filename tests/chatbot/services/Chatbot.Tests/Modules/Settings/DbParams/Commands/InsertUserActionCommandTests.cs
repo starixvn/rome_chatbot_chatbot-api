@@ -1,8 +1,5 @@
 ﻿namespace Chatbot.Tests.Modules.Settings.DbParams.Commands
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Xunit;
 
@@ -36,6 +33,16 @@
                 messengerUsername).IsValid();
 
             Assert.True(result);
+        }
+
+        [Fact]
+        public void GetSettingKey_Always_ReturnsCorrectValue()
+        {
+            // Act
+            var command = new InsertUserActionCommand(0, 0, 1, string.Empty);
+
+            // Assert
+            Assert.Equal("InsertUserAction", command.GetSettingKey());
         }
     }
 }

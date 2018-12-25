@@ -34,5 +34,15 @@
 
             Assert.True(result);
         }
+
+        [Fact]
+        public void GetSettingKey_Always_ReturnsCorrectValue()
+        {
+            // Act
+            var command = new ResetActionCountTimesCommand(0, 0, 1, string.Empty);
+
+            // Assert
+            Assert.Equal("ResetUserActionCount", command.GetSettingKey());
+        }
     }
 }

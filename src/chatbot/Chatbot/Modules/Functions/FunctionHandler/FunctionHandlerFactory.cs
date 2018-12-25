@@ -7,6 +7,7 @@
     using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
+    using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
@@ -25,7 +26,9 @@
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly CustomerService customerService;
         private readonly SettingService settingService;
+        private readonly CopyCustomerService copyCustomerService;
         private readonly ILogger logger;
+        private readonly IMessageLogger messageLogger;
 
         public FunctionHandlerFactory(
             IMessageBuilder messageBuilder,
@@ -34,6 +37,8 @@
             IChatbotConfigs chatbotConfigs,
             CustomerService customerService,
             SettingService settingService,
+            CopyCustomerService copyCustomerService,
+            IMessageLogger messageLogger,
             ILogger logger)
         {
             this.messageBuilder = messageBuilder;
@@ -41,7 +46,9 @@
             this.getDataHanlders = getDataHanlders;
             this.customerService = customerService;
             this.settingService = settingService;
+            this.copyCustomerService = copyCustomerService;
             this.logger = logger;
+            this.messageLogger = messageLogger;
             this.chatbotConfigs = chatbotConfigs ?? throw new ArgumentNullException(nameof(chatbotConfigs));
         }
 
@@ -59,7 +66,17 @@
 
             if (functionId == chatbotConfigs.OutstandingFunctionId)
             {
-                return new OutstandingCommandFunctionHandler(messageBuilder, messageSender, customerService, logger, chatbotConfigs, getDataHanlders);
+                return new OutstandingFunctionHandler(chatbotConfigs, messageBuilder, messageSender, customerService, logger, getDataHanlders);
+            }
+
+            if (functionId == chatbotConfigs.CopyCustomerFunctionId)
+            {
+                return new CopyCustomerFunctionHandler(chatbotConfigs, messageBuilder, messageSender, settingService, customerService, copyCustomerService, logger, messageLogger, getDataHanlders);
+            }
+
+            if (functionId == chatbotConfigs.BalanceFunctionId)
+            {
+                return new BalanceFunctionHandler(chatbotConfigs, messageBuilder, messageSender, customerService, logger, getDataHanlders);
             }
 
             return new DefaultFunctionHandler(messageBuilder, messageSender, customerService, logger, getDataHanlders);

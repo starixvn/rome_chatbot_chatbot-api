@@ -334,4 +334,73 @@
   <data name="NoneOfTheAbove" xml:space="preserve">
     <value>ไม่มีข้อใดข้างต้น</value>
   </data>
+  <data name="MaxCreditInvalid_CustLevel_3" xml:space="preserve">
+    <value>เครดิตสูงสุดของมาสเตอร์ต้องอยู่ระหว่าง {0} และ {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_2" xml:space="preserve">
+    <value>เครดิตสูงสุดของเอเย่นต้องอยู่ระหว่าง {0} และ {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
+    <value>เครดิตของสมาชิกต้องอยู่ระหว่าง {0} และ {1}</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>รหัสผ่าน</value>
+  </data>
+  <data name="HintMessage" xml:space="preserve">
+    <value>*หมายเหตุ：คำสั่งแบบรวดเร็ว กรุณาพิมพ์ </value>
+  </data>
+  <data name="credit" xml:space="preserve">
+    <value>เครดิต</value>
+  </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>เมื่อวาน</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>ตกลง</value>
+  </data>
+  <data name="InvalidNumericMessage" xml:space="preserve">
+    <value>{0} ไม่ใช่ค่าตัวเลข</value>
+  </data>
+  <data name="CopyCustomerInformMessage" xml:space="preserve">
+    <value>กำลังประมวลผลคำขอของคุณตอนนี้โปรดรอสักครู่ …</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_1" xml:space="preserve">
+    <value>คัดลอกสมาชิกใหม่จาก {0} แล้ว</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_2" xml:space="preserve">
+    <value>คัดลอกเอเย่นต์ใหม่จาก {0} แล้ว</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_3" xml:space="preserve">
+    <value>คัดลอกมาสเตอร์ใหม่จาก {0} แล้ว</value>
+  </data>
+  <data name="maxMemberCredit" xml:space="preserve">
+    <value>เครดิตสมาชิกสูงสุด</value>
+  </data>
+  <data name="CopyCustomerReachedLimitMessage" xml:space="preserve">
+    <value>ขออภัยคุณบัญชีใหม่ใน Letstalk เกินกำหนดจำนวนต่อวัน  ({0} บัญชี ต่อวัน).</value>
+  </data>
+  <data name="InstructionMessage" xml:space="preserve">
+    <value>กรุณากรอกคำสั่งตามหลังประโยค</value>
+  </data>
+  <data name="ActionConfirmation" xml:space="preserve">
+    <value>โปรดยืนยันการดำเนินการของคุณ:</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>ตัวอย่าง:</value>
+  </data>
+  <data name="ReConfirmMessage" xml:space="preserve">
+    <value>โปรดยืนยันหากคุณต้องการจะ {0}</value>
+  </data>
+  <data name="BalanceTopQueryHint" xml:space="preserve">
+    <value>* คำแนะนำ: เพื่อความรวดเร็วในการดูยอดคงเหลือของสมาชิก 100ท่านแรก แค่พิมพ์ : /bal 100</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_3" xml:space="preserve">
+    <value>/copy &lt;ตัวแทนหลักของคุณ&gt; &lt;เครดิตของตัวแทนหลัก&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_2" xml:space="preserve">
+    <value>/copy &lt;ตัวแทนของคุณ&gt; &lt;เครดิตของตัวแทน&gt; &lt;เครดิตสมาชิกสูงสุด&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_1" xml:space="preserve">
+    <value>/copy &lt;สมาชิกของคุณ&gt; &lt;เครดิตของสมาชิก&gt;</value>
+  </data>
 </root>

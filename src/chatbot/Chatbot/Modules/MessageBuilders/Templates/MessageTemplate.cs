@@ -41,7 +41,7 @@
         {
             var templates = new List<string>
             {
-                Header.ToString(functionId, cultureInfo),
+                Header?.ToString(functionId, cultureInfo),
                 Body.ToString(data, cultureInfo, messengerFormatter),
                 Footer?.ToString()
             };

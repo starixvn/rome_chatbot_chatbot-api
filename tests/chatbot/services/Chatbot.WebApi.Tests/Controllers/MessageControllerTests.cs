@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.MessageSenders;
-    using Chatbot.Modules.MessageServices;
+    using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.Settings;
     using Chatbot.WebApi.Controllers;
     using Chatbot.WebApi.Params;

@@ -20,6 +20,11 @@ namespace Chatbot.Models
         [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Reviewed!")]
         public static readonly CustLevel Member = new CustLevel(1, "Member");
 
+        public const byte SuperLevel = 4;
+        public const byte MasterLevel = 3;
+        public const byte AgentLevel = 2;
+        public const byte MemberLevel = 1;
+
         public CustLevel()
         {
         }

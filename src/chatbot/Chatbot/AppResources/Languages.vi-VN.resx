@@ -137,7 +137,7 @@
     <value>Tiền tệ</value>
   </data>
   <data name="NoData" xml:space="preserve">
-    <value>Thông tin chưa được cập nhật</value>
+    <value>Thông tin không tồn tại</value>
   </data>
   <data name="DefaultErrorMessage" xml:space="preserve">
     <value>Oh …hệ thống đang bi lỗi,Vui lòng báo với người quản lý</value>
@@ -273,5 +273,107 @@
   </data>
   <data name="NoneOfTheAbove" xml:space="preserve">
     <value>Không yêu cầu</value>
+  </data>
+  <data name="RootActionTitle" xml:space="preserve">
+    <value>Rất tiếc, chúng tôi không nhận ra yêu cầu của bạn. Bạn muốn thực hiện yêu cầu nào?</value>
+  </data>
+  <data name="PleaseSelectOption" xml:space="preserve">
+    <value>Vui lòng chọn một lựa chọn</value>
+  </data>
+  <data name="CancelThisRequest" xml:space="preserve">
+    <value>Hủy yêu cầu hiện tại</value>
+  </data>
+  <data name="FunctionHasBeenCancelled" xml:space="preserve">
+    <value>Yêu cầu hiện tại đã hủy</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>Cho</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Sản phẩm</value>
+  </data>
+  <data name="InvalidNumerOfDownlines" xml:space="preserve">
+    <value>Số lượng cấp dưới phải là số</value>
+  </data>
+  <data name="InvalidDirectDownline" xml:space="preserve">
+    <value>{0} không phải là {1} hợp lệ của bạn.</value>
+  </data>
+  <data name="InvalidDownline" xml:space="preserve">
+    <value>{0} không phải là cấp dưới hợp lệ của bạn.</value>
+  </data>
+  <data name="InvalidNumerOfDownlinesRange" xml:space="preserve">
+    <value>Số lượng cấp dưới phải từ 1 đến {0}</value>
+  </data>
+  <data name="WhichActionWouldYouLikeToTake" xml:space="preserve">
+    <value>Bạn muốn thực hiện yêu cầu nào?</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_3" xml:space="preserve">
+    <value>Hạn mức tín dụng tối đa của Master phải từ {0} đến {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_2" xml:space="preserve">
+    <value>Hạn mức tín dụng lớn nhất của Agent phải từ {0} đến {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
+    <value>Hạn mức tín dụng được cấp cho Member phải trong khoảng từ {0} đến {1}</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mật khẩu</value>
+  </data>
+  <data name="HintMessage" xml:space="preserve">
+    <value>*Gợi ý: để xem nhanh, vui lòng nhập:</value>
+  </data>
+  <data name="credit" xml:space="preserve">
+    <value>Hạn mức tín dụng</value>
+  </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>Hôm qua</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="InvalidNumericMessage" xml:space="preserve">
+    <value>{0} không phải là ký tự số.</value>
+  </data>
+  <data name="CopyCustomerInformMessage" xml:space="preserve">
+    <value>Yêu cầu của bạn đang được xử lý, vui lòng đợi ...</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_1" xml:space="preserve">
+    <value>Một tài khoản Member mới được sao chép từ {0}.</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_2" xml:space="preserve">
+    <value>Một tài khoản Agent mới được sao chép từ {0}.</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_3" xml:space="preserve">
+    <value>Một tài khoản Master mới được sao chép từ {0}.</value>
+  </data>
+  <data name="maxMemberCredit" xml:space="preserve">
+    <value>Mức tín dụng tối đa cho tài khoản Member</value>
+  </data>
+  <data name="CopyCustomerReachedLimitMessage" xml:space="preserve">
+    <value>Xin lỗi, bạn chỉ được phép tạo tối đa {0} tài khoản mỗi ngày qua Letstalk.</value>
+  </data>
+  <data name="InstructionMessage" xml:space="preserve">
+    <value>Vui lòng nhập câu lệnh theo cú pháp sau:</value>
+  </data>
+  <data name="ActionConfirmation" xml:space="preserve">
+    <value>Vui lòng xác nhận yêu cầu của bạn</value>
+  </data>
+  <data name="ReConfirmMessage" xml:space="preserve">
+    <value>Vui lòng xác nhận bạn muốn {0}</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>Ví dụ:</value>
+  </data>
+  <data name="BalanceTopQueryHint" xml:space="preserve">
+    <value>*Gợi ý: để xem nhanh thông tin Top 100 tài khoản cấp dưới, vui lòng nhập: /bal 100</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_3" xml:space="preserve">
+    <value>/copy &lt;master của bạn&gt; &lt;mức tín dụng master&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_2" xml:space="preserve">
+    <value>/copy &lt;agent của bạn&gt; &lt;mức tín dụng agent&gt; &lt;Mức tín dụng tối đa cho tài khoản Member&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_1" xml:space="preserve">
+    <value>/copy &lt;member của bạn&gt; &lt;mức tín dụng member&gt;</value>
   </data>
 </root>

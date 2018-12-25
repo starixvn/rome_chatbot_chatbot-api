@@ -4,6 +4,7 @@
     using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
+    using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
     using KellermanSoftware.CompareNetObjects;
@@ -34,11 +35,11 @@
         {
             // Arrange
             var invalidDownlineMessage = "Invalid downline";
-            var expectedResult = Result.CreateErrorResult(invalidDownlineMessage);
+            var expectedResult = ActionValidationResult.CreateErrorValidationResult(invalidDownlineMessage);
             messageBuilder.BuildInvalidDownlineMessage(Arg.Any<string>(), Arg.Any<string>()).Returns(invalidDownlineMessage);
 
             // Act
-            var actualResult = validator.ValidateAction(1, new User(), userResponse);
+            var actualResult = validator.ValidateAction(new User(), userResponse, null, null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
@@ -58,10 +59,10 @@
             customerService.GetDownlineInfo(Arg.Any<int>(), Arg.Any<string>())
                 .Returns(Task.FromResult(downlineInfo));
 
-            var expectedResult = Result.CreateSuccessfulResult();
+            var expectedResult = ActionValidationResult.CreateSuccessfulValidationResult();
 
             // Act
-            var actualResult = validator.ValidateAction(1, new User(), "abc");
+            var actualResult = validator.ValidateAction(new User(), "abc", null, null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
@@ -78,10 +79,10 @@
             var invalidDownlineMessage = "Invalid downline";
             messageBuilder.BuildInvalidDownlineMessage(Arg.Any<string>(), Arg.Any<string>()).Returns(invalidDownlineMessage);
 
-            var expectedResult = Result.CreateErrorResult(invalidDownlineMessage);
+            var expectedResult = ActionValidationResult.CreateErrorValidationResult(invalidDownlineMessage);
 
             // Act
-            var actualResult = validator.ValidateAction(1, new User(), "abc");
+            var actualResult = validator.ValidateAction(new User(), "abc", null, null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);

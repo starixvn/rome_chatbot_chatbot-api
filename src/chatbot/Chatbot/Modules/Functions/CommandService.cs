@@ -10,7 +10,7 @@
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
-    using Chatbot.Modules.MessageServices;
+    using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Constants;
@@ -66,7 +66,12 @@
                 return;
             }
 
-            var encodedCommand = WebUtility.HtmlEncode(command);
+            var encodedCommand = WebUtility.HtmlEncode(
+                string.Join(
+                    " ", 
+                    command.Split(
+                        default(string[]), 
+                        StringSplitOptions.RemoveEmptyEntries)));
 
             var messengerDto = await settingService
                 .GetMessenger(messengerType, messengerUsername)
@@ -174,12 +179,12 @@
                         ["parameters"] = splittedCommand.Item2
                     });
 
+            await actionService.ResetUserAction(user).ConfigureAwait(false);
+
             await functionHandlerFactory
                 .CreateFunctionHandler(commandFunction.Id)
                 .Handle(functionParam)
                 .ConfigureAwait(false);
-
-            await actionService.ResetUserAction(user).ConfigureAwait(false);
         }
 
         private async Task LogError(string command, Messenger messenger, User user, Exception ex)
@@ -233,9 +238,12 @@
             {
                 await SendValidationMessage(user, messenger, actionResult).ConfigureAwait(false);
 
-                await messageSender
-                    .SendMessage(user.Id, messenger, actionResult.Message, user.SelfdestructionPeriod, actionResult.FunctionId)
-                    .ConfigureAwait(false);
+                if (actionResult.Message != null)
+                {
+                    await messageSender
+                        .SendMessage(user.Id, messenger, actionResult.Message, user.SelfdestructionPeriod, actionResult.FunctionId)
+                        .ConfigureAwait(false);
+                }
             }
             else
             {
@@ -253,7 +261,7 @@
             if (!string.IsNullOrWhiteSpace(actionResult.ValidationFailedMessage))
             {
                 await messageSender
-                    .SendMessage(user.Id, messenger, actionResult.ValidationFailedMessage, actionResult.FunctionId)
+                    .SendMessage(user.Id, messenger, actionResult.ValidationFailedMessage, user.SelfdestructionPeriod, actionResult.FunctionId)
                     .ConfigureAwait(false);
             }
         }

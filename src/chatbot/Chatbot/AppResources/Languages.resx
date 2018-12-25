@@ -334,7 +334,7 @@
     <value>Sorry, we couldn't recognize your request. Which action would you like to take?</value>
   </data>
   <data name="PleaseSelectOption" xml:space="preserve">
-    <value>Please select an option.</value>
+    <value>Please select your expected action:</value>
   </data>
   <data name="CancelThisRequest" xml:space="preserve">
     <value>Cancel current request</value>
@@ -359,5 +359,74 @@
   </data>
   <data name="NoneOfTheAbove" xml:space="preserve">
     <value>None of the above</value>
+  </data>
+  <data name="InvalidNumericMessage" xml:space="preserve">
+    <value>{0} is not a numeric value.</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_3" xml:space="preserve">
+    <value>Master Max Credit must be between {0} and {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_2" xml:space="preserve">
+    <value>Agent Max Credit must be between {0} and {1}</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
+    <value>Member Max Credit must be between {0} and {1}</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="CopyCustomerInformMessage" xml:space="preserve">
+    <value>Your request is being processed now, please wait...</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_1" xml:space="preserve">
+    <value>A new member has been copied from {0}.</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_2" xml:space="preserve">
+    <value>A new agent has been copied from {0}.</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_3" xml:space="preserve">
+    <value>A new master has been copied from {0}.</value>
+  </data>
+  <data name="HintMessage" xml:space="preserve">
+    <value>*Hint: for quick command,  please type: </value>
+  </data>
+  <data name="credit" xml:space="preserve">
+    <value>Credit</value>
+  </data>
+  <data name="maxMemberCredit" xml:space="preserve">
+    <value>Max Member Credit</value>
+  </data>
+  <data name="CopyCustomerReachedLimitMessage" xml:space="preserve">
+    <value>Sorry, you have reached the limit for creating new account via Letstalk today ({0} accounts per day).</value>
+  </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>Yesterday</value>
+  </data>
+  <data name="InstructionMessage" xml:space="preserve">
+    <value>Please input the command by the following syntax</value>
+    </data>
+  <data name="ActionConfirmation" xml:space="preserve">
+    <value>Please kindly confirm your action:</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_3" xml:space="preserve">
+    <value>/copy &lt;your master&gt; &lt;master credit&gt;</value>
+     </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_2" xml:space="preserve">
+    <value>/copy &lt;your agent&gt; &lt;agent credit&gt; &lt;max member credit&gt;</value>
+    </data>
+  <data name="ReConfirmMessage" xml:space="preserve">
+    <value>Please confirm if you want to {0}</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_1" xml:space="preserve">
+    <value>/copy &lt;your member&gt; &lt;member credit&gt;</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>Example:</value>
+  </data>
+  <data name="BalanceTopQueryHint" xml:space="preserve">
+    <value>*Hint: To quickly view Balance Info of 100 downlines, please type: /bal 100</value>
   </data>
 </root>

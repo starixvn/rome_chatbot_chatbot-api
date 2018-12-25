@@ -16,17 +16,17 @@
     using Xunit;
 
     [Trait("Modules", "Functions/Handlers")]
-    public class OutstandingCommandFunctionHandlerTests
+    public class OutstandingFunctionHandlerTests
     {
         private readonly ILogger logger;
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageSender messageSender;
         private readonly CustomerService customerService;
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers;
-        private readonly OutstandingCommandFunctionHandler handler;
+        private readonly OutstandingFunctionHandler handler;
         private readonly IChatbotConfigs chatbotConfigs;
 
-        public OutstandingCommandFunctionHandlerTests()
+        public OutstandingFunctionHandlerTests()
         {
             logger = Substitute.For<ILogger>();
             messageBuilder = Substitute.For<IMessageBuilder>();
@@ -35,12 +35,12 @@
             getDataHandlers = new Dictionary<int, Func<FunctionParam, Task<object>>>();
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
 
-            handler = new OutstandingCommandFunctionHandler(
+            handler = new OutstandingFunctionHandler(
+                chatbotConfigs,
                 messageBuilder,
                 messageSender,
                 customerService,
                 logger,
-                chatbotConfigs,
                 getDataHandlers);
         }
 

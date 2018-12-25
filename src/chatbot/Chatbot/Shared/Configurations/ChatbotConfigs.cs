@@ -35,6 +35,8 @@ namespace Chatbot.Shared.Configurations
 
         int SystemUpdateFunctionId { get; }
 
+        int CopyCustomerFunctionId { get; }
+
         string SpDirectory { get; }
 
         List<int> MessageAndAnnoucementFunctionIds { get; }
@@ -50,6 +52,36 @@ namespace Chatbot.Shared.Configurations
         int OutstandingSpecificDirectDownlineActionId { get; }
 
         int OutstandingMaxTopQuery { get; }
+
+        int BalanceMaxTopQuery { get; }
+
+        int CopyMasterActionId { get; }
+
+        int CopyMasterInputUsernameActionId { get; }
+
+        int CopyMasterInputCreditActionId { get; }
+
+        int CopyAgentActionId { get; }
+
+        int CopyAgentInputUsernameActionId { get; }
+
+        int CopyAgentInputCreditActionId { get; }
+
+        int CopyAgentInputMemberCreditActionId { get; }
+
+        int CopyMemberActionId { get; }
+
+        int CopyMemberInputUsernameActionId { get; }
+
+        int CopyMemberInputCreditActionId { get; }
+
+        int CopyCustomerLimitPerDay { get; }
+
+        int InsertUpdateFunctionType { get; }
+
+        int CopyCustomerActionId { get; }
+
+        int ExpiredMinutesForConfirmMessage { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -74,6 +106,7 @@ namespace Chatbot.Shared.Configurations
             SpecialAnnouncementFunctionId = GetValue<int>("Chatbot:SpecialAnnouncementFunctionId");
             NormalAnnouncementFunctionId = GetValue<int>("Chatbot:NormalAnnouncementFunctionId");
             SystemUpdateFunctionId = GetValue<int>("Chatbot:SystemUpdateFunctionId");
+            CopyCustomerFunctionId = GetValue<int>("Chatbot:CopyCustomerFunctionId");
             MessageAndAnnoucementFunctionIds = configuration.GetSection("Chatbot:MessageAndAnnoucementFunctionIds").Get<List<int>>()
                  ?? throw new InvalidOperationException($"Missing config for Chatbot:MessageAndAnnoucementFunctionIds");
             NotRecognizedCommandFunctionId = GetValue<int>("Chatbot:NotRecognizedCommandFunctionId");
@@ -82,6 +115,21 @@ namespace Chatbot.Shared.Configurations
             IsProduction = GetValue<bool>("Chatbot:IsProduction");
             OutstandingSpecificDirectDownlineActionId = GetValue<int>("Chatbot:OutstandingSpecificDirectDownlineActionId");
             OutstandingMaxTopQuery = GetValue<int>("Chatbot:OutstandingMaxTopQuery");
+            BalanceMaxTopQuery = GetValue<int>("Chatbot:BalanceMaxTopQuery");
+            ExpiredMinutesForConfirmMessage = GetValue<int>("Chatbot:ExpiredMinutesForConfirmMessage");
+
+            CopyMasterActionId = GetValue<int>("CopyCustomer:Master:RootActionId");
+            CopyMasterInputUsernameActionId = GetValue<int>("CopyCustomer:Master:InputUsernameActionId");
+            CopyMasterInputCreditActionId = GetValue<int>("CopyCustomer:Master:InputCreditActionId");
+            CopyAgentActionId = GetValue<int>("CopyCustomer:Agent:RootActionId");
+            CopyAgentInputUsernameActionId = GetValue<int>("CopyCustomer:Agent:InputUsernameActionId");
+            CopyAgentInputCreditActionId = GetValue<int>("CopyCustomer:Agent:InputCreditActionId");
+            CopyAgentInputMemberCreditActionId = GetValue<int>("CopyCustomer:Agent:InputMemberCreditActionId");
+            CopyMemberActionId = GetValue<int>("CopyCustomer:Member:RootActionId");
+            CopyMemberInputUsernameActionId = GetValue<int>("CopyCustomer:Member:InputUsernameActionId");
+            CopyMemberInputCreditActionId = GetValue<int>("CopyCustomer:Member:InputCreditActionId");
+            CopyCustomerLimitPerDay = GetValue<int>("CopyCustomer:LimitPerDay");
+            CopyCustomerActionId = GetValue<int>("CopyCustomer:ActionId");
         }
 
         public int MaxAddActionTimes { get; }
@@ -108,6 +156,8 @@ namespace Chatbot.Shared.Configurations
 
         public int SystemUpdateFunctionId { get; }
 
+        public int CopyCustomerFunctionId { get; }
+
         public bool ReturnRawErrorToMessenger { get; }
 
         public string SpDirectory { get; }
@@ -126,13 +176,49 @@ namespace Chatbot.Shared.Configurations
 
         public int OutstandingMaxTopQuery { get; }
 
+        public int CopyMasterInputUsernameActionId { get; }
+
+        public int CopyMasterInputCreditActionId { get; }
+
+        public int CopyAgentInputUsernameActionId { get; }
+
+        public int CopyAgentInputCreditActionId { get; }
+
+        public int CopyAgentInputMemberCreditActionId { get; }
+
+        public int CopyMemberInputUsernameActionId { get; }
+
+        public int CopyMemberInputCreditActionId { get; }
+
+        public int CopyCustomerLimitPerDay { get; }
+        public int InsertUpdateFunctionType { get; } = 3;
+
+        public int CopyCustomerActionId { get; }
+
+        public int CopyMasterActionId { get; }
+
+        public int CopyAgentActionId { get; }
+
+        public int CopyMemberActionId { get; }
+
+        public int BalanceMaxTopQuery { get; }
+
+        public int ExpiredMinutesForConfirmMessage { get; }
+
         private T GetValue<T>(string key)
         {
-            var value = configuration[key];
+            try
+            {
+                var value = configuration[key];
 
-            TypeConverter typeConverter = TypeDescriptor.GetConverter(typeof(T));
+                TypeConverter typeConverter = TypeDescriptor.GetConverter(typeof(T));
 
-            return (T)typeConverter.ConvertFromString(value);
+                return (T)typeConverter.ConvertFromString(value);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidCastException($"Key: {key}", ex);
+            }
         }
     }
 }

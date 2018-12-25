@@ -14,12 +14,13 @@ namespace Chatbot.WebApi
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageBuilders.Templates;
     using Chatbot.Modules.MessageSenders;
-    using Chatbot.Modules.MessageServices;
+    using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.Resources;
     using Chatbot.Modules.SettingLogs;
     using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Constants;
+    using Chatbot.WebApi.Extensions;
     using Chatbot.WebApi.Filters;
     using Chatbot.WebApi.Middlewares;
     using Fanex.Caching;
@@ -64,7 +65,7 @@ namespace Chatbot.WebApi
 
             InitLogging(services);
 
-            
+
             services.AddLogging();
             services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
             services.AddSingleton<SettingService, SettingServiceImpl>();
@@ -88,6 +89,8 @@ namespace Chatbot.WebApi
             services.AddSingleton<SettingLogService, SettingLogServiceImpl>();
             services.AddSingleton<Alpha.Services.Client.Services.LogService, LogServiceImpl>();
             services.AddSingleton<ResourceService, ResourceServiceImpl>();
+            services.AddSingleton<CopyCustomerService, CopyCustomerServiceImpl>();
+
 
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
                 { chatbotConfigs.YesterdayWinLossFunctionId, new MessageTemplate(new HeaderTemplate4(), new BodyTemplate()) },
@@ -96,6 +99,8 @@ namespace Chatbot.WebApi
                 { chatbotConfigs.NormalAnnouncementFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { chatbotConfigs.SystemUpdateFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
                 { chatbotConfigs.OutstandingFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate1()) },
+                { chatbotConfigs.CopyCustomerFunctionId, new MessageTemplate(null, new BodyTemplate9()) },
+                { chatbotConfigs.BalanceFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate3()) }
             });
             services.AddSingleton<IDictionary<int, IMessengerFormatter>>(
                 new Dictionary<int, IMessengerFormatter>
@@ -117,7 +122,9 @@ namespace Chatbot.WebApi
                     { "ko-KR", CultureInfo.CreateSpecificCulture("ko-KR") }
                 });
             services.AddFunctionHandler();
-            services.AddActionHandler();
+            services.AddActionValidators();
+            services.AddActionBuilders();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Chatbot API", Version = "v1" });
