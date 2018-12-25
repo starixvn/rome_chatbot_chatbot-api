@@ -111,10 +111,10 @@
             if (messageToSend.Contains("##"))
             {
                 var passwordIndex = messageToSend.IndexOf("##", StringComparison.OrdinalIgnoreCase) + 2;
-                var passwordIndexLastIndex = messageToSend
+                var passwordLastIndex = messageToSend
                     .Substring(passwordIndex)
                     .IndexOf("#", StringComparison.OrdinalIgnoreCase);
-                var password = messageToSend.Substring(passwordIndex, passwordIndexLastIndex);
+                var password = messageToSend.Substring(passwordIndex, passwordLastIndex);
 
                 messageToLog = messageToSend.Replace(password, "******").Replace("#", string.Empty);
                 messageToSend = messageToSend.Replace("#", string.Empty);
