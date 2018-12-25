@@ -28,7 +28,7 @@
             {
                 $"{successMessage}{messengerFormatter.NewLine()}",
                 $"{StaticResources.Get(nameof(Languages.Username), cultureInfo)}: {result.CustName}",
-                $"{StaticResources.Get(nameof(Languages.Password), cultureInfo)}: {result.Password}",
+                $"{StaticResources.Get(nameof(Languages.Password), cultureInfo)}: ##{result.Password}#",
                 $"{StaticResources.Get(nameof(Languages.credit), cultureInfo)}: {result.Credit.ToFormattedNumber()}",
             };
 

@@ -7,6 +7,7 @@
     using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
+    using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
@@ -27,6 +28,7 @@
         private readonly SettingService settingService;
         private readonly CopyCustomerService copyCustomerService;
         private readonly ILogger logger;
+        private readonly IMessageLogger messageLogger;
 
         public FunctionHandlerFactory(
             IMessageBuilder messageBuilder,
@@ -36,6 +38,7 @@
             CustomerService customerService,
             SettingService settingService,
             CopyCustomerService copyCustomerService,
+            IMessageLogger messageLogger,
             ILogger logger)
         {
             this.messageBuilder = messageBuilder;
@@ -45,6 +48,7 @@
             this.settingService = settingService;
             this.copyCustomerService = copyCustomerService;
             this.logger = logger;
+            this.messageLogger = messageLogger;
             this.chatbotConfigs = chatbotConfigs ?? throw new ArgumentNullException(nameof(chatbotConfigs));
         }
 
@@ -67,7 +71,7 @@
 
             if (functionId == chatbotConfigs.CopyCustomerFunctionId)
             {
-                return new CopyCustomerFunctionHandler(chatbotConfigs, messageBuilder, messageSender, settingService, customerService, copyCustomerService, logger, getDataHanlders);
+                return new CopyCustomerFunctionHandler(chatbotConfigs, messageBuilder, messageSender, settingService, customerService, copyCustomerService, logger, messageLogger, getDataHanlders);
             }
 
             if (functionId == chatbotConfigs.BalanceFunctionId)

@@ -92,16 +92,16 @@
             return Task.FromResult(Result.CreateSuccessfulResult());
         }
 
-        protected Task<Result> BuildAndSendMessage(FunctionParam param, object data)
+        protected virtual async Task<Result> BuildAndSendMessage(FunctionParam param, object data)
         {
             string message = BuildMessage(param.User.Language, param.Function.Id, param.Messenger.Type, data);
 
-            return messageSender.SendMessage(
+            return await messageSender.SendMessage(
                 param.User.Id,
                 param.Messenger,
                 message,
                 param.User.SelfdestructionPeriod,
-                param.Function.Id);
+                param.Function.Id).ConfigureAwait(false);
         }
 
         protected string BuildMessage(string language, int functionId, int messengerType, object data)

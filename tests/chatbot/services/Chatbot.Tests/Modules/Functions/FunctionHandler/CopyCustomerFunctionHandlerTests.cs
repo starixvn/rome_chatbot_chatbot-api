@@ -9,6 +9,7 @@
     using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
+    using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
@@ -25,6 +26,7 @@
         private readonly SettingService settingService;
         private readonly CustomerService customerService;
         private readonly CopyCustomerService copyCustomerService;
+        private readonly IMessageLogger messageLogger;
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers;
 
         private readonly CopyCustomerFunctionHandler copyCustomerFunctionHandler;
@@ -38,6 +40,7 @@
             settingService = Substitute.For<SettingService>();
             customerService = Substitute.For<CustomerService>();
             copyCustomerService = Substitute.For<CopyCustomerService>();
+            messageLogger = Substitute.For<IMessageLogger>();
             getDataHandlers = new Dictionary<int, Func<FunctionParam, Task<object>>>();
 
             copyCustomerFunctionHandler = new CopyCustomerFunctionHandler(
@@ -48,6 +51,7 @@
                 customerService,
                 copyCustomerService,
                 logger,
+                messageLogger,
                 getDataHandlers);
 
             chatbotConfigs.CopyCustomerActionId.Returns(102);

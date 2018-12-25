@@ -7,9 +7,11 @@
     using Chatbot.Models;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
+    using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using Fanex.Logging;
 
     public class CopyCustomerFunctionHandler : DefaultFunctionHandler
@@ -17,6 +19,7 @@
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly SettingService settingService;
         private readonly CopyCustomerService copyCustomerService;
+        private readonly IMessageLogger messageLogger;
 
         public CopyCustomerFunctionHandler(
             IChatbotConfigs chatbotConfigs,
@@ -26,12 +29,14 @@
             CustomerService customerService,
             CopyCustomerService copyCustomerService,
             ILogger logger,
+            IMessageLogger messageLogger,
             IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers = null)
             : base(messageBuilder, messageSender, customerService, logger, getDataHandlers)
         {
             this.chatbotConfigs = chatbotConfigs;
             this.copyCustomerService = copyCustomerService;
             this.settingService = settingService;
+            this.messageLogger = messageLogger;
         }
 
         protected internal override async Task<Result> RunHandler(FunctionParam param)
@@ -96,6 +101,44 @@
             await BuildAndSendCopyCustomerInformMessage(param).ConfigureAwait(false);
 
             return await base.RunHandler(param).ConfigureAwait(false);
+        }
+
+        protected override async Task<Result> BuildAndSendMessage(FunctionParam param, object data)
+        {
+            string messageToSend = BuildMessage(param.User.Language, param.Function.Id, param.Messenger.Type, data);
+            string messageToLog = string.Empty;
+
+            if (messageToSend.Contains("##"))
+            {
+                var passwordIndex = messageToSend.IndexOf("##", StringComparison.OrdinalIgnoreCase);
+                var passwordIndexLastIndex = messageToSend
+                    .Substring(passwordIndex + 2)
+                    .IndexOf("#", StringComparison.OrdinalIgnoreCase);
+                var password = messageToSend.Substring(passwordIndex, passwordIndexLastIndex - passwordIndex);
+
+                messageToLog = messageToSend.Replace(password, "******").Replace("#", string.Empty);
+                messageToSend = messageToSend.Replace("#", string.Empty);
+            }
+
+            var result = await messageSender.SendMessage(
+                param.User.Id,
+                param.Messenger,
+                messageToSend,
+                param.User.SelfdestructionPeriod,
+                param.Function.Id,
+                false).ConfigureAwait(false);
+
+            if (result.IsOk)
+            {
+                await messageLogger.LogMessage(CommonId.BotUserId,
+                            param.User.Id,
+                            param.Messenger,
+                            messageToLog,
+                            result.IsOk ? 1 : 0,
+                            param.Function.Id).ConfigureAwait(false);
+            }
+
+            return result;
         }
 
         private static bool IsEnoughParamerters(string[] rawParameters, int custLevel)

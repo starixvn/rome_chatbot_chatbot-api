@@ -8,6 +8,7 @@
     using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
+    using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
@@ -26,6 +27,7 @@
         private readonly CopyCustomerService subCopyCustomerService;
         private readonly SettingService subSettingService;
         private readonly ILogger subLogger;
+        private readonly IMessageLogger messageLogger;
 
         public FunctionHandlerFactoryTests()
         {
@@ -36,6 +38,7 @@
             subCustomerService = Substitute.For<CustomerService>();
             subSettingService = Substitute.For<SettingService>();
             subCopyCustomerService = Substitute.For<CopyCustomerService>();
+            messageLogger = Substitute.For<IMessageLogger>();
             subLogger = Substitute.For<ILogger>();
             subChatbotConfigs.MessageAndAnnoucementFunctionIds.Returns(new List<int> { 5, 6, 7, 8 });
             subChatbotConfigs.YesterdayWinLossFunctionId.Returns(4);
@@ -54,6 +57,7 @@
                 subCustomerService,
                 subSettingService,
                 subCopyCustomerService,
+                messageLogger,
                 subLogger);
         }
 
