@@ -4,9 +4,10 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Chatbot.Modules.Funtions;
-    using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageLoggers;
+    using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
+    using Chatbot.Modules.UnderMaintenance;
     using Chatbot.WebApi.Controllers;
     using Chatbot.WebApi.Params;
     using NSubstitute;
@@ -19,6 +20,7 @@
         private readonly SettingService subSettingService;
         private readonly FunctionService subFunctionService;
         private readonly IMessageLogger subMessageLogger;
+        private readonly UnderMaintenanceService underMaintenanceService;
         private readonly MessageController messageController;
 
         public MessageControllerTests()
@@ -27,11 +29,13 @@
             subSettingService = Substitute.For<SettingService>();
             subFunctionService = Substitute.For<FunctionService>();
             subMessageLogger = Substitute.For<IMessageLogger>();
+            underMaintenanceService = Substitute.For<UnderMaintenanceService>();
             messageController = new MessageController(
                 subMessageSender,
                 subSettingService,
                 subFunctionService,
-                subMessageLogger);
+                subMessageLogger,
+                underMaintenanceService);
         }
 
         [Fact]
@@ -144,6 +148,16 @@
                 DateTimeOffset.FromUnixTimeMilliseconds(param.ToDate).DateTime.ToLocalTime(),
                 param.FunctionId,
                 param.MessengerType);
+        }
+
+        [Fact]
+        public void SendCompleteUMNotifications_Always_CallsSendCompleteUMNotifications()
+        {
+            // Act
+            messageController.SendCompleteUMNotifications().ConfigureAwait(false);
+
+            // Assert
+            underMaintenanceService.Received().SendCompleteUMNotifications();
         }
     }
 }

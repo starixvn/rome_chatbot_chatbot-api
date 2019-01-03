@@ -9,7 +9,7 @@
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.MessageSenders;
-    using Chatbot.Modules.Settings;
+    using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Constants;
     using Fanex.Logging;
@@ -17,7 +17,7 @@
     public class CopyCustomerFunctionHandler : DefaultFunctionHandler
     {
         private readonly IChatbotConfigs chatbotConfigs;
-        private readonly SettingService settingService;
+        private readonly UserLogActionService userLogActionService;
         private readonly CopyCustomerService copyCustomerService;
         private readonly IMessageLogger messageLogger;
 
@@ -25,7 +25,7 @@
             IChatbotConfigs chatbotConfigs,
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
-            SettingService settingService,
+            UserLogActionService userLogActionService,
             CustomerService customerService,
             CopyCustomerService copyCustomerService,
             ILogger logger,
@@ -35,7 +35,7 @@
         {
             this.chatbotConfigs = chatbotConfigs;
             this.copyCustomerService = copyCustomerService;
-            this.settingService = settingService;
+            this.userLogActionService = userLogActionService;
             this.messageLogger = messageLogger;
         }
 
@@ -120,6 +120,8 @@
                 messageToSend = messageToSend.Replace("#", string.Empty);
             }
 
+            await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
+
             var result = await messageSender.SendMessage(
                 param.User.Id,
                 param.Messenger,
@@ -192,7 +194,7 @@
                 }
             }
 
-            var isReachedLimitOfCopyCustomer = await settingService.IsUserReachedTheLimitOfActionInDay(
+            var isReachedLimitOfCopyCustomer = await userLogActionService.IsUserReachedTheLimitOfActionInDay(
                 param.User.Id,
                 param.Messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,

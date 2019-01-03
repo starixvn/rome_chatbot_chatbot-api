@@ -1,0 +1,119 @@
+﻿namespace Chatbot.Modules.UnderMaintenance
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Alpha.Services.Client.Services;
+    using Chatbot.Models;
+    using Chatbot.Modules.Actions;
+    using Chatbot.Modules.MessageBuilders;
+    using Chatbot.Modules.MessageSenders;
+    using Chatbot.Modules.Settings;
+    using Chatbot.Shared.Configurations;
+    using MessengerClient = Messenger.Client;
+
+    public interface UnderMaintenanceService
+    {
+        Task<Result> SendCompleteUMNotifications();
+    }
+
+    public class UnderMaintenanceServiceImpl : UnderMaintenanceService
+    {
+        private readonly SettingService settingService;
+        private readonly ActionService actionService;
+        private readonly CustomerService customerService;
+        private readonly IMessageBuilder messageBuilder;
+        private readonly IMessageSender messageSender;
+        private readonly IChatbotConfigs chatbotConfigs;
+
+        public UnderMaintenanceServiceImpl(
+            SettingService settingService,
+            ActionService actionService,
+            CustomerService customerService,
+            IMessageBuilder messageBuilder,
+            IMessageSender messageSender,
+            IChatbotConfigs chatbotConfigs)
+        {
+            this.settingService = settingService;
+            this.actionService = actionService;
+            this.customerService = customerService;
+            this.messageBuilder = messageBuilder;
+            this.messageSender = messageSender;
+            this.chatbotConfigs = chatbotConfigs;
+        }
+
+        public async Task<Result> SendCompleteUMNotifications()
+        {
+            var users = await settingService.GetUsers().ConfigureAwait(false);
+
+            if (users == null || !users.Any())
+            {
+                return Result.CreateSuccessfulResult();
+            }
+
+            foreach (var user in users)
+            {
+                if (await IsCustomerClosed(user).ConfigureAwait(false))
+                {
+                    continue;
+                }
+
+                var messengers = await settingService.GetMessengers(user.Id, true).ConfigureAwait(false);
+
+                if (messengers == null || !messengers.Any())
+                {
+                    continue;
+                }
+
+                user.Functions = await settingService.GetFunctions(user.Id).ConfigureAwait(false);
+
+                var rootActions = await actionService.GetRootActions(user).ConfigureAwait(false);
+
+                foreach (var messenger in messengers)
+                {
+                    if (chatbotConfigs.AllowSendCompleteUMNotificationMessengerUsernames.Contains("*")
+                        || chatbotConfigs.AllowSendCompleteUMNotificationMessengerUsernames.Contains(messenger.Username))
+                    {
+                        await SendCompleteUMMessages(user, messenger, rootActions).ConfigureAwait(false);
+                    }
+                }
+            }
+
+            return Result.CreateSuccessfulResult();
+        }
+
+        private Task<bool> IsCustomerClosed(User user)
+            => customerService.IsAccountClosed(user.CustId, user.SubAccountId);
+
+        private async Task SendCompleteUMMessages(User user, Messenger messenger, IEnumerable<MessengerClient.Models.MessageAction> rootActions)
+        {
+            await BuildAndSendCompleteUMNotification(user, messenger).ConfigureAwait(false);
+
+            if (rootActions != null && rootActions.Any())
+            {
+                await BuildAndSendRootActions(user, messenger, rootActions).ConfigureAwait(false);
+            }
+        }
+
+        private async Task BuildAndSendCompleteUMNotification(User user, Messenger messenger)
+        {
+            var message = messageBuilder.BuildCompleteUMNotification(messenger.Type, user.Language);
+
+            await messageSender.SendMessage(user.Id, messenger, message, user.SelfdestructionPeriod).ConfigureAwait(false);
+        }
+
+        private async Task BuildAndSendRootActions(User user, Messenger messenger, IEnumerable<MessengerClient.Models.MessageAction> rootActions)
+        {
+            var message = new MessengerClient.Models.Message
+            {
+                Content = messageBuilder.BuildSuggestionActionsTitle(user.Language),
+                MessageMarkup = new MessengerClient.Models.MessageMarkup
+                {
+                    MessageActions = rootActions
+                }
+            };
+
+            await messageSender.SendMessage(user.Id, messenger, message, user.SelfdestructionPeriod).ConfigureAwait(false);
+        }
+    }
+}

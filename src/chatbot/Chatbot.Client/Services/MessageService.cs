@@ -15,6 +15,8 @@ namespace Chatbot.Client.Services
         Task<List<Message>> GetMessageLogs(int userId, DateTimeOffset fromDate, DateTimeOffset toDate, int functionId = 0, int messengerType = 0);
 
         Task<IEnumerable<FunctionMessage>> GetFunctionMessages(int functionId);
+
+        Task<Result> SendCompleteUMNotifications();
     }
 
     public class MessageServiceImpl : MessageService
@@ -76,5 +78,8 @@ namespace Chatbot.Client.Services
             return restClient.ExecuteGetAsync<IEnumerable<FunctionMessage>>(
                $"message/getFunctionMessages?functionId={functionId}");
         }
+
+        public Task<Result> SendCompleteUMNotifications()
+            => restClient.ExecutePostAsync<Result>("message/sendCompleteUMNotifications");
     }
 }

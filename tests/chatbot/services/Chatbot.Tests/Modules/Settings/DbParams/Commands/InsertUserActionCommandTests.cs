@@ -1,6 +1,6 @@
 ﻿namespace Chatbot.Tests.Modules.Settings.DbParams.Commands
 {
-    using Chatbot.Modules.Settings.Params.Db.Commands;
+    using Chatbot.Modules.UserLogActions.Params.Db.Commands;
     using Xunit;
 
     [Trait("Modules", "Settings")]
@@ -13,7 +13,7 @@
         [InlineData(1, 1, 1, "")]
         public void IsValid_ParamsIsNotValid_ReturnFalse(int userId, int actionId, int messengerType, string messengerUsername)
         {
-            var result = new InsertUserActionCommand(
+            var result = new InsertUserLogActionCommand(
                 userId,
                 actionId,
                 messengerType,
@@ -26,7 +26,7 @@
         [InlineData(1, 1, 1, "name")]
         public void IsValid_Always_ReturnTrue(int userId, int actionId, int messengerType, string messengerUsername)
         {
-            var result = new InsertUserActionCommand(
+            var result = new InsertUserLogActionCommand(
                 userId,
                 actionId,
                 messengerType,
@@ -39,10 +39,10 @@
         public void GetSettingKey_Always_ReturnsCorrectValue()
         {
             // Act
-            var command = new InsertUserActionCommand(0, 0, 1, string.Empty);
+            var command = new InsertUserLogActionCommand(0, 0, 1, string.Empty);
 
             // Assert
-            Assert.Equal("InsertUserAction", command.GetSettingKey());
+            Assert.Equal("InsertUserLogAction", command.GetSettingKey());
         }
     }
 }

@@ -5,26 +5,26 @@
     using Chatbot.Models;
     using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.MessageBuilders;
-    using Chatbot.Modules.Settings;
+    using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
 
     public class CopyCustomerReachedLimitValidator : IActionValidator
     {
         private readonly IMessageBuilder messageBuilder;
-        private readonly SettingService settingService;
         private readonly CopyCustomerService copyCustomerService;
+        private readonly UserLogActionService userLogActionService;
         private readonly IChatbotConfigs chatbotConfigs;
 
         public CopyCustomerReachedLimitValidator(
             IMessageBuilder messageBuilder,
-            SettingService settingService,
+            UserLogActionService userLogActionService,
             CopyCustomerService copyCustomerService,
             IChatbotConfigs chatbotConfigs)
         {
             this.messageBuilder = messageBuilder;
-            this.settingService = settingService;
             this.chatbotConfigs = chatbotConfigs;
             this.copyCustomerService = copyCustomerService;
+            this.userLogActionService = userLogActionService;
         }
 
         public ActionValidationResult ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
@@ -40,7 +40,7 @@
                 }
             }
 
-            var isReachedLimitOfCopyCustomer = settingService.IsUserReachedTheLimitOfActionInDay(
+            var isReachedLimitOfCopyCustomer = userLogActionService.IsUserReachedTheLimitOfActionInDay(
                 user.Id,
                 messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,

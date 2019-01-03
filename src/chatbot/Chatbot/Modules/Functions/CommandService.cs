@@ -9,8 +9,8 @@
     using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
-    using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageLoggers;
+    using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Constants;
@@ -68,9 +68,9 @@
 
             var encodedCommand = WebUtility.HtmlEncode(
                 string.Join(
-                    " ", 
+                    " ",
                     command.Split(
-                        default(string[]), 
+                        default(string[]),
                         StringSplitOptions.RemoveEmptyEntries)));
 
             var messengerDto = await settingService
@@ -215,9 +215,7 @@
             string encodedCommand,
             string buttonData)
         {
-            var userFunctions = await settingService.GetFunctions(user.Id).ConfigureAwait(false);
-
-            if (await NoUserFuntionEnabledOrNoActionExisted(userFunctions).ConfigureAwait(false))
+            if (await NoUserFuntionEnabledOrNoActionExisted(user.Functions).ConfigureAwait(false))
             {
                 await SendNotRecognizedCommandMessage(user, messenger).ConfigureAwait(false);
                 return;

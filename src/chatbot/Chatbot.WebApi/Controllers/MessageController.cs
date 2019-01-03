@@ -5,9 +5,10 @@
     using System.Threading.Tasks;
     using Chatbot.Models;
     using Chatbot.Modules.Funtions;
-    using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageLoggers;
+    using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
+    using Chatbot.Modules.UnderMaintenance;
     using Chatbot.WebApi.Params;
     using Microsoft.AspNetCore.Mvc;
 
@@ -19,17 +20,20 @@
         private readonly SettingService settingService;
         private readonly FunctionService functionService;
         private readonly IMessageLogger messageLogger;
+        private readonly UnderMaintenanceService underMaintenanceService;
 
         public MessageController(
             IMessageSender messageSender,
             SettingService settingService,
             FunctionService functionService,
-            IMessageLogger messageLogger)
+            IMessageLogger messageLogger,
+            UnderMaintenanceService underMaintenanceService)
         {
             this.messageSender = messageSender;
             this.settingService = settingService;
             this.functionService = functionService;
             this.messageLogger = messageLogger;
+            this.underMaintenanceService = underMaintenanceService;
         }
 
         [Route("sendToSpecificMessenger"), HttpPost]
@@ -60,5 +64,9 @@
                 DateTimeOffset.FromUnixTimeMilliseconds(param.ToDate).DateTime.ToLocalTime(),
                 param.FunctionId,
                 param.MessengerType);
+
+        [HttpPost("sendCompleteUMNotifications")]
+        public async Task<Result> SendCompleteUMNotifications()
+            => await underMaintenanceService.SendCompleteUMNotifications();
     }
 }

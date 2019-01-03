@@ -18,7 +18,6 @@
     using Chatbot.Modules.Resources;
     using Chatbot.Modules.Resources.Constants;
     using Chatbot.Modules.Resources.Models;
-    using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Helpers;
     using Fanex.Caching;
@@ -37,6 +36,8 @@
         Task ResetUserAction(User user);
 
         Task<bool> NoRootActionExist();
+
+        Task<IEnumerable<MessageAction>> GetRootActions(User user);
     }
 
     public class ActionServiceImpl : ActionService
@@ -49,7 +50,6 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IDictionary<int, IActionValidator> actionValidators;
         private readonly IDictionary<int, IActionCompiler> actionCompilers;
-        private readonly SettingService settingService;
         private readonly ResourceService resourceService;
         private readonly Func<DateTime> getDateTimeNowFunc;
         private readonly IChatbotConfigs chatbotConfigs;
@@ -62,7 +62,6 @@
             IMessageBuilder messageBuilder,
             IDictionary<int, IActionValidator> actionValidators,
             IDictionary<int, IActionCompiler> actionCompilers,
-            SettingService settingService,
             ResourceService resourceService,
             IChatbotConfigs chatbotConfigs,
             ActionNameBuilderFactory actionNameBuilderFactory,
@@ -74,7 +73,6 @@
             this.messageBuilder = messageBuilder;
             this.actionValidators = actionValidators;
             this.actionCompilers = actionCompilers;
-            this.settingService = settingService;
             this.resourceService = resourceService;
             this.getDateTimeNowFunc = getDateTimeNowFunc ?? GetDateTimeNow;
             this.chatbotConfigs = chatbotConfigs;
@@ -258,7 +256,7 @@
 
         private async Task<(string, int, ActionResult)> HandleUnknownUserResponseMessage(User user, string userReponse)
         {
-            var functions = await GetFunctionsByKeyword(userReponse, user.Id).ConfigureAwait(false);
+            var functions = await GetFunctionsByKeyword(userReponse, user).ConfigureAwait(false);
 
             if (functions.Any())
             {
@@ -271,12 +269,12 @@
                 await BuildRootActions(user, messageBuilder.BuildRootActionTitle(user.Language)).ConfigureAwait(false));
         }
 
-        private async Task<IEnumerable<Function>> GetFunctionsByKeyword(string userResponse, int userId)
+        private async Task<IEnumerable<Function>> GetFunctionsByKeyword(string userResponse, User user)
         {
             var keywordFunctions = new List<Function>();
-            var userFunctions = (await settingService.GetFunctions(userId).ConfigureAwait(false)).Where(f => f.Enabled);
+            var enabledFunction = user.Functions.Where(f => f.Enabled);
 
-            foreach (var function in userFunctions)
+            foreach (var function in enabledFunction)
             {
                 var resources = await GetFunctionKeyworks(function.Id).ConfigureAwait(false);
 
@@ -429,32 +427,7 @@
 
         internal async Task<MessengerClient.Models.Message> BuildRootActionsMessage(User user, string rootMessage)
         {
-            var messageActions = new List<MessageAction>();
-            var rootActions = (await GetAllActions().ConfigureAwait(false))
-                .Where(action => action.ParentId == 0 && (action.CustLevel == user.CustLevel || action.CustLevel == 0));
-
-            foreach (var rootAction in rootActions)
-            {
-                var actionNameBuilder = actionNameBuilderFactory.GetActionNameBuilder(rootAction.Id);
-                var userFunction = user.Functions.FirstOrDefault(func => func.Id == rootAction.FunctionId);
-
-                if (userFunction != null && userFunction.Enabled)
-                {
-                    messageActions.Add(new MessageAction
-                    {
-                        Label = (await actionNameBuilder.BuildActionName(rootAction.Id, user).ConfigureAwait(false)).ToUpperInvariant(),
-                        Type = PostbackType,
-                        Data = JsonConvert.SerializeObject(new ButtonData
-                        {
-                            ActionId = rootAction.Id,
-                            CompiledCommand = rootAction.IsEndAction
-                            ? rootAction.Command
-                            : string.Empty,
-                            SentTime = getDateTimeNowFunc()
-                        })
-                    });
-                }
-            }
+            var messageActions = await GetRootActions(user).ConfigureAwait(false);
 
             return new MessengerClient.Models.Message
             {
@@ -717,5 +690,37 @@
 
         public Task ResetUserAction(User user)
            => dynamicRepository.ExecuteAsync(new ResetUserActionCommand(user.Id));
+
+        public async Task<IEnumerable<MessageAction>> GetRootActions(User user)
+        {
+            var messageActions = new List<MessageAction>();
+            var rootActions = (await GetAllActions().ConfigureAwait(false))
+                .Where(action => action.ParentId == 0 && (action.CustLevel == user.CustLevel || action.CustLevel == 0));
+
+            foreach (var rootAction in rootActions)
+            {
+                var actionNameBuilder = actionNameBuilderFactory.GetActionNameBuilder(rootAction.Id);
+                var userFunction = user.Functions.FirstOrDefault(func => func.Id == rootAction.FunctionId);
+
+                if (userFunction != null && userFunction.Enabled)
+                {
+                    messageActions.Add(new MessageAction
+                    {
+                        Label = (await actionNameBuilder.BuildActionName(rootAction.Id, user).ConfigureAwait(false)).ToUpperInvariant(),
+                        Type = PostbackType,
+                        Data = JsonConvert.SerializeObject(new ButtonData
+                        {
+                            ActionId = rootAction.Id,
+                            CompiledCommand = rootAction.IsEndAction
+                            ? rootAction.Command
+                            : string.Empty,
+                            SentTime = getDateTimeNowFunc()
+                        })
+                    });
+                }
+            }
+
+            return messageActions;
+        }
     }
 }

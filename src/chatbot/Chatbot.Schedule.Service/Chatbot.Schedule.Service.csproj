@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Chatbot.Client" Version="1.0.5" />
+    <PackageReference Include="Chatbot.Client" Version="1.0.6-CompleteUMNotification-02" />
     <PackageReference Include="Chatbot.Client.Transport" Version="1.0.0" />
     <PackageReference Include="Fanex.Logging.RabbitMQ" Version="1.0.0-beta82" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
@@ -62,6 +62,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.1.1" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.0" />
+    <PackageReference Include="ONEbook.UM" Version="3.0.0-beta3" />
+    <PackageReference Include="ONEbook.UM.AspNetCore" Version="3.0.0-beta" />
+    <PackageReference Include="ONEbook.UM.Transport" Version="3.0.0-beta" />
     <PackageReference Include="Quartz" Version="3.0.6" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />

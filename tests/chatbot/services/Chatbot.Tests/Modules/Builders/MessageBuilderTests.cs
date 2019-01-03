@@ -75,7 +75,7 @@
             var message = messageBuilder.BuildWelcomeMessage(language, 1);
 
             Assert.Equal(
-                "Your Letstalk ID has been verified, Atom is fully functioning._newline_You can turn off any feature via the Chatbot configuration page on your agency site.",
+                "Your Letstalk ID has been verified, Atom is fully functioning._newline_You can turn off any feature via the Chatbot configuration page on your agency site._newline_Hint: you could input any word to get my suggestion right away.",
                 message);
         }
 

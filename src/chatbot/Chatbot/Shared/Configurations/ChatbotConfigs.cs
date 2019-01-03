@@ -84,6 +84,7 @@ namespace Chatbot.Shared.Configurations
         int ExpiredMinutesForConfirmMessage { get; }
 
         bool IsForceUM { get; }
+        List<string> AllowSendCompleteUMNotificationMessengerUsernames { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -134,6 +135,8 @@ namespace Chatbot.Shared.Configurations
             CopyCustomerActionId = GetValue<int>("CopyCustomer:ActionId");
 
             IsForceUM = GetValue<bool>("Chatbot:IsForceUM");
+            AllowSendCompleteUMNotificationMessengerUsernames = configuration.GetSection("Chatbot:AllowSendCompleteUMNotificationMessengerUsernames").Get<List<string>>()
+                ?? throw new InvalidOperationException($"Missing config for Chatbot:AllowSendCompleteUMNotificationMessengerUsernames");
         }
 
         public int MaxAddActionTimes { get; }
@@ -195,6 +198,7 @@ namespace Chatbot.Shared.Configurations
         public int CopyMemberInputCreditActionId { get; }
 
         public int CopyCustomerLimitPerDay { get; }
+
         public int InsertUpdateFunctionType { get; } = 3;
 
         public int CopyCustomerActionId { get; }
@@ -210,6 +214,7 @@ namespace Chatbot.Shared.Configurations
         public int ExpiredMinutesForConfirmMessage { get; }
 
         public bool IsForceUM { get; }
+        public List<string> AllowSendCompleteUMNotificationMessengerUsernames { get; }
 
         private T GetValue<T>(string key)
         {

@@ -432,4 +432,16 @@
   <data name="ForceUMMessage" xml:space="preserve">
     <value>Bot is being upgraded at the moment, so we couldn't handle your request now. However, notification still works normally.</value>
   </data>
+  <data name="InformingVerifiedMessage_3" xml:space="preserve">
+    <value>Hint: you could input any word to get my suggestion right away.</value>
+  </data>
+  <data name="SuggestActionsTitle" xml:space="preserve">
+    <value>Here are some actions I could do for you:</value>
+  </data>
+  <data name="CompleteUMInformMessage_1" xml:space="preserve">
+    <value>Our UM time is over. All of our service has been back to work.</value>
+  </data>
+  <data name="CompleteUMInformMessage_2" xml:space="preserve">
+    <value>Hint: you could input any word to get my assistance right away.</value>
+  </data>
 </root>
