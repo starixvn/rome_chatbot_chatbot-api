@@ -2,8 +2,6 @@
 {
     using System.Threading.Tasks;
     using Chatbot.Client.Services;
-    using Fanex.Logging;
-    using Newtonsoft.Json;
     using ONEbook.UM.Services;
     using Quartz;
 
@@ -28,8 +26,6 @@
         public async Task Execute(IJobExecutionContext context)
         {
             var umInfo = await maintenanceService.GetUnderMaintenanceTime();
-
-            LogService.Info(JsonConvert.SerializeObject(umInfo, Formatting.Indented));
 
             if (umInfo.IsUnderMaintenanceTime != GlobalVariables.IsUM)
             {

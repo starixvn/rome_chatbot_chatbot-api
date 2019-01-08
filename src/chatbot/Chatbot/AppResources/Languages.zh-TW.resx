@@ -409,4 +409,16 @@
   <data name="InstructionCopyCustomerCommand_CustLevel_1" xml:space="preserve">
     <value>/copy &lt;您的會員&gt; &lt;會員的信用额度&gt;</value>
   </data>
+  <data name="InformingVerifiedMessage_3" xml:space="preserve">
+    <value>提示：您可以輸入任何單詞既可得到我的建議。</value>
+  </data>
+  <data name="SuggestActionsTitle" xml:space="preserve">
+    <value>以下是我可以為您做的一些操作：</value>
+  </data>
+  <data name="CompleteUMInformMessage_1" xml:space="preserve">
+    <value>我們的系統維護已結束。所有的服務已恢復運作。</value>
+  </data>
+  <data name="CompleteUMInformMessage_2" xml:space="preserve">
+    <value>提示：您可以輸入任何單詞既可立即得到我的協助。</value>
+  </data>
 </root>

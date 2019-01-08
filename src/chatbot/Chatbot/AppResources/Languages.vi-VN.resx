@@ -379,4 +379,16 @@
   <data name="ForceUMMessage" xml:space="preserve">
     <value>Chatbot hiện đang nâng cấp, nên không thể xử lý yêu cầu của bạn. Tuy nhiên, chức năng thông báo vẫn hoạt động bình thường</value>
   </data>
+  <data name="InformingVerifiedMessage_3" xml:space="preserve">
+    <value>Gợi ý: bạn có thể nhập bất kỳ từ nào, phần gợi ý sẽ hiển thị ngay lập tức</value>
+  </data>
+  <data name="SuggestActionsTitle" xml:space="preserve">
+    <value>Dưới đây là một số câu lệnh Chatbot có thể hỗ trợ bạn:</value>
+  </data>
+  <data name="CompleteUMInformMessage_1" xml:space="preserve">
+    <value>Hết thời gian bảo trì.Tất cả dịch vụ đã trở lại hoạt động bình thường.</value>
+  </data>
+  <data name="CompleteUMInformMessage_2" xml:space="preserve">
+    <value>Gợi ý: bạn có thể nhập bất kỳ từ nào, Chatbot sẽ trợ giúp bạn ngay lập tức.</value>
+  </data>
 </root>

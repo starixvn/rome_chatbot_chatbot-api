@@ -120,7 +120,7 @@
                 messageToSend = messageToSend.Replace("#", string.Empty);
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
+            await Task.Delay(TimeSpan.FromSeconds(0.5)).ConfigureAwait(false);
 
             var result = await messageSender.SendMessage(
                 param.User.Id,

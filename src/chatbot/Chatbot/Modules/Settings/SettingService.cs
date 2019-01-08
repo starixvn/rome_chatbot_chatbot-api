@@ -454,6 +454,7 @@
                 SendWelcomeMessage(user, messenger))
                 .ConfigureAwait(false);
 
+            await Task.Delay(TimeSpan.FromSeconds(0.5)).ConfigureAwait(false);
             await SendSuggestionActions(user, messenger).ConfigureAwait(false);
 
             settingLogService.WriteLog(logData);
