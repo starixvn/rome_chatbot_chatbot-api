@@ -1,5 +1,6 @@
 ﻿namespace Chatbot.Modules.UnderMaintenance
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -10,6 +11,7 @@
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
+    using Fanex.Logging;
     using MessengerClient = Messenger.Client;
 
     public interface UnderMaintenanceService
@@ -25,6 +27,7 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageSender messageSender;
         private readonly IChatbotConfigs chatbotConfigs;
+        private readonly ILogger logger;
 
         public UnderMaintenanceServiceImpl(
             SettingService settingService,
@@ -32,7 +35,8 @@
             CustomerService customerService,
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
-            IChatbotConfigs chatbotConfigs)
+            IChatbotConfigs chatbotConfigs,
+            ILogger logger)
         {
             this.settingService = settingService;
             this.actionService = actionService;
@@ -40,10 +44,12 @@
             this.messageBuilder = messageBuilder;
             this.messageSender = messageSender;
             this.chatbotConfigs = chatbotConfigs;
+            this.logger = logger;
         }
 
         public async Task<Result> SendCompleteUMNotifications()
         {
+            logger.Info("Start SendCompleteUMNotifications");
             var users = await settingService.GetUsers().ConfigureAwait(false);
 
             if (users == null || !users.Any())
@@ -72,13 +78,13 @@
                 foreach (var messenger in messengers)
                 {
                     if (chatbotConfigs.AllowSendCompleteUMNotificationMessengerUsernames.Contains("*")
-                        || chatbotConfigs.AllowSendCompleteUMNotificationMessengerUsernames.Contains(messenger.Username))
+                        || chatbotConfigs.AllowSendCompleteUMNotificationMessengerUsernames.Contains(messenger.Username, StringComparer.OrdinalIgnoreCase))
                     {
                         await SendCompleteUMMessages(user, messenger, rootActions).ConfigureAwait(false);
                     }
                 }
             }
-
+            logger.Info("End SendCompleteUMNotifications");
             return Result.CreateSuccessfulResult();
         }
 

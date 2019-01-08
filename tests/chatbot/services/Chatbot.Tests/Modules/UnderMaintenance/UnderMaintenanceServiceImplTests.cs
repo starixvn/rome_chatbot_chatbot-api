@@ -11,6 +11,7 @@
     using Chatbot.Modules.Settings;
     using Chatbot.Modules.UnderMaintenance;
     using Chatbot.Shared.Configurations;
+    using Fanex.Logging;
     using KellermanSoftware.CompareNetObjects;
     using NSubstitute;
     using Xunit;
@@ -45,7 +46,8 @@
                 customerService,
                 messageBuilder,
                 messageSender,
-                chatbotConfigs);
+                chatbotConfigs,
+                Substitute.For<ILogger>());
 
             compareLogic = new CompareLogic();
         }
