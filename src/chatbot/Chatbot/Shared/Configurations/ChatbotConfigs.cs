@@ -82,6 +82,8 @@ namespace Chatbot.Shared.Configurations
         int CopyCustomerActionId { get; }
 
         int ExpiredMinutesForConfirmMessage { get; }
+
+        bool IsForceUM { get; }
     }
 
     public class ChatbotConfigs : IChatbotConfigs
@@ -130,6 +132,8 @@ namespace Chatbot.Shared.Configurations
             CopyMemberInputCreditActionId = GetValue<int>("CopyCustomer:Member:InputCreditActionId");
             CopyCustomerLimitPerDay = GetValue<int>("CopyCustomer:LimitPerDay");
             CopyCustomerActionId = GetValue<int>("CopyCustomer:ActionId");
+
+            IsForceUM = GetValue<bool>("Chatbot:IsForceUM");
         }
 
         public int MaxAddActionTimes { get; }
@@ -204,6 +208,8 @@ namespace Chatbot.Shared.Configurations
         public int BalanceMaxTopQuery { get; }
 
         public int ExpiredMinutesForConfirmMessage { get; }
+
+        public bool IsForceUM { get; }
 
         private T GetValue<T>(string key)
         {

@@ -17,7 +17,7 @@
             this.commandService = commandService;
         }
 
-        [ServiceFilter(typeof(AutoReplyUMFilterAttribute))]
+        [ServiceFilter(typeof(AutoReplyUMFilterAttribute)), ServiceFilter(typeof(ForceUMFilterAttribute))]
         [Route("run"), HttpPost]
         public async Task Run([FromBody]CommandParam param)
         {

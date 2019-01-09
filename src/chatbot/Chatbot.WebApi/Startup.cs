@@ -131,6 +131,7 @@ namespace Chatbot.WebApi
             });
 
             services.AddScoped<AutoReplyUMFilterAttribute>();
+            services.AddScoped<ForceUMFilterAttribute>();
 
             //services.AddAuthentication(options =>
             //{
