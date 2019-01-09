@@ -429,4 +429,7 @@
   <data name="BalanceTopQueryHint" xml:space="preserve">
     <value>*Hint: To quickly view Balance Info of 100 downlines, please type: /bal 100</value>
   </data>
+  <data name="ForceUMMessage" xml:space="preserve">
+    <value>Bot is being upgraded at the moment, so we couldn't handle your request now. However, notification still works normally.</value>
+  </data>
 </root>

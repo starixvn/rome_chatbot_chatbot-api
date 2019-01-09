@@ -54,6 +54,8 @@
         Task IncreaseUserActionCount(int userId, int actionId, int messengerType, string messengerUsername);
 
         Task<bool> IsUserReachedTheLimitOfActionInDay(int userId, int messengerType, int actionId, int limit);
+
+        Task<User> GetUser(int messengerType, string messengerUsername);
     }
 
     public class SettingServiceImpl : SettingService
@@ -588,6 +590,19 @@
             var numOfAddTime = addUserLogActions.Sum(action => action.CountTimes);
 
             return numOfAddTime >= limit;
+        }
+
+        public async Task<User> GetUser(int messengerType, string messengerUsername)
+        {
+            var messenger = await GetMessenger(messengerType, messengerUsername);
+
+            if (messenger == null
+                || messenger.UserId < 0)
+            {
+                return new User();
+            }
+
+            return await GetUser(messenger.UserId);
         }
     }
 }

@@ -376,4 +376,7 @@
   <data name="InstructionCopyCustomerCommand_CustLevel_1" xml:space="preserve">
     <value>/copy &lt;member của bạn&gt; &lt;mức tín dụng member&gt;</value>
   </data>
+  <data name="ForceUMMessage" xml:space="preserve">
+    <value>Chatbot hiện đang nâng cấp, nên không thể xử lý yêu cầu của bạn. Tuy nhiên, chức năng thông báo vẫn hoạt động bình thường</value>
+  </data>
 </root>

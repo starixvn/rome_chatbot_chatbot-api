@@ -60,6 +60,8 @@
         string BuildCopyCustomerInstructionMessage(string username, int custLevel, int messengerType, string language);
 
         string BuildConfirmUpdateAction(string actionName, int messengerType, string language);
+
+        string BuildMessage(string messageKey, string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -256,5 +258,8 @@
                 GetMessengerFormatter(messengerType).NewLine(),
                 StaticResources.Get(nameof(Languages.Yes), language),
                 actionName);
+
+        public string BuildMessage(string messageKey, string language)
+            => StaticResources.Get(messageKey, language);
     }
 }

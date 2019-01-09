@@ -322,6 +322,15 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bot is being upgraded at the moment, so we couldn&apos;t handle your request now. However, notification still works normally..
+        /// </summary>
+        public static string ForceUMMessage {
+            get {
+                return ResourceManager.GetString("ForceUMMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The current request has been cancelled..
         /// </summary>
         public static string FunctionHasBeenCancelled {
