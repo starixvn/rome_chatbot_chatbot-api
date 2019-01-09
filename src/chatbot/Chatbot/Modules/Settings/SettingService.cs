@@ -593,7 +593,6 @@
 
         public async Task<IEnumerable<User>> GetUsers()
             => await dynamicRepository.FetchAsync<User>(new GetAllUsersCriteria()).ConfigureAwait(false);
-        }
 
         public async Task<User> GetUser(int messengerType, string messengerUsername)
         {
@@ -606,5 +605,6 @@
             }
 
             return await GetUser(messenger.UserId);
+        }
     }
 }

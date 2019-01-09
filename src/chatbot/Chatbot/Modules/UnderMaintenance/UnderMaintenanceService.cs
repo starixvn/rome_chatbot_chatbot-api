@@ -80,7 +80,9 @@
                     if (chatbotConfigs.AllowSendCompleteUMNotificationMessengerUsernames.Contains("*")
                         || chatbotConfigs.AllowSendCompleteUMNotificationMessengerUsernames.Contains(messenger.Username, StringComparer.OrdinalIgnoreCase))
                     {
-                        await SendCompleteUMMessages(user, messenger, rootActions).ConfigureAwait(false);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                        Task.Run(() => SendCompleteUMMessages(user, messenger, rootActions));
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     }
                 }
             }
@@ -97,6 +99,7 @@
 
             if (rootActions != null && rootActions.Any())
             {
+                await Task.Delay(TimeSpan.FromSeconds(0.5)).ConfigureAwait(false);
                 await BuildAndSendRootActions(user, messenger, rootActions).ConfigureAwait(false);
             }
         }

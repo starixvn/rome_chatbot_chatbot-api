@@ -15,7 +15,6 @@
     using KellermanSoftware.CompareNetObjects;
     using NSubstitute;
     using Xunit;
-    using MessengerClient = Messenger.Client;
 
     public class UnderMaintenanceServiceImplTests
     {
@@ -144,46 +143,6 @@
             // Assert
             settingService.Received().GetFunctions(user.Id);
             actionService.Received().GetRootActions(user);
-        }
-
-        [Fact]
-        public void SendCompleteUMNotifications_RootActionsIsNotNullOrEmptyList_SendSuggestButtonsMessage()
-        {
-            // Arrange
-            var user = new User(1, 2, 3, 0, "en-US", 15);
-            IEnumerable<User> users = new List<User> { user };
-            var messenger = new Messenger(1, "username", true, false);
-            IEnumerable<Messenger> messengers = new List<Messenger>
-            {
-                messenger
-            };
-            settingService.GetUsers().Returns(Task.FromResult(users));
-            customerService.IsAccountClosed(user.CustId, user.SubAccountId).Returns(Task.FromResult(false));
-            settingService.GetMessengers(1, true).Returns(Task.FromResult(messengers));
-            IEnumerable<MessengerClient.Models.MessageAction> rootActions = new List<MessengerClient.Models.MessageAction>
-            {
-                new MessengerClient.Models.MessageAction()
-            };
-            actionService.GetRootActions(user).Returns(Task.FromResult(rootActions));
-            messageBuilder.BuildSuggestionActionsTitle(user.Language).Returns("SuggestionActionsTitle");
-            var message = new MessengerClient.Models.Message
-            {
-                Content = "SuggestionActionsTitle",
-                MessageMarkup = new MessengerClient.Models.MessageMarkup
-                {
-                    MessageActions = rootActions
-                }
-            };
-
-            // Act
-            underMaintenanceService.SendCompleteUMNotifications().ConfigureAwait(false);
-
-            // Assert
-            messageSender.Received().SendMessage(
-                user.Id,
-                messenger,
-                Arg.Is<MessengerClient.Models.Message>(m => compareLogic.Compare(message, m).AreEqual),
-                user.SelfdestructionPeriod);
         }
     }
 }
