@@ -596,7 +596,7 @@
 
         public async Task<User> GetUser(int messengerType, string messengerUsername)
         {
-            var messenger = await GetMessenger(messengerType, messengerUsername);
+            var messenger = await GetMessenger(messengerType, messengerUsername).ConfigureAwait(false);
 
             if (messenger == null
                 || messenger.UserId < 0)
@@ -604,7 +604,7 @@
                 return new User();
             }
 
-            return await GetUser(messenger.UserId);
+            return await GetUser(messenger.UserId).ConfigureAwait(false);
         }
     }
 }
