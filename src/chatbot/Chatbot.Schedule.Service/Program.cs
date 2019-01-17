@@ -12,9 +12,14 @@ namespace Chatbot.Schedule.Service
     using Chatbot.Schedule.Service.Jobs;
     using Fanex.Logging;
     using Fanex.Logging.RabbitMQ;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using ONEbook.UM;
+    using ONEbook.UM.AspNetCore.Configuration;
+    using ONEbook.UM.Helpers;
+    using ONEbook.UM.Transport;
     using Quartz;
     using Quartz.Impl;
     using Serilog;
@@ -49,6 +54,13 @@ namespace Chatbot.Schedule.Service
                             hostContext.Configuration.GetSection("Chatbot:ApiKey").Value))
                        .UseRestClient(new Client.Transport.RestClient());
 
+                 var umConfig = new UMClientConfiguration(hostContext.Configuration);
+
+                 UMClientManager
+                    .UseConfig(umConfig)
+                    .UseRestClient(new RestClient(umConfig))
+                    .UseHttpContext(new HttpContextHelper(new HttpContextAccessor()));
+
                  services.AddLogging();
                  services.AddSingleton(_ => hostContext.Configuration);
                  services.AddSingleton<ISchedulerFactory>(
@@ -58,6 +70,7 @@ namespace Chatbot.Schedule.Service
                     }));
                  services.AddTransient<IJobListener, JobFailureHandler>();
                  services.AddHostedService<ScheduleNotificationService>();
+                 services.AddHostedService<UnderMaintenanceService>();
              })
              .UseSerilog();
 

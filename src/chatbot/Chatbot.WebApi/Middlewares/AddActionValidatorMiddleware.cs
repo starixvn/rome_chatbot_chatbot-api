@@ -5,7 +5,7 @@ namespace Chatbot.WebApi.Middlewares
     using Alpha.Services.Client.Services;
     using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
-    using Chatbot.Modules.Settings;
+    using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +18,7 @@ namespace Chatbot.WebApi.Middlewares
             var messageBuilder = serviceProvider.GetService<IMessageBuilder>();
             var customerService = serviceProvider.GetService<CustomerService>();
             var copyCustomerService = serviceProvider.GetService<CopyCustomerService>();
-            var settingService = serviceProvider.GetService<SettingService>();
+            var userLogActionService = serviceProvider.GetService<UserLogActionService>();
 
             services.AddSingleton<IDictionary<int, IActionValidator>>(
                 new Dictionary<int, IActionValidator>
@@ -31,9 +31,9 @@ namespace Chatbot.WebApi.Middlewares
                     [chatbotConfigs.CopyAgentInputMemberCreditActionId] = new MemberMaxCreditValidator(messageBuilder, chatbotConfigs),
                     [chatbotConfigs.CopyMemberInputUsernameActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
                     [chatbotConfigs.CopyMemberInputCreditActionId] = new MaxCreditValidator(messageBuilder, copyCustomerService),
-                    [chatbotConfigs.CopyMasterActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, settingService, copyCustomerService, chatbotConfigs),
-                    [chatbotConfigs.CopyAgentActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, settingService, copyCustomerService, chatbotConfigs),
-                    [chatbotConfigs.CopyMemberActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, settingService, copyCustomerService, chatbotConfigs)
+                    [chatbotConfigs.CopyMasterActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, userLogActionService, copyCustomerService, chatbotConfigs),
+                    [chatbotConfigs.CopyAgentActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, userLogActionService, copyCustomerService, chatbotConfigs),
+                    [chatbotConfigs.CopyMemberActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, userLogActionService, copyCustomerService, chatbotConfigs)
                 });
         }
     }

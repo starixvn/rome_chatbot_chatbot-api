@@ -6,6 +6,7 @@
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <IsPackable>false</IsPackable>
     <RuntimeFrameworkVersion>2.1.0</RuntimeFrameworkVersion>
+    <SonarQubeTestProject>True</SonarQubeTestProject>
   </PropertyGroup>
 
   <ItemGroup>

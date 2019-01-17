@@ -80,5 +80,48 @@
                 "message/getMessageLogs",
                 Arg.Is<object>(data => assert(data)));
         }
+
+        [Fact]
+        public void GetFunctionMessages_Always_CallsExecuteGetAsync()
+        {
+            // Act
+            messageService.GetFunctionMessages(1);
+
+            // Assert
+            restClient.Received().ExecuteGetAsync<IEnumerable<FunctionMessage>>(
+                $"message/getFunctionMessages?functionId=1");
+        }
+
+        [Fact]
+        public void GetFunctionMessages_Always_ReturnsCorrectValue()
+        {
+            // Arrange
+            var functionId = 1;
+            IEnumerable<FunctionMessage> functionMessages = new List<FunctionMessage>
+            {
+                new FunctionMessage{ Message="message", UserId=1, SelfdestructionPeriod=15 }
+            };
+            restClient
+                .ExecuteGetAsync<IEnumerable<FunctionMessage>>($"message/getFunctionMessages?functionId={functionId}")
+                .Returns(functionMessages);
+
+            // Act
+            var actualResult = messageService.GetFunctionMessages(functionId)
+                .GetAwaiter()
+                .GetResult();
+
+            // Assert
+            Assert.Equal(functionMessages, actualResult);
+        }
+
+        [Fact]
+        public void SendCompleteUMNotifications_Always_CallsExecutePostAsync()
+        {
+            // Act
+            messageService.SendCompleteUMNotifications();
+
+            // Assert
+            restClient.ExecutePostAsync<Result>("message/sendCompleteUMNotifications");
+        }
     }
 }

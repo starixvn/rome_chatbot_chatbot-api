@@ -13,11 +13,13 @@ namespace Chatbot.WebApi
     using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageBuilders.Templates;
-    using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageLoggers;
+    using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Resources;
     using Chatbot.Modules.SettingLogs;
     using Chatbot.Modules.Settings;
+    using Chatbot.Modules.UnderMaintenance;
+    using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Constants;
     using Chatbot.WebApi.Extensions;
@@ -90,7 +92,8 @@ namespace Chatbot.WebApi
             services.AddSingleton<Alpha.Services.Client.Services.LogService, LogServiceImpl>();
             services.AddSingleton<ResourceService, ResourceServiceImpl>();
             services.AddSingleton<CopyCustomerService, CopyCustomerServiceImpl>();
-
+            services.AddSingleton<UserLogActionService, UserLogActionServiceImpl>();
+            services.AddSingleton<UnderMaintenanceService, UnderMaintenanceServiceImpl>();
 
             services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
                 { chatbotConfigs.YesterdayWinLossFunctionId, new MessageTemplate(new HeaderTemplate4(), new BodyTemplate()) },
@@ -121,9 +124,10 @@ namespace Chatbot.WebApi
                     { "ja-JP", CultureInfo.CreateSpecificCulture("ja-JP") },
                     { "ko-KR", CultureInfo.CreateSpecificCulture("ko-KR") }
                 });
+
+            services.AddActionBuilders();
             services.AddFunctionHandler();
             services.AddActionValidators();
-            services.AddActionBuilders();
 
             services.AddSwaggerGen(c =>
             {

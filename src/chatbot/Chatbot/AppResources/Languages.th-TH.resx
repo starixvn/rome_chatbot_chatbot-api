@@ -403,4 +403,16 @@
   <data name="InstructionCopyCustomerCommand_CustLevel_1" xml:space="preserve">
     <value>/copy &lt;สมาชิกของคุณ&gt; &lt;เครดิตของสมาชิก&gt;</value>
   </data>
+  <data name="InformingVerifiedMessage_3" xml:space="preserve">
+    <value>คำแนะนำ: คุณสามารถป้อนคำใดก็ได้ เพื่อรับคำแนะนำของฉันได้ทันที</value>
+  </data>
+  <data name="SuggestActionsTitle" xml:space="preserve">
+    <value>มีการกระทำบางอย่างที่ฉันสามารถทำเพื่อคุณได้:</value>
+  </data>
+  <data name="CompleteUMInformMessage_1" xml:space="preserve">
+    <value>การปรับปรุงระบบของเราเสร็จสิ้นแล้ว บริการทั้งหมดของเรากลับมาใช้งานได้อีกครั้ง</value>
+  </data>
+  <data name="CompleteUMInformMessage_2" xml:space="preserve">
+    <value>คำแนะนำ: คุณสามารถป้อนคำใดก็ได้เพื่อรับความช่วยเหลือของฉันได้ทันที</value>
+  </data>
 </root>

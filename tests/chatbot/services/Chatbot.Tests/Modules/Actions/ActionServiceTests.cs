@@ -15,7 +15,6 @@
     using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.Resources;
-    using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
     using Fanex.Caching;
     using Fanex.Data.Repository;
@@ -35,7 +34,6 @@
         private readonly Func<DateTime> getDateTimeNowFunc;
         private readonly ActionServiceImpl actionServiceImpl;
         private readonly IDynamicRepository dynamicRepository;
-        private readonly SettingService settingService;
         private readonly ResourceService resourceService;
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly ActionNameBuilderFactory actionNameBuilderFactory;
@@ -59,7 +57,6 @@
                 { 4, actionCompiler },
                 { 6, actionCompiler }
             };
-            settingService = Substitute.For<SettingService>();
             resourceService = Substitute.For<ResourceService>();
             getDateTimeNowFunc = Substitute.For<Func<DateTime>>();
             actionNameBuilderFactory = Substitute.For<ActionNameBuilderFactory>();
@@ -71,7 +68,6 @@
                 messageBuilder,
                 actionValidators,
                 actionCompilers,
-                settingService,
                 resourceService,
                 chatbotConfigs,
                 actionNameBuilderFactory,

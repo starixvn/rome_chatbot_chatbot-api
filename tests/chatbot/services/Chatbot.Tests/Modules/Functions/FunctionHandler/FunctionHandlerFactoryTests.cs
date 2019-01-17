@@ -11,6 +11,7 @@
     using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
+    using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
     using Fanex.Logging;
     using NSubstitute;
@@ -26,6 +27,7 @@
         private readonly CustomerService subCustomerService;
         private readonly CopyCustomerService subCopyCustomerService;
         private readonly SettingService subSettingService;
+        private readonly UserLogActionService userLogActionService;
         private readonly ILogger subLogger;
         private readonly IMessageLogger messageLogger;
 
@@ -38,6 +40,7 @@
             subCustomerService = Substitute.For<CustomerService>();
             subSettingService = Substitute.For<SettingService>();
             subCopyCustomerService = Substitute.For<CopyCustomerService>();
+            userLogActionService = Substitute.For<UserLogActionService>();
             messageLogger = Substitute.For<IMessageLogger>();
             subLogger = Substitute.For<ILogger>();
             subChatbotConfigs.MessageAndAnnoucementFunctionIds.Returns(new List<int> { 5, 6, 7, 8 });
@@ -57,6 +60,7 @@
                 subCustomerService,
                 subSettingService,
                 subCopyCustomerService,
+                userLogActionService,
                 messageLogger,
                 subLogger);
         }

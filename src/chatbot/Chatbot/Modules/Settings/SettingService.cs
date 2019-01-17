@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
+    using Chatbot.Modules.Actions;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Resources;
@@ -14,10 +15,12 @@
     using Chatbot.Modules.SettingLogs.Models;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
+    using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Helpers;
     using Fanex.Caching;
     using Fanex.Data.Repository;
+    using MessengerClient = Messenger.Client;
 
     public interface SettingService
     {
@@ -51,9 +54,7 @@
 
         Task UpdateSelfdestructionPeriod(int userId, int minutes, UpdateSelfdestructionPeriodLog logData);
 
-        Task IncreaseUserActionCount(int userId, int actionId, int messengerType, string messengerUsername);
-
-        Task<bool> IsUserReachedTheLimitOfActionInDay(int userId, int messengerType, int actionId, int limit);
+        Task<IEnumerable<User>> GetUsers();
 
         Task<User> GetUser(int messengerType, string messengerUsername);
     }
@@ -70,6 +71,8 @@
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly SettingLogService settingLogService;
         private readonly ResourceService resourceService;
+        private readonly ActionService actionService;
+        private readonly UserLogActionService userLogActionService;
 
 #pragma warning disable S107 // Methods should not have too many parameters
 
@@ -81,6 +84,8 @@
             IChatbotConfigs chatbotConfigs,
             SettingLogService settingLogService,
             ResourceService resourceService,
+            ActionService actionService,
+            UserLogActionService userLogActionService,
             Func<string> randomNumberFunc = null,
             Func<DateTime> getCurrentDateTimeFunc = null)
 #pragma warning restore S107 // Methods should not have too many parameters
@@ -94,6 +99,8 @@
             this.chatbotConfigs = chatbotConfigs;
             this.settingLogService = settingLogService;
             this.resourceService = resourceService;
+            this.actionService = actionService;
+            this.userLogActionService = userLogActionService;
         }
 
         public async Task GenerateVerificationCode(int userId, Messenger messenger)
@@ -127,6 +134,25 @@
             var message = messageBuilder.BuildWelcomeMessage(user.Language, messenger.Type);
 
             await messageSender.SendMessage(user.Id, messenger, message, user.SelfdestructionPeriod).ConfigureAwait(false);
+        }
+
+        private async Task SendSuggestionActions(User user, Messenger messenger)
+        {
+            var rootActions = await actionService.GetRootActions(user).ConfigureAwait(false);
+
+            if (rootActions != null && rootActions.Any())
+            {
+                var message = new MessengerClient.Models.Message
+                {
+                    Content = messageBuilder.BuildSuggestionActionsTitle(user.Language),
+                    MessageMarkup = new MessengerClient.Models.MessageMarkup
+                    {
+                        MessageActions = rootActions
+                    }
+                };
+
+                await messageSender.SendMessage(user.Id, messenger, message, user.SelfdestructionPeriod).ConfigureAwait(false);
+            }
         }
 
         private async Task InsertMessengerWithVerificationCode(
@@ -377,30 +403,18 @@
             var command = new InsertUserCommand(custId, subAccountId, language, custLevel);
 
             await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
-            await IncreaseUserActionCount(command.UserId, chatbotConfigs.AddAccountActionId, messenger.Type, messenger.Username).ConfigureAwait(false);
+            await userLogActionService.IncreaseUserActionCount(command.UserId, chatbotConfigs.AddAccountActionId, messenger.Type, messenger.Username)
+                .ConfigureAwait(false);
 
             return command.UserId;
         }
 
         private async Task<bool> IsUserAddAccountOverMaxTimeInDay(int userId, int messengerType)
-            => await IsUserReachedTheLimitOfActionInDay(
+            => await userLogActionService.IsUserReachedTheLimitOfActionInDay(
                 userId,
                 messengerType,
                 chatbotConfigs.AddAccountActionId,
                 chatbotConfigs.MaxAddActionTimes).ConfigureAwait(false);
-
-        private async Task<IEnumerable<UserActionDto>> GetUserAction(
-            int userId,
-            int messengerType,
-            string messengerUsername,
-            int actionId)
-        {
-            var criteria = new GetUserActionsCriteria(userId, actionId, messengerType, messengerUsername);
-
-            var userAction = await dynamicRepository.FetchAsync<UserActionDto>(criteria).ConfigureAwait(false);
-
-            return userAction;
-        }
 
         public async Task UpdateMessengerStatus(
             int userId,
@@ -432,12 +446,16 @@
             }
 
             var user = await GetUser(userId).ConfigureAwait(false);
+            user.Functions = await GetFunctions(userId).ConfigureAwait(false);
 
             await Task.WhenAll(
                 UpdateMessengerStatus(userId, messenger.Type, messenger.Username, true),
                 ResetUserActionCount(userId, chatbotConfigs.WrongVerificationCodeActionId, messenger.Type, messenger.Username),
                 SendWelcomeMessage(user, messenger))
                 .ConfigureAwait(false);
+
+            await Task.Delay(TimeSpan.FromSeconds(0.5)).ConfigureAwait(false);
+            await SendSuggestionActions(user, messenger).ConfigureAwait(false);
 
             settingLogService.WriteLog(logData);
 
@@ -486,7 +504,7 @@
             Messenger messenger,
             VerificationCodeResult result)
         {
-            await IncreaseUserActionCount(
+            await userLogActionService.IncreaseUserActionCount(
                                     userId,
                                     chatbotConfigs.WrongVerificationCodeActionId,
                                     messenger.Type,
@@ -506,21 +524,10 @@
                 return 0;
             }
 
-            var failedAction = (await GetUserAction(userId, messenger.Type, messenger.Username, chatbotConfigs.WrongVerificationCodeActionId).ConfigureAwait(false))
+            var failedAction = (await userLogActionService.GetUserAction(userId, messenger.Type, messenger.Username, chatbotConfigs.WrongVerificationCodeActionId).ConfigureAwait(false))
                 .FirstOrDefault();
 
             return failedAction?.CountTimes ?? 0;
-        }
-
-        public async Task IncreaseUserActionCount(
-            int userId,
-            int actionId,
-            int messengerType,
-            string messengerUsername)
-        {
-            var command = new InsertUserActionCommand(userId, actionId, messengerType, messengerUsername);
-
-            await dynamicRepository.ExecuteAsync(command).ConfigureAwait(false);
         }
 
         private async Task ResetUserActionCount(
@@ -584,17 +591,12 @@
             settingLogService.WriteLog(logData);
         }
 
-        public async Task<bool> IsUserReachedTheLimitOfActionInDay(int userId, int messengerType, int actionId, int limit)
-        {
-            var addUserLogActions = await GetUserAction(userId, messengerType, string.Empty, actionId).ConfigureAwait(false);
-            var numOfAddTime = addUserLogActions.Sum(action => action.CountTimes);
-
-            return numOfAddTime >= limit;
-        }
+        public async Task<IEnumerable<User>> GetUsers()
+            => await dynamicRepository.FetchAsync<User>(new GetAllUsersCriteria()).ConfigureAwait(false);
 
         public async Task<User> GetUser(int messengerType, string messengerUsername)
         {
-            var messenger = await GetMessenger(messengerType, messengerUsername);
+            var messenger = await GetMessenger(messengerType, messengerUsername).ConfigureAwait(false);
 
             if (messenger == null
                 || messenger.UserId < 0)
@@ -602,7 +604,7 @@
                 return new User();
             }
 
-            return await GetUser(messenger.UserId);
+            return await GetUser(messenger.UserId).ConfigureAwait(false);
         }
     }
 }

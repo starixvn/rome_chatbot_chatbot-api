@@ -1,11 +1,11 @@
-﻿namespace Chatbot.Modules.Settings.Params.Db.Commands
+﻿namespace Chatbot.Modules.UserLogActions.Params.Db.Criteria
 {
     using System;
     using Fanex.Data.Repository;
 
-    public class InsertUserActionCommand : NonQueryCommand
+    public class GetUserLogActionsCriteria : CriteriaBase
     {
-        public InsertUserActionCommand(
+        public GetUserLogActionsCriteria(
             int userId,
             int actionId,
             int messengerType,
@@ -15,9 +15,7 @@
             ActionId = actionId;
             MessengerType = messengerType;
             MessengerUsername = messengerUsername;
-            Date = DateTime
-                .Now
-                .Date;
+            Date = DateTime.Now.Date;
         }
 
         public int UserId { get; }
@@ -28,17 +26,12 @@
 
         public string MessengerUsername { get; }
 
-        public DateTime Date
-        {
-            get;
-        }
+        public DateTime Date { get; }
 
-        public override string GetSettingKey() => "InsertUserAction";
+        public override string GetSettingKey() => "GetUserLogActions";
 
         public override bool IsValid()
             => UserId > 0
-            && ActionId > 0
-            && MessengerType > 0
-            && !string.IsNullOrWhiteSpace(MessengerUsername);
+            && ActionId > 0;
     }
 }

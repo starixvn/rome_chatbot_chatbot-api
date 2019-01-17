@@ -83,5 +83,91 @@
                 .GetAwaiter()
                 .GetResult());
         }
+
+        [Fact]
+        public void ExecutePostAsync_Always_ResponseData()
+        {
+            var endPoint = "/endpoint";
+            var data = "my_data";
+
+            var restResponse = Substitute.For<RestSharp.IRestResponse<string>>();
+            restResponse.IsSuccessful.Returns(true);
+            restResponse.Data.Returns("Result");
+            restsharpClient
+                .ExecuteTaskAsync<string>(Arg.Any<RestSharp.IRestRequest>())
+                .Returns(Task.FromResult(restResponse));
+
+            var result = restClient
+                .ExecutePostAsync<string>(endPoint, data)
+                .GetAwaiter()
+                .GetResult();
+
+            Assert.Equal("Result", result);
+        }
+
+        [Fact]
+        public void ExecutePostAsync_ServiceIsUnvailable_ThrowChatbotClientException()
+        {
+            var endPoint = "/endpoint";
+            var data = "my_data";
+
+            var restResponse = Substitute.For<RestSharp.IRestResponse<string>>();
+            restResponse.IsSuccessful.Returns(false);
+            restResponse.StatusCode.Returns(System.Net.HttpStatusCode.ServiceUnavailable);
+            restsharpClient
+                .ExecuteTaskAsync<string>(Arg.Any<RestSharp.IRestRequest>())
+                .Returns(Task.FromResult(restResponse));
+
+            Assert.Throws<ChatbotClientException>(() =>
+            restClient
+                .ExecutePostAsync<string>(endPoint, data)
+                .GetAwaiter()
+                .GetResult());
+        }
+
+        [Fact]
+        public void ExecutePostAsync_OtherError_ThrowInvalidOperationException()
+        {
+            var endPoint = "/endpoint";
+            var data = "my_data";
+
+            var restResponse = Substitute.For<RestSharp.IRestResponse<string>>();
+            restResponse.IsSuccessful.Returns(false);
+            restsharpClient
+                .ExecuteTaskAsync<string>(Arg.Any<RestSharp.IRestRequest>())
+                .Returns(Task.FromResult(restResponse));
+
+            Assert.Throws<InvalidOperationException>(() =>
+            restClient
+                .ExecutePostAsync<string>(endPoint, data)
+                .GetAwaiter()
+                .GetResult());
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void ExecuteGetAsync_EndPointIsNullOrWhiteSpace_ThrowsArgumentNullException(string endPoint)
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+                restClient
+                    .ExecuteGetAsync<string>(endPoint)
+                    .GetAwaiter()
+                    .GetResult());
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void ExecutePostAsync_EndPointIsNullOrWhiteSpace_ThrowsArgumentNullException(string endPoint)
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+                restClient
+                    .ExecutePostAsync<string>(endPoint)
+                    .GetAwaiter()
+                    .GetResult());
+        }
     }
 }

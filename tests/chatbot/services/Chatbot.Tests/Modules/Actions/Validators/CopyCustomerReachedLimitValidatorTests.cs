@@ -6,7 +6,7 @@
     using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
-    using Chatbot.Modules.Settings;
+    using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
     using KellermanSoftware.CompareNetObjects;
     using NSubstitute;
@@ -17,7 +17,7 @@
         private readonly CompareLogic compareLogic;
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly IMessageBuilder messageBuilder;
-        private readonly SettingService settingService;
+        private readonly UserLogActionService userLogAction;
         private readonly CopyCustomerService copyCustomerService;
         private readonly CopyCustomerReachedLimitValidator copyCustomerReachedLimitValidator;
 
@@ -25,12 +25,12 @@
         {
             compareLogic = new CompareLogic();
             messageBuilder = Substitute.For<IMessageBuilder>();
-            settingService = Substitute.For<SettingService>();
+            userLogAction = Substitute.For<UserLogActionService>();
             copyCustomerService = Substitute.For<CopyCustomerService>();
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
             copyCustomerReachedLimitValidator = new CopyCustomerReachedLimitValidator(
                 messageBuilder,
-                settingService,
+                userLogAction,
                 copyCustomerService,
                 chatbotConfigs);
         }
@@ -102,7 +102,7 @@
             copyCustomerReachedLimitValidator.ValidateAction(user, string.Empty, null, messenger);
 
             // Arrange
-            settingService.Received().IsUserReachedTheLimitOfActionInDay(
+            userLogAction.Received().IsUserReachedTheLimitOfActionInDay(
                 user.Id,
                 messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,
@@ -123,7 +123,7 @@
 
             copyCustomerService.ValidateMaxNewMember(user.Id, user.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
-            settingService.IsUserReachedTheLimitOfActionInDay(
+            userLogAction.IsUserReachedTheLimitOfActionInDay(
                 user.Id,
                 messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,

@@ -62,6 +62,9 @@
         string BuildConfirmUpdateAction(string actionName, int messengerType, string language);
 
         string BuildMessage(string messageKey, string language);
+        string BuildCompleteUMNotification(int messengerType, string language);
+
+        string BuildSuggestionActionsTitle(string language);
     }
 
     public class MessageBuilder : IMessageBuilder
@@ -139,7 +142,8 @@
             => string.Join(
                 GetMessengerFormatter(messengerType).NewLine(),
                 StaticResources.Get(nameof(Languages.InformingVerifiedMessage_1), language),
-                StaticResources.Get(nameof(Languages.InformingVerifiedMessage_2), language));
+                StaticResources.Get(nameof(Languages.InformingVerifiedMessage_2), language),
+                StaticResources.Get(nameof(Languages.InformingVerifiedMessage_3), language));
 
         public string BuildAccountClosedMessage(string language)
             => StaticResources.Get(nameof(Languages.YourAccountIsClosed), language);
@@ -261,5 +265,13 @@
 
         public string BuildMessage(string messageKey, string language)
             => StaticResources.Get(messageKey, language);
+        public string BuildCompleteUMNotification(int messengerType, string language)
+            => string.Join(
+                GetMessengerFormatter(messengerType).NewLine(),
+                StaticResources.Get(nameof(Languages.CompleteUMInformMessage_1), language),
+                StaticResources.Get(nameof(Languages.CompleteUMInformMessage_2), language));
+
+        public string BuildSuggestionActionsTitle(string language)
+            => StaticResources.Get(nameof(Languages.SuggestActionsTitle), language);
     }
 }

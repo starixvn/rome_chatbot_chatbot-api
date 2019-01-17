@@ -7,6 +7,7 @@
     using Alpha.Services.Client.Models;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
+    using Chatbot.Modules.Actions;
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Resources;
@@ -15,6 +16,7 @@
     using Chatbot.Modules.Settings;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
+    using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
     using Fanex.Caching;
     using Fanex.Data.Repository;
@@ -33,7 +35,8 @@
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly SettingLogService settingLogService;
         private readonly ResourceService resourceService;
-
+        private readonly ActionService actionService;
+        private readonly UserLogActionService userLogActionService;
         private readonly SettingService settingService;
 
         public SettingServiceTests()
@@ -47,6 +50,8 @@
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
             settingLogService = Substitute.For<SettingLogService>();
             resourceService = Substitute.For<ResourceService>();
+            actionService = Substitute.For<ActionService>();
+            userLogActionService = Substitute.For<UserLogActionService>();
 
             settingService = new SettingServiceImpl(
                 dynamicRepository,
@@ -56,6 +61,8 @@
                 chatbotConfigs,
                 settingLogService,
                 resourceService,
+                actionService,
+                userLogActionService,
                 randomNumberFunc,
                 getCurrentDateTimeFunc);
         }
@@ -198,11 +205,7 @@
             var wrongVerificationCodeActionId = 121212;
             chatbotConfigs.WrongVerificationCodeActionId.Returns(wrongVerificationCodeActionId);
 
-            dynamicRepository.FetchAsync<UserActionDto>(Arg.Is<GetUserActionsCriteria>(criteria
-                => criteria.UserId == userId
-                && criteria.ActionId == wrongVerificationCodeActionId
-                && criteria.MessengerType == 2
-                && criteria.MessengerUsername == "Messenger2"))
+            userLogActionService.GetUserAction(userId, 2, "Messenger2", wrongVerificationCodeActionId)
                 .Returns(Task.FromResult(new List<UserActionDto> { new UserActionDto(userId, 2, "Messenger2", wrongVerificationCodeActionId, 100, DateTime.Now) } as IEnumerable<UserActionDto>));
 
             var actualMessengers = settingService.GetMessengers(userId, false).GetAwaiter().GetResult();
@@ -458,11 +461,11 @@
 
             // Assert
             Assert.Equal(result.Code, expectedResult.Code);
-            dynamicRepository.Received().ExecuteAsync(Arg.Is<InsertUserActionCommand>(
-                command => command.UserId == userId
-                        && command.MessengerType == messengerDto.Type
-                        && command.MessengerUsername == messengerDto.Username
-                        && command.ActionId == 601));
+            userLogActionService.Received().IncreaseUserActionCount(
+                userId,
+                601,
+                messengerDto.Type,
+                messengerDto.Username);
         }
 
         [Fact]
@@ -599,16 +602,8 @@
             chatbotConfigs.AddAccountActionId.Returns(addAccountActionId);
             chatbotConfigs.MaxAddActionTimes.Returns(29);
 
-            dynamicRepository.FetchAsync<UserActionDto>(
-                Arg.Is<GetUserActionsCriteria>(criteria
-                => criteria.UserId == userId
-                && criteria.ActionId == addAccountActionId))
-                .Returns(Task.FromResult(
-                    new List<UserActionDto>
-                    {
-                        new UserActionDto(userId, 1, "messenger type", addAccountActionId, 10, DateTime.Now),
-                        new UserActionDto(userId, 1, "messenger type2", addAccountActionId, 20, DateTime.Now)
-                    } as IEnumerable<UserActionDto>));
+            userLogActionService.IsUserReachedTheLimitOfActionInDay(userId, messenger.Type, addAccountActionId, 29)
+                .Returns(Task.FromResult(true));
 
             // Act
             var result = settingService.AddUser(custId, subAccountId, custName, language, messenger, custLevel, logData)

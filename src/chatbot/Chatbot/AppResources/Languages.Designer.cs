@@ -187,6 +187,24 @@ namespace Chatbot.AppResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Our UM time is over. All of our service has been back to work..
+        /// </summary>
+        public static string CompleteUMInformMessage_1 {
+            get {
+                return ResourceManager.GetString("CompleteUMInformMessage_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hint: you could input any word to get my assistance right away..
+        /// </summary>
+        public static string CompleteUMInformMessage_2 {
+            get {
+                return ResourceManager.GetString("CompleteUMInformMessage_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you want to request any of the following function(s)?.
         /// </summary>
         public static string ConfirmKeywordTitle {
@@ -480,6 +498,15 @@ namespace Chatbot.AppResources {
         public static string InformingVerifiedMessage_2 {
             get {
                 return ResourceManager.GetString("InformingVerifiedMessage_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hint: you could input any word to get my suggestion right away..
+        /// </summary>
+        public static string InformingVerifiedMessage_3 {
+            get {
+                return ResourceManager.GetString("InformingVerifiedMessage_3", resourceCulture);
             }
         }
         
@@ -795,6 +822,15 @@ namespace Chatbot.AppResources {
         public static string ServiceNotAvailable {
             get {
                 return ResourceManager.GetString("ServiceNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Here are some actions I could do for you:.
+        /// </summary>
+        public static string SuggestActionsTitle {
+            get {
+                return ResourceManager.GetString("SuggestActionsTitle", resourceCulture);
             }
         }
         

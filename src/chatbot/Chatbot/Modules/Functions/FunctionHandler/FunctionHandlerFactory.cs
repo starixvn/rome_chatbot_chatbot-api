@@ -10,6 +10,7 @@
     using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
+    using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
     using Fanex.Logging;
 
@@ -27,6 +28,7 @@
         private readonly CustomerService customerService;
         private readonly SettingService settingService;
         private readonly CopyCustomerService copyCustomerService;
+        private readonly UserLogActionService userLogActionService;
         private readonly ILogger logger;
         private readonly IMessageLogger messageLogger;
 
@@ -38,6 +40,7 @@
             CustomerService customerService,
             SettingService settingService,
             CopyCustomerService copyCustomerService,
+            UserLogActionService userLogActionService,
             IMessageLogger messageLogger,
             ILogger logger)
         {
@@ -47,6 +50,7 @@
             this.customerService = customerService;
             this.settingService = settingService;
             this.copyCustomerService = copyCustomerService;
+            this.userLogActionService = userLogActionService;
             this.logger = logger;
             this.messageLogger = messageLogger;
             this.chatbotConfigs = chatbotConfigs ?? throw new ArgumentNullException(nameof(chatbotConfigs));
@@ -71,7 +75,16 @@
 
             if (functionId == chatbotConfigs.CopyCustomerFunctionId)
             {
-                return new CopyCustomerFunctionHandler(chatbotConfigs, messageBuilder, messageSender, settingService, customerService, copyCustomerService, logger, messageLogger, getDataHanlders);
+                return new CopyCustomerFunctionHandler(
+                    chatbotConfigs,
+                    messageBuilder,
+                    messageSender,
+                    userLogActionService,
+                    customerService,
+                    copyCustomerService,
+                    logger,
+                    messageLogger,
+                    getDataHanlders);
             }
 
             if (functionId == chatbotConfigs.BalanceFunctionId)

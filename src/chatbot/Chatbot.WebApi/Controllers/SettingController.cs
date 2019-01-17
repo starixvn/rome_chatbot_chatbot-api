@@ -93,11 +93,13 @@
                 logParam.IP,
                 messenger);
 
-            return await settingService.VerifyVerificationCode(
+            var result = await settingService.VerifyVerificationCode(
                 userId,
                 param.VerificationCode,
                 messenger,
                 logData);
+
+            return result;
         }
 
         [Route("{userId}/unsubscribe/{messengerType}/{messengerUsername}"), HttpPost]

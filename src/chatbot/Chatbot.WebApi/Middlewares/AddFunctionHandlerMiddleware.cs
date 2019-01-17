@@ -10,7 +10,7 @@ namespace Chatbot.WebApi.Middlewares
     using Alpha.Services.Client.Services;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.Params;
-    using Chatbot.Modules.Settings;
+    using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
     using Microsoft.Extensions.DependencyInjection;
     using Serilog;
@@ -22,7 +22,7 @@ namespace Chatbot.WebApi.Middlewares
         private static AnnouncementService announcementService;
         private static NotificationService chatBotMessageService;
         private static CopyCustomerService copyCustomerService;
-        private static SettingService settingService;
+        private static UserLogActionService userLogActionService;
         private static IChatbotConfigs chatbotConfigs;
 
         public static void AddFunctionHandler(this IServiceCollection services)
@@ -34,7 +34,7 @@ namespace Chatbot.WebApi.Middlewares
             chatBotMessageService = serviceProvider.GetService<NotificationService>();
             announcementService = serviceProvider.GetService<AnnouncementService>();
             copyCustomerService = serviceProvider.GetService<CopyCustomerService>();
-            settingService = serviceProvider.GetService<SettingService>();
+            userLogActionService = serviceProvider.GetService<UserLogActionService>();
 
             services.AddSingleton<IDictionary<int, Func<FunctionParam, Task<object>>>>(
                 new Dictionary<int, Func<FunctionParam, Task<object>>>
@@ -154,7 +154,7 @@ namespace Chatbot.WebApi.Middlewares
 
             if (result.IsSuccess)
             {
-                await settingService.IncreaseUserActionCount(
+                await userLogActionService.IncreaseUserActionCount(
                     param.User.Id,
                     chatbotConfigs.CopyCustomerActionId,
                     param.Messenger.Type,

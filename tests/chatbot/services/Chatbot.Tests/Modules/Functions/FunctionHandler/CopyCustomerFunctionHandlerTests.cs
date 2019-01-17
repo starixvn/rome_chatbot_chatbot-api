@@ -11,7 +11,7 @@
     using Chatbot.Modules.MessageBuilders;
     using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.MessageSenders;
-    using Chatbot.Modules.Settings;
+    using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
     using Fanex.Logging;
     using NSubstitute;
@@ -23,7 +23,7 @@
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageSender messageSender;
-        private readonly SettingService settingService;
+        private readonly UserLogActionService userLogActionService;
         private readonly CustomerService customerService;
         private readonly CopyCustomerService copyCustomerService;
         private readonly IMessageLogger messageLogger;
@@ -37,7 +37,7 @@
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
             messageBuilder = Substitute.For<IMessageBuilder>();
             messageSender = Substitute.For<IMessageSender>();
-            settingService = Substitute.For<SettingService>();
+            userLogActionService = Substitute.For<UserLogActionService>();
             customerService = Substitute.For<CustomerService>();
             copyCustomerService = Substitute.For<CopyCustomerService>();
             messageLogger = Substitute.For<IMessageLogger>();
@@ -47,7 +47,7 @@
                 chatbotConfigs,
                 messageBuilder,
                 messageSender,
-                settingService,
+                userLogActionService,
                 customerService,
                 copyCustomerService,
                 logger,
@@ -249,7 +249,7 @@
             copyCustomerFunctionHandler.RunHandler(param).ConfigureAwait(false);
 
             // Assert
-            settingService.Received().IsUserReachedTheLimitOfActionInDay(
+            userLogActionService.Received().IsUserReachedTheLimitOfActionInDay(
                 param.User.Id,
                 param.Messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,
@@ -264,7 +264,7 @@
             param.Others["parameters"] = new string[] { "username", "123" };
             copyCustomerService.ValidateMaxNewMember(param.User.CustId, param.User.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
-            settingService.IsUserReachedTheLimitOfActionInDay(
+            userLogActionService.IsUserReachedTheLimitOfActionInDay(
                 param.User.Id,
                 param.Messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,
@@ -293,7 +293,7 @@
             param.Others["parameters"] = new string[] { "username", "123" };
             copyCustomerService.ValidateMaxNewMember(param.User.CustId, param.User.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
-            settingService.IsUserReachedTheLimitOfActionInDay(
+            userLogActionService.IsUserReachedTheLimitOfActionInDay(
                 param.User.Id,
                 param.Messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,
@@ -315,7 +315,7 @@
             param.Others["parameters"] = new string[] { "username", "123" };
             copyCustomerService.ValidateMaxNewMember(param.User.CustId, param.User.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
-            settingService.IsUserReachedTheLimitOfActionInDay(
+            userLogActionService.IsUserReachedTheLimitOfActionInDay(
                 param.User.Id,
                 param.Messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,
@@ -346,7 +346,7 @@
             param.Others["parameters"] = new string[] { "username", "123" };
             copyCustomerService.ValidateMaxNewMember(param.User.CustId, param.User.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
-            settingService.IsUserReachedTheLimitOfActionInDay(
+            userLogActionService.IsUserReachedTheLimitOfActionInDay(
                 param.User.Id,
                 param.Messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,
@@ -372,7 +372,7 @@
             param.Others["parameters"] = new string[] { "username", credit };
             copyCustomerService.ValidateMaxNewMember(param.User.CustId, param.User.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
-            settingService.IsUserReachedTheLimitOfActionInDay(
+            userLogActionService.IsUserReachedTheLimitOfActionInDay(
                 param.User.Id,
                 param.Messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,
@@ -407,7 +407,7 @@
                 .Returns(Task.FromResult(new CustomerInfo { UserName = "username" }));
             copyCustomerService.ValidateMaxNewMember(param.User.CustId, param.User.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
-            settingService.IsUserReachedTheLimitOfActionInDay(
+            userLogActionService.IsUserReachedTheLimitOfActionInDay(
                 param.User.Id,
                 param.Messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,

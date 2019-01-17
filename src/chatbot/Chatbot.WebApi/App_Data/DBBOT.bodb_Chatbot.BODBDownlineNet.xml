@@ -15,11 +15,11 @@
     <Setting Key="GetUser" SpName="Chatbot_GetUser" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="userid" />
     </Setting>
-    <Setting Key="GetUserActions" SpName="Chatbot_GetUserLogActions" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="GetUserLogActions" SpName="Chatbot_GetUserLogActions" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="GetUserFunctions" SpName="Chatbot_GetUserFunctions" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet">
       <Mapping ObjectProperty="Id" DataField="functionid" />
     </Setting>
-    <Setting Key="InsertUserAction" SpName="Chatbot_InsertUserLogAction" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="InsertUserLogAction" SpName="Chatbot_InsertUserLogAction" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="InsertMessage" SpName="Chatbot_InsertMessage" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="InsertMessengerAccount" SpName="Chatbot_InsertMessengerAccount" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="InsertUser" SpName="Chatbot_InsertUser" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
@@ -45,6 +45,9 @@
     </Setting>
     <Setting Key="Chatbot_GetResource" SpName="Chatbot_GetResource" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
     <Setting Key="Chatbot_UpdateSelfdestructionPeriod" SpName="Chatbot_UpdateSelfdestructionPeriod" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet" />
+    <Setting Key="Chatbot_GetAllUsers" SpName="Chatbot_GetAllUsers" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet">
+      <Mapping ObjectProperty="Id" DataField="userid" />
+    </Setting>
   </Function>
   <Function Name="Action">
     <Setting Key="Chatbot_GetUserActionsInChain" SpName="Chatbot_GetUserActionsInChain" DbName="DBBOT.bodb_Chatbot.BODBDownlineNet">
