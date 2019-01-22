@@ -140,7 +140,7 @@
 
             if (actionValidators.Keys.Contains(currentActionId))
             {
-                var validationResult = actionValidators[currentActionId].ValidateAction(user, string.Empty, userActions, messenger);
+                var validationResult = await actionValidators[currentActionId].ValidateAction(user, string.Empty, userActions, messenger);
                 if (validationResult.IsNotOk)
                 {
                     return (string.Empty, currentActionId, await BuildWrongValidationResult(currentActionId, user, userActions, validationResult).ConfigureAwait(false));
@@ -237,7 +237,7 @@
 
             if (!hasValidated && actionValidators.Keys.Contains(currentAction.Id))
             {
-                var validationResult = actionValidators[currentAction.Id].ValidateAction(user, userReponse, userActions, messenger);
+                var validationResult = await actionValidators[currentAction.Id].ValidateAction(user, userReponse, userActions, messenger);
                 if (validationResult.IsNotOk)
                 {
                     return (string.Empty, currentAction.Id, await BuildWrongValidationResult(currentAction.Id, user, userActions, validationResult).ConfigureAwait(false));

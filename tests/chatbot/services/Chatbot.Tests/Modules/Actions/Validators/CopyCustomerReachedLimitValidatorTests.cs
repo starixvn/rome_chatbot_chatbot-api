@@ -17,7 +17,8 @@
         private readonly CompareLogic compareLogic;
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly IMessageBuilder messageBuilder;
-        private readonly UserLogActionService userLogAction;
+        private readonly CustomerService customerService;
+        private readonly UserLogActionService userLogActionService;
         private readonly CopyCustomerService copyCustomerService;
         private readonly CopyCustomerReachedLimitValidator copyCustomerReachedLimitValidator;
 
@@ -25,12 +26,14 @@
         {
             compareLogic = new CompareLogic();
             messageBuilder = Substitute.For<IMessageBuilder>();
-            userLogAction = Substitute.For<UserLogActionService>();
+            userLogActionService = Substitute.For<UserLogActionService>();
+            customerService = Substitute.For<CustomerService>();
             copyCustomerService = Substitute.For<CopyCustomerService>();
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
             copyCustomerReachedLimitValidator = new CopyCustomerReachedLimitValidator(
                 messageBuilder,
-                userLogAction,
+                customerService,
+                userLogActionService,
                 copyCustomerService,
                 chatbotConfigs);
         }
@@ -47,7 +50,7 @@
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result()));
 
             // Act
-            copyCustomerReachedLimitValidator.ValidateAction(user, string.Empty, null, messenger);
+            copyCustomerReachedLimitValidator.ValidateAction(user, string.Empty, null, messenger).ConfigureAwait(false);
 
             // Arrange
             copyCustomerService.DidNotReceive().ValidateMaxNewMember(user.CustId, user.Language);
@@ -57,12 +60,13 @@
         public void ValidateAction_CustLevelIsAgent_CallsValidateMaxNewMember()
         {
             // Arrange
+            var messenger = new Messenger(1, "username");
             var user = new User(1, 1, CustLevel.AgentLevel, 0, "en-US", null);
             copyCustomerService.ValidateMaxNewMember(user.Id, user.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result()));
 
             // Act
-            copyCustomerReachedLimitValidator.ValidateAction(user, string.Empty, null, null);
+            copyCustomerReachedLimitValidator.ValidateAction(user, string.Empty, null, messenger).ConfigureAwait(false);
 
             // Arrange
             copyCustomerService.Received().ValidateMaxNewMember(user.CustId, user.Language);
@@ -72,13 +76,15 @@
         public void ValidateAction_ValidateMaxNewMemberFailed_ReturnsErrorValidationResult()
         {
             // Arrange
+            var messenger = new Messenger(1, "username");
             var user = new User(1, 1, CustLevel.AgentLevel, 0, "en-US", null);
             copyCustomerService.ValidateMaxNewMember(user.Id, user.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = false, Message = "ErrorMessage" }));
             var expectedResult = ActionValidationResult.CreateErrorValidationResult("ErrorMessage", true);
 
             // Act
-            var actualResult = copyCustomerReachedLimitValidator.ValidateAction(user, string.Empty, null, null);
+            var actualResult = copyCustomerReachedLimitValidator.ValidateAction(user, string.Empty, null, messenger)
+                .GetAwaiter().GetResult();
 
             // Arrange
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
@@ -99,10 +105,10 @@
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
 
             // Act
-            copyCustomerReachedLimitValidator.ValidateAction(user, string.Empty, null, messenger);
+            copyCustomerReachedLimitValidator.ValidateAction(user, string.Empty, null, messenger).ConfigureAwait(false);
 
             // Arrange
-            userLogAction.Received().IsUserReachedTheLimitOfActionInDay(
+            userLogActionService.Received().IsUserReachedTheLimitOfActionInDay(
                 user.Id,
                 messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,
@@ -123,7 +129,7 @@
 
             copyCustomerService.ValidateMaxNewMember(user.Id, user.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
-            userLogAction.IsUserReachedTheLimitOfActionInDay(
+            userLogActionService.IsUserReachedTheLimitOfActionInDay(
                 user.Id,
                 messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,
@@ -135,7 +141,7 @@
             var expectedResult = ActionValidationResult.CreateErrorValidationResult("CopyCustomerReachedLimitMessage", true);
 
             // Act
-            var actualResult = copyCustomerReachedLimitValidator.ValidateAction(user, string.Empty, null, messenger);
+            var actualResult = copyCustomerReachedLimitValidator.ValidateAction(user, string.Empty, null, messenger).Result;
 
             // Arrange
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);

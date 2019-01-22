@@ -155,9 +155,9 @@
         public void RunHandler_GivenMemberCreditParamIsNotNumeric_SendInvalidNumericMessage(string credit)
         {
             // Arrange
-            var user = new Models.User(1, 1, 3, 0, "en-US", null);
-            var messenger = new Models.Messenger(1, "username");
-            var function = new Models.Function() { Id = 9 };
+            var user = new User(1, 1, 3, 0, "en-US", null);
+            var messenger = new Messenger(1, "username");
+            var function = new Function() { Id = 9 };
             var others = new Dictionary<string, object>
             {
                 ["parameters"] = new string[] { "username", "123", credit }
@@ -185,6 +185,7 @@
             // Arrange
             var param = CreateDefaultFunctionParam();
             param.Others["parameters"] = new string[] { "username", "123" };
+            customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
 
             // Act
             copyCustomerFunctionHandler.RunHandler(param).ConfigureAwait(false);
@@ -223,6 +224,7 @@
             param.Others["parameters"] = new string[] { "username", "123" };
             copyCustomerService.ValidateMaxNewMember(param.User.CustId, param.User.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = false, Message = "ErrorMessage" }));
+            customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
 
             // Act
             copyCustomerFunctionHandler.RunHandler(param).ConfigureAwait(false);
@@ -244,6 +246,7 @@
             param.Others["parameters"] = new string[] { "username", "123" };
             copyCustomerService.ValidateMaxNewMember(param.User.CustId, param.User.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
+            customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
 
             // Act
             copyCustomerFunctionHandler.RunHandler(param).ConfigureAwait(false);
@@ -272,6 +275,7 @@
                 .Returns(true);
             messageBuilder.BuildCopyCustomerReachedLimitMessage(Arg.Any<int>(), Arg.Any<string>())
                 .Returns("CopyCustomerReachedLimitMessage");
+            customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
 
             // Act
             copyCustomerFunctionHandler.RunHandler(param).ConfigureAwait(false);
@@ -299,7 +303,9 @@
                 chatbotConfigs.CopyCustomerActionId,
                 chatbotConfigs.CopyCustomerLimitPerDay)
                 .Returns(false);
-
+            customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
+            copyCustomerService.CheckReachLimitDownline(param.User.CustId, (byte)param.User.CustLevel, "username", param.User.Language)
+                .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
             // Act
             copyCustomerFunctionHandler.RunHandler(param).ConfigureAwait(false);
 
@@ -325,6 +331,9 @@
                 .Returns(Task.FromResult(new DownlineInfo { RoleId = 0 }));
             messageBuilder.BuildInvalidDirectDownlineMessage(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<string>())
                 .Returns("InvalidDirectDownlineMessage");
+            customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
+            copyCustomerService.CheckReachLimitDownline(param.User.CustId, (byte)param.User.CustLevel, "username", param.User.Language)
+                .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
 
             // Act
             copyCustomerFunctionHandler.RunHandler(param).ConfigureAwait(false);
@@ -354,6 +363,9 @@
                 .Returns(false);
             customerService.GetDownlineInfo(param.User.CustId, "username")
                 .Returns(Task.FromResult(new DownlineInfo { CustId = 1, RoleId = (byte)(param.User.CustLevel - 1) }));
+            customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
+            copyCustomerService.CheckReachLimitDownline(param.User.CustId, (byte)param.User.CustLevel, "username", param.User.Language)
+                .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
 
             // Act
             copyCustomerFunctionHandler.RunHandler(param).ConfigureAwait(false);
@@ -384,6 +396,9 @@
                 .Returns(Task.FromResult(new CustomerPTInfo { MaxCredit = 1000 }));
             messageBuilder.BuildInvalidMaxCreditMessage(param.User.CustLevel - 1, 1000, param.User.Language)
                 .Returns("InvalidMaxCreditMessage");
+            customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
+            copyCustomerService.CheckReachLimitDownline(param.User.CustId, (byte)param.User.CustLevel, "username", param.User.Language)
+                .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
 
             // Act
             copyCustomerFunctionHandler.RunHandler(param).ConfigureAwait(false);
@@ -419,6 +434,9 @@
                 .Returns(Task.FromResult(new CustomerPTInfo { MaxCredit = 1000 }));
             messageBuilder.BuildCopyCustomerInformMessage(param.User.Language)
                 .Returns("CopyCustomerInformMessage");
+            customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
+            copyCustomerService.CheckReachLimitDownline(param.User.CustId, (byte)param.User.CustLevel, "username", param.User.Language)
+                .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
 
             // Act
             copyCustomerFunctionHandler.RunHandler(param).ConfigureAwait(false);

@@ -41,7 +41,8 @@
             var expectedResult = ActionValidationResult.CreateErrorValidationResult("InvalidNumericMessage");
 
             // Act
-            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null);
+            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null)
+                .GetAwaiter().GetResult();
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
@@ -57,7 +58,7 @@
                 .Returns(Task.FromResult(new CustomerPTInfo()));
 
             // Act
-            maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null);
+            maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null).ConfigureAwait(false);
 
             // Assert
             copyCustomerService.Received().GetPT(user.CustId, (byte)user.CustLevel);
@@ -78,7 +79,8 @@
             var expectedResult = ActionValidationResult.CreateErrorValidationResult("InvalidMaxCreditMessage");
 
             // Act
-            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null);
+            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null)
+                .GetAwaiter().GetResult();
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
@@ -99,7 +101,8 @@
             var expectedResult = ActionValidationResult.CreateErrorValidationResult("InvalidMaxCreditMessage");
 
             // Act
-            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null);
+            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null)
+                .GetAwaiter().GetResult();
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
@@ -118,7 +121,8 @@
             var expectedResult = ActionValidationResult.CreateSuccessfulValidationResult();
 
             // Act
-            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null);
+            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null)
+                .GetAwaiter().GetResult();
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
