@@ -213,7 +213,8 @@
                 param.User.CustId,
                 (byte)param.User.CustLevel,
                 custUsername,
-                param.User.Language);
+                param.User.Language)
+                .ConfigureAwait(false);
 
             if (!checkReachLimitDownlineResult.IsSuccess)
             {

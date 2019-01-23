@@ -24,7 +24,7 @@
         {
             if (!string.IsNullOrWhiteSpace(userResponse))
             {
-                var downlineInfo = await customerService.GetDownlineInfo(user.CustId, userResponse);
+                var downlineInfo = await customerService.GetDownlineInfo(user.CustId, userResponse).ConfigureAwait(false);
 
                 if (downlineInfo != null && downlineInfo.CustId > 0)
                 {

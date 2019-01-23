@@ -25,7 +25,7 @@
             if (!string.IsNullOrWhiteSpace(userResponse)
                 && decimal.TryParse(userResponse, out decimal number))
             {
-                var pt = await copyCustomerService.GetPT(user.CustId, (byte)user.CustLevel);
+                var pt = await copyCustomerService.GetPT(user.CustId, (byte)user.CustLevel).ConfigureAwait(false);
 
                 if (number < 0 || number > pt.MaxCredit)
                 {

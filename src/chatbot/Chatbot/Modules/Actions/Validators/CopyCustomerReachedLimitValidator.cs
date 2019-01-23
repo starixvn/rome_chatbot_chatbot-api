@@ -35,7 +35,8 @@
         {
             if (user.CustLevel == CustLevel.AgentLevel)
             {
-                var validateResult = await copyCustomerService.ValidateMaxNewMember(user.CustId, user.Language);
+                var validateResult = await copyCustomerService.ValidateMaxNewMember(user.CustId, user.Language)
+                    .ConfigureAwait(false);
 
                 if (!validateResult.IsSuccess)
                 {
@@ -47,7 +48,8 @@
                 user.Id,
                 messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,
-                chatbotConfigs.CopyCustomerLimitPerDay);
+                chatbotConfigs.CopyCustomerLimitPerDay)
+                .ConfigureAwait(false);
 
             if (isReachedLimitInDay)
             {
@@ -58,8 +60,14 @@
                     true);
             }
 
-            var customer = await customerService.GetCustomer(user.CustId);
-            var reachLimitDownlineResult = await copyCustomerService.CheckReachLimitDownline(user.CustId, (byte)user.CustLevel, customer.UserName, user.Language);
+            var customer = await customerService.GetCustomer(user.CustId).ConfigureAwait(false);
+            var reachLimitDownlineResult = await copyCustomerService.CheckReachLimitDownline(
+                user.CustId,
+                (byte)user.CustLevel,
+                customer.UserName,
+                user.Language)
+                .ConfigureAwait(false);
+
             if (!reachLimitDownlineResult.IsSuccess)
             {
                 return ActionValidationResult.CreateErrorValidationResult(reachLimitDownlineResult.Message, true);
