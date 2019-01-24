@@ -11,7 +11,6 @@
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
-    using Fanex.Logging;
     using MessengerClient = Messenger.Client;
 
     public interface UnderMaintenanceService
@@ -27,7 +26,6 @@
         private readonly IMessageBuilder messageBuilder;
         private readonly IMessageSender messageSender;
         private readonly IChatbotConfigs chatbotConfigs;
-        private readonly ILogger logger;
 
         public UnderMaintenanceServiceImpl(
             SettingService settingService,
@@ -35,8 +33,7 @@
             CustomerService customerService,
             IMessageBuilder messageBuilder,
             IMessageSender messageSender,
-            IChatbotConfigs chatbotConfigs,
-            ILogger logger)
+            IChatbotConfigs chatbotConfigs)
         {
             this.settingService = settingService;
             this.actionService = actionService;
@@ -44,12 +41,10 @@
             this.messageBuilder = messageBuilder;
             this.messageSender = messageSender;
             this.chatbotConfigs = chatbotConfigs;
-            this.logger = logger;
         }
 
         public async Task<Result> SendCompleteUMNotifications()
         {
-            logger.Info("Start SendCompleteUMNotifications");
             var users = await settingService.GetUsers().ConfigureAwait(false);
 
             if (users == null || !users.Any())
@@ -78,7 +73,7 @@
                 foreach (var messenger in messengers)
                 {
                     if (chatbotConfigs.AllowSendCompleteUMNotificationMessengerUsernames.Contains("*")
-                        || chatbotConfigs.AllowSendCompleteUMNotificationMessengerUsernames.Contains(messenger.Username, StringComparer.OrdinalIgnoreCase))
+                        || chatbotConfigs.AllowSendCompleteUMNotificationMessengerUsernames.Contains(messenger.Username))
                     {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                         Task.Run(() => SendCompleteUMMessages(user, messenger, rootActions));
@@ -86,7 +81,7 @@
                     }
                 }
             }
-            logger.Info("End SendCompleteUMNotifications");
+
             return Result.CreateSuccessfulResult();
         }
 

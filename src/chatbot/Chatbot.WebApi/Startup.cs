@@ -3,7 +3,6 @@ namespace Chatbot.WebApi
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using Alpha.Services.Client.Services;
     using Chatbot.Modules.Actions;
@@ -11,8 +10,6 @@ namespace Chatbot.WebApi
     using Chatbot.Modules.Functions.FunctionHandler;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Funtions.FunctionHandler;
-    using Chatbot.Modules.MessageBuilders;
-    using Chatbot.Modules.MessageBuilders.Templates;
     using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Resources;
@@ -21,7 +18,6 @@ namespace Chatbot.WebApi
     using Chatbot.Modules.UnderMaintenance;
     using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
-    using Chatbot.Shared.Constants;
     using Chatbot.WebApi.Extensions;
     using Chatbot.WebApi.Filters;
     using Chatbot.WebApi.Middlewares;
@@ -63,23 +59,20 @@ namespace Chatbot.WebApi
             services.AddMvc();
 
             services.AddSingleton(_ => Configuration);
-            var chatbotConfigs = new ChatbotConfigs(Configuration);
 
             InitLogging(services);
-
 
             services.AddLogging();
             services.AddSingleton<MessengerFactory, MessengerFactoryImpl>();
             services.AddSingleton<SettingService, SettingServiceImpl>();
             services.AddSingleton<IDynamicRepository, DynamicRepository>();
             services.AddSingleton<ICacheService, CacheService>();
-            services.AddSingleton<IMessageBuilder, MessageBuilder>();
             services.AddSingleton<IMessageLogger, MessageLogger>();
             services.AddSingleton<IMessageSender, MessageSender>();
             services.AddSingleton<ActionService, ActionServiceImpl>();
             services.AddSingleton<CommandService, CommandServiceImpl>();
             services.AddSingleton<IFunctionHandler, DefaultFunctionHandler>();
-            services.AddSingleton<IChatbotConfigs>(chatbotConfigs);
+            services.AddSingleton<IChatbotConfigs>(new ChatbotConfigs(Configuration));
             services.AddSingleton<NotificationService, NotificationServiceImpl>();
             services.AddSingleton<IMaintenanceService, MaintenanceService>();
             services.AddSingleton<AnnouncementService, AnnouncementServiceImpl>();
@@ -94,36 +87,12 @@ namespace Chatbot.WebApi
             services.AddSingleton<CopyCustomerService, CopyCustomerServiceImpl>();
             services.AddSingleton<UserLogActionService, UserLogActionServiceImpl>();
             services.AddSingleton<UnderMaintenanceService, UnderMaintenanceServiceImpl>();
-
-            services.AddSingleton<IDictionary<int, IMessageTemplate>>(new Dictionary<int, IMessageTemplate> {
-                { chatbotConfigs.YesterdayWinLossFunctionId, new MessageTemplate(new HeaderTemplate4(), new BodyTemplate()) },
-                { chatbotConfigs.PersonalMessageFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
-                { chatbotConfigs.SpecialAnnouncementFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
-                { chatbotConfigs.NormalAnnouncementFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
-                { chatbotConfigs.SystemUpdateFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate5()) },
-                { chatbotConfigs.OutstandingFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate1()) },
-                { chatbotConfigs.CopyCustomerFunctionId, new MessageTemplate(null, new BodyTemplate9()) },
-                { chatbotConfigs.BalanceFunctionId, new MessageTemplate(new HeaderTemplate(), new BodyTemplate3()) }
-            });
-            services.AddSingleton<IDictionary<int, IMessengerFormatter>>(
-                new Dictionary<int, IMessengerFormatter>
-                {
-                    { MessengerType.Letstalk, new LetstalkFormatter() }
-                });
             services.AddSingleton<IDictionary<int, IActionCompiler>>(new Dictionary<int, IActionCompiler>());
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IDictionary<string, CultureInfo>>(
-                new Dictionary<string, CultureInfo>
-                {
-                    { "en-US", CultureInfo.CreateSpecificCulture("en-US") },
-                    { "vi-VN", CultureInfo.CreateSpecificCulture("vi-VN") },
-                    { "th-TH", CultureInfo.CreateSpecificCulture("th-TH") },
-                    { "zh-CN", CultureInfo.CreateSpecificCulture("zh-CN") },
-                    { "zh-TW", CultureInfo.CreateSpecificCulture("zh-TW") },
-                    { "ja-JP", CultureInfo.CreateSpecificCulture("ja-JP") },
-                    { "ko-KR", CultureInfo.CreateSpecificCulture("ko-KR") }
-                });
+
+            services.AddMessageBuilder();
+            services.AddCultures();
 
             services.AddActionBuilders();
             services.AddFunctionHandler();

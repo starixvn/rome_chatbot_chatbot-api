@@ -6,19 +6,15 @@
     using Chatbot.Models;
     using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.MessageBuilders;
-    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
 
     public class MemberMaxCreditValidator : IActionValidator
     {
         private readonly IMessageBuilder messageBuilder;
-        private readonly IChatbotConfigs chatbotConfigs;
 
-        public MemberMaxCreditValidator(
-            IMessageBuilder messageBuilder,
-            IChatbotConfigs chatbotConfigs)
+        public MemberMaxCreditValidator(IMessageBuilder messageBuilder)
         {
             this.messageBuilder = messageBuilder;
-            this.chatbotConfigs = chatbotConfigs;
         }
 
         public Task<ActionValidationResult> ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
@@ -26,7 +22,7 @@
             if (!string.IsNullOrWhiteSpace(userResponse)
                 && decimal.TryParse(userResponse, out decimal number))
             {
-                var previousResponse = userActions.FirstOrDefault(a => a.ActionId == chatbotConfigs.CopyAgentInputCreditActionId)?.UserResponse;
+                var previousResponse = userActions.FirstOrDefault(a => a.ActionId == ActionIds.CopyCustomerInputAgentMaxCredit)?.UserResponse;
 
                 var agentMaxCredit = decimal.Parse(previousResponse);
 

@@ -9,31 +9,27 @@
     using Chatbot.Modules.Resources;
     using Chatbot.Modules.Resources.Constants;
     using Chatbot.Modules.Resources.Models;
-    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using NSubstitute;
     using Xunit;
 
     public class CreateNewAccountActionNameBuilderTests
     {
         private readonly ResourceService resourceService;
-        private readonly IChatbotConfigs chatbotConfigs;
         private readonly CreateNewAccountActionNameBuilder createNewAccountActionNameBuilder;
 
         public CreateNewAccountActionNameBuilderTests()
         {
             resourceService = Substitute.For<ResourceService>();
-            chatbotConfigs = Substitute.For<IChatbotConfigs>();
 
-            createNewAccountActionNameBuilder = new CreateNewAccountActionNameBuilder(
-                resourceService,
-                chatbotConfigs);
+            createNewAccountActionNameBuilder = new CreateNewAccountActionNameBuilder(resourceService);
         }
 
         [Theory]
-        [InlineData(CustLevel.AgentLevel)]
-        [InlineData(CustLevel.MasterLevel)]
-        [InlineData(CustLevel.SuperLevel)]
-        public void BuildActionName_Always_CallsGetResource(byte custLevel)
+        [InlineData(CustLevel.AgentLevel, ActionIds.CopyCustomerInputGivenCredit)]
+        [InlineData(CustLevel.MasterLevel, ActionIds.CopyCustomerInputAgentMaxCredit)]
+        [InlineData(CustLevel.SuperLevel, ActionIds.CopyCustomerInputMasterMaxCredit)]
+        public void BuildActionName_Always_CallsGetResource(byte custLevel, int inputCreditActionId)
         {
             var actionId = 1;
             var user = new User(1, 1, custLevel, 0, "en-US", null);
@@ -42,7 +38,8 @@
 
             var userActions = new List<UserAction>
             {
-                new UserAction(1,1,0,"1000",DateTime.Now,1)
+                new UserAction(1,1,inputCreditActionId,"1000",DateTime.Now,1),
+                new UserAction(2,2,ActionIds.CopyCustomerInputMemberMaxCredit,"2000",DateTime.Now,1)
             };
 
             // Act

@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
-    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using Fanex.Data.Repository;
 
     public interface NotificationService
@@ -21,17 +21,15 @@
         private readonly IDynamicRepository dynamicRepository;
         private readonly IDictionary<int, string> LastQueryFunctionSettingNameMapper;
 
-        public NotificationServiceImpl(
-            IDynamicRepository dynamicRepository,
-            IChatbotConfigs chatbotConfigs)
+        public NotificationServiceImpl(IDynamicRepository dynamicRepository)
         {
             this.dynamicRepository = dynamicRepository;
             LastQueryFunctionSettingNameMapper = new Dictionary<int, string>
             {
-                { chatbotConfigs.PersonalMessageFunctionId, "LastQueryPersonalMessage" },
-                { chatbotConfigs.SpecialAnnouncementFunctionId, "LastQuerySpecialAnnouncement" },
-                { chatbotConfigs.NormalAnnouncementFunctionId, "LastQueryNormalAnnouncement" },
-                { chatbotConfigs.SystemUpdateFunctionId, "LastQuerySystemAnnouncement" }
+                { FunctionIds.PersonalMessage, "LastQueryPersonalMessage" },
+                { FunctionIds.SpecialAnnouncement, "LastQuerySpecialAnnouncement" },
+                { FunctionIds.NormalAnnouncement, "LastQueryNormalAnnouncement" },
+                { FunctionIds.SystemAnnouncement, "LastQuerySystemAnnouncement" }
             };
         }
 

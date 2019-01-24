@@ -6,33 +6,32 @@ namespace Chatbot.WebApi.Extensions
     using Chatbot.Modules.Actions.Builders.ActionName;
     using Chatbot.Modules.Actions.Builders.ActionTitle;
     using Chatbot.Modules.Resources;
-    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using Microsoft.Extensions.DependencyInjection;
 
-    public static class ServiceCollectionExtension
+    public static class ActionBuilderServiceCollectionExtension
     {
         public static void AddActionBuilders(this IServiceCollection services)
         {
             var serviceProvider = services.BuildServiceProvider();
-            var chatbotConfigs = serviceProvider.GetService<IChatbotConfigs>();
             var resourceService = serviceProvider.GetService<ResourceService>();
             var copyCustomerService = serviceProvider.GetService<CopyCustomerService>();
 
             services.AddSingleton<IDictionary<int, IActionNameBuilder>>(
                 new Dictionary<int, IActionNameBuilder>
                 {
-                    [chatbotConfigs.CopyMasterInputCreditActionId] = new InputMaxCreditActionNameBuilder(resourceService, copyCustomerService),
-                    [chatbotConfigs.CopyAgentInputCreditActionId] = new InputMaxCreditActionNameBuilder(resourceService, copyCustomerService),
-                    [chatbotConfigs.CopyAgentInputMemberCreditActionId] = new InputMemberMaxCreditActionNameBuilder(resourceService, chatbotConfigs),
-                    [chatbotConfigs.CopyMemberInputCreditActionId] = new InputMaxCreditActionNameBuilder(resourceService, copyCustomerService)
+                    [ActionIds.CopyCustomerInputMasterMaxCredit] = new InputMaxCreditActionNameBuilder(resourceService, copyCustomerService),
+                    [ActionIds.CopyCustomerInputAgentMaxCredit] = new InputMaxCreditActionNameBuilder(resourceService, copyCustomerService),
+                    [ActionIds.CopyCustomerInputMemberMaxCredit] = new InputMemberMaxCreditActionNameBuilder(resourceService),
+                    [ActionIds.CopyCustomerInputGivenCredit] = new InputMaxCreditActionNameBuilder(resourceService, copyCustomerService)
                 });
 
             services.AddSingleton<IDictionary<int, IActionTitleBuilder>>(
                 new Dictionary<int, IActionTitleBuilder>
                 {
-                    [chatbotConfigs.CopyMasterInputCreditActionId] = new ConfirmActionTitleBuilder(),
-                    [chatbotConfigs.CopyAgentInputMemberCreditActionId] = new ConfirmActionTitleBuilder(),
-                    [chatbotConfigs.CopyMemberInputCreditActionId] = new ConfirmActionTitleBuilder()
+                    [ActionIds.CopyCustomerInputMasterMaxCredit] = new ConfirmActionTitleBuilder(),
+                    [ActionIds.CopyCustomerInputMemberMaxCredit] = new ConfirmActionTitleBuilder(),
+                    [ActionIds.CopyCustomerInputGivenCredit] = new ConfirmActionTitleBuilder()
                 });
 
             services.AddSingleton<ActionNameBuilderFactory, ActionNameBuilderFactoryImpl>();

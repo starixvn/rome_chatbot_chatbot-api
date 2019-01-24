@@ -187,5 +187,188 @@
             // Assert
             Assert.Equal("You have opted out service successfully. Thanks a lot for using our service.", message);
         }
+
+        [Fact]
+        public void BuildInvalidNumerOfDownline_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildInvalidNumerOfDownline(language);
+
+            // Assert
+            Assert.Equal("Number of downlines must be numeric.", message);
+        }
+
+        [Fact]
+        public void BuildInvalidNumerOfDownlineRange_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildInvalidNumerOfDownlineRange(language, 10);
+
+            // Assert
+            Assert.Equal("Number of downlines must be from 1 to 10.", message);
+        }
+
+        [Fact]
+        public void BuildInvalidDownlineMessage_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+            var username = "username";
+
+            // Act
+            var message = messageBuilder.BuildInvalidDownlineMessage(username, language);
+
+            // Assert
+            Assert.Equal("username is not your valid downline.", message);
+        }
+
+        [Fact]
+        public void BuildInvalidNumericMessage_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildInvalidNumericMessage("1000", language);
+
+            // Assert
+            Assert.Equal("1000 is not a numeric value.", message);
+        }
+
+        [Fact]
+        public void BuildRootActionTitle_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildRootActionTitle(language);
+
+            // Assert
+            Assert.Equal("Sorry, we couldn't recognize your request. Which action would you like to take?", message);
+        }
+
+        [Fact]
+        public void BuildCancelRequestMessage_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildCancelRequestMessage(language);
+
+            // Assert
+            Assert.Equal("Cancel current request", message);
+        }
+
+        [Fact]
+        public void BuildResponseCancelRequestMessage_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildResponseCancelRequestMessage(1, language);
+
+            // Assert
+            Assert.Equal("The current request has been cancelled._newline_Which action would you like to take?", message);
+        }
+
+        [Fact]
+        public void BuildConfirmKeywordTitle_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildConfirmKeywordTitle(language);
+
+            // Assert
+            Assert.Equal("Do you want to request any of the following function(s)?", message);
+        }
+
+        [Fact]
+        public void BuildNoneOfTheAboveMessage_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildNoneOfTheAboveMessage(language);
+
+            // Assert
+            Assert.Equal("None of the above", message);
+        }
+
+        [Fact]
+        public void BuildCopyCustomerInformMessage_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildCopyCustomerInformMessage(language);
+
+            // Assert
+            Assert.Equal("Your request is being processed now, please wait...", message);
+        }
+
+        [Fact]
+        public void BuildSuggestionActionsTitle_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildSuggestionActionsTitle(language);
+
+            // Assert
+            Assert.Equal("Here are some actions I could do for you:", message);
+        }
+
+        [Fact]
+        public void BuildCompleteUMNotification_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildCompleteUMNotification(1, language);
+
+            // Assert
+            Assert.Equal("Our UM time is over. All of our service has been back to work._newline_Hint: you could input any word to get my assistance right away.", message);
+        }
+
+        [Fact]
+        public void BuildConfirmUpdateAction_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildConfirmUpdateAction("actionname", 1, language);
+
+            // Assert
+            Assert.Equal("Yes_newline_actionname", message);
+        }
+
+        [Fact]
+        public void BuildCopyCustomerReachedLimitMessage_Always_ReturnMessage()
+        {
+            // Arrange
+            var language = "en-US";
+
+            // Act
+            var message = messageBuilder.BuildCopyCustomerReachedLimitMessage(50, language);
+
+            // Assert
+            Assert.Equal("Sorry, you have reached the limit for creating new account via Letstalk today (50 accounts per day).", message);
+        }
     }
 }

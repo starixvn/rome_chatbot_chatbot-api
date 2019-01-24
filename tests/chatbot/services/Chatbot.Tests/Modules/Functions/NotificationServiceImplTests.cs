@@ -1,9 +1,8 @@
-namespace Chatbot.Tests.Modules.Functions
+﻿namespace Chatbot.Tests.Modules.Functions
 {
     using System;
     using System.Globalization;
     using System.Threading.Tasks;
-    using Chatbot.Shared.Configurations;
     using Chatbot.Modules.Funtions;
     using Chatbot.Modules.Settings.Params.Db.Commands;
     using Chatbot.Modules.Settings.Params.Db.Criteria;
@@ -15,19 +14,13 @@ namespace Chatbot.Tests.Modules.Functions
     public class NotificationServiceImplTests
     {
         private readonly IDynamicRepository subDynamicRepository;
-        private readonly IChatbotConfigs subChatbotConfigs;
 
         public NotificationServiceImplTests()
         {
             subDynamicRepository = Substitute.For<IDynamicRepository>();
-            subChatbotConfigs = Substitute.For<IChatbotConfigs>();
-            subChatbotConfigs.PersonalMessageFunctionId.Returns(5);
-            subChatbotConfigs.SpecialAnnouncementFunctionId.Returns(6);
-            subChatbotConfigs.NormalAnnouncementFunctionId.Returns(7);
-            subChatbotConfigs.SystemUpdateFunctionId.Returns(8);
         }
 
-        private NotificationServiceImpl CreateNotificationServiceImpl() => new NotificationServiceImpl(subDynamicRepository, subChatbotConfigs);
+        private NotificationServiceImpl CreateNotificationServiceImpl() => new NotificationServiceImpl(subDynamicRepository);
 
         [Theory]
         [InlineData(5, "LastQueryPersonalMessage")]

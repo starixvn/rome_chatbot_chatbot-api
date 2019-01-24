@@ -1,7 +1,7 @@
 ﻿namespace Chatbot.Tests.Modules
 {
-    using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageLoggers;
+    using Chatbot.Modules.MessageSenders;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Constants;
     using Fanex.Logging;
@@ -27,14 +27,32 @@
             messengerClient = Substitute.For<IMessengerClient>();
             chatbotConfigs = Substitute.For<IChatbotConfigs>();
 
-            messageSender = new MessageSender(messengerFactory, logger, messageLogger, chatbotConfigs);
+            messageSender = Substitute.ForPartsOf<MessageSender>(
+                messengerFactory,
+                logger,
+                messageLogger,
+                chatbotConfigs);
+        }
+
+        [Fact]
+        public void SendMessageWithoutUserId_Always_CallSendMessageWithUserIdIsZero()
+        {
+            // Arrange
+            var messenger = new Models.Messenger(1, "messengername");
+            var message = "message content";
+
+            // Act
+            messageSender.SendMessage(messenger, message, null).ConfigureAwait(false);
+
+            // Assert
+            messageSender.Received().SendMessage(0, messenger, message, null).ConfigureAwait(false);
         }
 
         [Fact]
         public void SendMessage_Always_CreateMessengerClient()
         {
             var userId = 2;
-            var messenger = new Chatbot.Models.Messenger(1, "messengername");
+            var messenger = new Models.Messenger(1, "messengername");
             var message = "message content";
             messengerClient.PushAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(new Messenger.Client.Models.Result());
             messengerFactory.CreateMessengerClient(Arg.Any<int>()).Returns(messengerClient);
@@ -85,6 +103,19 @@
             var result = messageSender.SendMessage(userId, messenger, message, null, 3, true).GetAwaiter().GetResult();
 
             Assert.True(result.IsOk);
+        }
+
+        [Fact]
+        public void IsMessengerAccountNotExisted_Always_CreateMessengerClient()
+        {
+            // Arrange
+            var messenger = new Models.Messenger(1, "username");
+
+            // Act
+            messageSender.IsMessengerAccountNotExisted(messenger).ConfigureAwait(false);
+
+            // Assert
+            messengerFactory.Received().CreateMessengerClient(messenger.Type);
         }
     }
 }

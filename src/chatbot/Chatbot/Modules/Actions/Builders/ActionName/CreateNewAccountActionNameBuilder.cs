@@ -8,20 +8,16 @@
     using Chatbot.Modules.Resources;
     using Chatbot.Modules.Resources.Constants;
     using Chatbot.Modules.Resources.Models;
-    using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using Chatbot.Shared.Extensions;
 
     public class CreateNewAccountActionNameBuilder : IActionNameBuilder
     {
         private readonly ResourceService resourceService;
-        private readonly IChatbotConfigs chatbotConfigs;
 
-        public CreateNewAccountActionNameBuilder(
-            ResourceService resourceService,
-            IChatbotConfigs chatbotConfigs)
+        public CreateNewAccountActionNameBuilder(ResourceService resourceService)
         {
             this.resourceService = resourceService;
-            this.chatbotConfigs = chatbotConfigs;
         }
 
         public async Task<string> BuildActionName(
@@ -36,21 +32,21 @@
                 case CustLevel.AgentLevel:
                     return BuildCloneMasterOrMemberActionName(
                          resource,
-                         GetUserResponse(userActions, chatbotConfigs.CopyMemberInputUsernameActionId),
-                         FormatNumber(GetUserResponse(userActions, chatbotConfigs.CopyMemberInputCreditActionId)));
+                         GetUserResponse(userActions, ActionIds.CopyCustomerInputMemberUsername),
+                         FormatNumber(GetUserResponse(userActions, ActionIds.CopyCustomerInputGivenCredit)));
 
                 case CustLevel.MasterLevel:
                     return BuildCloneAgentActionName(
                         resource,
-                        GetUserResponse(userActions, chatbotConfigs.CopyAgentInputUsernameActionId),
-                        FormatNumber(GetUserResponse(userActions, chatbotConfigs.CopyAgentInputCreditActionId)),
-                        FormatNumber(GetUserResponse(userActions, chatbotConfigs.CopyAgentInputMemberCreditActionId)));
+                        GetUserResponse(userActions, ActionIds.CopyCustomerInputAgentUsername),
+                        FormatNumber(GetUserResponse(userActions, ActionIds.CopyCustomerInputAgentMaxCredit)),
+                        FormatNumber(GetUserResponse(userActions, ActionIds.CopyCustomerInputMemberMaxCredit)));
 
                 default:
                     return BuildCloneMasterOrMemberActionName(
                         resource,
-                        GetUserResponse(userActions, chatbotConfigs.CopyMasterInputUsernameActionId),
-                        FormatNumber(GetUserResponse(userActions, chatbotConfigs.CopyMasterInputCreditActionId)));
+                        GetUserResponse(userActions, ActionIds.CopyCustomerInputMasterUsername),
+                        FormatNumber(GetUserResponse(userActions, ActionIds.CopyCustomerInputMasterMaxCredit)));
             }
         }
 

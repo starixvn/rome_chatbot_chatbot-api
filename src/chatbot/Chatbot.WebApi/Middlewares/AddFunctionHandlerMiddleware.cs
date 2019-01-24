@@ -12,6 +12,7 @@ namespace Chatbot.WebApi.Middlewares
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using Microsoft.Extensions.DependencyInjection;
     using Serilog;
 
@@ -39,15 +40,15 @@ namespace Chatbot.WebApi.Middlewares
             services.AddSingleton<IDictionary<int, Func<FunctionParam, Task<object>>>>(
                 new Dictionary<int, Func<FunctionParam, Task<object>>>
                 {
-                    [chatbotConfigs.OutstandingFunctionId] = GetOutstanding,
-                    [chatbotConfigs.WinlossFunctionId] = GetWinLoss,
-                    [chatbotConfigs.BalanceFunctionId] = GetBalanceInfo,
-                    [chatbotConfigs.YesterdayWinLossFunctionId] = GetYesterdayWinLoss,
-                    [chatbotConfigs.PersonalMessageFunctionId] = GetPersonalMessage,
-                    [chatbotConfigs.SpecialAnnouncementFunctionId] = GetSpecialAnnouncement,
-                    [chatbotConfigs.NormalAnnouncementFunctionId] = GetNormalAnnouncement,
-                    [chatbotConfigs.SystemUpdateFunctionId] = GetSystemUpdate,
-                    [chatbotConfigs.CopyCustomerFunctionId] = CopyCustomer
+                    [FunctionIds.Outstanding] = GetOutstanding,
+                    [FunctionIds.TodayWinLoss] = GetWinLoss,
+                    [FunctionIds.BalanceInfo] = GetBalanceInfo,
+                    [FunctionIds.YesterdayWinLoss] = GetYesterdayWinLoss,
+                    [FunctionIds.PersonalMessage] = GetPersonalMessage,
+                    [FunctionIds.SpecialAnnouncement] = GetSpecialAnnouncement,
+                    [FunctionIds.NormalAnnouncement] = GetNormalAnnouncement,
+                    [FunctionIds.SystemAnnouncement] = GetSystemUpdate,
+                    [FunctionIds.CopyCustomer] = CopyCustomer
                 });
         }
 

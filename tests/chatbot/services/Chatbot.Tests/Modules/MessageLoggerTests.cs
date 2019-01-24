@@ -5,14 +5,15 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using Chatbot.Shared.Configurations;
     using Chatbot.Models;
     using Chatbot.Modules.MessageLoggers;
     using Chatbot.Modules.MessageLoggers.Params.Db;
     using Chatbot.Modules.Settings.Params.Db.Commands;
+    using Chatbot.Shared.Configurations;
     using Fanex.Data.Repository;
     using NSubstitute;
     using Xunit;
+    using MessengerClient = Messenger.Client;
 
     [Trait("Modules", "MessageLogger")]
     public class MessageLoggerTests
@@ -90,6 +91,7 @@
         [Fact]
         public void LogMessage_Always_ExecuteInsertMessageCommand()
         {
+            // Arrange
             var sender = 1;
             var receiver = 2;
             var messenger = new Messenger(1, "username", true, false);
@@ -97,8 +99,10 @@
             var status = 1;
             var functionid = 2;
 
+            // Act
             messageLogger.LogMessage(sender, receiver, messenger, message, status, functionid);
 
+            // Assert
             dynamicRepository.ExecuteAsync(Arg.Is<InsertMessageCommand>(
                 command => command.Sender == sender
                             && command.Receiver == receiver
@@ -106,6 +110,45 @@
                             && command.MessengerUsername == messenger.Username
                             && command.Status == status
                             && command.FunctionId == functionid));
+        }
+
+        [Fact]
+        public void LogMessage_MarkupMessage_ExecuteInsertMessageCommand()
+        {
+            // Arrange
+            var sender = 1;
+            var receiver = 2;
+            var messenger = new Messenger(1, "username", true, false);
+            var status = 1;
+            var functionid = 2;
+            var message = new MessengerClient.Models.Message
+            {
+                Content = "MessageContent",
+                MessageMarkup = new MessengerClient.Models.MessageMarkup
+                {
+                    MessageActions = new List<MessengerClient.Models.MessageAction>
+                    {
+                        new MessengerClient.Models.MessageAction{ Label="Label1", Data="Data1"},
+                        new MessengerClient.Models.MessageAction{ Label="Label2", Data="Data2"}
+                    }
+                }
+            };
+            var expectedLogMessage = "MessageContent<br>"
+                + "<a href='#' data-hidden='Data1'>Label1</a><br>"
+                + "<a href='#' data-hidden='Data2'>Label2</a>";
+
+            // Act
+            messageLogger.LogMessage(sender, receiver, messenger, message, status, functionid);
+
+            // Assert
+            dynamicRepository.Received().ExecuteAsync(Arg.Is<InsertMessageCommand>(
+                c => c.Sender == sender
+                    && c.Receiver == receiver
+                    && c.Message == expectedLogMessage
+                    && c.MessengerType == messenger.Type
+                    && c.MessengerUsername == messenger.Username
+                    && c.Status == status
+                    && c.FunctionId == functionid));
         }
     }
 }

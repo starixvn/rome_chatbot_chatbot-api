@@ -44,10 +44,6 @@
             messageLogger = Substitute.For<IMessageLogger>();
             subLogger = Substitute.For<ILogger>();
             subChatbotConfigs.MessageAndAnnoucementFunctionIds.Returns(new List<int> { 5, 6, 7, 8 });
-            subChatbotConfigs.YesterdayWinLossFunctionId.Returns(4);
-            subChatbotConfigs.OutstandingFunctionId.Returns(1);
-            subChatbotConfigs.CopyCustomerFunctionId.Returns(9);
-            subChatbotConfigs.BalanceFunctionId.Returns(3);
         }
 
         private FunctionHandlerFactory CreateFactory()

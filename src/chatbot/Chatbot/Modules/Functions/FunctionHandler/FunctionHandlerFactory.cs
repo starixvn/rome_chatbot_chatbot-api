@@ -12,6 +12,7 @@
     using Chatbot.Modules.Settings;
     using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
+    using Chatbot.Shared.Constants;
     using Fanex.Logging;
 
     public interface IFunctionHandlerFactory
@@ -63,17 +64,17 @@
                 return new MessageAnnouncementFunctionHandler(messageBuilder, messageSender, customerService, logger, settingService, getDataHanlders);
             }
 
-            if (functionId == chatbotConfigs.YesterdayWinLossFunctionId)
+            if (functionId == FunctionIds.YesterdayWinLoss)
             {
                 return new YesterdayWinLossFunctionHandler(messageBuilder, messageSender, customerService, settingService, logger, getDataHanlders);
             }
 
-            if (functionId == chatbotConfigs.OutstandingFunctionId)
+            if (functionId == FunctionIds.Outstanding)
             {
                 return new OutstandingFunctionHandler(chatbotConfigs, messageBuilder, messageSender, customerService, logger, getDataHanlders);
             }
 
-            if (functionId == chatbotConfigs.CopyCustomerFunctionId)
+            if (functionId == FunctionIds.CopyCustomer)
             {
                 return new CopyCustomerFunctionHandler(
                     chatbotConfigs,
@@ -87,7 +88,7 @@
                     getDataHanlders);
             }
 
-            if (functionId == chatbotConfigs.BalanceFunctionId)
+            if (functionId == FunctionIds.BalanceInfo)
             {
                 return new BalanceFunctionHandler(chatbotConfigs, messageBuilder, messageSender, customerService, logger, getDataHanlders);
             }

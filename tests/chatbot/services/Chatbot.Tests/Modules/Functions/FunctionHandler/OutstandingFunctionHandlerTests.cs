@@ -67,6 +67,46 @@
         }
 
         [Fact]
+        public void Handle_ParameterIsNumerAndLessThanZero_RunDataHandlerAndSendMessage()
+        {
+            // Arrange
+            chatbotConfigs.OutstandingMaxTopQuery.Returns(1000);
+            var param = new FunctionParam(
+                new User(1, 2, 4, 3, "en-US", null),
+                new Function { Id = 1 },
+                new Messenger(1, "sa"),
+                new Dictionary<string, object> { ["parameters"] = new string[] { "-1" } });
+            getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
+            messageBuilder.BuildInvalidNumerOfDownlineRange("en-US", chatbotConfigs.OutstandingMaxTopQuery).Returns("InvalidNumerOfDownlineRangeMessage");
+
+            // Act
+            handler.Handle(param).ConfigureAwait(false);
+
+            // Assert
+            messageSender.Received().SendMessage(1, param.Messenger, "InvalidNumerOfDownlineRangeMessage", null, 1);
+        }
+
+        [Fact]
+        public void Handle_ParameterIsNumerAndGreaterThanMaxTopQuery_RunDataHandlerAndSendMessage()
+        {
+            // Arrange
+            chatbotConfigs.OutstandingMaxTopQuery.Returns(1000);
+            var param = new FunctionParam(
+                new User(1, 2, 4, 3, "en-US", null),
+                new Function { Id = 1 },
+                new Messenger(1, "sa"),
+                new Dictionary<string, object> { ["parameters"] = new string[] { "1001" } });
+            getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
+            messageBuilder.BuildInvalidNumerOfDownlineRange("en-US", chatbotConfigs.OutstandingMaxTopQuery).Returns("InvalidNumerOfDownlineRangeMessage");
+
+            // Act
+            handler.Handle(param).ConfigureAwait(false);
+
+            // Assert
+            messageSender.Received().SendMessage(1, param.Messenger, "InvalidNumerOfDownlineRangeMessage", null, 1);
+        }
+
+        [Fact]
         public void Handle_InvalidUserName_BuildAndSendInvalidCustNameMessage()
         {
             // Arrange

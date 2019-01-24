@@ -64,13 +64,8 @@
             }
             else
             {
+                var expiredTime = GetExpiredTime(selfdestructionPeriod);
                 var client = messengerFactory.CreateMessengerClient(messenger.Type);
-
-                DateTime? expiredTime = null;
-                if (selfdestructionPeriod.HasValue)
-                {
-                    expiredTime = DateTime.Now.AddMinutes(selfdestructionPeriod.Value);
-                }
 
                 result = await client.PushAsync(messenger.Username, message, expiredTime).ConfigureAwait(false);
             }
@@ -141,13 +136,8 @@
             }
             else
             {
+                var expiredTime = GetExpiredTime(selfdestructionPeriod);
                 var client = messengerFactory.CreateMessengerClient(messenger.Type);
-
-                DateTime? expiredTime = null;
-                if (selfdestructionPeriod.HasValue)
-                {
-                    expiredTime = DateTime.Now.AddMinutes(selfdestructionPeriod.Value);
-                }
 
                 result = await client.PushAsync(new List<string> { messenger.Username }, message, expiredTime).ConfigureAwait(false);
             }
@@ -173,6 +163,17 @@
             }
 
             return new Result(result.IsOk ? 0 : result.Status, result.Message);
+        }
+
+        private static DateTime? GetExpiredTime(int? selfdestructionPeriod)
+        {
+            DateTime? expiredTime = null;
+            if (selfdestructionPeriod.HasValue)
+            {
+                expiredTime = DateTime.Now.AddMinutes(selfdestructionPeriod.Value);
+            }
+
+            return expiredTime;
         }
     }
 }

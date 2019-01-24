@@ -251,5 +251,23 @@
             // Assert
             restClient.Received().ExecuteGetAsync<List<Function>>($"setting/functions/{language}");
         }
+
+        [Fact]
+        public void UpdateSelfdestructionPeriod_Always_CallsExecutePostAsync()
+        {
+            // Arrange
+            var logParam = new LogParam
+            {
+                ActorId = 1,
+                CustId = 1,
+                IP = "127.0.0.1",
+            };
+
+            // Act
+            settingService.UpdateSelfdestructionPeriod(1, 15, logParam);
+
+            // Assert
+            restClient.Received().ExecutePostAsync<Result>("setting/1/selfdestructionPeriod/15", logParam);
+        }
     }
 }
