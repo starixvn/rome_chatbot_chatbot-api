@@ -31,7 +31,7 @@
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void ValidateAction_UserResponseIsNullOrWhiteSpace_ReturnsErrorResult(string userResponse)
+        public async Task ValidateAction_UserResponseIsNullOrWhiteSpace_ReturnsErrorResult(string userResponse)
         {
             // Arrange
             var invalidDownlineMessage = "Invalid downline";
@@ -39,14 +39,14 @@
             messageBuilder.BuildInvalidDownlineMessage(Arg.Any<string>(), Arg.Any<string>()).Returns(invalidDownlineMessage);
 
             // Act
-            var actualResult = validator.ValidateAction(new User(), userResponse, null, null).GetAwaiter().GetResult();
+            var actualResult = await validator.ValidateAction(new User(), userResponse, null, null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
         }
 
         [Fact]
-        public void ValidateAction_ValidDownline_ReturnsSuccessfulResult()
+        public async Task ValidateAction_ValidDownline_ReturnsSuccessfulResult()
         {
             // Arrange
             var downlineInfo = new DownlineInfo
@@ -62,14 +62,14 @@
             var expectedResult = ActionValidationResult.CreateSuccessfulValidationResult();
 
             // Act
-            var actualResult = validator.ValidateAction(new User(), "abc", null, null).GetAwaiter().GetResult();
+            var actualResult = await validator.ValidateAction(new User(), "abc", null, null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
         }
 
         [Fact]
-        public void ValidateAction_InvalidDownline_ReturnsErrorResult()
+        public async Task ValidateAction_InvalidDownline_ReturnsErrorResult()
         {
             // Arrange
             var downlineInfo = new DownlineInfo();
@@ -82,7 +82,7 @@
             var expectedResult = ActionValidationResult.CreateErrorValidationResult(invalidDownlineMessage);
 
             // Act
-            var actualResult = validator.ValidateAction(new User(), "abc", null, null).GetAwaiter().GetResult();
+            var actualResult = await validator.ValidateAction(new User(), "abc", null, null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);

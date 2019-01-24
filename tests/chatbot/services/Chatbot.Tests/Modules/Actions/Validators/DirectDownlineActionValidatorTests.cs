@@ -31,7 +31,7 @@
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void ValidateAction_UserResponseIsNullOrWhiteSpace_ReturnsErrorResult(string userResponse)
+        public async Task ValidateAction_UserResponseIsNullOrWhiteSpace_ReturnsErrorResult(string userResponse)
         {
             // Arrange
             var invalidDirectDownlineMessage = "Invalid direct downline";
@@ -40,14 +40,14 @@
                 .Returns(invalidDirectDownlineMessage);
 
             // Act
-            var actualResult = validator.ValidateAction(new User(), userResponse, null, null).GetAwaiter().GetResult();
+            var actualResult = await validator.ValidateAction(new User(), userResponse, null, null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
         }
 
         [Fact]
-        public void ValidateAction_InvalidDownline_ReturnsErrorResult()
+        public async Task ValidateAction_InvalidDownline_ReturnsErrorResult()
         {
             // Arrange
             var downlineInfo = new DownlineInfo();
@@ -61,14 +61,14 @@
             var expectedResult = ActionValidationResult.CreateErrorValidationResult(invalidDirectDownlineMessage);
 
             // Act
-            var actualResult = validator.ValidateAction(new User(), "abc", null, null).GetAwaiter().GetResult();
+            var actualResult = await validator.ValidateAction(new User(), "abc", null, null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
         }
 
         [Fact]
-        public void ValidateAction_IsNotDirectDownline_ReturnsErrorResult()
+        public async Task ValidateAction_IsNotDirectDownline_ReturnsErrorResult()
         {
             // Arrange
             var user = new User(1, 2, 4, 0, "en-US", null);
@@ -89,14 +89,14 @@
             var expectedResult = ActionValidationResult.CreateErrorValidationResult(invalidDirectDownlineMessage);
 
             // Act
-            var actualResult = validator.ValidateAction(user, "abc", null, null).GetAwaiter().GetResult();
+            var actualResult = await validator.ValidateAction(user, "abc", null, null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
         }
 
         [Fact]
-        public void ValidateAction_ValidDirectDownline_ReturnsSuResult()
+        public async Task ValidateAction_ValidDirectDownline_ReturnsSuResult()
         {
             // Arrange
             var user = new User(1, 2, 4, 0, "en-US", null);
@@ -113,7 +113,7 @@
             var expectedResult = ActionValidationResult.CreateSuccessfulValidationResult();
 
             // Act
-            var actualResult = validator.ValidateAction(user, "abc", null, null).GetAwaiter().GetResult();
+            var actualResult = await validator.ValidateAction(user, "abc", null, null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);

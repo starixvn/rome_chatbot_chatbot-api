@@ -32,7 +32,7 @@
         [InlineData("")]
         [InlineData(" ")]
         [InlineData("abc")]
-        public void ValidateAction_UserResponseIsNOTNumeric_ReturnsErrorValidationResult(string userResponse)
+        public async Task ValidateAction_UserResponseIsNOTNumeric_ReturnsErrorValidationResult(string userResponse)
         {
             // Arrange
             var user = new User(1, 1, 3, 0, "en-US", null);
@@ -41,15 +41,14 @@
             var expectedResult = ActionValidationResult.CreateErrorValidationResult("InvalidNumericMessage");
 
             // Act
-            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null)
-                .GetAwaiter().GetResult();
+            var actualResult = await maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
         }
 
         [Fact]
-        public void ValidateAction_UserResponseIsNumeric_CallsGetPT()
+        public async Task ValidateAction_UserResponseIsNumeric_CallsGetPT()
         {
             // Arrange
             var userResponse = "1234.5";
@@ -58,14 +57,14 @@
                 .Returns(Task.FromResult(new CustomerPTInfo()));
 
             // Act
-            maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null).ConfigureAwait(false);
+            await maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null);
 
             // Assert
-            copyCustomerService.Received().GetPT(user.CustId, (byte)user.CustLevel);
+            await copyCustomerService.Received().GetPT(user.CustId, (byte)user.CustLevel);
         }
 
         [Fact]
-        public void ValidateAction_UserResponseIsNegativeNumber_ReturnsErrorValidationResult()
+        public async Task ValidateAction_UserResponseIsNegativeNumber_ReturnsErrorValidationResult()
         {
             // Arrange
             var userResponse = "-1234.5";
@@ -79,15 +78,14 @@
             var expectedResult = ActionValidationResult.CreateErrorValidationResult("InvalidMaxCreditMessage");
 
             // Act
-            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null)
-                .GetAwaiter().GetResult();
+            var actualResult = await maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
         }
 
         [Fact]
-        public void ValidateAction_UserResponseIsGreaterThanMaxCredit_ReturnsErrorValidationResult()
+        public async Task ValidateAction_UserResponseIsGreaterThanMaxCredit_ReturnsErrorValidationResult()
         {
             // Arrange
             var userResponse = "2";
@@ -101,15 +99,14 @@
             var expectedResult = ActionValidationResult.CreateErrorValidationResult("InvalidMaxCreditMessage");
 
             // Act
-            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null)
-                .GetAwaiter().GetResult();
+            var actualResult = await maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
         }
 
         [Fact]
-        public void ValidateAction_UserResponseIsValid_ReturnsSuccessfulValidationResult()
+        public async Task ValidateAction_UserResponseIsValid_ReturnsSuccessfulValidationResult()
         {
             // Arrange
             var userResponse = "2";
@@ -121,8 +118,7 @@
             var expectedResult = ActionValidationResult.CreateSuccessfulValidationResult();
 
             // Act
-            var actualResult = maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null)
-                .GetAwaiter().GetResult();
+            var actualResult = await maxCreditValidator.ValidateAction(user, userResponse, new List<UserAction>(), null);
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
