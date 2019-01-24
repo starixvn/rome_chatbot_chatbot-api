@@ -5,7 +5,6 @@ namespace Chatbot.WebApi.Extensions
     using Alpha.Services.Client.Services;
     using Chatbot.Modules.Actions.Validators;
     using Chatbot.Modules.MessageBuilders;
-    using Chatbot.Modules.Settings;
     using Chatbot.Modules.UserLogActions;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Constants;
@@ -20,7 +19,6 @@ namespace Chatbot.WebApi.Extensions
             var messageBuilder = serviceProvider.GetService<IMessageBuilder>();
             var customerService = serviceProvider.GetService<CustomerService>();
             var copyCustomerService = serviceProvider.GetService<CopyCustomerService>();
-            var settingService = serviceProvider.GetService<SettingService>();
             var userLogActionService = serviceProvider.GetService<UserLogActionService>();
 
             services.AddSingleton<IDictionary<int, IActionValidator>>(

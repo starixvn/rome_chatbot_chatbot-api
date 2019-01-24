@@ -16,6 +16,7 @@ namespace Chatbot.WebApi.Extensions
                     ["vi-VN"] = CultureInfo.CreateSpecificCulture("vi-VN"),
                     ["th-TH"] = CultureInfo.CreateSpecificCulture("th-TH"),
                     ["zh-CN"] = CultureInfo.CreateSpecificCulture("zh-CN"),
+                    ["zh-Hans"] = CultureInfo.CreateSpecificCulture("zh-Hans"),
                     ["zh-TW"] = CultureInfo.CreateSpecificCulture("zh-TW"),
                     ["ja-JP"] = CultureInfo.CreateSpecificCulture("ja-JP"),
                     ["ko-KR"] = CultureInfo.CreateSpecificCulture("ko-KR")

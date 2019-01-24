@@ -4,14 +4,11 @@ namespace Chatbot.WebApi.Middlewares
 {
     using System;
     using System.IO;
-    using System.Linq;
     using System.Net;
-    using System.Text;
     using System.Threading.Tasks;
     using Fanex.Logging;
     using Fanex.Logging.Extensions.AspNetCore;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Http.Internal;
     using Newtonsoft.Json;
 
     public class ErrorHandlingMiddleware

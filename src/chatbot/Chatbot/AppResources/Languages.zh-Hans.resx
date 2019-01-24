@@ -1,0 +1,444 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Outstanding" xml:space="preserve">
+    <value>未完成交易</value>
+  </data>
+  <data name="Header_1" xml:space="preserve">
+    <value>未完成交易</value>
+  </data>
+  <data name="Turnover" xml:space="preserve">
+    <value>投注额</value>
+  </data>
+  <data name="GrossComm" xml:space="preserve">
+    <value>总佣金</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>公司</value>
+  </data>
+  <data name="Super" xml:space="preserve">
+    <value>超级</value>
+  </data>
+  <data name="Master" xml:space="preserve">
+    <value>总代理</value>
+  </data>
+  <data name="Agent" xml:space="preserve">
+    <value>代理</value>
+  </data>
+  <data name="Member" xml:space="preserve">
+    <value>会员</value>
+  </data>
+  <data name="WinLossAbbr" xml:space="preserve">
+    <value>輸贏</value>
+  </data>
+  <data name="Comm" xml:space="preserve">
+    <value>佣金</value>
+  </data>
+  <data name="companyWinLoss" xml:space="preserve">
+    <value>公司</value>
+  </data>
+  <data name="MasterNetWinLoss.Total" xml:space="preserve">
+    <value>总代理总数</value>
+  </data>
+  <data name="AgentNetWinLoss.Total" xml:space="preserve">
+    <value>代理总和</value>
+  </data>
+  <data name="Header_3" xml:space="preserve">
+    <value>余额资料</value>
+  </data>
+  <data name="TotalBalance" xml:space="preserve">
+    <value>余额资料</value>
+  </data>
+  <data name="CashBalance" xml:space="preserve">
+    <value>现金余额</value>
+  </data>
+  <data name="YesterdayCashBalance" xml:space="preserve">
+    <value>昨天现金余额</value>
+  </data>
+  <data name="CurrencyName" xml:space="preserve">
+    <value>货币</value>
+  </data>
+  <data name="NoData" xml:space="preserve">
+    <value>没资料显示</value>
+  </data>
+  <data name="DefaultErrorMessage" xml:space="preserve">
+    <value>哎哟..因为系统故障所以您会身在此处，请向管理层联系吧</value>
+  </data>
+  <data name="GivenCredit" xml:space="preserve">
+    <value>信用额度</value>
+  </data>
+  <data name="Header_6" xml:space="preserve">
+    <value>特殊公告</value>
+  </data>
+  <data name="Header_7" xml:space="preserve">
+    <value>一般公告</value>
+  </data>
+  <data name="Header_4" xml:space="preserve">
+    <value>昨日输赢</value>
+  </data>
+  <data name="Header_5" xml:space="preserve">
+    <value>个人讯息</value>
+  </data>
+  <data name="MasterTotalCredit" xml:space="preserve">
+    <value>总代理信用额度</value>
+  </data>
+  <data name="AgentTotalCredit" xml:space="preserve">
+    <value>代理信用额度</value>
+  </data>
+  <data name="Header_2" xml:space="preserve">
+    <value>今日输赢</value>
+  </data>
+  <data name="MemberNetWinLoss.Total" xml:space="preserve">
+    <value>会员总数</value>
+  </data>
+  <data name="MasterNetWinLoss.Comm" xml:space="preserve">
+    <value>总代理佣金</value>
+  </data>
+  <data name="AgentNetWinLoss.Comm" xml:space="preserve">
+    <value>代理佣金</value>
+  </data>
+  <data name="MemberNetWinLoss.Comm" xml:space="preserve">
+    <value>会员佣金</value>
+  </data>
+  <data name="InformingVerifiedMessage_1" xml:space="preserve">
+    <value>您的 Letstalk ID 已被验证，Atom 现已完全启用。</value>
+  </data>
+  <data name="TodayWinLoss" xml:space="preserve">
+    <value>今日输赢</value>
+  </data>
+  <data name="SuperNetWinLoss.WinLoss" xml:space="preserve">
+    <value>超级总代输赢</value>
+  </data>
+  <data name="MasterNetWinLoss.WinLoss" xml:space="preserve">
+    <value>总代理输赢</value>
+  </data>
+  <data name="AgentNetWinLoss.WinLoss" xml:space="preserve">
+    <value>代理输赢</value>
+  </data>
+  <data name="MemberNetWinLoss.WinLoss" xml:space="preserve">
+    <value>会员输赢</value>
+  </data>
+  <data name="SuperNetWinLoss.Comm" xml:space="preserve">
+    <value>超级总代理佣金</value>
+  </data>
+  <data name="SuperNetWinLoss.Total" xml:space="preserve">
+    <value>超级总代理的总数</value>
+  </data>
+  <data name="VerificationCode_1" xml:space="preserve">
+    <value>您要求设置 Atom，您的验证码是 {0}。</value>
+  </data>
+  <data name="VerificationCode_2" xml:space="preserve">
+    <value>您的代码将在{0}分钟内终止。</value>
+  </data>
+  <data name="YesterdayTotalBalance" xml:space="preserve">
+    <value>昨天餘額</value>
+  </data>
+  <data name="YesterdayWinLoss" xml:space="preserve">
+    <value>昨日输赢</value>
+  </data>
+  <data name="MemberTotalCredit" xml:space="preserve">
+    <value>会员信用额度</value>
+  </data>
+  <data name="InformingVerifiedMessage_2" xml:space="preserve">
+    <value>您可以通过代理网内的 Chatbot 配置页面启用或关闭任何功能。</value>
+  </data>
+  <data name="SuperTotalCredit" xml:space="preserve">
+    <value>超级总代理信用额度</value>
+  </data>
+  <data name="YourAccountIsClosed" xml:space="preserve">
+    <value>您的账号已关闭。</value>
+  </data>
+  <data name="Header_8" xml:space="preserve">
+    <value>系统公告</value>
+  </data>
+  <data name="CommandIsNotRecognized" xml:space="preserve">
+    <value>指令无效。</value>
+  </data>
+  <data name="ServiceNotAvailable" xml:space="preserve">
+    <value>对不起，您尚未注册Chatbot服务!</value>
+  </data>
+  <data name="UnderMaintenance" xml:space="preserve">
+    <value>很抱歉，服务器正在维护中，维护时间从{0}至{1} (GMT+8)。请稍后访问。</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>总和</value>
+  </data>
+  <data name="CustLevel_1" xml:space="preserve">
+    <value>会员</value>
+  </data>
+  <data name="CustLevel_2" xml:space="preserve">
+    <value>代理</value>
+  </data>
+  <data name="CustLevel_3" xml:space="preserve">
+    <value>总代理</value>
+  </data>
+  <data name="CustLevel_4" xml:space="preserve">
+    <value>超级</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="MemberOutstanding" xml:space="preserve">
+    <value>会员未结束交易</value>
+  </data>
+  <data name="AgentOutstanding" xml:space="preserve">
+    <value>代理未结束交易</value>
+  </data>
+  <data name="MasterOutstanding" xml:space="preserve">
+    <value>总代理未结束交易</value>
+  </data>
+  <data name="SuperOutstanding" xml:space="preserve">
+    <value>超级总代理未完成交易</value>
+  </data>
+  <data name="UnlinkMessage" xml:space="preserve">
+    <value>您已成功选择退出服务。非常感谢您使用我们的服务。</value>
+  </data>
+  <data name="HintTopOutstanding" xml:space="preserve">
+    <value>*提示：快速指令，请输入：/os 50</value>
+  </data>
+  <data name="HintSpecificDownline" xml:space="preserve">
+    <value>*提示：浏览下线未结束交易，请输入：/os 账号</value>
+  </data>
+  <data name="InvalidCustName" xml:space="preserve">
+    <value>用户名无效。</value>
+  </data>
+  <data name="HiddenDownlinesCount" xml:space="preserve">
+    <value>超过 {0} {1}就不会显示</value>
+  </data>
+  <data name="InvalidNumerOfDownlines" xml:space="preserve">
+    <value>旗下的下线必须是数字代号。</value>
+  </data>
+  <data name="InvalidDownline" xml:space="preserve">
+    <value>{0}'不是您的有效下线。</value>
+  </data>
+  <data name="InvalidDirectDownline" xml:space="preserve">
+    <value>{0} 不属于您的{1}.</value>
+  </data>
+  <data name="RootActionTitle" xml:space="preserve">
+    <value>抱歉，我们无法识别您的请求。请问您的选项是？</value>
+  </data>
+  <data name="PleaseSelectOption" xml:space="preserve">
+    <value>请选择一个选项。</value>
+  </data>
+  <data name="CancelThisRequest" xml:space="preserve">
+    <value>取消当前请求。</value>
+  </data>
+  <data name="FunctionHasBeenCancelled" xml:space="preserve">
+    <value>当前请求已被取消。</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>对于</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>产品</value>
+  </data>
+  <data name="WhichActionWouldYouLikeToTake" xml:space="preserve">
+    <value>请问您的选项是？</value>
+  </data>
+  <data name="InvalidNumerOfDownlinesRange" xml:space="preserve">
+    <value>旗下的下线必须从 1 至 {0} 的数字。</value>
+  </data>
+  <data name="ConfirmKeywordTitle" xml:space="preserve">
+    <value>请问您是否需要以下功能？</value>
+  </data>
+  <data name="NoneOfTheAbove" xml:space="preserve">
+    <value>以上皆非</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_3" xml:space="preserve">
+    <value>总代理最高信用额应在{0}和{1}之间</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_2" xml:space="preserve">
+    <value>代理最高信用额应在{0}和{1}之间</value>
+  </data>
+  <data name="MaxCreditInvalid_CustLevel_1" xml:space="preserve">
+    <value>会员信用额应在{0}和{1}之间</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="HintMessage" xml:space="preserve">
+    <value>*提示：快速指令，请输入：</value>
+  </data>
+  <data name="credit" xml:space="preserve">
+    <value>信用额度</value>
+  </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>昨天</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="InvalidNumericMessage" xml:space="preserve">
+    <value>{0} 不是数值。</value>
+  </data>
+  <data name="CopyCustomerInformMessage" xml:space="preserve">
+    <value>您的要求正在处理中，请稍候…</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_1" xml:space="preserve">
+    <value>已从 {0} 复制新的会员。</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_2" xml:space="preserve">
+    <value>已从 {0} 复制新的代理。</value>
+  </data>
+  <data name="CopyCustomerSuccessMessage_CustLevel_3" xml:space="preserve">
+    <value>已从 {0} 复制新的总代理。</value>
+  </data>
+  <data name="maxMemberCredit" xml:space="preserve">
+    <value>会员最高信用额</value>
+  </data>
+  <data name="CopyCustomerReachedLimitMessage" xml:space="preserve">
+    <value>抱歉，您今天已达到通过Letstalk 创建新账号的限制。（每天{0}个账号 ）</value>
+  </data>
+  <data name="InstructionMessage" xml:space="preserve">
+    <value>请在字句后输入指令</value>
+  </data>
+  <data name="ActionConfirmation" xml:space="preserve">
+    <value>请确认您的动作：</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>例子：</value>
+  </data>
+  <data name="ReConfirmMessage" xml:space="preserve">
+    <value>请确认您是否要 {0}</value>
+  </data>
+  <data name="BalanceTopQueryHint" xml:space="preserve">
+    <value>提示：若要快速查看前100名下线的余额资料， 请输入: /bal 100</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_3" xml:space="preserve">
+    <value>/copy &lt;您的总代理&gt; &lt;总代理的信用额度&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_2" xml:space="preserve">
+    <value>/copy &lt;您的代理&gt; &lt;代理的信用额度&gt; &lt;会员最高信用额&gt;</value>
+  </data>
+  <data name="InstructionCopyCustomerCommand_CustLevel_1" xml:space="preserve">
+    <value>/copy &lt;您的会员&gt; &lt;会员的信用额度&gt;</value>
+  </data>
+  <data name="InformingVerifiedMessage_3" xml:space="preserve">
+    <value>提示：您可以输入任何单词既可得到我的建议。</value>
+  </data>
+  <data name="SuggestActionsTitle" xml:space="preserve">
+    <value>以下是我可以为您做的一些操作：</value>
+  </data>
+  <data name="CompleteUMInformMessage_1" xml:space="preserve">
+    <value>我们的系统维护已结束。所有的服务已恢复运作。</value>
+  </data>
+  <data name="CompleteUMInformMessage_2" xml:space="preserve">
+    <value>提示：您可以输入任何单词既可立即得到我的协助。</value>
+  </data>
+</root>
