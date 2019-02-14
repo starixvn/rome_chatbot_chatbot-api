@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Chatbot.Models;
     using Chatbot.Modules.Actions.Models;
     using Chatbot.Modules.MessageBuilders;
@@ -20,7 +21,7 @@
             this.chatbotConfigs = chatbotConfigs;
         }
 
-        public ActionValidationResult ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
+        public Task<ActionValidationResult> ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
         {
             if (!string.IsNullOrWhiteSpace(userResponse)
                 && decimal.TryParse(userResponse, out decimal number))
@@ -31,14 +32,15 @@
 
                 if (number < 0 || number > agentMaxCredit)
                 {
-                    return ActionValidationResult.CreateErrorValidationResult(
-                        messageBuilder.BuildInvalidMaxCreditMessage(CustLevel.MemberLevel, agentMaxCredit, user.Language));
+                    return Task.FromResult(ActionValidationResult.CreateErrorValidationResult(
+                        messageBuilder.BuildInvalidMaxCreditMessage(CustLevel.MemberLevel, agentMaxCredit, user.Language)));
                 }
 
-                return ActionValidationResult.CreateSuccessfulValidationResult();
+                return Task.FromResult(ActionValidationResult.CreateSuccessfulValidationResult());
             }
 
-            return ActionValidationResult.CreateErrorValidationResult(messageBuilder.BuildInvalidNumericMessage(userResponse, user.Language));
+            return Task.FromResult(ActionValidationResult.CreateErrorValidationResult(
+                messageBuilder.BuildInvalidNumericMessage(userResponse, user.Language)));
         }
     }
 }

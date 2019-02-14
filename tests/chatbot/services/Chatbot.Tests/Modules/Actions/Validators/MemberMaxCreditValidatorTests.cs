@@ -38,7 +38,7 @@
             var expectedResult = ActionValidationResult.CreateErrorValidationResult("InvalidNumericMessage");
 
             // Act
-            var actualResult = memberMaxCreditValidator.ValidateAction(user, userResponse, null, null);
+            var actualResult = memberMaxCreditValidator.ValidateAction(user, userResponse, null, null).Result;
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);

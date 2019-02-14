@@ -1,6 +1,7 @@
 ﻿namespace Chatbot.Modules.Actions.Validators
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
     using Chatbot.Modules.Actions.Models;
@@ -11,28 +12,31 @@
     public class CopyCustomerReachedLimitValidator : IActionValidator
     {
         private readonly IMessageBuilder messageBuilder;
+        private readonly CustomerService customerService;
         private readonly CopyCustomerService copyCustomerService;
         private readonly UserLogActionService userLogActionService;
         private readonly IChatbotConfigs chatbotConfigs;
 
         public CopyCustomerReachedLimitValidator(
             IMessageBuilder messageBuilder,
+            CustomerService customerService,
             UserLogActionService userLogActionService,
             CopyCustomerService copyCustomerService,
             IChatbotConfigs chatbotConfigs)
         {
             this.messageBuilder = messageBuilder;
             this.chatbotConfigs = chatbotConfigs;
+            this.customerService = customerService;
             this.copyCustomerService = copyCustomerService;
             this.userLogActionService = userLogActionService;
         }
 
-        public ActionValidationResult ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
+        public async Task<ActionValidationResult> ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
         {
             if (user.CustLevel == CustLevel.AgentLevel)
             {
-                var validateResult = copyCustomerService.ValidateMaxNewMember(user.CustId, user.Language)
-                    .GetAwaiter().GetResult();
+                var validateResult = await copyCustomerService.ValidateMaxNewMember(user.CustId, user.Language)
+                    .ConfigureAwait(false);
 
                 if (!validateResult.IsSuccess)
                 {
@@ -40,21 +44,33 @@
                 }
             }
 
-            var isReachedLimitOfCopyCustomer = userLogActionService.IsUserReachedTheLimitOfActionInDay(
+            bool isReachedLimitInDay = await userLogActionService.IsUserReachedTheLimitOfActionInDay(
                 user.Id,
                 messenger.Type,
                 chatbotConfigs.CopyCustomerActionId,
                 chatbotConfigs.CopyCustomerLimitPerDay)
-                .GetAwaiter()
-                .GetResult();
+                .ConfigureAwait(false);
 
-            if (isReachedLimitOfCopyCustomer)
+            if (isReachedLimitInDay)
             {
                 return ActionValidationResult.CreateErrorValidationResult(
                     messageBuilder.BuildCopyCustomerReachedLimitMessage(
                         chatbotConfigs.CopyCustomerLimitPerDay,
                         user.Language),
                     true);
+            }
+
+            var customer = await customerService.GetCustomer(user.CustId).ConfigureAwait(false);
+            var reachLimitDownlineResult = await copyCustomerService.CheckReachLimitDownline(
+                user.CustId,
+                (byte)user.CustLevel,
+                customer.UserName,
+                user.Language)
+                .ConfigureAwait(false);
+
+            if (!reachLimitDownlineResult.IsSuccess)
+            {
+                return ActionValidationResult.CreateErrorValidationResult(reachLimitDownlineResult.Message, true);
             }
 
             return ActionValidationResult.CreateSuccessfulValidationResult();

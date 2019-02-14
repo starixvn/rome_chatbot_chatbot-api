@@ -60,7 +60,8 @@
                     param.Function.Id).ConfigureAwait(false);
             }
 
-            var validateReachedLimitResult = await ValidateReachedLitmitOfCopyCustomer(param).ConfigureAwait(false);
+            var validateReachedLimitResult = await ValidateReachedLitmitOfCopyCustomer(param, customer.UserName)
+                .ConfigureAwait(false);
             if (validateReachedLimitResult.IsNotOk)
             {
                 return await messageSender.SendMessage(
@@ -167,13 +168,13 @@
                         param.User.Language)));
             }
 
-            if (!Decimal.TryParse(rawParameters[1], out decimal credit))
+            if (!decimal.TryParse(rawParameters[1], out decimal credit))
             {
                 return Task.FromResult(Result.CreateErrorResult(messageBuilder.BuildInvalidNumericMessage(rawParameters[1], param.User.Language)));
             }
 
             if (param.User.CustLevel == CustLevel.MasterLevel
-                && !Decimal.TryParse(rawParameters[2], out decimal givenMemberCredit))
+                && !decimal.TryParse(rawParameters[2], out decimal givenMemberCredit))
             {
                 return Task.FromResult(Result.CreateErrorResult(messageBuilder.BuildInvalidNumericMessage(rawParameters[2], param.User.Language)));
             }
@@ -181,7 +182,7 @@
             return Task.FromResult(Result.CreateSuccessfulResult());
         }
 
-        private async Task<Result> ValidateReachedLitmitOfCopyCustomer(FunctionParam param)
+        private async Task<Result> ValidateReachedLitmitOfCopyCustomer(FunctionParam param, string custUsername)
         {
             if (param.User.CustLevel == CustLevel.AgentLevel)
             {
@@ -206,6 +207,18 @@
                     messageBuilder.BuildCopyCustomerReachedLimitMessage(
                         chatbotConfigs.CopyCustomerLimitPerDay,
                         param.User.Language));
+            }
+
+            var checkReachLimitDownlineResult = await copyCustomerService.CheckReachLimitDownline(
+                param.User.CustId,
+                (byte)param.User.CustLevel,
+                custUsername,
+                param.User.Language)
+                .ConfigureAwait(false);
+
+            if (!checkReachLimitDownlineResult.IsSuccess)
+            {
+                return Result.CreateErrorResult(checkReachLimitDownlineResult.Message);
             }
 
             return Result.CreateSuccessfulResult();

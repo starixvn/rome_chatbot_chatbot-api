@@ -1,6 +1,7 @@
 ﻿namespace Chatbot.Modules.Actions.Validators
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
     using Chatbot.Modules.Actions.Models;
@@ -19,13 +20,12 @@
             this.copyCustomerService = copyCustomerService;
         }
 
-        public ActionValidationResult ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
+        public async Task<ActionValidationResult> ValidateAction(User user, string userResponse, IList<UserAction> userActions, Messenger messenger)
         {
             if (!string.IsNullOrWhiteSpace(userResponse)
                 && decimal.TryParse(userResponse, out decimal number))
             {
-                var pt = copyCustomerService.GetPT(user.CustId, (byte)user.CustLevel)
-                    .GetAwaiter().GetResult();
+                var pt = await copyCustomerService.GetPT(user.CustId, (byte)user.CustLevel).ConfigureAwait(false);
 
                 if (number < 0 || number > pt.MaxCredit)
                 {

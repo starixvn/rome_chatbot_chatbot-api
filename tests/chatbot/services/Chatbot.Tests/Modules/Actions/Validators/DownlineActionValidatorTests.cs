@@ -39,7 +39,7 @@
             messageBuilder.BuildInvalidDownlineMessage(Arg.Any<string>(), Arg.Any<string>()).Returns(invalidDownlineMessage);
 
             // Act
-            var actualResult = validator.ValidateAction(new User(), userResponse, null, null);
+            var actualResult = validator.ValidateAction(new User(), userResponse, null, null).GetAwaiter().GetResult();
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
@@ -62,7 +62,7 @@
             var expectedResult = ActionValidationResult.CreateSuccessfulValidationResult();
 
             // Act
-            var actualResult = validator.ValidateAction(new User(), "abc", null, null);
+            var actualResult = validator.ValidateAction(new User(), "abc", null, null).GetAwaiter().GetResult();
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);
@@ -82,7 +82,7 @@
             var expectedResult = ActionValidationResult.CreateErrorValidationResult(invalidDownlineMessage);
 
             // Act
-            var actualResult = validator.ValidateAction(new User(), "abc", null, null);
+            var actualResult = validator.ValidateAction(new User(), "abc", null, null).GetAwaiter().GetResult();
 
             // Assert
             Assert.True(compareLogic.Compare(expectedResult, actualResult).AreEqual);

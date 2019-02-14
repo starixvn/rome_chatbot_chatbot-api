@@ -31,9 +31,9 @@ namespace Chatbot.WebApi.Middlewares
                     [chatbotConfigs.CopyAgentInputMemberCreditActionId] = new MemberMaxCreditValidator(messageBuilder, chatbotConfigs),
                     [chatbotConfigs.CopyMemberInputUsernameActionId] = new DirectDownlineActionValidator(messageBuilder, customerService),
                     [chatbotConfigs.CopyMemberInputCreditActionId] = new MaxCreditValidator(messageBuilder, copyCustomerService),
-                    [chatbotConfigs.CopyMasterActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, userLogActionService, copyCustomerService, chatbotConfigs),
-                    [chatbotConfigs.CopyAgentActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, userLogActionService, copyCustomerService, chatbotConfigs),
-                    [chatbotConfigs.CopyMemberActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, userLogActionService, copyCustomerService, chatbotConfigs)
+                    [chatbotConfigs.CopyMasterActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, customerService, userLogActionService, copyCustomerService, chatbotConfigs),
+                    [chatbotConfigs.CopyAgentActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, customerService, userLogActionService, copyCustomerService, chatbotConfigs),
+                    [chatbotConfigs.CopyMemberActionId] = new CopyCustomerReachedLimitValidator(messageBuilder, customerService, userLogActionService, copyCustomerService, chatbotConfigs)
                 });
         }
     }
