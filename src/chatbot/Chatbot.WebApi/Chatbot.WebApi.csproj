@@ -23,7 +23,7 @@
     <PackageReference Include="Fanex.Logging.Extensions.Database" Version="1.0.4-beta2" />
     <PackageReference Include="Fanex.Logging.RabbitMQ" Version="1.0.0-beta82" />
     <PackageReference Include="Fanex.Logging.Sentry" Version="1.0.0-beta1" />
-    <PackageReference Include="Messenger.Client" Version="1.0.2-beta" />
+    <PackageReference Include="Messenger.Client" Version="1.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.2" />
     <PackageReference Include="ONEbook.UM" Version="3.0.0-beta3" />
     <PackageReference Include="ONEbook.UM.AspNetCore" Version="3.0.0-beta" />
