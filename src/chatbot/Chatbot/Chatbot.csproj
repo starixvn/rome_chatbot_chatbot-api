@@ -18,7 +18,7 @@
     <PackageReference Include="Fanex.Data" Version="3.0.0" />
     <PackageReference Include="Fanex.Data.Repository" Version="3.0.0" />
     <PackageReference Include="Fanex.Logging" Version="2.0.0-beta7" />
-    <PackageReference Include="Messenger.Client" Version="1.0.3-Proxy" />
+    <PackageReference Include="Messenger.Client" Version="1.0.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
