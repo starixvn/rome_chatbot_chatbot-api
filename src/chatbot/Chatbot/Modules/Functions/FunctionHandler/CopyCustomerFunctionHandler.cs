@@ -16,6 +16,8 @@
 
     public class CopyCustomerFunctionHandler : DefaultFunctionHandler
     {
+        private const double DeplayTimeInSecond = 0.5;
+        private const int GivenMemberCreditIndex = 2;
         private readonly IChatbotConfigs chatbotConfigs;
         private readonly UserLogActionService userLogActionService;
         private readonly CopyCustomerService copyCustomerService;
@@ -121,7 +123,7 @@
                 messageToSend = messageToSend.Replace("#", string.Empty);
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(0.5)).ConfigureAwait(false);
+            await Task.Delay(TimeSpan.FromSeconds(DeplayTimeInSecond)).ConfigureAwait(false);
 
             var result = await messageSender.SendMessage(
                 param.User.Id,
@@ -174,9 +176,9 @@
             }
 
             if (param.User.CustLevel == CustLevel.MasterLevel
-                && !decimal.TryParse(rawParameters[2], out decimal givenMemberCredit))
+                && !decimal.TryParse(rawParameters[GivenMemberCreditIndex], out decimal givenMemberCredit))
             {
-                return Task.FromResult(Result.CreateErrorResult(messageBuilder.BuildInvalidNumericMessage(rawParameters[2], param.User.Language)));
+                return Task.FromResult(Result.CreateErrorResult(messageBuilder.BuildInvalidNumericMessage(rawParameters[GivenMemberCreditIndex], param.User.Language)));
             }
 
             return Task.FromResult(Result.CreateSuccessfulResult());

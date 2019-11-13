@@ -16,8 +16,7 @@
 
         public static void Validate(string paramName, string paramValue)
         {
-            if (paramValue == null
-                || string.IsNullOrWhiteSpace(paramValue))
+            if (string.IsNullOrWhiteSpace(paramValue))
             {
                 throw new ArgumentOutOfRangeException(paramName);
             }
