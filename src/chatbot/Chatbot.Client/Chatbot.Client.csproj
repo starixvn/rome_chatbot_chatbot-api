@@ -25,4 +25,8 @@ To use it, please add these config to your config file:
     <CodeAnalysisRuleSet>Chatbot.Client.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\..\.sonarlint\alpha-chatbot\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
+
 </Project>

@@ -88,10 +88,10 @@
 
         private async Task<object> GetMessage(FunctionParam param)
         {
-            return new List<Alpha.Services.Client.Models.Message>
+            return await Task.Run(() => new List<Alpha.Services.Client.Models.Message>
             {
                 new Alpha.Services.Client.Models.Message{ Content = "Message", CustId = 1}
-            };
+            }).ConfigureAwait(false);
         }
     }
 }

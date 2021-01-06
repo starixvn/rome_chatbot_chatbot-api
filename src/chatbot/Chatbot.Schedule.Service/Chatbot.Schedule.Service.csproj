@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="..\..\..\.sonarlint\alpha-chatbot\CSharp\SonarLint.xml" Link="SonarLint.xml" />
     <Content Include="appsettings.local1.json">
       <DependentUpon>appsettings.json</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -17,8 +17,12 @@ namespace Chatbot.Client.Sample
 
             var settingService = new SettingServiceImpl();
             var messageService = new MessageServiceImpl();
+#pragma warning disable CS0219 // The variable 'userId' is assigned but its value is never used
             var userId = 402;
+#pragma warning restore CS0219 // The variable 'userId' is assigned but its value is never used
+#pragma warning disable CS0219 // The variable 'messengerUsername' is assigned but its value is never used
             var messengerUsername = "demo1";
+#pragma warning restore CS0219 // The variable 'messengerUsername' is assigned but its value is never used
 
             //var functions = settingService.GetFunctions(1).Result;
 
