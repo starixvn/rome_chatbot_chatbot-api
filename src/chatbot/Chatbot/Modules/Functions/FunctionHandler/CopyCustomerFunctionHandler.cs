@@ -221,6 +221,17 @@
                 return Result.CreateErrorResult(checkReachLimitDownlineResult.Message);
             }
 
+            var limitNewDownlineResult = await copyCustomerService.CheckLimitNewDownline(
+                param.User.CustId,
+                (byte)param.User.CustLevel,
+                param.User.Language)
+                .ConfigureAwait(false);
+
+            if (!limitNewDownlineResult.IsSuccess)
+            {
+                return Result.CreateErrorResult(limitNewDownlineResult.Message);
+            }
+
             return Result.CreateSuccessfulResult();
         }
 
