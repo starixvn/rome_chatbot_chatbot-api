@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Alpha.Services.Client" Version="1.0.4.3-pacreatedownline-02" />
+    <PackageReference Include="Alpha.Services.Client" Version="1.0.4.3" />
     <PackageReference Include="Fanex.Caching" Version="2.2.0-beta2" />
     <PackageReference Include="Fanex.Data" Version="3.0.0" />
     <PackageReference Include="Fanex.Data.Repository" Version="3.0.0" />
