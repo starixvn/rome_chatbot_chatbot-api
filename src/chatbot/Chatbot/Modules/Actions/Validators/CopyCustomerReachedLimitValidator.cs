@@ -73,6 +73,17 @@
                 return ActionValidationResult.CreateErrorValidationResult(reachLimitDownlineResult.Message, true);
             }
 
+            var limitNewDownlineResult = await copyCustomerService.CheckLimitNewDownline(
+                user.CustId,
+                (byte)user.CustLevel,
+                user.Language)
+                .ConfigureAwait(false);
+
+            if (!limitNewDownlineResult.IsSuccess)
+            {
+                return ActionValidationResult.CreateErrorValidationResult(limitNewDownlineResult.Message, true);
+            }
+
             return ActionValidationResult.CreateSuccessfulValidationResult();
         }
     }

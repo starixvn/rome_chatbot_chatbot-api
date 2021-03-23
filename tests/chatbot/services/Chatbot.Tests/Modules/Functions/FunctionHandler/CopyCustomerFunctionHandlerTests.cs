@@ -306,6 +306,8 @@
             customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
             copyCustomerService.CheckReachLimitDownline(param.User.CustId, (byte)param.User.CustLevel, "username", param.User.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
+            copyCustomerService.CheckLimitNewDownline(param.User.CustId, (byte)param.User.CustLevel, param.User.Language)
+                .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
             // Act
             copyCustomerFunctionHandler.RunHandler(param).ConfigureAwait(false);
 
@@ -334,7 +336,9 @@
             customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
             copyCustomerService.CheckReachLimitDownline(param.User.CustId, (byte)param.User.CustLevel, "username", param.User.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
-
+            copyCustomerService.CheckLimitNewDownline(param.User.CustId, (byte)param.User.CustLevel, param.User.Language)
+                .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
+            
             // Act
             copyCustomerFunctionHandler.RunHandler(param).ConfigureAwait(false);
 
@@ -365,6 +369,8 @@
                 .Returns(Task.FromResult(new DownlineInfo { CustId = 1, RoleId = (byte)(param.User.CustLevel - 1) }));
             customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
             copyCustomerService.CheckReachLimitDownline(param.User.CustId, (byte)param.User.CustLevel, "username", param.User.Language)
+                .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
+            copyCustomerService.CheckLimitNewDownline(param.User.CustId, (byte)param.User.CustLevel, param.User.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
 
             // Act
@@ -398,6 +404,8 @@
                 .Returns("InvalidMaxCreditMessage");
             customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
             copyCustomerService.CheckReachLimitDownline(param.User.CustId, (byte)param.User.CustLevel, "username", param.User.Language)
+                .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
+            copyCustomerService.CheckLimitNewDownline(param.User.CustId, (byte)param.User.CustLevel, param.User.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
 
             // Act
@@ -436,6 +444,8 @@
                 .Returns("CopyCustomerInformMessage");
             customerService.GetCustomer(param.User.CustId).Returns(new CustomerInfo { UserName = "username" });
             copyCustomerService.CheckReachLimitDownline(param.User.CustId, (byte)param.User.CustLevel, "username", param.User.Language)
+                .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
+            copyCustomerService.CheckLimitNewDownline(param.User.CustId, (byte)param.User.CustLevel, param.User.Language)
                 .Returns(Task.FromResult(new Alpha.Services.Client.Models.Result { IsSuccess = true }));
 
             // Act
