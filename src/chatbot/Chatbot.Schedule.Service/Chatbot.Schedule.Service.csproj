@@ -23,7 +23,6 @@
     <None Remove="appsettings.json" />
     <None Remove="appsettings.local.json" />
     <None Remove="appsettings.local1.json" />
-    <None Remove="appsettings.pro.json" />
     <None Remove="appsettings.uat.json" />
     <None Remove="Deployment.ignore" />
   </ItemGroup>
@@ -37,10 +36,6 @@
     <Content Include="appsettings.uat.json">
       <DependentUpon>appsettings.json</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="appsettings.pro.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>appsettings.json</DependentUpon>
     </Content>
     <Content Include="appsettings.local.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
