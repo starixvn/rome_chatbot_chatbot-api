@@ -19,6 +19,8 @@
 
         string BuildAccountClosedMessage(string language);
 
+        string BuildAccountLockedMessage(string language);
+
         string BuildWelcomeMessage(string language, int messengerType);
 
         string BuildErrorMessage(string language);
@@ -62,6 +64,7 @@
         string BuildConfirmUpdateAction(string actionName, int messengerType, string language);
 
         string BuildMessage(string messageKey, string language);
+
         string BuildCompleteUMNotification(int messengerType, string language);
 
         string BuildSuggestionActionsTitle(string language);
@@ -147,6 +150,9 @@
 
         public string BuildAccountClosedMessage(string language)
             => StaticResources.Get(nameof(Languages.YourAccountIsClosed), language);
+
+        public string BuildAccountLockedMessage(string language)
+            => StaticResources.Get(nameof(Languages.YourAccountIsLocked), language);
 
         public string BuildUnderMaintenanceMessage(int messengerType, string from, string to)
         {

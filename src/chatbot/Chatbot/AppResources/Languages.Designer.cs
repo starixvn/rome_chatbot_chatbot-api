@@ -1040,5 +1040,14 @@ namespace Chatbot.AppResources {
                 return ResourceManager.GetString("YourAccountIsClosed", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This account is locked. Please contact your upline to unlock..
+        /// </summary>
+        public static string YourAccountIsLocked {
+            get {
+                return ResourceManager.GetString("YourAccountIsLocked", resourceCulture);
+            }
+        }
     }
 }

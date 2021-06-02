@@ -33,8 +33,8 @@
         /// </summary>
         /// <param name="param"></param>
         /// <returns></returns>
-        protected override Task<Result> BuildAndSendAccountClosedMessage(FunctionParam param)
-            => Task.FromResult(Result.CreateSuccessfulResult("Account is closed"));
+        protected override Task<Result> BuildAndSendAccountClosedOrLockedMessage(FunctionParam param, bool isClosed)
+            => Task.FromResult(Result.CreateSuccessfulResult($"Account is {(isClosed ? "closed" : "locked")}"));
 
         public override async Task<IEnumerable<FunctionMessage>> GetFunctionMessages(FunctionParam param)
         {
@@ -44,7 +44,9 @@
             {
                 try
                 {
-                    if (await IsCustomerClosed(user).ConfigureAwait(false))
+                    var accountStatus = await GetAccountStatus(user).ConfigureAwait(false);
+
+                    if (!accountStatus.IsActive || accountStatus.IsLocked)
                     {
                         continue;
                     }

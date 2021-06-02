@@ -27,7 +27,7 @@
         private readonly IDictionary<int, Func<FunctionParam, Task<object>>> getDataHandlers;
         private readonly ILogger logger;
 
-        protected bool SendMessageInCaseAccountClosed = true;
+        protected bool SendMessageInCaseAccountClosedOrLocked = true;
 
         public DefaultFunctionHandler(
             IMessageBuilder messageBuilder,
@@ -46,15 +46,16 @@
         public virtual async Task<Result> Handle(FunctionParam param)
         {
             // Check Params
-
             if (!getDataHandlers.ContainsKey(param.Function.Id))
             {
                 throw new InvalidOperationException($"Cannot find get data function for function: {param.Function.Id}-{param.Function.Name}");
             }
 
-            if (await IsCustomerClosed(param.User).ConfigureAwait(false))
+            var accountStatus = await GetAccountStatus(param.User).ConfigureAwait(false);
+
+            if (!accountStatus.IsActive || accountStatus.IsLocked)
             {
-                return await BuildAndSendAccountClosedMessage(param).ConfigureAwait(false);
+                return await BuildAndSendAccountClosedOrLockedMessage(param, !accountStatus.IsActive).ConfigureAwait(false);
             }
 
             return await RunHandler(param).ConfigureAwait(false);
@@ -72,14 +73,16 @@
             return await BuildAndSendMessage(param, data).ConfigureAwait(false);
         }
 
-        protected Task<bool> IsCustomerClosed(User user)
-            => customerService.IsAccountClosed(user.CustId, user.SubAccountId);
+        protected Task<AccountStatus> GetAccountStatus(User user)
+            => customerService.GetAccountStatus(user.CustId, user.SubAccountId);
 
-        protected virtual Task<Result> BuildAndSendAccountClosedMessage(FunctionParam param)
+        protected virtual Task<Result> BuildAndSendAccountClosedOrLockedMessage(FunctionParam param, bool isClosed)
         {
-            if (SendMessageInCaseAccountClosed)
+            if (SendMessageInCaseAccountClosedOrLocked)
             {
-                var message = messageBuilder.BuildAccountClosedMessage(param.User.Language);
+                var message = isClosed
+                    ? messageBuilder.BuildAccountClosedMessage(param.User.Language)
+                    : messageBuilder.BuildAccountLockedMessage(param.User.Language);
 
                 return messageSender.SendMessage(
                     param.User.Id,
