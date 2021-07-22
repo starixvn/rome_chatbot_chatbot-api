@@ -404,19 +404,19 @@
   </data>
   <data name="InstructionMessage" xml:space="preserve">
     <value>Please input the command by the following syntax</value>
-    </data>
+  </data>
   <data name="ActionConfirmation" xml:space="preserve">
     <value>Please kindly confirm your action:</value>
   </data>
   <data name="InstructionCopyCustomerCommand_CustLevel_3" xml:space="preserve">
     <value>/copy &lt;your master&gt; &lt;master credit&gt;</value>
-     </data>
+  </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
   <data name="InstructionCopyCustomerCommand_CustLevel_2" xml:space="preserve">
     <value>/copy &lt;your agent&gt; &lt;agent credit&gt; &lt;max member credit&gt;</value>
-    </data>
+  </data>
   <data name="ReConfirmMessage" xml:space="preserve">
     <value>Please confirm if you want to {0}</value>
   </data>
@@ -443,5 +443,8 @@
   </data>
   <data name="CompleteUMInformMessage_2" xml:space="preserve">
     <value>Hint: you could input any word to get my assistance right away.</value>
+  </data>
+  <data name="YourAccountIsLocked" xml:space="preserve">
+    <value>This account is locked. Please contact your upline to unlock.</value>
   </data>
 </root>

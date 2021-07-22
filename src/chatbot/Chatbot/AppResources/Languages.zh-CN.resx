@@ -441,4 +441,7 @@
   <data name="CompleteUMInformMessage_2" xml:space="preserve">
     <value>提示：您可以输入任何单词既可立即得到我的协助。</value>
   </data>
+  <data name="YourAccountIsLocked" xml:space="preserve">
+    <value>此账号已被锁定。请联系您的上线以解锁。</value>
+  </data>
 </root>

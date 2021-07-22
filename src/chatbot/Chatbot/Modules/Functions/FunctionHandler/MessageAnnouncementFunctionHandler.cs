@@ -28,7 +28,7 @@
                 base(messageBuilder, messageSender, customerService, logger, getDataHandlers)
         {
             this.getDataHandlers = getDataHandlers;
-            SendMessageInCaseAccountClosed = false;
+            SendMessageInCaseAccountClosedOrLocked = false;
             this.settingService = settingService;
         }
 
@@ -67,7 +67,9 @@
                 {
                     var user = param.Users.FirstOrDefault(u => u.CustId == announcement.CustId);
 
-                    if (await IsCustomerClosed(user).ConfigureAwait(false))
+                    var accountStatus = await GetAccountStatus(user).ConfigureAwait(false);
+
+                    if (!accountStatus.IsActive || accountStatus.IsLocked)
                     {
                         continue;
                     }
