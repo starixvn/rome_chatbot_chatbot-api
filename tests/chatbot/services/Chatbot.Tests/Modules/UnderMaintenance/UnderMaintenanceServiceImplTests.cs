@@ -15,6 +15,7 @@
     using KellermanSoftware.CompareNetObjects;
     using NSubstitute;
     using Xunit;
+    using AccountStatus = Alpha.Services.Client.Models.AccountStatus;
 
     public class UnderMaintenanceServiceImplTests
     {
@@ -99,12 +100,13 @@
             IEnumerable<User> users = new List<User> { user };
 
             settingService.GetUsers().Returns(Task.FromResult(users));
+            customerService.GetAccountStatus(2, 0).Returns(new AccountStatus());
 
             // Act
             underMaintenanceService.SendCompleteUMNotifications().GetAwaiter().GetResult();
 
             // Assert
-            customerService.Received().IsAccountClosed(2, 0);
+            customerService.Received().GetAccountStatus(2, 0);
         }
 
         [Fact]
@@ -114,7 +116,7 @@
             var user = new User(1, 2, 3, 0, "en-US", 15);
             IEnumerable<User> users = new List<User> { user };
             settingService.GetUsers().Returns(Task.FromResult(users));
-            customerService.IsAccountClosed(user.CustId, user.SubAccountId).Returns(Task.FromResult(false));
+            customerService.GetAccountStatus(user.CustId, user.SubAccountId).Returns(new AccountStatus { IsActive = true });
 
             // Act
             underMaintenanceService.SendCompleteUMNotifications().GetAwaiter().GetResult();
@@ -134,7 +136,7 @@
                 new Messenger(1,"username",true,false)
             };
             settingService.GetUsers().Returns(Task.FromResult(users));
-            customerService.IsAccountClosed(user.CustId, user.SubAccountId).Returns(Task.FromResult(false));
+            customerService.GetAccountStatus(user.CustId, user.SubAccountId).Returns(new AccountStatus { IsActive = true });
             settingService.GetMessengers(1, true).Returns(Task.FromResult(messengers));
 
             // Act

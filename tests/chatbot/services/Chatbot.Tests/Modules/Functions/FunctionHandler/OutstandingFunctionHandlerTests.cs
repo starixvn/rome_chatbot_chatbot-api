@@ -56,7 +56,7 @@
                 new Dictionary<string, object> { ["parameters"] = new string[] { "10" } });
 
             getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
-            customerService.IsAccountClosed(2, 3).Returns(false);
+            customerService.GetAccountStatus(2, 3).Returns(new AccountStatus { IsActive = true });
             messageBuilder.BuildCommandResultMessage("en-US", 1, 1, "Message").Returns("Message");
 
             // Act
@@ -77,7 +77,7 @@
                 new Dictionary<string, object> { ["parameters"] = new string[] { "abc" } });
 
             getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
-            customerService.IsAccountClosed(2, 3).Returns(false);
+            customerService.GetAccountStatus(2, 3).Returns(new AccountStatus { IsActive = true });
 
             var downlineInfo = new DownlineInfo();
             customerService.GetDownlineInfo(2, "abc").Returns(Task.FromResult(downlineInfo));
@@ -101,7 +101,7 @@
                 new Dictionary<string, object> { ["parameters"] = new string[] { "abc" } });
 
             getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
-            customerService.IsAccountClosed(2, 3).Returns(false);
+            customerService.GetAccountStatus(2, 3).Returns(new AccountStatus { IsActive = true });
 
             var downlineInfo = new DownlineInfo { CustId = 5, RoleId = 2 };
             customerService.GetDownlineInfo(2, "abc").Returns(Task.FromResult(downlineInfo));
@@ -125,7 +125,7 @@
                 new Dictionary<string, object> { ["parameters"] = new string[] { "abc" } });
 
             getDataHandlers.Add(1, async (_) => await Task.FromResult("Message"));
-            customerService.IsAccountClosed(2, 3).Returns(false);
+            customerService.GetAccountStatus(2, 3).Returns(new AccountStatus { IsActive = true });
 
             var downlineInfo = new DownlineInfo { CustId = 5, RoleId = 3 };
             customerService.GetDownlineInfo(2, "abc").Returns(Task.FromResult(downlineInfo));

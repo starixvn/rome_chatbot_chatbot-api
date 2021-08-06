@@ -11,6 +11,7 @@
     using Fanex.Logging;
     using NSubstitute;
     using Xunit;
+    using AccountStatus = Alpha.Services.Client.Models.AccountStatus;
 
     [Trait("Modules", "Functions/Handlers")]
     public class DefaultFunctionHandlerTests
@@ -58,7 +59,7 @@
             var param = new FunctionParam(new Models.User(1, custId: 2, custLevel: 4, subAccountId: 3, language: "en-US", selfdestructionPeriod: null),
                 new Models.Function { Id = 2 }, new Models.Messenger(), null);
             getDataHandlers.Add(2, null);
-            subCustomerService.IsAccountClosed(2, 3).Returns(true);
+            subCustomerService.GetAccountStatus(2, 3).Returns(new AccountStatus());
             subMessageBuilder.BuildAccountClosedMessage("en-US").Returns("Account is closed");
             var handler = CreateDefaultFunctionHandler();
 
@@ -70,13 +71,31 @@
         }
 
         [Fact]
+        public async Task Handle_IsCustomerLocked_BuildAndSendAccountLockedMessage()
+        {
+            // Arrange
+            var param = new FunctionParam(new Models.User(1, custId: 2, custLevel: 4, subAccountId: 3, language: "en-US", selfdestructionPeriod: null),
+                new Models.Function { Id = 2 }, new Models.Messenger(), null);
+            getDataHandlers.Add(2, null);
+            subCustomerService.GetAccountStatus(2, 3).Returns(new AccountStatus { IsActive = true, Locked = 1 });
+            subMessageBuilder.BuildAccountLockedMessage("en-US").Returns("This account is locked. Please contact your upline to unlock.");
+            var handler = CreateDefaultFunctionHandler();
+
+            // Act
+            await handler.Handle(param);
+
+            // Assert
+            await subMessageSender.Received().SendMessage(1, param.Messenger, "This account is locked. Please contact your upline to unlock.", null, 2);
+        }
+
+        [Fact]
         public async Task Handle_IsNormal_RunDataHandlerAndSendMessage()
         {
             // Arrange
             var param = new FunctionParam(new Models.User(1, custId: 2, custLevel: 4, subAccountId: 3, language: "en-US", selfdestructionPeriod: null),
                 new Models.Function { Id = 2 }, new Models.Messenger(1, "sa"), null);
             getDataHandlers.Add(2, async (_) => await Task.FromResult("Message"));
-            subCustomerService.IsAccountClosed(2, 3).Returns(false);
+            subCustomerService.GetAccountStatus(2, 3).Returns(new AccountStatus { IsActive = true });
             subMessageBuilder.BuildCommandResultMessage("en-US", 2, 1, "Message").Returns("Message");
             var handler = CreateDefaultFunctionHandler();
 

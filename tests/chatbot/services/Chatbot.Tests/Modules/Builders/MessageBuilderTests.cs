@@ -92,6 +92,18 @@
         }
 
         [Fact]
+        public void BuildAccountLockedMessage_Always_ReturnMessage()
+        {
+            var language = "en-US";
+
+            var message = messageBuilder.BuildAccountLockedMessage(language);
+
+            Assert.Equal(
+                "This account is locked. Please contact your upline to unlock.",
+                message);
+        }
+
+        [Fact]
         public void BuildUnderMaintenanceMessage_Always_ReturnMessage()
         {
             var message = messageBuilder.BuildUnderMaintenanceMessage(1, "2:00", "3:00");

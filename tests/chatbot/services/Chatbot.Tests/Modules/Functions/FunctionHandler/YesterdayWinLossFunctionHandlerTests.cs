@@ -14,6 +14,7 @@
     using KellermanSoftware.CompareNetObjects;
     using NSubstitute;
     using Xunit;
+    using AccountStatus = Alpha.Services.Client.Models.AccountStatus;
 
     [Trait("Modules", "Functions/Handlers")]
     public class YesterdayWinLossFunctionHandlerTests
@@ -57,6 +58,7 @@
             // Arrange
             subSettingService.GetMessengers(2, true).Returns(new List<Messenger> { new Messenger(2, "userName") });
             subMessageBuilder.BuildCommandResultMessage("en-US", 4, 2, Arg.Any<object>()).Returns("Message");
+            subCustomerService.GetAccountStatus(1, 1).Returns(new AccountStatus { IsActive = true });
             var handler = CreateYesterdayFunctionHandler();
 
             // Act
@@ -74,7 +76,7 @@
             // Arrange
             subSettingService.GetMessengers(2, true).Returns(new List<Messenger> { new Messenger(2, "userName") });
             subMessageBuilder.BuildCommandResultMessage("en-US", 4, 2, Arg.Any<object>()).Returns("Message");
-            subCustomerService.IsAccountClosed(1, 1).Returns(true);
+            subCustomerService.GetAccountStatus(1, 1).Returns(new AccountStatus());
             var handler = CreateYesterdayFunctionHandler();
 
             // Act
