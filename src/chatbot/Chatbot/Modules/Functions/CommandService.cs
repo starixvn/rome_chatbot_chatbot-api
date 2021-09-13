@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
+    using Alpha.Services.Client.Services;
     using Chatbot.Modules.Actions;
     using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
@@ -34,6 +35,7 @@
         private readonly IFunctionHandlerFactory functionHandlerFactory;
         private readonly ILogger logger;
         private readonly ActionService actionService;
+        private readonly CustomerService customerService;
 
         public CommandServiceImpl(
             SettingService settingService,
@@ -43,7 +45,8 @@
             IChatbotConfigs chatbotConfigs,
             IFunctionHandlerFactory functionHandlerFactory,
             ILogger logger,
-            ActionService actionService)
+            ActionService actionService,
+            CustomerService customerService)
         {
             this.settingService = settingService;
             this.messageSender = messageSender;
@@ -53,6 +56,7 @@
             this.functionHandlerFactory = functionHandlerFactory;
             this.logger = logger;
             this.actionService = actionService;
+            this.customerService = customerService;
         }
 
         public async Task Execute(
@@ -86,6 +90,13 @@
                 .GetUser(messengerDto.UserId)
                 .ConfigureAwait(false)
                     ?? throw new InvalidOperationException($"user cannot be found for messenger {messengerUsername}");
+
+            var accountStatus = await customerService.GetAccountStatus(user.CustId, user.SubAccountId);
+
+            if (accountStatus.IsProtectedMode)
+            {
+                return;
+            }
 
             var messenger = new Messenger(messengerType, messengerUsername);
 
