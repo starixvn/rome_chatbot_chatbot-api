@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Alpha.Services.Client.Models;
     using Alpha.Services.Client.Services;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
@@ -118,6 +119,7 @@
 
             SetupSendCommand(userId, messenger, user);
             settingService.GetFunctions(userId).Returns(Task.FromResult(Enumerable.Empty<Function>()));
+            StubValidAccountStatus(user);
 
             commandService
                     .Execute("cm2", "parameter", messenger.Type, messenger.Username)
@@ -144,6 +146,7 @@
             var user = StubUser(userId);
 
             SetupSendCommand(userId, messenger, user);
+            StubValidAccountStatus(user);
 
             commandService
                     .Execute("cm1", "buttonData", messenger.Type, messenger.Username)
@@ -171,6 +174,7 @@
             var user = StubUser(userId);
 
             SetupSendCommand(userId, messenger, user);
+            StubValidAccountStatus(user);
 
             commandService
                     .Execute("cm1", "parameter", messenger.Type, messenger.Username)
@@ -197,6 +201,13 @@
             SetupSendCommand(userId, messenger, user);
             StubFunctions();
             actionService.NoRootActionExist().Returns(Task.FromResult(true));
+            var accountStatus = new AccountStatus
+            {
+                IsActive = true,
+                Locked = 0,
+                IsProtectedMode = false
+            };
+            StubValidAccountStatus(user);
 
             commandService
                     .Execute("cm", "parameter", messenger.Type, messenger.Username)
@@ -228,6 +239,7 @@
                 .BuildAction("cm", "buttondata", Arg.Any<User>(), Arg.Any<Messenger>())
                 .Returns(Task.FromResult(
                     new ActionResult(new MessengerClient.Models.Message(), "Failed Validation Message", 1)));
+            StubValidAccountStatus(user);
 
             commandService
                     .Execute("cm", "buttondata", messenger.Type, messenger.Username)
@@ -260,6 +272,7 @@
                 .BuildAction("cm", "buttondata", Arg.Any<User>(), Arg.Any<Messenger>())
                 .Returns(Task.FromResult(
                     new ActionResult(nextStep, 2)));
+            StubValidAccountStatus(user);
 
             commandService
                     .Execute("cm", "buttondata", messenger.Type, messenger.Username)
@@ -291,6 +304,7 @@
                 .BuildAction("cm1", "buttondata", Arg.Any<User>(), Arg.Any<Messenger>())
                 .Returns(Task.FromResult(
                     new ActionResult("cm1", 1)));
+            StubValidAccountStatus(user);
 
             commandService
                     .Execute("cm1", "buttondata", messenger.Type, messenger.Username)
@@ -347,5 +361,13 @@
                     Enabled = false
                 }
             };
+
+        private void StubValidAccountStatus(User user)
+            => customerService.GetAccountStatus(user.CustId, user.SubAccountId).Returns(new AccountStatus
+            {
+                IsActive = true,
+                Locked = 0,
+                IsProtectedMode = false
+            });
     }
 }
