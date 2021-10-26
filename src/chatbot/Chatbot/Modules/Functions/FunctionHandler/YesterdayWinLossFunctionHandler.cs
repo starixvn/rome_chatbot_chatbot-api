@@ -46,7 +46,7 @@
                 {
                     var accountStatus = await GetAccountStatus(user).ConfigureAwait(false);
 
-                    if (!accountStatus.IsActive || accountStatus.IsLocked)
+                    if (!accountStatus.IsActive || accountStatus.IsLocked || accountStatus.IsProtectedMode)
                     {
                         continue;
                     }

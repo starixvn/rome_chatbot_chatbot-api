@@ -59,7 +59,7 @@
 
             foreach (var user in users)
             {
-                if (await IsCustomerClosedOrLocked(user).ConfigureAwait(false))
+                if (await IsCustomerClosedLockedProtected(user).ConfigureAwait(false))
                 {
                     continue;
                 }
@@ -90,11 +90,11 @@
             return Result.CreateSuccessfulResult();
         }
 
-        private async Task<bool> IsCustomerClosedOrLocked(User user)
+        private async Task<bool> IsCustomerClosedLockedProtected(User user)
         {
             var accountStatus = await customerService.GetAccountStatus(user.CustId, user.SubAccountId);
 
-            return !accountStatus.IsActive || accountStatus.IsLocked;
+            return !accountStatus.IsActive || accountStatus.IsLocked || accountStatus.IsProtectedMode;
         }
 
         private async Task SendCompleteUMMessages(User user, Messenger messenger, IEnumerable<MessengerClient.Models.MessageAction> rootActions)

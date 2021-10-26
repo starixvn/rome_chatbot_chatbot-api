@@ -53,6 +53,11 @@
 
             var accountStatus = await GetAccountStatus(param.User).ConfigureAwait(false);
 
+            if (accountStatus.IsProtectedMode)
+            {
+                return await DoNothingInCaseOfProtectedMode();
+            }
+
             if (!accountStatus.IsActive || accountStatus.IsLocked)
             {
                 return await BuildAndSendAccountClosedOrLockedMessage(param, !accountStatus.IsActive).ConfigureAwait(false);
@@ -75,6 +80,9 @@
 
         protected Task<AccountStatus> GetAccountStatus(User user)
             => customerService.GetAccountStatus(user.CustId, user.SubAccountId);
+
+        protected virtual Task<Result> DoNothingInCaseOfProtectedMode()
+            => Task.FromResult(Result.CreateSuccessfulResult());
 
         protected virtual Task<Result> BuildAndSendAccountClosedOrLockedMessage(FunctionParam param, bool isClosed)
         {

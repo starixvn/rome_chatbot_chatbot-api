@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Alpha.Services.Client.Services;
     using Chatbot.Models;
     using Chatbot.Models.Dtos;
     using Chatbot.Modules.Actions;
@@ -12,8 +13,8 @@
     using Chatbot.Modules.Funtions.FunctionHandler;
     using Chatbot.Modules.Funtions.Params;
     using Chatbot.Modules.MessageBuilders;
-    using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.MessageLoggers;
+    using Chatbot.Modules.MessageSenders;
     using Chatbot.Modules.Settings;
     using Chatbot.Shared.Configurations;
     using Chatbot.Shared.Constants;
@@ -33,6 +34,7 @@
         private readonly IFunctionHandlerFactory functionHandlerFactory;
         private readonly ILogger logger;
         private readonly ActionService actionService;
+        private readonly CustomerService customerService;
 
         private readonly CommandService commandService;
 
@@ -46,6 +48,7 @@
             actionService = Substitute.For<ActionService>();
             functionHandlerFactory = Substitute.For<IFunctionHandlerFactory>();
             logger = Substitute.For<ILogger>();
+            customerService = Substitute.For<CustomerService>();
 
             commandService = new CommandServiceImpl(
                 settingService,
@@ -55,7 +58,8 @@
                 chatbotConfigs,
                 functionHandlerFactory,
                 logger,
-                actionService);
+                actionService,
+                customerService);
         }
 
         [Fact]
