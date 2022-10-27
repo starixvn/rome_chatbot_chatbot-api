@@ -19,7 +19,7 @@ namespace Chatbot.WebApi.Controllers
             this.messengerFactory = messengerFactory;
         }
 
-        [Route("setwebhook/{webhookurl}"), HttpPost]
+        [Route("setwebhook"), HttpPost]
         public async Task<Result> SetWebhook(string webhookUrl)
         {
             var messengerClient = messengerFactory.CreateMessengerClient(MessengerType.Letstalk);
